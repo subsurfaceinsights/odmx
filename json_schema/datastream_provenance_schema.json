@@ -1,0 +1,30 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "datastream_provenance_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ],
+                "minimum": 1
+            },
+            "datastream_provenance_type": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "datastream_provenance_description": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "datastream_id": {
+                "type": "integer"
+            }
+        }
+    }
+}

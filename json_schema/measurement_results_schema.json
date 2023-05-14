@@ -1,0 +1,65 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "result_id": {
+                "type": "integer"
+            },
+            "x_location": {
+                "type": [
+                    "number",
+                    "null"
+                ]
+            },
+            "x_location_units_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ]
+            },
+            "y_location": {
+                "type": [
+                    "number",
+                    "null"
+                ]
+            },
+            "y_location_units_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ]
+            },
+            "z_location": {
+                "type": [
+                    "number",
+                    "null"
+                ]
+            },
+            "z_location_units_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ]
+            },
+            "spatial_reference_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ]
+            },
+            "time_aggregation_interval": {
+                "type": [
+                    "number",
+                    "null"
+                ]
+            },
+            "time_aggregation_interval_units_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ]
+            }
+        }
+    }
+}

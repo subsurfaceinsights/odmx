@@ -1,0 +1,47 @@
+[
+    {
+        "term": "red",
+        "name": "Red",
+        "definition": "red channel",
+        "category": "red channel",
+        "provenance": "red channel",
+        "provenance_uri": "red channel",
+        "note": null
+    },
+    {
+        "term": "green",
+        "name": "Green",
+        "definition": "green channel",
+        "category": "green channel",
+        "provenance": "green channel",
+        "provenance_uri": "green channel",
+        "note": null
+    },
+    {
+        "term": "blue",
+        "name": "Blue",
+        "definition": "blue channel",
+        "category": "blue channel",
+        "provenance": "blue channel",
+        "provenance_uri": "blue channel",
+        "note": null
+    },
+    {
+        "term": "gcc",
+        "name": "GCC",
+        "definition": "gcc channel",
+        "category": "gcc channel",
+        "provenance": "gcc channel",
+        "provenance_uri": "gcc channel",
+        "note": null
+    },
+    {
+        "term": "ndvi",
+        "name": "NDVI",
+        "definition": "NDVI channel",
+        "category": "NDVI channel",
+        "provenance": "NDVI channel",
+        "provenance_uri": "NDVI channel",
+        "note": null
+    }
+]

@@ -1,0 +1,37 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "term": {
+                "type": "string"
+            },
+            "name": {
+                "type": "string"
+            },
+            "definition": {
+                "type": "string"
+            },
+            "category": {
+                "type": ["string", "null"]
+            },
+            "provenance": {
+                "type": ["string", "null"]
+            },
+            "provenance_uri": {
+                "type": ["string", "null"],
+                "format": "iri"
+            },
+            "note": {
+                "type": ["string", "null"]
+            },
+            "qa_flag": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1
+            }
+        },
+        "required": ["term", "name", "definition", "category", "provenance",
+                     "provenance_uri", "note", "qa_flag"]
+    }
+}

@@ -1,0 +1,45 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "gene_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ],
+                "minimum": 1
+            },
+            "csu_gene_id": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "gene_start": {
+                "type": [
+                    "integer",
+                    "null"
+                ]
+            },
+            "gene_end": {
+                "type": [
+                    "integer",
+                    "null"
+                ]
+            },
+            "has_fna": {
+                "type": [
+                    "boolean",
+                    "null"
+                ]
+            },
+            "has_faa": {
+                "type": [
+                    "boolean",
+                    "null"
+                ]
+            }
+        }
+    }
+}

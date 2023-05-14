@@ -1,0 +1,9 @@
+[
+    {
+        "specimen_collection_cv": "analysisReports",
+        "specimen_collection_file": null,
+        "specimen_collection_name": "Analysis reports from the LBNL watershed SFA",
+        "specimen_collection_note": "This is the parent collection of all the LBNL watershed SFA analysis reports",
+        "parent_specimen_collection_id": null
+    }
+]

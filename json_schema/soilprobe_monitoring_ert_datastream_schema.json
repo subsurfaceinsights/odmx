@@ -1,0 +1,45 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "soilprobe_monitoring_ert_datastream_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ],
+                "minimum": 1
+            },
+            "soilprobe_monitoring_id": {
+                "type": "integer"
+            },
+            "datastream_id": {
+                "type": "integer"
+            },
+            "a_well": {
+                "type": "integer"
+            },
+            "a_electrode": {
+                "type": "integer"
+            },
+            "b_well": {
+                "type": "integer"
+            },
+            "b_electrode": {
+                "type": "integer"
+            },
+            "m_well": {
+                "type": "integer"
+            },
+            "m_electrode": {
+                "type": "integer"
+            },
+            "n_well": {
+                "type": "integer"
+            },
+            "n_electrode": {
+                "type": "integer"
+            }
+        }
+    }
+}

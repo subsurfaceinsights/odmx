@@ -1,0 +1,47 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "mag_binning_event_id": {
+                "type": "integer"
+            },
+            "mag_processing_method": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "percentage_reads_mapped": {
+                "type": [
+                    "number",
+                    "null"
+                ]
+            },
+            "number_of_mags": {
+                "type": [
+                    "integer",
+                    "null"
+                ]
+            },
+            "percentage_of_contigs_in_mags": {
+                "type": [
+                    "number",
+                    "null"
+                ]
+            },
+            "assembled_contigs_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ]
+            },
+            "percentage_binned": {
+                "type": [
+                    "number",
+                    "null"
+                ]
+            }
+        }
+    }
+}

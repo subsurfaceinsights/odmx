@@ -1,0 +1,32 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "conversion_multiplier_offset_id": {
+                "type": "integer"
+            },
+            "datasource_id": {
+                "type": "integer"
+            },
+            "sensor_id": {
+                "type": "integer"
+            },
+            "parameter_name_in_table": {
+                "type": "string"
+            },
+            "start_date_time_utc": {
+                "type": "integer"
+            },
+            "end_date_time_utc": {
+                "type": "integer"
+            },
+            "conversion_multiplier": {
+                "type": "number"
+            },
+            "conversion_offset": {
+                "type": "number"
+            }
+        }
+    }
+}

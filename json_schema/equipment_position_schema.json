@@ -1,0 +1,51 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "equipment_position_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ],
+                "minimum": 1
+            },
+            "equipment_id": {
+                "type": "integer"
+            },
+            "position_start_date_utc": {
+                "type": "integer"
+            },
+            "position_end_date_utc": {
+                "type": [
+                    "integer",
+                    "null"
+                ]
+            },
+            "equipment_z_offset_m": {
+                "type": [
+                    "number",
+                    "null"
+                ]
+            },
+            "equipment_ns_offset_m": {
+                "type": [
+                    "number",
+                    "null"
+                ]
+            },
+            "equipment_ew_offset_m": {
+                "type": [
+                    "number",
+                    "null"
+                ]
+            },
+            "equipment_height_note": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            }
+        }
+    }
+}

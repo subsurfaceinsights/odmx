@@ -1,0 +1,30 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "bridge_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ],
+                "minimum": 1
+            },
+            "reference_material_id": {
+                "type": "integer"
+            },
+            "external_identifier_system_id": {
+                "type": "integer"
+            },
+            "reference_material_external_identifier": {
+                "type": "string"
+            },
+            "reference_material_external_identifier_uri": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            }
+        }
+    }
+}

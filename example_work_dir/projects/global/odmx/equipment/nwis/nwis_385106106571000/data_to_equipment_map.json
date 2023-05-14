@@ -1,0 +1,62 @@
+[
+    {
+        "column_name": "temperature",
+        "variable_domain_cv": "instrumentMeasurement",
+        "acquiring_instrument_uuid": "329cb16b-94b6-4e7c-bde2-37b322e80bd2",
+        "variable_term": "waterTemperature",
+        "units_term": "degreeCelsius",
+        "unit_conversion": true,
+        "expose_as_datastream": true,
+        "datastream_manual_qa_list": null,
+        "sensor_type": "measured",
+        "notes": null
+    },
+    {
+        "column_name": "discharge",
+        "variable_domain_cv": "instrumentMeasurement",
+        "acquiring_instrument_uuid": "329cb16b-94b6-4e7c-bde2-37b322e80bd2",
+        "variable_term": "waterStreamDischarge",
+        "units_term": "cubicFootPerSecond",
+        "unit_conversion": true,
+        "expose_as_datastream": true,
+        "datastream_manual_qa_list": null,
+        "sensor_type": "measured",
+        "notes": null
+    },
+    {
+        "column_name": "gage_height",
+        "variable_domain_cv": "instrumentMeasurement",
+        "acquiring_instrument_uuid": "329cb16b-94b6-4e7c-bde2-37b322e80bd2",
+        "variable_term": "waterHeightAboveSensor",
+        "units_term": "foot",
+        "unit_conversion": true,
+        "expose_as_datastream": true,
+        "datastream_manual_qa_list": null,
+        "sensor_type": "measured",
+        "notes": null
+    },
+    {
+        "column_name": "water_specific_conductance",
+        "variable_domain_cv": "instrumentMeasurement",
+        "acquiring_instrument_uuid": "329cb16b-94b6-4e7c-bde2-37b322e80bd2",
+        "variable_term": "waterSpecificConductance",
+        "units_term": "microsiemenPerCentimeter",
+        "unit_conversion": true,
+        "expose_as_datastream": true,
+        "datastream_manual_qa_list": null,
+        "sensor_type": "measured",
+        "notes": null
+    },
+    {
+        "column_name": "timestamp",
+        "variable_domain_cv": "instrumentTimestamp",
+        "acquiring_instrument_uuid": "329cb16b-94b6-4e7c-bde2-37b322e80bd2",
+        "variable_term": "nonedefined",
+        "units_term": "datalogger_time_stamp",
+        "unit_conversion": true,
+        "expose_as_datastream": false,
+        "datastream_manual_qa_list": null,
+        "sensor_type": "measured",
+        "notes": null
+    }
+]

@@ -1,0 +1,33 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "external_identifier_system_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ],
+                "minimum": 1
+            },
+            "external_identifier_system_name": {
+                "type": "string"
+            },
+            "identifier_system_organization_id": {
+                "type": "integer"
+            },
+            "external_identifier_system_description": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "external_identifier_system_url": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            }
+        }
+    }
+}

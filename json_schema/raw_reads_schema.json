@@ -1,0 +1,46 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "raw_reads_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ],
+                "minimum": 1
+            },
+            "extracted_dnaid": {
+                "type": [
+                    "integer",
+                    "null"
+                ]
+            },
+            "sequencing_facility_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ]
+            },
+            "raw_read_date": {
+                "type": [
+                    "string",
+                    "null"
+                ],
+                "format": "date-time"
+            },
+            "gbp_reads": {
+                "type": [
+                    "number",
+                    "null"
+                ]
+            },
+            "sequencing_facility_id_sample_id": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            }
+        }
+    }
+}

@@ -1,0 +1,23 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "bridge_contigs_mags_id": {
+                "type": "integer"
+            },
+            "contigs_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ]
+            },
+            "mags_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ]
+            }
+        }
+    }
+}

@@ -1,0 +1,46 @@
+[
+    {
+        "column_name": "timestamp",
+        "variable_domain_cv": "instrumentTimestamp",
+        "acquiring_instrument_uuid": "0c50f9c8-9c5f-433c-bf86-95c39d0d5a84",
+        "variable_term": "nonedefined",
+        "units_term": "datalogger_time_stamp",
+        "unit_conversion": true,
+        "expose_as_datastream": false,
+        "sensor_type": "measured",
+        "notes": null
+    },
+    {
+        "column_name": "temperature",
+        "variable_domain_cv": "instrumentMeasurement",
+        "acquiring_instrument_uuid": "416c6227-ab8d-47c1-8d1b-a347694d0999",
+        "variable_term": "waterTemperature",
+        "units_term": "degreeCelsius",
+        "unit_conversion": true,
+        "expose_as_datastream": true,
+        "sensor_type": "measured",
+        "notes": null
+    },
+    {
+        "column_name": "discharge",
+        "variable_domain_cv": "instrumentMeasurement",
+        "acquiring_instrument_uuid": "416c6227-ab8d-47c1-8d1b-a347694d0999",
+        "variable_term": "waterStreamDischarge",
+        "units_term": "cubicFootPerSecond",
+        "unit_conversion": true,
+        "expose_as_datastream": true,
+        "sensor_type": "measured",
+        "notes": null
+    },
+    {
+        "column_name": "gage_height",
+        "variable_domain_cv": "instrumentMeasurement",
+        "acquiring_instrument_uuid": "416c6227-ab8d-47c1-8d1b-a347694d0999",
+        "variable_term": "waterHeightAboveSensor",
+        "units_term": "foot",
+        "unit_conversion": true,
+        "expose_as_datastream": true,
+        "sensor_type": "measured",
+        "notes": null
+    }
+]

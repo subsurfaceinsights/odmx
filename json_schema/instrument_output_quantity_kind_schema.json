@@ -1,0 +1,48 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "instrument_output_quantity_kind_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ],
+                "minimum": 1
+            },
+            "equipment_model_id": {
+                "type": "integer"
+            },
+            "quantity_kind": {
+                "type": "string"
+            },
+            "instrument_resolution": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "instrument_accuracy": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "instrument_raw_output_units_id": {
+                "type": "integer"
+            },
+            "instrument_standard_output_variable": {
+                "type": [
+                    "integer",
+                    "null"
+                ]
+            },
+            "instrument_method_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ]
+            }
+        }
+    }
+}

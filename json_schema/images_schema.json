@@ -1,0 +1,156 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "image_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ],
+                "minimum": 1
+            },
+            "utc_date_time_taken": {
+                "type": [
+                    "integer",
+                    "null"
+                ]
+            },
+            "image_description": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "photo_storage_name": {
+                "type": "string"
+            },
+            "photo_storage_path": {
+                "type": "string"
+            },
+            "photo_storage_type": {
+                "type": "string"
+            },
+            "pitch": {
+                "type": [
+                    "number",
+                    "null"
+                ]
+            },
+            "roll": {
+                "type": [
+                    "number",
+                    "null"
+                ]
+            },
+            "yaw": {
+                "type": [
+                    "number",
+                    "null"
+                ]
+            },
+            "altitude_taken": {
+                "type": [
+                    "number",
+                    "null"
+                ]
+            },
+            "image_width": {
+                "type": [
+                    "integer",
+                    "null"
+                ]
+            },
+            "image_height": {
+                "type": [
+                    "integer",
+                    "null"
+                ]
+            },
+            "exposure_time": {
+                "type": [
+                    "number",
+                    "null"
+                ]
+            },
+            "aperture": {
+                "type": [
+                    "number",
+                    "null"
+                ]
+            },
+            "flash_used": {
+                "type": [
+                    "boolean",
+                    "null"
+                ]
+            },
+            "focal_length": {
+                "type": [
+                    "number",
+                    "null"
+                ]
+            },
+            "iso_speed": {
+                "type": [
+                    "integer",
+                    "null"
+                ]
+            },
+            "metering_mode": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "sensor": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "exposure_mode": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "color_space": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "white_balance": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "exposure_bias": {
+                "type": [
+                    "number",
+                    "null"
+                ]
+            },
+            "max_aperture_value": {
+                "type": [
+                    "number",
+                    "null"
+                ]
+            },
+            "latitude": {
+                "type": [
+                    "number",
+                    "null"
+                ]
+            },
+            "longitude": {
+                "type": [
+                    "number",
+                    "null"
+                ]
+            }
+        }
+    }
+}

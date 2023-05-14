@@ -1,0 +1,20 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "relation_id": {
+                "type": "integer"
+            },
+            "sampling_feature_id": {
+                "type": "integer"
+            },
+            "relationship_type_cv": {
+                "type": "string"
+            },
+            "feature_of_interest_id": {
+                "type": "integer"
+            }
+        }
+    }
+}

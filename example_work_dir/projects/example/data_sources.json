@@ -1,0 +1,106 @@
+[
+    {
+        "shared_info": {
+            "data_source_type": "nwis",
+            "data_source_scope": "global",
+            "data_source_timezone": "MST",
+            "site_code": "09110990"
+        },
+        "harvesting_info": {},
+        "ingestion_info": {},
+        "processing_info": {
+            "sampling_feature_code": "NWIS-09110990"
+        }
+    },
+    {
+        "shared_info": {
+            "data_source_type": "nwis",
+            "data_source_scope": "global",
+            "data_source_timezone": "MST",
+            "site_code": "09111250"
+        },
+        "harvesting_info": {},
+        "ingestion_info": {},
+        "processing_info": {
+            "sampling_feature_code": "NWIS-09111250"
+        }
+    },
+    {
+        "shared_info": {
+            "data_source_type": "nwis",
+            "data_source_scope": "global",
+            "data_source_timezone": "MST",
+            "site_code": "385106106571000"
+        },
+        "harvesting_info": {},
+        "ingestion_info": {},
+        "processing_info": {
+            "sampling_feature_code": "NWIS-385106106571000"
+        }
+    },
+    {
+        "shared_info": {
+            "data_source_type": "snotel",
+            "data_source_scope": "global",
+            "data_source_timezone": "Etc/GMT+8",
+            "station_id": "SNOTEL:380_CO_SNTL"
+        },
+        "harvesting_info": {},
+        "ingestion_info": {},
+        "processing_info": {
+            "sampling_feature_code": "NRCS-380"
+        }
+    },
+    {
+        "shared_info": {
+            "data_source_type": "snotel",
+            "data_source_scope": "global",
+            "data_source_timezone": "Etc/GMT+8",
+            "station_id": "SNOTEL:737_CO_SNTL"
+        },
+        "harvesting_info": {},
+        "ingestion_info": {},
+        "processing_info": {
+            "sampling_feature_code": "NRCS-737"
+        }
+    },
+    {
+        "shared_info": {
+            "data_source_type": "snotel",
+            "data_source_scope": "global",
+            "data_source_timezone": "Etc/GMT+8",
+            "station_id": "SNOTEL:669_CO_SNTL"
+        },
+        "harvesting_info": {},
+        "ingestion_info": {},
+        "processing_info": {
+            "sampling_feature_code": "NRCS-669"
+        }
+    },
+    {
+        "shared_info": {
+            "data_source_type": "snotel",
+            "data_source_scope": "global",
+            "data_source_timezone": "Etc/GMT+8",
+            "station_id": "SNOTEL:1141_CO_SNTL"
+        },
+        "harvesting_info": {},
+        "ingestion_info": {},
+        "processing_info": {
+            "sampling_feature_code": "NRCS-1141"
+        }
+    },
+    {
+        "shared_info": {
+            "data_source_type": "snotel",
+            "data_source_scope": "global",
+            "data_source_timezone": "Etc/GMT+8",
+            "station_id": "SNOTEL:680_CO_SNTL"
+        },
+        "harvesting_info": {},
+        "ingestion_info": {},
+        "processing_info": {
+            "sampling_feature_code": "NRCS-680"
+        }
+    }
+]

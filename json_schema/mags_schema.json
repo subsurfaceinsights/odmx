@@ -1,0 +1,99 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "mags_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ],
+                "minimum": 1
+            },
+            "mag_name": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "mag_completeness": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "mag_contamination": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "mag_binning_event_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ]
+            },
+            "mag_taxonomy_from_gtdbtk_domain": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "mag_taxonomy_from_gtdbtk_phylum": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "mag_taxonomy_from_gtdbtk_class": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "mag_taxonomy_from_gtdbtk_order": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "mag_taxonomy_from_gtdbtk_family": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "mag_taxonomy_from_gtdbtk_genus": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "mag_taxonomy_from_gtdbtk_species": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "mag_taxonomy_from_gtdbtk_strain": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "manual_curation": {
+                "type": [
+                    "boolean",
+                    "null"
+                ]
+            },
+            "in_mag_collection": {
+                "type": [
+                    "boolean",
+                    "null"
+                ]
+            }
+        }
+    }
+}

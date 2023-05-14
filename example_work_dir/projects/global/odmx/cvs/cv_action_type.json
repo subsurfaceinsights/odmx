@@ -1,0 +1,252 @@
+[
+    {
+        "term": "cruise",
+        "name": "Cruise",
+        "definition": "A specialized form of an expedition action that involves an ocean-going vessel. Cruise actions are typically parents to other related Actions.",
+        "category": "FieldActivity",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": "Parent to site visit actions and other actions",
+        "produces_result": false
+    },
+    {
+        "term": "dataRetrieval",
+        "name": "Data retrieval",
+        "definition": "The act of retrieving data from a datalogger deployed at a monitoring site.",
+        "category": "Equipment",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null,
+        "produces_result": false
+    },
+    {
+        "term": "derivation",
+        "name": "Derivation",
+        "definition": "The act of creating results by deriving them from other results.",
+        "category": "Observation",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null,
+        "produces_result": true
+    },
+    {
+        "term": "equipmentDeployment",
+        "name": "Equipment deployment",
+        "definition": "The act of placing equipment that will not make observations at or within a sampling feature. Actions involving the deployment of instruments should use the more specific term Instrument deployment.",
+        "category": "Equipment",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null,
+        "produces_result": false
+    },
+    {
+        "term": "equipmentMaintenance",
+        "name": "Equipment maintenance",
+        "definition": "The act of performing regular or periodic upkeep or servicing of field or laboratory equipment. Maintenance may be performed in the field, in a laboratory, or at a factory maintenance center.",
+        "category": "Equipment",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null,
+        "produces_result": false
+    },
+    {
+        "term": "equipmentProgramming",
+        "name": "Equipment programming",
+        "definition": "The act of creating or modifying the data collection program running on a datalogger or other equipment deployed at a monitoring site.",
+        "category": "Equipment",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null,
+        "produces_result": false
+    },
+    {
+        "term": "equipmentRetrieval",
+        "name": "Equipment retrieval",
+        "definition": "The act of recovering a piece of equipment that made no observations from a deployment at a sampling feature or other location. For instruments, the more specific term Instrument retrieval should be used.",
+        "category": "Equipment",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null,
+        "produces_result": false
+    },
+    {
+        "term": "estimation",
+        "name": "Estimation",
+        "definition": "The act of creating results by estimation or professional judgement.",
+        "category": "Observation",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null,
+        "produces_result": true
+    },
+    {
+        "term": "expedition",
+        "name": "Expedition",
+        "definition": "A field visit action in which many sites are visited over a continguous period of time, often involving serveral investigators, and typically having a specific purpose.  Expedition actions are typically parents to other related Actions.",
+        "category": "FieldActivity",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": "Parent to site visit actions and other actions",
+        "produces_result": false
+    },
+    {
+        "term": "fieldActivity",
+        "name": "Field activity",
+        "definition": "A generic, non-specific action type performed in the field at or on a sampling feature.",
+        "category": "FieldActivity",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null,
+        "produces_result": false
+    },
+    {
+        "term": "genericNonObservation",
+        "name": "Generic non-observation",
+        "definition": "A generic, non-specific action type that does not produce a result.",
+        "category": "Other",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": "Use this action type for actions that are of unkown type or otherwise can not be classified as any of the existing action types.",
+        "produces_result": false
+    },
+    {
+        "term": "instrumentCalibration",
+        "name": "Instrument calibration",
+        "definition": "The act of calibrating an instrument either in the field or in a laboratory. The instrument may be an in situ field sensor or a laboratory instrument.  An instrument is the subclass of equipment that is capable of making an observation to produce a result.",
+        "category": "Equipment",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null,
+        "produces_result": false
+    },
+    {
+        "term": "instrumentDeployment",
+        "name": "Instrument deployment",
+        "definition": "The act of deploying an in situ instrument or sensor that creates an observation result.  This term is a specific form of the Observation actions category of actions, which is the only category of actions that can produce observation results.",
+        "category": "Observation",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": "A specific form of the Observation actions category of actions, which is the only category of actions that can produce observation results. This term should be used to describe an action that creates an observation result from deployment of an in situ sensor or instrument.",
+        "produces_result": true
+    },
+    {
+        "term": "instrumentRetrieval",
+        "name": "Instrument retrieval",
+        "definition": "The act of recovering an in situ instrument (which made observations) from a sampling feature. This action ends an instrument deployment action.",
+        "category": "Equipment",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null,
+        "produces_result": false
+    },
+    {
+        "term": "observation",
+        "name": "Observation",
+        "definition": "The general act of making an observation. This term should be used when a Result is generated but the more specific terms of Instrument deployment or Specimen analysis are not applicable.",
+        "category": "Observation",
+        "provenance": "Open Geospatial Consortium Observations & Measurements",
+        "provenance_uri": null,
+        "note": "The general form of the Observation actions category of actions, which is the only category of actions that can produce observation results. This term should be used in cases where the Result does not come from an instrument deployment or specimen analysis, or where information about the instrument deployment or speciment analysis is unknown.",
+        "produces_result": true
+    },
+    {
+        "term": "simulation",
+        "name": "Simulation",
+        "definition": "The act of calculating results through the use of a simulation model.",
+        "category": "Observation",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null,
+        "produces_result": true
+    },
+    {
+        "term": "siteVisit",
+        "name": "Site visit",
+        "definition": "A field visit action in which a single site is visited for one or more other possible actions (i.e., specimen collection, equipment maintenance, etc.).  Site visit actions are typically parents to other related actions.",
+        "category": "FieldActivity",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": "Parent to other actions",
+        "produces_result": false
+    },
+    {
+        "term": "specimenAnalysis",
+        "name": "Specimen analysis",
+        "definition": "The analysis of a specimen ex situ using an instrument, typically in a laboratory, for the purpose of measuring properties of that specimen.",
+        "category": "Observation",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": "A specific form of the Observation actions category of actions, which is the only category of actions that can produce observation results. This term should be used to describe an action that creates an observation result from ex situ analysis of a specimen.",
+        "produces_result": true
+    },
+    {
+        "term": "specimenCollection",
+        "name": "Specimen collection",
+        "definition": "The collection of a specimen in the field.",
+        "category": "SamplingFeature",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null,
+        "produces_result": false
+    },
+    {
+        "term": "specimenFractionation",
+        "name": "Specimen fractionation",
+        "definition": "The process of separating a specimen into multiple different fractions or size classes.",
+        "category": "SamplingFeature",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null,
+        "produces_result": false
+    },
+    {
+        "term": "specimenPreparation",
+        "name": "Specimen preparation",
+        "definition": "The processing of a specimen collected in the field to produce a sample suitable for analysis using a particular analytical procedure.",
+        "category": "SamplingFeature",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null,
+        "produces_result": false
+    },
+    {
+        "term": "specimenPreservation",
+        "name": "Specimen preservation",
+        "definition": "The act of preserving a specimen collected in the field to produce a sample suitable for analysis using a particular analytical procedure.",
+        "category": "SamplingFeature",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null,
+        "produces_result": false
+    },
+    {
+        "term": "submersibleLaunch",
+        "name": "Submersible launch",
+        "definition": "The act of deploying a submersible from a vessel or ship.",
+        "category": "FieldActivity",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null,
+        "produces_result": false
+    },
+    {
+        "term": "pictureCollection",
+        "name": "Picture Collection",
+        "definition": "The act of taking a picture",
+        "category": "FieldActivity",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null,
+        "produces_result": true
+    },
+    {
+        "term": "spectralIPDataCollection",
+        "name": "Spectral IP Data Collection",
+        "definition": "The act of collecting a spectral IP Dataset",
+        "category": "FieldActivity",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null,
+        "produces_result": true
+    }
+]

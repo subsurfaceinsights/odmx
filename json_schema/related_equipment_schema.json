@@ -1,0 +1,36 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "relation_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ],
+                "minimum": 1
+            },
+            "equipment_id": {
+                "type": "integer"
+            },
+            "relationship_type_cv": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "related_equipment_id": {
+                "type": "integer"
+            },
+            "relationship_start_date_time_utc": {
+                "type": "integer"
+            },
+            "relationship_end_date_time_utc": {
+                "type": [
+                    "integer",
+                    "null"
+                ]
+            }
+        }
+    }
+}

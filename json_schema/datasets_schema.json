@@ -1,0 +1,30 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "dataset_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ],
+                "minimum": 1
+            },
+            "dataset_uuid": {
+                "type": "string"
+            },
+            "dataset_type_cv": {
+                "type": "string"
+            },
+            "dataset_code": {
+                "type": "string"
+            },
+            "dataset_title": {
+                "type": "string"
+            },
+            "dataset_abstract": {
+                "type": "string"
+            }
+        }
+    }
+}

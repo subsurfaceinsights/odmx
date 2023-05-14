@@ -1,0 +1,65 @@
+[
+    {
+        "term": "AHD",
+        "name": "AHD",
+        "definition": "Australian Height Datum. Height datum used for standardised elevations across Australia. The datum surface is defined as that which passes through mean sea level at the 30 specified tide gauges and through points at zero AHD height vertically below the other basic junction points.",
+        "category": null,
+        "provenance": "See http://www.ga.gov.au/scientific-topics/positioning-navigation/geodesy/geodetic-datums/australian-height-datum-ahd",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "EGM96",
+        "name": "EGM96",
+        "definition": "EGM96 (Earth Gravitational Model 1996) is a geopotential model of the Earth consisting of spherical harmonic coefficients complete to degree and order 360.",
+        "category": null,
+        "provenance": "See https://en.wikipedia.org/wiki/EGM96",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "MSL",
+        "name": "MSL",
+        "definition": "Mean Sea Level",
+        "category": null,
+        "provenance": "Originally from CUAHSI HIS ODM CV. See http://his.cuahsi.org/mastercvreg/edit_cv11.aspx?tbl=VerticalDatumCV.",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "NAVD88",
+        "name": "NAVD88",
+        "definition": "North American Vertical Datum of 1988",
+        "category": null,
+        "provenance": "Originally from CUAHSI HIS ODM CV. See http://his.cuahsi.org/mastercvreg/edit_cv11.aspx?tbl=VerticalDatumCV.",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "NGVD29",
+        "name": "NGVD29",
+        "definition": "National Geodetic Vertical Datum of 1929",
+        "category": null,
+        "provenance": "Originally from CUAHSI HIS ODM CV. See http://his.cuahsi.org/mastercvreg/edit_cv11.aspx?tbl=VerticalDatumCV.",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "Unknown",
+        "name": "Unknown",
+        "definition": "The vertical datum is unknown",
+        "category": null,
+        "provenance": "Originally from CUAHSI HIS ODM CV. See http://his.cuahsi.org/mastercvreg/edit_cv11.aspx?tbl=VerticalDatumCV.",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "NAD83",
+        "name": "NAD83",
+        "definition": "North American Datum of 1983",
+        "category": null,
+        "provenance": "http://his.cuahsi.org/mastercvreg/edit_cv11.aspx?tbl=SpatialReferences&id=389576426",
+        "provenance_uri": null,
+        "note": null
+    }
+]

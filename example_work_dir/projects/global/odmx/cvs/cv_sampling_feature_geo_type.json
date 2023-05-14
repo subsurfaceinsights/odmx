@@ -1,0 +1,74 @@
+[
+    {
+        "term": "lineString",
+        "name": "Line string",
+        "definition": "A subclass of a Curve using linear interpolation between points. A Curve is a 1-dimensional geometric object usually stored as a sequence of Points. Represented in 2D coordinates by FeatureGeometry.",
+        "category": "2D",
+        "provenance": "OGC Simple Features",
+        "provenance_uri": null,
+        "note": "Simple Features OGC document (pdf): http://portal.opengeospatial.org/files/?artifact_id=25355  See also this more accessible description of Simple Features Well-Known Text terms: http://en.wikipedia.org/wiki/Well-known_text"
+    },
+    {
+        "term": "multiLineString",
+        "name": "Multi line string",
+        "definition": "A collection of individual lines, used as a single feature. Represented in 2D coordinates by FeatureGeometry.",
+        "category": "2D",
+        "provenance": "OGC Simple Features",
+        "provenance_uri": null,
+        "note": "Simple Features OGC document (pdf): http://portal.opengeospatial.org/files/?artifact_id=25355  See also this more accessible description of Simple Features Well-Known Text terms: http://en.wikipedia.org/wiki/Well-known_text"
+    },
+    {
+        "term": "multiPoint",
+        "name": "Multi point",
+        "definition": "A collection of individual points, used as a single feature. Represented in 2D coordinates by FeatureGeometry.",
+        "category": "2D",
+        "provenance": "OGC Simple Features",
+        "provenance_uri": null,
+        "note": "Simple Features OGC document (pdf): http://portal.opengeospatial.org/files/?artifact_id=25355  See also this more accessible description of Simple Features Well-Known Text terms: http://en.wikipedia.org/wiki/Well-known_text"
+    },
+    {
+        "term": "multiPolygon",
+        "name": "Multi polygon",
+        "definition": "A collection of individual polygons, used as a single feature. Represented in 2D coordinates by FeatureGeometry.",
+        "category": "2D",
+        "provenance": "OGC Simple Features",
+        "provenance_uri": null,
+        "note": "Simple Features OGC document (pdf): http://portal.opengeospatial.org/files/?artifact_id=25355  See also this more accessible description of Simple Features Well-Known Text terms: http://en.wikipedia.org/wiki/Well-known_text"
+    },
+    {
+        "term": "notApplicable",
+        "name": "Not applicable",
+        "definition": "The sampling feature has no applicable geospatial feature type",
+        "category": "Non-spatial",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": "Used with SamplingFeatures that don't have a directly specified geospatial geometry, such as a specimen whose geospatial location is inherited from its parent SamplingFeature."
+    },
+    {
+        "term": "point",
+        "name": "Point",
+        "definition": "Topological 0-dimensional geometric primitive representing a position. Represented in 2D coordinates by FeatureGeometry.",
+        "category": "2D",
+        "provenance": "OGC Simple Features",
+        "provenance_uri": null,
+        "note": "Simple Features OGC document (pdf): http://portal.opengeospatial.org/files/?artifact_id=25355  See also this more accessible description of Simple Features Well-Known Text terms: http://en.wikipedia.org/wiki/Well-known_text"
+    },
+    {
+        "term": "polygon",
+        "name": "Polygon",
+        "definition": "A planar Surface defined by 1 exterior boundary and 0 or more interior boundaries. Each interior boundary defines a hole in the Polygon. Polygons are topologically closed. Polygons are a subclass of Surface that is planar. A Surface is a 2-dimensonal geometric object. Represented in 2D coordinates by FeatureGeometry.",
+        "category": "2D",
+        "provenance": "OGC Simple Features",
+        "provenance_uri": null,
+        "note": "Simple Features OGC document (pdf): http://portal.opengeospatial.org/files/?artifact_id=25355  See also this more accessible description of Simple Features Well-Known Text terms: http://en.wikipedia.org/wiki/Well-known_text"
+    },
+    {
+        "term": "volume",
+        "name": "Volume",
+        "definition": "A three dimensional space enclosed by some closed boundary.",
+        "category": "3D",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": "Definition adapted from wikipedia"
+    }
+]

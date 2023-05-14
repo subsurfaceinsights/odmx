@@ -1,0 +1,29 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "bridge_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ],
+                "minimum": 1
+            },
+            "result_id": {
+                "type": "integer"
+            },
+            "annotation_id": {
+                "type": "integer"
+            },
+            "begin_date_time": {
+                "type": "string",
+                "format": "date-time"
+            },
+            "end_date_time": {
+                "type": "string",
+                "format": "date-time"
+            }
+        }
+    }
+}

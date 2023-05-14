@@ -1,0 +1,21 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "qaq_detail_log_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ],
+                "minimum": 1
+            },
+            "qaqc_log_id": {
+                "type": "integer"
+            },
+            "qaqc_detail": {
+                "type": "string"
+            }
+        }
+    }
+}

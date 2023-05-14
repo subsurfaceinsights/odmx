@@ -1,0 +1,24 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "related_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ],
+                "minimum": 1
+            },
+            "model_id": {
+                "type": "integer"
+            },
+            "relationship_type_cv": {
+                "type": "string"
+            },
+            "related_model_id": {
+                "type": "integer"
+            }
+        }
+    }
+}

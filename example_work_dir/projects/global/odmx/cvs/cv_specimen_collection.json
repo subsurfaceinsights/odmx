@@ -1,0 +1,29 @@
+[
+    {
+        "term": "fieldCampaign",
+        "name": "Field Campaign",
+        "definition": "Specimens collected during a field campaign",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "analysisReport",
+        "name": "Analysis Report",
+        "definition": "Specimens reported on in one analysis report",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "analysisReports",
+        "name": "Analysis Reports",
+        "definition": "Series of analysis reports, typically associated with a project or a subset of a project",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    }
+]

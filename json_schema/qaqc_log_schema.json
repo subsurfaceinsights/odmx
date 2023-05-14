@@ -1,0 +1,26 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "qaqc_log_id": {
+                "type": "integer"
+            },
+            "datastream_id": {
+                "type": "integer"
+            },
+            "utc_time_start": {
+                "type": "integer"
+            },
+            "utc_time_end": {
+                "type": "integer"
+            },
+            "utc_time_entry": {
+                "type": "integer"
+            },
+            "qa_flag": {
+                "type": "string"
+            }
+        }
+    }
+}

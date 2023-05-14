@@ -1,0 +1,27 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "variables_taxonomic_classifiers_bridge_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ],
+                "minimum": 1
+            },
+            "taxonomic_classifier_id": {
+                "type": "integer"
+            },
+            "variable_id": {
+                "type": "integer"
+            },
+            "relation_classification": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            }
+        }
+    }
+}

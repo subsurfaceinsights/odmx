@@ -1,0 +1,56 @@
+[
+    {
+        "term": "greaterThan",
+        "name": "Greater than",
+        "definition": "The value is known to be greater than the recorded value.",
+        "category": null,
+        "provenance": "Adapted from CUAHSI HIS CensorCodeCV.  See: http://his.cuahsi.org/mastercvreg/edit_cv11.aspx?tbl=Cen",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "lessThan",
+        "name": "Less than",
+        "definition": "The value is known to be less than the recorded value.",
+        "category": null,
+        "provenance": "Adapted from CUAHSI HIS CensorCodeCV.  See: http://his.cuahsi.org/mastercvreg/edit_cv11.aspx?tbl=Cen",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "nonDetect",
+        "name": "Non-detect",
+        "definition": "The value was reported as a non-detect. The recorded value represents the level at which the anlalyte can be detected.",
+        "category": null,
+        "provenance": "Adapted from CUAHSI HIS CensorCodeCV.  See: http://his.cuahsi.org/mastercvreg/edit_cv11.aspx?tbl=Cen",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "notCensored",
+        "name": "Not censored",
+        "definition": "The reported value is not censored.",
+        "category": null,
+        "provenance": "Adapted from CUAHSI HIS CensorCodeCV.  See: http://his.cuahsi.org/mastercvreg/edit_cv11.aspx?tbl=Cen",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "presentButNotQuantified",
+        "name": "Present but not quantified",
+        "definition": "The anlayte is known to be present, but was not quantified. The recorded value represents the level below which the analyte can no longer be quantified.",
+        "category": null,
+        "provenance": "Adapted from CUAHSI HIS CensorCodeCV.  See: http://his.cuahsi.org/mastercvreg/edit_cv11.aspx?tbl=Cen",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "unknown",
+        "name": "Unknown",
+        "definition": "It is unknown whether the data value as reported is censored.",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    }
+]

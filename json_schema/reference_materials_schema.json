@@ -1,0 +1,56 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "reference_material_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ],
+                "minimum": 1
+            },
+            "reference_material_medium_cv": {
+                "type": "string"
+            },
+            "reference_material_organization_id": {
+                "type": "integer"
+            },
+            "reference_material_code": {
+                "type": "string"
+            },
+            "reference_material_lot_code": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "reference_material_purchase_date": {
+                "type": [
+                    "string",
+                    "null"
+                ],
+                "format": "date-time"
+            },
+            "reference_material_expiration_date": {
+                "type": [
+                    "string",
+                    "null"
+                ],
+                "format": "date-time"
+            },
+            "reference_material_certificate_link": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "sampling_feature_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ]
+            }
+        }
+    }
+}

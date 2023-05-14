@@ -1,0 +1,48 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "datasource_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ],
+                "minimum": 1
+            },
+            "datasource_timezone": {
+                "type": "string"
+            },
+            "sampling_feature_id": {
+                "type": "integer"
+            },
+            "datasource_path": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "feeder_database": {
+                "type": "string"
+            },
+            "feeder_schema": {
+                "type": "string"
+            },
+            "datasource_characterization": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "datatable_name": {
+                "type": "string"
+            },
+            "odmx_database": {
+                "type": "string"
+            },
+            "materialized_view_schema": {
+                "type": "string"
+            }
+        }
+    }
+}

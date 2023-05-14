@@ -1,0 +1,29 @@
+[
+    {
+        "term": "fieldCampaign",
+        "name": "Field campaign",
+        "definition": "A sampling event conducted in the field during which instruments may be deployed and during which samples may be collected. Field campaigns typically have a focus such as characterizing a particular environment, quantifying a particular phenomenon, answering a particular research question, etc. and may last for hours, days, weeks, months, or even longer.",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "monitoringProgram",
+        "name": "Monitoring program",
+        "definition": "Environmental monitoring that is conducted according to a formal plan that may reflect the overall objectives of an organization, references specific strategies that help deliver the objectives and details of specific projects or tasks, and that contains a listing of what is being monitored, how that monitoring is taking place, and the time-scale over which monitoring should take place.",
+        "category": null,
+        "provenance": "Definition adapted from Wikipedia.  See http://en.wikipedia.org/wiki/Environmental_monitoring.",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "project",
+        "name": "Project",
+        "definition": "A collaborative enterprise, involving research or design, the is carefully planned to achieve a particular aim.",
+        "category": null,
+        "provenance": "Definition adapted from Wikipedia.  See http://en.wikipedia.org/wiki/Project.",
+        "provenance_uri": null,
+        "note": null
+    }
+]

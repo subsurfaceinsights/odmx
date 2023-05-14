@@ -1,0 +1,24 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "soilprobe_monitoring_temperature_datastream_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ],
+                "minimum": 1
+            },
+            "soilprobe_monitoring_id": {
+                "type": "integer"
+            },
+            "datastream_id": {
+                "type": "integer"
+            },
+            "sensor_depth_meters": {
+                "type": "number"
+            }
+        }
+    }
+}

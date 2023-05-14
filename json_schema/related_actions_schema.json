@@ -1,0 +1,24 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "relation_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ],
+                "minimum": 1
+            },
+            "action_id": {
+                "type": "integer"
+            },
+            "relationship_type_cv": {
+                "type": "string"
+            },
+            "related_action_id": {
+                "type": "integer"
+            }
+        }
+    }
+}

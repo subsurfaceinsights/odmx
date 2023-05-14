@@ -1,0 +1,614 @@
+[
+    {
+        "organization_id": 1,
+        "organization_type_cv": "company",
+        "organization_code": "SSI",
+        "organization_name": "Subsurface Insights",
+        "organization_description": "Subsurface Insights provides autonomous software and hardware which enable real time site monitoring and deliver actionable understanding",
+        "organization_link": "http://www.subsurfaceinsights.com",
+        "parent_organization_id": null
+    },
+    {
+        "organization_id": 2,
+        "organization_type_cv": "company",
+        "organization_code": "LIMNO",
+        "organization_name": "Limnotech",
+        "organization_description": "Limnotech is an environmental engineering and science firm, providing services concerning water-related issues to clients throughout the United States and internationally",
+        "organization_link": "https://www.limno.com/",
+        "parent_organization_id": null
+    },
+    {
+        "organization_id": 1001,
+        "organization_type_cv": "doeNationalLab",
+        "organization_code": "LBNL",
+        "organization_name": "Lawrence Berkeley National Laboratory",
+        "organization_description": null,
+        "organization_link": "http://www.lbnl.gov",
+        "parent_organization_id": null
+    },
+    {
+        "organization_id": 1002,
+        "organization_type_cv": "doeNationalLab",
+        "organization_code": "PNNL",
+        "organization_name": "Pacific Northwest National Laboratory",
+        "organization_description": null,
+        "organization_link": "https://www.pnnl.gov/",
+        "parent_organization_id": null
+    },
+    {
+        "organization_id": 1003,
+        "organization_type_cv": "doeNationalLab",
+        "organization_code": "LANL",
+        "organization_name": "Los Alamos National Laboratory",
+        "organization_description": null,
+        "organization_link": "https://www.lanl.gov/",
+        "parent_organization_id": null
+    },
+    {
+        "organization_id": 1004,
+        "organization_type_cv": "doeNationalLab",
+        "organization_code": "SRNL",
+        "organization_name": "Savannah River National Laboratory",
+        "organization_description": null,
+        "organization_link": "https://srnl.doe.gov/",
+        "parent_organization_id": null
+    },
+    {
+        "organization_id": 2001,
+        "organization_type_cv": "researchInstitute",
+        "organization_code": "DRI",
+        "organization_name": "Desert Research Institute",
+        "organization_description": null,
+        "organization_link": "http://www.dri.edu",
+        "parent_organization_id": null
+    },
+    {
+        "organization_id": 2002,
+        "organization_type_cv": "researchInstitute",
+        "organization_code": "SWRC",
+        "organization_name": "Stroud Water Research Center",
+        "organization_description": "Stroud Water Research Center performs research on the ecology of streams, rivers, and their watersheds .",
+        "organization_link": "http://www.stroudcenter.org/",
+        "parent_organization_id": null
+    },
+    {
+        "organization_id": 5001,
+        "organization_type_cv": "governmentAgency",
+        "organization_code": "USGS",
+        "organization_name": "United States Geological Survey",
+        "organization_description": null,
+        "organization_link": "www.usgs.gov",
+        "parent_organization_id": null
+    },
+    {
+        "organization_id": 5002,
+        "organization_type_cv": "governmentAgency",
+        "organization_code": "EPA",
+        "organization_name": "Environmental Protection Agency",
+        "organization_description": null,
+        "organization_link": "www.epa.gov",
+        "parent_organization_id": null
+    },
+    {
+        "organization_id": 5003,
+        "organization_type_cv": "governmentAgency",
+        "organization_code": "NRCS",
+        "organization_name": "National Resources Conversation Service",
+        "organization_description": null,
+        "organization_link": "https://www.nrcs.usda.gov/wps/portal/nrcs/site/national/home/",
+        "parent_organization_id": null
+    },
+    {
+        "organization_id": 10001,
+        "organization_type_cv": "university",
+        "organization_code": "URutgers",
+        "organization_name": "Rutgers University",
+        "organization_description": null,
+        "organization_link": "https://www.rutgers.edu/",
+        "parent_organization_id": null
+    },
+    {
+        "organization_id": 10002,
+        "organization_type_cv": "university",
+        "organization_code": "UCinn",
+        "organization_name": "University of Cincinnati",
+        "organization_description": null,
+        "organization_link": "https://www.uc.edu/",
+        "parent_organization_id": null
+    },
+    {
+        "organization_id": 10003,
+        "organization_type_cv": "university",
+        "organization_code": "CSU",
+        "organization_name": "Colorado State University",
+        "organization_description": null,
+        "organization_link": "https://www.colostate.edu/",
+        "parent_organization_id": null
+    },
+    {
+        "organization_id": 20001,
+        "organization_type_cv": "association",
+        "organization_code": "EnviroDIY",
+        "organization_name": "EnviroDIY",
+        "organization_description": "Enviro DIY is a community for do-it-yourself environmental science and monitoring.",
+        "organization_link": "https://envirodiy.org",
+        "parent_organization_id": null
+    },
+    {
+        "organization_id": 30001,
+        "organization_type_cv": "manufacturer",
+        "organization_code": "Campbell",
+        "organization_name": "Campbell Scientific",
+        "organization_description": "Campbell sells Measurement & Control Products for Long-term Monitoring",
+        "organization_link": "http://www.campbellsci.com/",
+        "parent_organization_id": null
+    },
+    {
+        "organization_id": 30002,
+        "organization_type_cv": "manufacturer",
+        "organization_code": "In-Situ",
+        "organization_name": "In-Situ",
+        "organization_description": "In-Situ Inc. designs, manufactures, and rents water quantity and quality instrumentation for groundwater, surface water, and coastal waters.",
+        "organization_link": "http://www.in-situ.com/",
+        "parent_organization_id": null
+    },
+    {
+        "organization_id": 30003,
+        "organization_type_cv": "manufacturer",
+        "organization_code": "Odyssey",
+        "organization_name": "Odyssey",
+        "organization_description": "Dataflow Systems have been developing and manufacturing low cost electronic sensors and data recorders for use in environmental monitoring applications since 1981.",
+        "organization_link": "http://odysseydatarecording.com/index.php?route=common/home",
+        "parent_organization_id": null
+    },
+    {
+        "organization_id": 30004,
+        "organization_type_cv": "manufacturer",
+        "organization_code": "Onset",
+        "organization_name": "Onset",
+        "organization_description": "Onset provides data logger and monitoring solutions used to measure, record, and manage data for improving the environment and preserving the quality of temperature-sensitive products.",
+        "organization_link": "http://www.onsetcomp.com/",
+        "parent_organization_id": null
+    },
+    {
+        "organization_id": 30005,
+        "organization_type_cv": "manufacturer",
+        "organization_code": "s-can",
+        "organization_name": "s::can",
+        "organization_description": "s::can iprovides submersible online UV-Vis spectrometer probes and proveds monitoring systems and software for drinking, environmental, waste, and industrial water applications.",
+        "organization_link": "http://www.s-can.at/index.php?langcode=",
+        "parent_organization_id": null
+    },
+    {
+        "organization_id": 30006,
+        "organization_type_cv": "manufacturer",
+        "organization_code": "Solinst",
+        "organization_name": "Solinst",
+        "organization_description": "Soilinst provides Groundwater and Surface Monitoring Instrumentation",
+        "organization_link": "http://www.solinst.com/",
+        "parent_organization_id": null
+    },
+    {
+        "organization_id": 30007,
+        "organization_type_cv": "manufacturer",
+        "organization_code": "Telog",
+        "organization_name": "Telog",
+        "organization_description": "Telog offers a comprehensive remote monitoring system for wastewater collection system operators. Identified as Telogers, it provides an automated means of collecting, archiving, presenting and sharing data from collection system remote assets such as flowmeters, rain gauges, CSO/SSO surcharge sensors, pre-treatment water quality sensors, lift stations, and pressure sensors.",
+        "organization_link": "http://www.telog.com/",
+        "parent_organization_id": null
+    },
+    {
+        "organization_id": 30008,
+        "organization_type_cv": "manufacturer",
+        "organization_code": "Zebra-Tech",
+        "organization_name": "Zebra-Tech LTD",
+        "organization_description": "Zebra-Tech Ltd is a New Zealand based technically creative company specialising in the design, development and manufacture of instrumentation and equipment for environmental monitoring and research.",
+        "organization_link": "http://www.zebra-tech.co.nz/",
+        "parent_organization_id": null
+    },
+    {
+        "organization_id": 30009,
+        "organization_type_cv": "manufacturer",
+        "organization_code": "Xylem",
+        "organization_name": "Xylem",
+        "organization_description": "Xylem provides hardware for fluid technology applications and water solutions.",
+        "organization_link": "http://www.xyleminc.com/en-us/Pages/default.aspx",
+        "parent_organization_id": null
+    },
+    {
+        "organization_id": 30010,
+        "organization_type_cv": "manufacturer",
+        "organization_code": "VishaySpectrol",
+        "organization_name": "Vishay Spectrol",
+        "organization_description": "Vishay manufactures and sells a full line of variable resistive products, including precision potentiometers, trimming potentiometers, position sensing components, motion transducers, turns-counting dials, and accessories.",
+        "organization_link": "http://www.vishay.com/company/brands/spectrol/",
+        "parent_organization_id": null
+    },
+    {
+        "organization_id": 30011,
+        "organization_type_cv": "manufacturer",
+        "organization_code": "VanWalt",
+        "organization_name": "Van Walt Limited",
+        "organization_description": "VanWalt provides equipment for groundwater monitoring and sampling; soil and sediment sampling; water level loggers; water quality monitoring meters; environmental pumps; soil augers and window sampling systems for the environmental, academic and agricultural research communities.",
+        "organization_link": "http://www.vanwalt.com/",
+        "parent_organization_id": null
+    },
+    {
+        "organization_id": 30012,
+        "organization_type_cv": "manufacturer",
+        "organization_code": "Keller",
+        "organization_name": "Keller America",
+        "organization_description": "Manufacturer of OEM pressure sensors and sophisticated autonomous water level loggers",
+        "organization_link": "http://www.kelleramerica.com/",
+        "parent_organization_id": null
+    },
+    {
+        "organization_id": 30013,
+        "organization_type_cv": "manufacturer",
+        "organization_code": "AnalogDevices",
+        "organization_name": "Analog Devices",
+        "organization_description": "Analog manufactures electronic components",
+        "organization_link": "http://www.analog.com/en/index.html",
+        "parent_organization_id": null
+    },
+    {
+        "organization_id": 30014,
+        "organization_type_cv": "manufacturer",
+        "organization_code": "Metergroup",
+        "organization_name": "Meter Group",
+        "organization_description": "The Meter Group designs, manufactures, and markets scientific instruments. The applied research division focuses on measuring water, light, and heat in the soil-plant-atmosphere continuum. Decagon is now a part of meter",
+        "organization_link": "https://www.metergroup.com/",
+        "parent_organization_id": null
+    },
+    {
+        "organization_id": 30015,
+        "organization_type_cv": "manufacturer",
+        "organization_code": "Decagon",
+        "organization_name": "Decagon",
+        "organization_description": "Decagon was a company that made geoscience sensors. They merged with meter, and no longer exist as a sepate company",
+        "organization_link": "https://www.metergroup.com/",
+        "parent_organization_id": 30014
+    },
+    {
+        "organization_id": 30016,
+        "organization_type_cv": "manufacturer",
+        "organization_code": "PaleoTerra",
+        "organization_name": "Paleo Terra",
+        "organization_description": "Paleo Terra produces sturdy probes to measure redox potential in soils, sediments and surface waters.",
+        "organization_link": "http://www.paleoterra.nl/probes.html",
+        "parent_organization_id": null
+    },
+    {
+        "organization_id": 30017,
+        "organization_type_cv": "manufacturer",
+        "organization_code": "Hach",
+        "organization_name": "Hach Company",
+        "organization_description": "Hach Company manufactures and distributes analytical instruments and reagents used to test the quality of water and other liquid solutions",
+        "organization_link": "http://www.hach.com/",
+        "parent_organization_id": null
+    },
+    {
+        "organization_id": 30018,
+        "organization_type_cv": "manufacturer",
+        "organization_code": "Hypnos",
+        "organization_name": "Hypnos MVH Consult",
+        "organization_description": "Hypnos manufactures mulit-channel data loggers for Paleo Terra Redox probes.",
+        "organization_link": "http://www.redoxpotential.info",
+        "parent_organization_id": null
+    },
+    {
+        "organization_id": 30019,
+        "organization_type_cv": "manufacturer",
+        "organization_code": "YosemiTech",
+        "organization_name": "Yosemite Technologies Co.,Ltd",
+        "organization_description": "Yosemite Technologies designs and manufactures water quality monitoring equipment.",
+        "organization_link": "http://www.yosemitech.com/en/",
+        "parent_organization_id": null
+    },
+    {
+        "organization_id": 30020,
+        "organization_type_cv": "manufacturer",
+        "organization_code": "MaxBotix",
+        "organization_name": "MaxBotix",
+        "organization_description": "MaxBotix Inc. designs and manufactures ultrasonic sensors for a wide variety of applications.",
+        "organization_link": "https://www.maxbotix.com/",
+        "parent_organization_id": null
+    },
+    {
+        "organization_id": 30021,
+        "organization_type_cv": "manufacturer",
+        "organization_code": "SODAQ",
+        "organization_name": "SODAQ",
+        "organization_description": "SODAQ is a Dutch IoT company that manufacturesd and sells NB-IoT, LTE-M and LoRa boards",
+        "organization_link": "https://sodaq.com/",
+        "parent_organization_id": null
+    },
+    {
+        "organization_id": 30022,
+        "organization_type_cv": "manufacturer",
+        "organization_code": "Hologram",
+        "organization_name": "Hologram",
+        "organization_description": "Hologram provides SIM cards, and hardware for IOT Connectivity",
+        "organization_link": "https://hologram.io/about-us/",
+        "parent_organization_id": null
+    },
+    {
+        "organization_id": 30023,
+        "organization_type_cv": "manufacturer",
+        "organization_code": "Seeed",
+        "organization_name": "Seeed Studio",
+        "organization_description": "Seeed Studio manufacturers Electronic Modules for Makers & Fusion PCB/PCBA Prototyping Service.",
+        "organization_link": "https://www.seeedstudio.io",
+        "parent_organization_id": null
+    },
+    {
+        "organization_id": 30024,
+        "organization_type_cv": "manufacturer",
+        "organization_code": "Voltaic",
+        "organization_name": "Voltaic Systems",
+        "organization_description": "Voltaic Systems is a portable solar power company based in Brooklyn, New York.",
+        "organization_link": "https://www.voltaicsystems.com",
+        "parent_organization_id": null
+    },
+    {
+        "organization_id": 30025,
+        "organization_type_cv": "manufacturer",
+        "organization_code": "Pelican",
+        "organization_name": "Pelican",
+        "organization_description": "Pelican manufactures protective cases",
+        "organization_link": "https://www.pelican.com/",
+        "parent_organization_id": null
+    },
+    {
+        "organization_id": 30026,
+        "organization_type_cv": "manufacturer",
+        "organization_code": "SparkFun",
+        "organization_name": "SparkFun",
+        "organization_description": "Sparkfun sells electronic components and open source boards",
+        "organization_link": "https://www.sparkfun.com/",
+        "parent_organization_id": null
+    },
+    {
+        "organization_id": 30027,
+        "organization_type_cv": "manufacturer",
+        "organization_code": "Adafruit",
+        "organization_name": "Adafruit",
+        "organization_description": "Adafruit provides electronic components and boards",
+        "organization_link": "https://www.adafruit.com/",
+        "parent_organization_id": null
+    },
+    {
+        "organization_id": 30028,
+        "organization_type_cv": "manufacturer",
+        "organization_code": "Apogee",
+        "organization_name": "Apogee Instruments",
+        "organization_description": "Apogee sells enviinmental instruments, including many types of radiation sensors",
+        "organization_link": "http://www.apogeeinstruments.com",
+        "parent_organization_id": null
+    },
+    {
+        "organization_id": 30029,
+        "organization_type_cv": "manufacturer",
+        "organization_code": "TrojanBattery",
+        "organization_name": "Trojan Battery Company",
+        "organization_description": "Trojan Battery Company is a manufacturer of deep-cycle batteries",
+        "organization_link": "https://www.trojanbattery.com/",
+        "parent_organization_id": null
+    },
+    {
+        "organization_id": 30030,
+        "organization_type_cv": "manufacturer",
+        "organization_code": "TeledyneISCO",
+        "organization_name": "Teledyne ISCO",
+        "organization_description": "Teledyune ISCO sells instrumentation for water quality analysis, including Chromatography sensors and wastewater sampling and monitoring",
+        "organization_link": "https://www.teledyneisco.com/en-us",
+        "parent_organization_id": null
+    },
+    {
+        "organization_id": 30031,
+        "organization_type_cv": "manufacturer",
+        "organization_code": "Morningstar",
+        "organization_name": "Morningstar",
+        "organization_description": "Morningstar Corporation is a supplier of solar charge controllers & inverters",
+        "organization_link": "https://www.morningstarcorp.com/",
+        "parent_organization_id": null
+    },
+    {
+        "organization_id": 30032,
+        "organization_type_cv": "manufacturer",
+        "organization_code": "AOSong",
+        "organization_name": "Aosong (Guangzhou) Electronics Co., Ltd.",
+        "organization_description": "Aosong (Guangzhou) Electronics Co., Ltd. is a Humidity sensor manufacturer.",
+        "organization_link": "http://www.aosong.com/en/home/index.asp",
+        "parent_organization_id": null
+    },
+    {
+        "organization_id": 30033,
+        "organization_type_cv": "manufacturer",
+        "organization_code": "Bosch Sensortec",
+        "organization_name": "Bosch Sensortec",
+        "organization_description": "Bosch Sensortec manufactures environmental sensors",
+        "organization_link": "https://www.bosch-sensortec.com/",
+        "parent_organization_id": null
+    },
+    {
+        "organization_id": 30034,
+        "organization_type_cv": "manufacturer",
+        "organization_code": "Maxim",
+        "organization_name": "Maxim Integrated",
+        "organization_description": "Maxim develops analog and mixed signal products",
+        "organization_link": "https://www.maximintegrated.com/en.html",
+        "parent_organization_id": null
+    },
+    {
+        "organization_id": 30035,
+        "organization_type_cv": "manufacturer",
+        "organization_code": "Davis",
+        "organization_name": "Davis Instruments",
+        "organization_description": "Davis Instruments manufactures and sells weather stations and related components",
+        "organization_link": "https://www.davisnet.com/",
+        "parent_organization_id": null
+    },
+    {
+        "organization_id": 30036,
+        "organization_type_cv": "manufacturer",
+        "organization_code": "TE-MeasSpec",
+        "organization_name": "TE Connectivity - Measurement Specialities",
+        "organization_description": "TE Connectivity's (TE) Measurement manufactures sensors which measure pressure/force, position, vibration, temperature, humidity, and fluid properties.",
+        "organization_link": "http://www.te.com/usa-en/products/brands/meas.html?tab=pgp-story",
+        "parent_organization_id": null
+    },
+    {
+        "organization_id": 30037,
+        "organization_type_cv": "manufacturer",
+        "organization_code": "RMYoung",
+        "organization_name": "RM Young",
+        "organization_description": "RM Young makes environmental sensors, primarily weather sensors",
+        "organization_link": "http://www.youngusa.com/",
+        "parent_organization_id": null
+    },
+    {
+        "organization_id": 30038,
+        "organization_type_cv": "manufacturer",
+        "organization_code": "Licor",
+        "organization_name": "Licor",
+        "organization_description": "Licos primarily makes sensors which detect the visible and near infrared light spectra.",
+        "organization_link": "https://www.licor.com/",
+        "parent_organization_id": null
+    },
+    {
+        "organization_id": 30039,
+        "organization_type_cv": "manufacturer",
+        "organization_code": "Stevens",
+        "organization_name": "Stevens",
+        "organization_description": "Stevens Water Monitoring Systems, Inc. is a manufacturer and marketer of integrated hydrological, meteorological and oceanographic monitoring instrumentation, accessories and information systems",
+        "organization_link": "https://www.stevenswater.com/",
+        "parent_organization_id": null
+    },
+    {
+        "organization_id": 30040,
+        "organization_type_cv": "manufacturer",
+        "organization_code": "Judd",
+        "organization_name": "Judd",
+        "organization_description": "Judd is an environmental consulting company. Their main environmental product is an ultrasonic depth sensor",
+        "organization_link": "http://juddcom.com/",
+        "parent_organization_id": null
+    },
+    {
+        "organization_id": 30041,
+        "organization_type_cv": "manufacturer",
+        "organization_code": "OttHydromet",
+        "organization_name": "Ott Hydromet",
+        "organization_description": "Ott Hydromet provides sensors for water quality, flow and level measurement. Ott also sells meteo sensors",
+        "organization_link": "https://www.ott.com/",
+        "parent_organization_id": 30017
+    },
+    {
+        "organization_id": 30042,
+        "organization_type_cv": "manufacturer",
+        "organization_code": "Omega",
+        "organization_name": "Omega",
+        "organization_description": "Omega sells products for measurement and control of temperature, humidity, pressure, strain, force, flow, level, pH and conductivity.",
+        "organization_link": "https://www.omega.com/",
+        "parent_organization_id": null
+    },
+    {
+        "organization_id": 30043,
+        "organization_type_cv": "manufacturer",
+        "organization_code": "Kippandzonen",
+        "organization_name": "Kipp & Zonen",
+        "organization_description": "Kipp and Zonen builds instruments for measurement of the solar spectrum, ranging from ultraviolet to far infrared",
+        "organization_link": "http://www.kippzonen.com/",
+        "parent_organization_id": 30041
+    },
+    {
+        "organization_id": 30044,
+        "organization_type_cv": "manufacturer",
+        "organization_code": "Vaisala",
+        "organization_name": "Vaisala",
+        "organization_description": "Vaisala sells environmental sensors, especially weather related sensors",
+        "organization_link": "https://www.vaisala.com",
+        "parent_organization_id": null
+    },
+    {
+        "organization_id": 30045,
+        "organization_type_cv": "manufacturer",
+        "organization_code": "Weatherflow",
+        "organization_name": "Weatherflow",
+        "organization_description": "Weatherflow builds and sells integrated weatherstations",
+        "organization_link": "https://www.weatherflow.com",
+        "parent_organization_id": null
+    },
+    {
+        "organization_id": 30046,
+        "organization_type_cv": "manufacturer",
+        "organization_code": "Arable",
+        "organization_name": "Arable",
+        "organization_description": "Arable sells a modular weatherstation focused on the ag market. This is integrated with analytics",
+        "organization_link": "http://www.arable.com/",
+        "parent_organization_id": null
+    },
+    {
+        "organization_id": 30047,
+        "organization_type_cv": "manufacturer",
+        "organization_code": "WeatherFlow",
+        "organization_name": "WeatherFlow",
+        "organization_description": "Company that sells weatherstations.",
+        "organization_link": "https://www.weatherflow.com/",
+        "parent_organization_id": null
+    },
+    {
+        "organization_id": 38000,
+        "organization_type_cv": "manufacturer",
+        "organization_code": "unknown",
+        "organization_name": "Unknown Manufacturer",
+        "organization_description": "Unknown Manufacturer is used for when the manufacturer is unknown.",
+        "organization_link": null,
+        "parent_organization_id": null
+    },
+    {
+        "organization_id": 38001,
+        "organization_type_cv": "manufacturer",
+        "organization_code": "Allmanufacturer",
+        "organization_name": "All Manufacturers",
+        "organization_description": "All Manufacturers is used for variables that are calculated from 2 or more variables from different sensors.",
+        "organization_link": null,
+        "parent_organization_id": null
+    },
+    {
+        "organization_id": 40001,
+        "organization_type_cv": "vendor",
+        "organization_code": "IndustrialControls",
+        "organization_name": "Industrial Controls",
+        "organization_description": "Industrial Controls, founded in 1976, is a full service distributor of controls and solutions for commercial HVAC, process control and industrial automation applications.",
+        "organization_link": "http://www.industrialcontrolsonline.com/",
+        "parent_organization_id": null
+    },
+    {
+        "organization_id": 40002,
+        "organization_type_cv": "vendor",
+        "organization_code": "BenMeadows",
+        "organization_name": "Ben Meadows",
+        "organization_description": "Outdoor equipment vendor.",
+        "organization_link": "http://www.benmeadows.com",
+        "parent_organization_id": null
+    },
+    {
+        "organization_id": 40003,
+        "organization_type_cv": "vendor",
+        "organization_code": "Amazon",
+        "organization_name": "Amazon",
+        "organization_description": "Amazon is an on line retailer which sells a variety of things",
+        "organization_link": "www.amazon.com",
+        "parent_organization_id": null
+    },
+    {
+        "organization_id": 40004,
+        "organization_type_cv": "vendor",
+        "organization_code": "McMaster-Carr",
+        "organization_name": "McMaster-Carr",
+        "organization_description": "McMaster-Carr sells a broad range of products",
+        "organization_link": "https://www.mcmaster.com/",
+        "parent_organization_id": null
+    }
+]

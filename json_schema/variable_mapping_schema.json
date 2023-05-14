@@ -1,0 +1,15 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "project_variable_name": {
+                "type": "string"
+            },
+            "odmx_variable_term": {
+                "type": "string"
+            }
+        },
+        "required": ["project_variable_name", "odmx_variable_term"]
+    }
+}

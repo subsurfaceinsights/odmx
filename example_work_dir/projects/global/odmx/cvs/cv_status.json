@@ -1,0 +1,38 @@
+[
+    {
+        "term": "complete",
+        "name": "Complete",
+        "definition": "Data collection is complete. No new data values will be added.",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "ongoing",
+        "name": "Ongoing",
+        "definition": "Data collection is ongoing.  New data values will be added periodically.",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "planned",
+        "name": "Planned",
+        "definition": "Data collection is planned. Resulting data values do not yet exist, but will eventually.",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "unknown",
+        "name": "Unknown",
+        "definition": "The status of data collection is unknown.",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    }
+]

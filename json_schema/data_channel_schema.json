@@ -1,0 +1,18 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "data_channel_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ],
+                "minimum": 1
+            },
+            "source_datastream_id": {
+                "type": "integer"
+            }
+        }
+    }
+}

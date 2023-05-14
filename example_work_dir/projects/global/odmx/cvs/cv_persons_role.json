@@ -1,0 +1,29 @@
+[
+    {
+        "term": "owner",
+        "name": "Owner",
+        "definition": "The person who is (in a broad sense) the owner of the item",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "fieldmanager",
+        "name": "FieldManager",
+        "definition": "A person who is associated with field management",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "user",
+        "name": "User",
+        "definition": "A person who uses the item",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    }
+]

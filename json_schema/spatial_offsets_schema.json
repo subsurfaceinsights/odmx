@@ -1,0 +1,48 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "spatial_offset_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ],
+                "minimum": 1
+            },
+            "spatial_offset_type_cv": {
+                "type": "string"
+            },
+            "offset1_value": {
+                "type": "number"
+            },
+            "offset1_unit_id": {
+                "type": "integer"
+            },
+            "offset2_value": {
+                "type": [
+                    "number",
+                    "null"
+                ]
+            },
+            "offset2_unit_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ]
+            },
+            "offset3_value": {
+                "type": [
+                    "number",
+                    "null"
+                ]
+            },
+            "offset3_unit_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ]
+            }
+        }
+    }
+}

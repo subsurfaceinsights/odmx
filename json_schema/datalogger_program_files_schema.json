@@ -1,0 +1,39 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "program_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ],
+                "minimum": 1
+            },
+            "affiliation_id": {
+                "type": "integer"
+            },
+            "program_name": {
+                "type": "string"
+            },
+            "program_description": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "program_version": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "program_file_link": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            }
+        }
+    }
+}

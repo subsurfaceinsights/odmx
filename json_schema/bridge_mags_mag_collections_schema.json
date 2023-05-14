@@ -1,0 +1,21 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "bridge_mags_mag_collections_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ],
+                "minimum": 1
+            },
+            "mag_collections_id": {
+                "type": "integer"
+            },
+            "mags_id": {
+                "type": "integer"
+            }
+        }
+    }
+}

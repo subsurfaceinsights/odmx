@@ -1,0 +1,281 @@
+[
+    {
+        "term": "cites",
+        "name": "Cites",
+        "definition": "Use to indicate a relation to the work that the resource is citing/quoting.",
+        "category": null,
+        "provenance": "Adapted from DataCite relationType. See: http://schema.datacite.org/meta/kernel-3/doc/DataCite-Metad",
+        "provenance_uri": null,
+        "note": "Used for related Citations."
+    },
+    {
+        "term": "compiles",
+        "name": "Compiles",
+        "definition": "One to many relationship that denotes that the one source resource has been assembled from the target resources through a process of integration and harmonization (as opposed to simple aggregation).",
+        "category": "aggregate",
+        "provenance": "http://schema.datacite.org/meta/kernel-3/doc/DataCite-MetadataKernel_v3.1.pdf",
+        "provenance_uri": null,
+        "note": "Used for related Datasets."
+    },
+    {
+        "term": "continues",
+        "name": "Continues",
+        "definition": "Use to indicate the resource is a continuation of the work referenced by the related identifier.",
+        "category": null,
+        "provenance": "Adapted from DataCite relationType. See: http://schema.datacite.org/meta/kernel-3/doc/DataCite-Metad",
+        "provenance_uri": null,
+        "note": "Used for related Datasets."
+    },
+    {
+        "term": "documents",
+        "name": "Documents",
+        "definition": "Use to indicate the relation to the work which is documentation.",
+        "category": null,
+        "provenance": "Adapted from DataCite relationType. See: http://schema.datacite.org/meta/kernel-3/doc/DataCite-Metad",
+        "provenance_uri": null,
+        "note": "Used for related Citations."
+    },
+    {
+        "term": "hasPart",
+        "name": "Has part",
+        "definition": "Use to indicate the resource is a container of another resource.",
+        "category": null,
+        "provenance": "Adapted from DataCite relationType. See: http://schema.datacite.org/meta/kernel-3/doc/DataCite-Metad",
+        "provenance_uri": null,
+        "note": "Used for related Datasets."
+    },
+    {
+        "term": "isAttachedTo",
+        "name": "Is attached to",
+        "definition": "Used to indicate that one entity is attached to another. For example this term can be used to express the fact that a piece of equipment is attached to a related piece of equipment.",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": "Used for related Equipment."
+    },
+    {
+        "term": "isChildOf",
+        "name": "Is child of",
+        "definition": "Used to indicate that one entity is an immediate child of another entity. For example, this term can be used to express the fact that an instrument deployment Action is the child of a site visit Action.",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": "Used for related Actions."
+    },
+    {
+        "term": "isCitationFor",
+        "name": "Is citation for",
+        "definition": "Used to indicate the relationship between a Citation and the entity for which it is the Citation.",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": "Used for Dataset Citations."
+    },
+    {
+        "term": "isCitedBy",
+        "name": "Is cited by",
+        "definition": "Use to indicate the relation to a work that cites/quotes this data.",
+        "category": null,
+        "provenance": "Adapted from DataCite relationType. See: http://schema.datacite.org/meta/kernel-3/doc/DataCite-Metad",
+        "provenance_uri": null,
+        "note": "Used for related Citations."
+    },
+    {
+        "term": "isCompiledBy",
+        "name": "Is compiled by",
+        "definition": "Use to indicate the resource or data is compiled/created by using another resource or dataset.",
+        "category": null,
+        "provenance": "Adapted from DataCite relationType. See: http://schema.datacite.org/meta/kernel-3/doc/DataCite-Metad",
+        "provenance_uri": null,
+        "note": "Used for related Datasets."
+    },
+    {
+        "term": "isContinuedBy",
+        "name": "Is continued by",
+        "definition": "Use to indicate the resource is continued by the work referenced by the related identifier.",
+        "category": null,
+        "provenance": "Adapted from DataCite relationType. See: https://schema.datacite.org/meta/kernel-3/doc/DataCite-Meta",
+        "provenance_uri": null,
+        "note": "Used for related Datasets."
+    },
+    {
+        "term": "isDerivedFrom",
+        "name": "Is derived from",
+        "definition": "Used to indicate the relation to the works from which the resource was derived.",
+        "category": null,
+        "provenance": "Adapted from DataCite relationType. See: https://schema.datacite.org/meta/kernel-3/doc/DataCite-Meta",
+        "provenance_uri": null,
+        "note": "Used for related Results and related Datasets."
+    },
+    {
+        "term": "isDocumentedBy",
+        "name": "Is documented by",
+        "definition": "Use to indicate the work is documentation about/explaining the resource referenced by the related identifier.",
+        "category": null,
+        "provenance": "Adapted from DataCite relationType. See: https://schema.datacite.org/meta/kernel-3/doc/DataCite-Meta",
+        "provenance_uri": null,
+        "note": "Used for related Citations."
+    },
+    {
+        "term": "isIdenticalTo",
+        "name": "Is identical to",
+        "definition": "Used to indicate the relation to a work that is identical to the resource.",
+        "category": null,
+        "provenance": "Adapted from DataCite relationType. See: https://schema.datacite.org/meta/kernel-3/doc/DataCite-Meta",
+        "provenance_uri": null,
+        "note": "Used for related Datasets."
+    },
+    {
+        "term": "isNewVersionOf",
+        "name": "Is new version of",
+        "definition": "Use to indicate the resource is a new edition of an old resource, where the new edition has been modified or updated.",
+        "category": null,
+        "provenance": "Adapted from DataCite relationType. See: https://schema.datacite.org/meta/kernel-3/doc/DataCite-Meta",
+        "provenance_uri": null,
+        "note": "Used for related Datasets."
+    },
+    {
+        "term": "isOriginalFormOf",
+        "name": "Is original form of",
+        "definition": "Use to indicate the relation to the works which are variant or different forms of the resource.",
+        "category": null,
+        "provenance": "Adapted from DataCite relationType. See: https://schema.datacite.org/meta/kernel-3/doc/DataCite-Meta",
+        "provenance_uri": null,
+        "note": "Used for related Datasets."
+    },
+    {
+        "term": "isPartOf",
+        "name": "Is part of",
+        "definition": "Use to indicate the resource is a portion of another resource.",
+        "category": null,
+        "provenance": "Adapted from DataCite relationType. See: https://schema.datacite.org/meta/kernel-3/doc/DataCite-Meta",
+        "provenance_uri": null,
+        "note": "Used for related Datasets."
+    },
+    {
+        "term": "isPreviousVersionOf",
+        "name": "Is previous version of",
+        "definition": "Use to indicate the resource is a previous edition of a newer resource.",
+        "category": null,
+        "provenance": "Adapted from DataCite relationType. See: https://schema.datacite.org/meta/kernel-3/doc/DataCite-Meta",
+        "provenance_uri": null,
+        "note": "Used for related Datasets."
+    },
+    {
+        "term": "isReferencedBy",
+        "name": "Is referenced by",
+        "definition": "Use to indicate the resource is used as a source of information by another resource.",
+        "category": null,
+        "provenance": "Adapted from DataCite relationType. See: https://schema.datacite.org/meta/kernel-3/doc/DataCite-Meta",
+        "provenance_uri": null,
+        "note": "Used for related Citations."
+    },
+    {
+        "term": "isRelatedTo",
+        "name": "Is related to",
+        "definition": "Used to indicate that one entity has a complex relationship with another entity that is not a simple, hierarchical parent-child relationship. For example, this term can be used to express the fact that an instrument cleaning Action is related to an instrument deployment action even though it may be performed as part of a separate site visit.",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": "Used for related Actions."
+    },
+    {
+        "term": "isRetrievalfor",
+        "name": "Is retrieval for",
+        "definition": "Use to indicate the action is a retrieval of a previous deployment.",
+        "category": "Action",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": "This is necessary for proper implementation of deployments and retrievals in the ODM2 Equipment schema."
+    },
+    {
+        "term": "isReviewedBy",
+        "name": "Is reviewed by",
+        "definition": "Used to indicate that the work is reviewed by another resource.",
+        "category": null,
+        "provenance": "Adapted from DataCite relationType. See: https://schema.datacite.org/meta/kernel-3/doc/DataCite-Meta",
+        "provenance_uri": null,
+        "note": "Used for related Citations."
+    },
+    {
+        "term": "isSourceOf",
+        "name": "Is source of",
+        "definition": "Used to indicate the relation to the works that were the source of the resource.",
+        "category": null,
+        "provenance": "Adapted from DataCite relationType. See: https://schema.datacite.org/meta/kernel-3/doc/DataCite-Meta",
+        "provenance_uri": null,
+        "note": "Used for related Results, related Datasets, and related Citations."
+    },
+    {
+        "term": "isSupplementTo",
+        "name": "Is supplement to",
+        "definition": "Use to indicate the relation to the work to which the resource is a supplement.",
+        "category": null,
+        "provenance": "Adapted from DataCite relationType. See: https://schema.datacite.org/meta/kernel-3/doc/DataCite-Meta",
+        "provenance_uri": null,
+        "note": "Used for related Datasets."
+    },
+    {
+        "term": "isSupplementedBy",
+        "name": "Is supplemented by",
+        "definition": "Use to indicate the relation to the work(s) which are supplements of the resource.",
+        "category": null,
+        "provenance": "Adapted from DataCite relationType. See: https://schema.datacite.org/meta/kernel-3/doc/DataCite-Meta",
+        "provenance_uri": null,
+        "note": "Used for related Datasets."
+    },
+    {
+        "term": "isVariantFormOf",
+        "name": "Is variant form of",
+        "definition": "Use to indicate the resource is a variant or different form of another resource, e.g. calculated or calibrated form or different packaging.",
+        "category": null,
+        "provenance": "Adapted from DataCite relationType. See: https://schema.datacite.org/meta/kernel-3/doc/DataCite-Meta",
+        "provenance_uri": null,
+        "note": "Used for related Datasets."
+    },
+    {
+        "term": "references",
+        "name": "References",
+        "definition": "Use to indicate the relation to the work which is used as a source of information of the resource.",
+        "category": null,
+        "provenance": "Adapted from DataCite relationType. See: https://schema.datacite.org/meta/kernel-3/doc/DataCite-Meta",
+        "provenance_uri": null,
+        "note": "Used for related Citations."
+    },
+    {
+        "term": "Reviews",
+        "name": "Reviews",
+        "definition": "Used to indicate that the work reviews another resource.",
+        "category": null,
+        "provenance": "Adapted from DataCite relationType. See: https://schema.datacite.org/meta/kernel-3/doc/DataCite-Meta",
+        "provenance_uri": null,
+        "note": "Used for related Citations."
+    },
+    {
+        "term": "wasCollectedAt",
+        "name": "Was collected at",
+        "definition": "Used to indicate that one entity was collected at the location of another entity. For example, thirs term can be used to express the fact that a specimen SamplingFeature was collected at a site SamplingFeature.",
+        "category": null,
+        "provenance": "Adapted from DataCite relationType. See: https://schema.datacite.org/meta/kernel-3/doc/DataCite-Meta",
+        "provenance_uri": null,
+        "note": "Used for related SamplingFeatures."
+    },
+    {
+        "term": "isAnalysisOf",
+        "name": "Is an analysis of",
+        "definition": "Used to indicate that one entity is the analysis of a sample collection",
+        "category": null,
+        "provenance": "Adapted from DataCite relationType. See: https://schema.datacite.org/meta/kernel-3/doc/DataCite-Meta",
+        "provenance_uri": null,
+        "note": "Used for related SamplingFeatures."
+    },
+    {
+        "term": "isSubSpecimenOf",
+        "name": "Is sub specimen of",
+        "definition": "Used to indicated that one specimen is taken from another specimen",
+        "category": null,
+        "provenance": "Adapted from DataCite relationType. See: https://schema.datacite.org/meta/kernel-3/doc/DataCite-Meta",
+        "provenance_uri": null,
+        "note": "Used for related SamplingFeatures."
+    }
+]

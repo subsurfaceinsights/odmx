@@ -1,0 +1,56 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "simulation_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ],
+                "minimum": 1
+            },
+            "action_id": {
+                "type": "integer"
+            },
+            "simulation_name": {
+                "type": "string"
+            },
+            "simulation_description": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "simulation_start_date_time": {
+                "type": "string",
+                "format": "date-time"
+            },
+            "simulation_start_date_time_utc_offset": {
+                "type": "integer"
+            },
+            "simulation_end_date_time": {
+                "type": "string",
+                "format": "date-time"
+            },
+            "simulation_end_date_time_utc_offset": {
+                "type": "integer"
+            },
+            "time_step_value": {
+                "type": "number"
+            },
+            "time_step_units_id": {
+                "type": "integer"
+            },
+            "input_data_set_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ]
+            },
+            "model_id": {
+                "type": "integer"
+            }
+        }
+    }
+}

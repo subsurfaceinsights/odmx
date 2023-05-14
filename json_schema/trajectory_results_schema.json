@@ -1,0 +1,44 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "result_id": {
+                "type": "integer"
+            },
+            "spatial_reference_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ]
+            },
+            "intended_trajectory_spacing": {
+                "type": [
+                    "number",
+                    "null"
+                ]
+            },
+            "intended_trajectory_spacing_units_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ]
+            },
+            "intended_time_spacing": {
+                "type": [
+                    "number",
+                    "null"
+                ]
+            },
+            "intended_time_spacing_units_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ]
+            },
+            "aggregation_statistic_cv": {
+                "type": "string"
+            }
+        }
+    }
+}

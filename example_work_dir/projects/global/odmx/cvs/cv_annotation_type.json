@@ -1,0 +1,227 @@
+[
+    {
+        "term": "actionAnnotation",
+        "name": "Action annotation",
+        "definition": "An annotation or qualifying comment about an Action",
+        "category": "Annotation",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "actionGroup",
+        "name": "Action group",
+        "definition": "A group of actions such as those that are part of a cruise, expedition, experiment, project, etc.",
+        "category": "Group",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "categoricalResultValueAnnotation",
+        "name": "Categorical result value annotation",
+        "definition": "An annotation or data qualifying comment applied to a data value from a categorical Result",
+        "category": "Annotation",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "dataSetAnnotation",
+        "name": "Dataset annotation",
+        "definition": "An annotation or qualifying comment about a DataSet",
+        "category": "Annotation",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "equipmentAnnotation",
+        "name": "Equipment annotation",
+        "definition": "An annotation or qualifying comment about a piece of Equipment",
+        "category": "Annotation",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "measurementResultValueAnnotation",
+        "name": "Measurement result value annotation",
+        "definition": "An annotation or data qualifying comment applied to a data value from a measurement Result",
+        "category": "Annotation",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "methodAnnotation",
+        "name": "Method annotation",
+        "definition": "An annotation or qualifiying comment about a Method",
+        "category": "Annotation",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "organizationAnnotation",
+        "name": "Organization annotation",
+        "definition": "An annotation or qualifiying comment about an Organization",
+        "category": "Annotation",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "personAnnotation",
+        "name": "Person annotation",
+        "definition": "An annotation or qualifying comment about a Person",
+        "category": "Annotation",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "personGroup",
+        "name": "Person group",
+        "definition": "A group of people such as a research team, project team, etc.",
+        "category": "Group",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "pointCoverageResultValueAnnotation",
+        "name": "Point coverage result value annotation",
+        "definition": "An annotation or data qualifying comment applied to a data value from a point coverage Result",
+        "category": "Annotation",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "profileResultValueAnnotation",
+        "name": "Profile result value annotation",
+        "definition": "An annotation or data qualifying comment applied to a data value from a profile Result",
+        "category": "Annotation",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "resultAnnotation",
+        "name": "Result annotation",
+        "definition": "An annotation or qualifying comment about a Result",
+        "category": "Annotation",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "samplingFeatureAnnotation",
+        "name": "Sampling feature annotation",
+        "definition": "An annotation or qualifiying comment about a SamplingFeature",
+        "category": "Annotation",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "sectionResultValueAnnotation",
+        "name": "Section result value annotation",
+        "definition": "An annotation or data qualifying comment applied to a data value from a section Result",
+        "category": "Annotation",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "siteAnnotation",
+        "name": "Site annotation",
+        "definition": "An annotation or qualifying comment about a Site",
+        "category": "Annotation",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "siteGroup",
+        "name": "Site group",
+        "definition": "A group of sites such as a transect, station, observatory, monitoring collection, etc.",
+        "category": "Group",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "specimenAnnotation",
+        "name": "Specimen annotation",
+        "definition": "An annotation or qualifying comment about a Specimen",
+        "category": "Annotation",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "specimenGroup",
+        "name": "Specimen group",
+        "definition": "A group of specimens such as an analysis batch, profile, experiment, etc.",
+        "category": "Group",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "spectraResultValueAnnotation",
+        "name": "Spectra result value annotation",
+        "definition": "An annotation or data qualifying comment applied to a data value from a spectra Result",
+        "category": "Annotation",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "timeSeriesResultValueAnnotation",
+        "name": "Time series result value annotation",
+        "definition": "An annotation or data qualifying comment applied to a data value from a time series Result",
+        "category": "Annotation",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "trajectoryResultValueAnnotation",
+        "name": "Trajectory result value annotation",
+        "definition": "An annotation or data qualifying comment applied to a data value from a trajectory Result",
+        "category": "Annotation",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "transectResultValueAnnotation",
+        "name": "Transect result value annotation",
+        "definition": "An annotation or data qualifying comment applied to a data value from a transect Result",
+        "category": "Annotation",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "valueGroup",
+        "name": "Value group",
+        "definition": "A group of data values such as those from a profile, analysis, spectra, publication table, dataset, incident reports, etc.",
+        "category": "Group",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "variableAnnotation",
+        "name": "Variable annotation",
+        "definition": "An annotation or qualifying comment about a Variable",
+        "category": "Annotation",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    }
+]

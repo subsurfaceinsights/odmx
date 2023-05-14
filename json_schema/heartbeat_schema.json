@@ -1,0 +1,30 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "heartbeat_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ],
+                "minimum": 1
+            },
+            "heartbeat_interval_seconds": {
+                "type": "integer"
+            },
+            "last_heartbeat_utc": {
+                "type": "integer"
+            },
+            "equipment_id": {
+                "type": "integer"
+            },
+            "late_threshold_seconds_grace_period": {
+                "type": "integer"
+            },
+            "equipment_status_cv": {
+                "type": "string"
+            }
+        }
+    }
+}

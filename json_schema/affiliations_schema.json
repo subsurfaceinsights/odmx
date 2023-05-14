@@ -1,0 +1,65 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "affiliation_id": {
+                "type": "number",
+                "minimum": 1,
+                "multipleOf": 1
+            },
+            "person_id": {
+                "type": "number",
+                "minimum": 1,
+                "multipleOf": 1
+            },
+            "organization_id": {
+                "type": ["number", "null"],
+                "minimum": 1,
+                "multipleOf": 1
+            },
+            "is_primary_organization_contact": {
+                "type": ["boolean", "null"]
+            },
+            "affiliation_start_date": {
+                "type": ["string", "null"],
+                "format": "date"
+            },
+            "affiliation_end_date": {
+                "type": ["string", "null"],
+                "format": "date"
+            },
+            "phone": {
+                "type": ["string", "null"]
+            },
+            "email": {
+                "type": ["string", "null"],
+                "format": "idn-email"
+            },
+            "address": {
+                "type": ["string", "null"]
+            },
+            "postal_code": {
+                "type": ["string", "null"]
+            },
+            "state_province": {
+                "type": ["string", "null"]
+            },
+            "country": {
+                "type": ["string", "null"]
+            },
+            "person_link": {
+                "type": ["string", "null"],
+                "format": "iri"
+            },
+            "job_title": {
+                "type": ["string", "null"]
+            }
+        },
+        "required": ["affiliation_id", "person_id", "organization_id",
+                     "is_primary_organization_contact",
+                     "affiliation_start_date", "affiliation_end_date", "phone",
+                     "email", "address", "postal_code","state_province",
+                     "country", "person_link", "job_title"]
+    }
+}

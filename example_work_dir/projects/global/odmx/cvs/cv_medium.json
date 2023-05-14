@@ -1,0 +1,191 @@
+[
+    {
+        "term": "air",
+        "name": "Air",
+        "definition": "Specimen collection of ambient air or sensor emplaced to measure properties of ambient air.",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "equipment",
+        "name": "Equipment",
+        "definition": "An instrument, sensor or other piece of human-made equipment upon which a measurement is made, such as datalogger temperature or battery voltage.",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "gas",
+        "name": "Gas",
+        "definition": "Gas phase specimen or sensor emplaced to measure properties of a gas.",
+        "category": null,
+        "provenance": "Adapted from SESAR Material CV. See http://app.geosamples.org/reference/materials.php",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "habitat",
+        "name": "Habitat",
+        "definition": "A habitat is an ecological or environmental area that is inhabited by a particular species of animal, plant, or other type of organism.",
+        "category": null,
+        "provenance": "Adopted from STORET into USGS National Water Quality Portal. http://waterqualitydata.us/portal_userguide/#WQPUserGuide-Table2\nDefinition from https://en.wikipedia.org/wiki/Habitat",
+        "provenance_uri": null,
+        "note": "Necessary to describe ecosystem properties, such as: birds per km2 of habitat\n\nSTORET definition: The habitat conditions at the monitoring site; physical features of the area surrounding the monitoring location site."
+    },
+    {
+        "term": "ice",
+        "name": "Ice",
+        "definition": "Sample collected as frozen water or sensor emplaced to measure properties of ice.",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "liquidAqueous",
+        "name": "Liquid aqueous",
+        "definition": "Specimen collected as liquid water or sensor emplaced to measure properties of water in sampled environment.",
+        "category": null,
+        "provenance": "Adapted from SESAR Material CV. See http://app.geosamples.org/reference/materials.php",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "liquidOrganic",
+        "name": "Liquid organic",
+        "definition": "Specimen collected as an organic liquid.",
+        "category": null,
+        "provenance": "Adapted from SESAR Material CV. See http://app.geosamples.org/reference/materials.php",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "mineral",
+        "name": "Mineral",
+        "definition": "Specimen collected as a mineral.",
+        "category": null,
+        "provenance": "Adapted from SESAR Material CV. See http://app.geosamples.org/reference/materials.php",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "notApplicable",
+        "name": "Not applicable",
+        "definition": "There is no applicable sampled medium.",
+        "category": null,
+        "provenance": "Adapted from SESAR Material CV. See http://app.geosamples.org/reference/materials.php",
+        "provenance_uri": null,
+        "note": "This term should be used in the case that there is no medium or medium does not apply in some context."
+    },
+    {
+        "term": "organism",
+        "name": "Organism",
+        "definition": "Data collected about a species at organism level.",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "other",
+        "name": "Other",
+        "definition": "Other.",
+        "category": null,
+        "provenance": "Adapted from SESAR Material CV. See http://app.geosamples.org/reference/materials.php",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "particulate",
+        "name": "Particulate",
+        "definition": "Specimen collected from particulates suspended in a paticulate-fluid mixture. Examples include particulates in water or air.",
+        "category": null,
+        "provenance": "Adapted from SESAR Material CV. See http://app.geosamples.org/reference/materials.php",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "regolith",
+        "name": "Regolith",
+        "definition": "The entire unconsolidated or secondarily recemented cover that overlies more coherent bedrock, that has been formed by weathering, erosion, transport and/or deposition of the older material. The regolith thus includes fractured and weathered basement rocks, saprolites, soils, organic accumulations, volcanic material, glacial deposits, colluvium, alluvium, evaporitic sediments, aeolian deposits and ground water.\nEverything from fresh rock to fresh air.",
+        "category": null,
+        "provenance": "Merrill, G. P. (1897) A treatise on rocks, rock weathering and soils. New York, Macmillan. 411 pp.",
+        "provenance_uri": "http://crcleme.org.au/Pubs/Monographs/RegolithGlossary.pdf",
+        "note": "The term was introduced by Merrill (1897) who wrote of the incoherent mass of varying thickness covering the underlying rocks: \u201cIn places this covering is made up of material originating through rock weathering in-situ. In other instances it is of fragmental and more or less decomposed material drifted by wind, water or ice from other sources. This entire mantle of unconsolidated material, whatever its nature or origin, it is proposed to call the regolith, from the Greek words rhego), meaning a blanket, and lithos, a stone.\u201d"
+    },
+    {
+        "term": "rock",
+        "name": "Rock",
+        "definition": "Specimen collected from a naturally occuring solid aggregate of one or more minerals.",
+        "category": null,
+        "provenance": "Adapted from SESAR Material CV. See http://app.geosamples.org/reference/materials.php. Definition adapted from Wikipedia. See: https://en.wikipedia.org/wiki/Rock_(geology)",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "sediment",
+        "name": "Sediment",
+        "definition": "Specimen collected from material broken down by processes of weathering and erosion and subsequently transported by the action of wind, water, or ice, and/or by the force of gravity acting on the particles. Sensors may also be emplaced to measure sediment properties.",
+        "category": null,
+        "provenance": "Adapted from SESAR Material CV. See http://app.geosamples.org/reference/materials.php. Definition adapted from Wikipedia. See: https://en.wikipedia.org/wiki/Sediment",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "snow",
+        "name": "Snow",
+        "definition": "Observation in, of or sample taken from snow.",
+        "category": null,
+        "provenance": "Adapted from CUAHSI HIS SampleMediumCV.  See http://his.cuahsi.org/mastercvreg/edit_cv11.aspx?tbl=SampleMediumCV.",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "soil",
+        "name": "Soil",
+        "definition": "Specimen collected from soil or sensor emplaced to measure properties of soil. Soil includes the mixture of minerals, organic matter, gasses, liquids, and organisms that make up the upper layer of earth in which plants grow.",
+        "category": null,
+        "provenance": "Adapted from SESAR Material CV. See http://app.geosamples.org/reference/materials.php",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "tissue",
+        "name": "Tissue",
+        "definition": "Sample of a living organism's tissue or sensor emplaced to measure property of tissue.",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "unknown",
+        "name": "Unknown",
+        "definition": "The sampled medium is unknown.",
+        "category": null,
+        "provenance": "Adapted from CUAHSI HIS SampleMediumCV.  See http://his.cuahsi.org/mastercvreg/edit_cv11.aspx?tbl=SampleMediumCV.",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "vegetation",
+        "name": "Vegetation",
+        "definition": "The plants of an area considered in general or as communities, but not taxonomically.",
+        "category": null,
+        "provenance": "Retrieved from Eionet GEMET Thesaurus",
+        "provenance_uri": "http://www.eionet.europa.eu/gemet/concept?ns=1&cp=8922",
+        "note": null
+    },
+    {
+        "term": "plant",
+        "name": "Plant",
+        "definition": "Individual Plants",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    }
+]

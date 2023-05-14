@@ -1,0 +1,45 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "taxonomic_classifier_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ],
+                "minimum": 1
+            },
+            "taxonomic_classifier_term": {
+                "type": "string"
+            },
+            "taxonomic_classifier_name": {
+                "type": "string"
+            },
+            "taxonomic_classifier_alternate_name": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "taxonomic_classifier_definition": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "taxonomic_classifier_domain_cv": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "taxonomic_classifier_source_uri": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            }
+        }
+    }
+}

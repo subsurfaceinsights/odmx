@@ -1,0 +1,51 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "phenocam_calculated_channel_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ],
+                "minimum": 1
+            },
+            "phenocam_location_id": {
+                "type": "integer"
+            },
+            "phenocam_cube_id": {
+                "type": "integer"
+            },
+            "datastream_id": {
+                "type": "integer"
+            },
+            "calculationarea_xcoord_top_left": {
+                "type": "integer"
+            },
+            "calculationarea_ycoord_top_left": {
+                "type": "integer"
+            },
+            "calculationarea_xcoord_top_right": {
+                "type": "integer"
+            },
+            "calculationarea_ycoord_top_right": {
+                "type": "integer"
+            },
+            "calculationarea_xcoord_bottom_right": {
+                "type": "integer"
+            },
+            "calculationarea_ycoord_bottom_right": {
+                "type": "integer"
+            },
+            "calculationarea_xcoord_bottom_left": {
+                "type": "integer"
+            },
+            "calculationarea_ycoord_bottom_left": {
+                "type": "integer"
+            },
+            "phenocam_channel": {
+                "type": "string"
+            }
+        }
+    }
+}

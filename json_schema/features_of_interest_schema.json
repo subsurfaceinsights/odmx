@@ -1,0 +1,20 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "features_of_interest_type_cv": {
+                "type": "string"
+            },
+            "features_of_interest_name": {
+                "type": "string"
+            },
+            "features_of_interest_description": {
+                "type": ["string", "null"]
+            }
+        },
+        "required": ["features_of_interest_type_cv",
+                     "features_of_interest_name",
+                     "features_of_interest_description"]
+    }
+}

@@ -1,0 +1,38 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "organization_id": {
+                "type": "number",
+                "minimum": 1,
+                "multipleOf": 1
+            },
+            "organization_type_cv": {
+                "type": "string"
+            },
+            "organization_code": {
+                "type": "string"
+            },
+            "organization_name": {
+                "type": "string"
+            },
+            "organization_description": {
+                "type": ["string", "null"]
+            },
+            "organization_link": {
+                "type": ["string", "null"],
+                "format": "iri"
+            },
+            "parent_organization_id": {
+                "type": ["number", "null"],
+                "minimum": 1,
+                "multipleOf": 1
+            }
+        },
+        "required": ["organization_id", "organization_type_cv",
+                     "organization_code", "organization_name",
+                     "organization_description", "organization_link",
+                     "parent_organization_id"]
+    }
+}

@@ -1,0 +1,72 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "datalogger_file_column_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ],
+                "minimum": 1
+            },
+            "result_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ]
+            },
+            "datalogger_file_id": {
+                "type": "integer"
+            },
+            "instrument_output_quantity_kind_id": {
+                "type": "integer"
+            },
+            "column_label": {
+                "type": "string"
+            },
+            "column_description": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "measurement_equation": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "scan_interval": {
+                "type": [
+                    "number",
+                    "null"
+                ]
+            },
+            "scan_interval_units_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ]
+            },
+            "recording_interval": {
+                "type": [
+                    "number",
+                    "null"
+                ]
+            },
+            "recording_interval_units_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ]
+            },
+            "aggregation_statistic_cv": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            }
+        }
+    }
+}

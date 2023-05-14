@@ -1,0 +1,95 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "sampling_feature_uuid": {
+                "type": "string",
+                "minLength": 36,
+                "maxLength": 36
+            },
+            "sampling_feature_type_cv": {
+                "type": "string"
+            },
+            "sampling_feature_code": {
+                "type": "string"
+            },
+            "sampling_feature_name": {
+                "type": ["string", "null"]
+            },
+            "sampling_feature_alias": {
+                "type": ["array", "null"],
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "alias": {
+                            "type": "string"
+                        },
+                        "alias_category": {
+                            "type": "string"
+                        },
+                        "display_priority": {
+                            "type": "number"
+                        }
+                    },
+                    "required": ["alias", "alias_category", "display_priority"]
+                }
+            },
+            "sampling_feature_description": {
+                "type": ["string", "null"]
+            },
+            "sampling_feature_geotype_cv": {
+                "type": ["string", "null"]
+            },
+            "feature_geometry_wkt": {
+                "type": ["string", "null"]
+            },
+            "elevation_m": {
+                "type": ["number", "null"]
+            },
+            "elevation_datum_cv": {
+                "type": ["string", "null"]
+            },
+            "latitude": {
+                "type": ["number", "null"]
+            },
+            "longitude": {
+                "type": ["number", "null"]
+            },
+            "epsg": {
+                "type": ["string", "null"]
+            },
+            "extension_properties": {
+                "type": ["array", "null"],
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "property_name": {
+                            "type": "string"
+                        },
+                        "property_value": {
+                            "type": "string"
+                        }
+                    },
+                    "required": ["property_name", "property_value"]
+                }
+            },
+            "relation_to_parent": {
+                "type": ["string", "null"]
+            },
+            "child_sampling_features": {
+                "type": ["array", "null"],
+                "items": {
+                    "$ref": "#/items"
+                }
+            }
+        },
+        "required": ["sampling_feature_uuid", "sampling_feature_type_cv",
+                     "sampling_feature_code", "sampling_feature_name",
+                     "sampling_feature_alias", "sampling_feature_description",
+                     "sampling_feature_geotype_cv", "feature_geometry_wkt",
+                     "elevation_m", "elevation_datum_cv", "latitude",
+                     "longitude", "epsg", "extension_properties",
+                     "relation_to_parent", "child_sampling_features"]
+    }
+}

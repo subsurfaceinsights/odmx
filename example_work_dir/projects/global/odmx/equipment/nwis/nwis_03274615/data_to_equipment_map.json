@@ -1,0 +1,24 @@
+[
+    {
+        "column_name": "timestamp",
+        "variable_domain_cv": "instrumentTimestamp",
+        "acquiring_instrument_uuid": "6fbc1bc1-0962-4f43-9b99-1cb6751b153e",
+        "variable_term": "nonedefined",
+        "units_term": "datalogger_time_stamp",
+        "unit_conversion": true,
+        "expose_as_datastream": false,
+        "sensor_type": "measured",
+        "notes": null
+    },
+    {
+        "column_name": "gage_height",
+        "variable_domain_cv": "instrumentMeasurement",
+        "acquiring_instrument_uuid": "242ae677-054c-45cf-bbfc-37a6c9709d15",
+        "variable_term": "waterHeightAboveSensor",
+        "units_term": "foot",
+        "unit_conversion": true,
+        "expose_as_datastream": true,
+        "sensor_type": "measured",
+        "notes": null
+    }
+]

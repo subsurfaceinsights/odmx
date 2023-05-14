@@ -1,0 +1,30 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "bridge_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ],
+                "minimum": 1
+            },
+            "action_id": {
+                "type": "integer"
+            },
+            "affiliation_id": {
+                "type": "integer"
+            },
+            "is_action_lead": {
+                "type": "boolean"
+            },
+            "role_description": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            }
+        }
+    }
+}

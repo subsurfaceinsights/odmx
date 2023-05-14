@@ -1,0 +1,27 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "bridge_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ],
+                "minimum": 1
+            },
+            "units_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ]
+            },
+            "term": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            }
+        }
+    }
+}

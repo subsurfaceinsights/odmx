@@ -1,0 +1,17 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "calculated_datastream_expression_id": {
+                "type": "integer"
+            },
+            "datastream_id": {
+                "type": "integer"
+            },
+            "python_expression": {
+                "type": "string"
+            }
+        }
+    }
+}

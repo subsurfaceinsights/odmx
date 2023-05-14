@@ -1,0 +1,91 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "equipment_uuid": {
+                "type": "string",
+                "minLength": 36,
+                "maxLength": 36
+            },
+            "equipment_code": {
+                "type": "string"
+            },
+            "equipment_name": {
+                "type": "string"
+            },
+            "equipment_serial_number": {
+                "type": ["string", "null"]
+            },
+            "equipment_owner_first_name": {
+                "type": "string"
+            },
+            "equipment_owner_last_name": {
+                "type": "string"
+            },
+            "equipment_owner_role": {
+                "type": "string"
+            },
+            "equipment_vendor": {
+                "type": ["string", "null"]
+            },
+            "equipment_purchase_date": {
+                "type": ["string", "null"]
+            },
+            "equipment_purchase_order_number": {
+                "type": ["string", "null"]
+            },
+            "equipment_description": {
+                "type": ["string", "null"]
+            },
+            "equipment_documentation_link": {
+                "type": ["string", "null"]
+            },
+            "position_start_date_utc": {
+                "type": "number",
+                "minimum": 0
+            },
+            "position_end_date_utc": {
+                "type": ["number", "null"],
+                "minimum": 0
+            },
+            "relationship_start_date_time_utc": {
+                "type": "number",
+                "minimum": 0
+            },
+            "relationship_end_date_time_utc": {
+                "type": ["number", "null"],
+                "minimum": 0
+            },
+            "equipment_z_offset_m": {
+                "type": "number"
+            },
+            "equipment_ns_offset_m": {
+                "type": "number"
+            },
+            "equipment_ew_offset_m": {
+                "type": "number"
+            },
+            "equipment_height_note": {
+                "type": ["string", "null"]
+            },
+            "equipment": {
+                "type": ["array", "null"],
+                "items": {
+                    "$ref": "#/items"
+                }
+            }
+        },
+        "required": ["equipment_uuid", "equipment_code", "equipment_name",
+                     "equipment_serial_number", "equipment_owner_first_name",
+                     "equipment_owner_last_name", "equipment_owner_role",
+                     "equipment_vendor", "equipment_purchase_date",
+                     "equipment_purchase_order_number",
+                     "equipment_description", "equipment_documentation_link",
+                     "position_start_date_utc", "position_end_date_utc",
+                     "relationship_start_date_time_utc",
+                     "relationship_end_date_time_utc", "equipment_z_offset_m",
+                     "equipment_ns_offset_m", "equipment_ew_offset_m",
+                     "equipment_height_note", "equipment"]
+    }
+}

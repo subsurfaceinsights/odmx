@@ -1,0 +1,85 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "mag_annotation_event_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ],
+                "minimum": 1
+            },
+            "annotation_method": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "mags_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ]
+            },
+            "mag_annotation": {
+                "type": [
+                    [
+                        "string",
+                        "null"
+                    ],
+                    "null"
+                ]
+            },
+            "event_date": {
+                "type": [
+                    "string",
+                    "null"
+                ],
+                "format": "date-time"
+            },
+            "event_date_utc_offset": {
+                "type": [
+                    "integer",
+                    "null"
+                ]
+            },
+            "version": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "genes_faa_file_path": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "genes_fna_file_path": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "genes_gff_file_path": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "scaffolds_fna_file_path": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "gbk_file_path": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            }
+        }
+    }
+}

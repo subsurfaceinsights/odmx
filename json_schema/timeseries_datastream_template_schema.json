@@ -1,0 +1,20 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "utc_time": {
+                "type": "integer"
+            },
+            "data_value": {
+                "type": [
+                    "number",
+                    "null"
+                ]
+            },
+            "qa_flag": {
+                "type": "string"
+            }
+        }
+    }
+}

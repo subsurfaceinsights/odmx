@@ -1,0 +1,27 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "variable_qa_min_max_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ],
+                "minimum": 1
+            },
+            "variable_id": {
+                "type": "integer"
+            },
+            "variable_term": {
+                "type": "string"
+            },
+            "min_valid_range": {
+                "type": "number"
+            },
+            "max_valid_range": {
+                "type": "number"
+            }
+        }
+    }
+}

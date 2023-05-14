@@ -1,0 +1,28 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "specimen_collection_cv": {
+                "type": "string"
+            },
+            "specimen_collection_file": {
+                "type": ["string", "null"]
+            },
+            "specimen_collection_name": {
+                "type": ["string", "null"]
+            },
+            "specimen_collection_note": {
+                "type": ["string", "null"]
+            },
+            "parent_specimen_collection_id": {
+                "type": ["number", "null"],
+                "minimum": 1,
+                "multipleOf": 1
+            }
+        },
+        "required": ["specimen_collection_cv", "specimen_collection_file",
+                     "specimen_collection_name", "specimen_collection_note",
+                      "parent_specimen_collection_id"]
+    }
+}

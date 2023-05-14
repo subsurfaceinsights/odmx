@@ -1,0 +1,33 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "datalogger_file_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ],
+                "minimum": 1
+            },
+            "program_id": {
+                "type": "integer"
+            },
+            "datalogger_file_name": {
+                "type": "string"
+            },
+            "datalogger_file_description": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "datalogger_file_link": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            }
+        }
+    }
+}

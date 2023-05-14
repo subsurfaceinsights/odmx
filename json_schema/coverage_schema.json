@@ -1,0 +1,46 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "coverage_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ],
+                "minimum": 1
+            },
+            "mags_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ]
+            },
+            "sampling_feature_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ]
+            },
+            "result_date_time": {
+                "type": [
+                    "string",
+                    "null"
+                ],
+                "format": "date-time"
+            },
+            "result_date_time_utc_offset": {
+                "type": [
+                    "integer",
+                    "null"
+                ]
+            },
+            "coverage_value": {
+                "type": [
+                    "number",
+                    "null"
+                ]
+            }
+        }
+    }
+}

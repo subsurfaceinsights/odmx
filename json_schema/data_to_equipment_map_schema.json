@@ -1,0 +1,69 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "column_name": {
+                "type": "string"
+            },
+            "variable_domain_cv": {
+                "type": "string"
+            },
+            "acquiring_instrument_uuid": {
+                "type": "string",
+                "minLength": 36,
+                "maxLength": 36
+            },
+            "variable_term": {
+                "type": ["string", "null"]
+            },
+            "units_term": {
+                "type": ["string", "null"]
+            },
+            "unit_conversion": {
+                "type": "boolean"
+            },
+            "expose_as_datastream": {
+                "type": "boolean"
+            },
+            "datastream_manual_qa_list": {
+                "type": ["array", "null"],
+                "description": "List of datetime ranges to apply manual QA/QC to. Each range is a list of two datetimes and a qa/qc flag. The range is inclusive of the start and end datetimes. The flags are applied in order, so the latest entry takes precedence.",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "datetime_start": {
+                            "type": ["string", "null"],
+                            "format": "date-time",
+                            "description": "Start of the manual qa/qc range. If null, the range starts at the beginning of the datastream."
+                        },
+                        "datetime_end": {
+                            "type": ["string", "null"],
+                            "format": "date-time",
+                            "description": "Stop of the manual qa/qc range. If null, the range ends at the end of the datastream."
+                        },
+                        "qa_flag": {
+                            "type": "string",
+                            "description": "The flag to apply to the data in the range."
+                        },
+                        "qa_note": {
+                            "type": "string",
+                            "description": "A note for the manual QA/QC"
+                        }
+                    },
+                    "required": ["datetime_start", "datetime_end", "qa_flag", "qa_note"]
+                }
+            },
+            "sensor_type": {
+                "type": "string"
+            },
+            "notes": {
+                "type": ["string", "null"]
+            }
+        },
+        "required": ["column_name", "variable_domain_cv",
+                     "acquiring_instrument_uuid", "variable_term",
+                     "units_term", "unit_conversion", "expose_as_datastream",
+                     "sensor_type", "notes"]
+    }
+}

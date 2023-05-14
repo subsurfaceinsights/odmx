@@ -1,0 +1,236 @@
+[
+    {
+        "term": "age",
+        "name": "Age",
+        "definition": "Variables associated with age",
+        "category": null,
+        "provenance": "Originally from PetDB. Syntax modified to remove underscores.",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "biota",
+        "name": "Biota",
+        "definition": "Variables associated with biological organisms",
+        "category": null,
+        "provenance": "Originally from CUAHSI HIS GeneralCategoryCV. See http://his.cuahsi.org/mastercvreg/edit_cv11.aspx?tbl=GeneralCategoryCV.",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "chemistry",
+        "name": "Chemistry",
+        "definition": "Variables associated with chemistry, chemical analysis or processes",
+        "category": null,
+        "provenance": "Originally from CUAHSI HIS GeneralCategoryCV. See http://his.cuahsi.org/mastercvreg/edit_cv11.aspx?tbl=GeneralCategoryCV.",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "climate",
+        "name": "Climate",
+        "definition": "Variables associated with the climate, weather, or atmospheric processes",
+        "category": null,
+        "provenance": "Originally from CUAHSI HIS GeneralCategoryCV. See http://his.cuahsi.org/mastercvreg/edit_cv11.aspx?tbl=GeneralCategoryCV.",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "endMember",
+        "name": "End-Member",
+        "definition": "Variables associated with end members",
+        "category": null,
+        "provenance": "Originally from PetDB. Syntax modified to remove underscores.",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "geology",
+        "name": "Geology",
+        "definition": "Variables associated with geology or geological processes",
+        "category": null,
+        "provenance": "Originally from CUAHSI HIS GeneralCategoryCV. See http://his.cuahsi.org/mastercvreg/edit_cv11.aspx?tbl=GeneralCategoryCV.",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "hydrology",
+        "name": "Hydrology",
+        "definition": "Variables associated with hydrologic variables or processes",
+        "category": null,
+        "provenance": "Originally from CUAHSI HIS GeneralCategoryCV. See http://his.cuahsi.org/mastercvreg/edit_cv11.aspx?tbl=GeneralCategoryCV.",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "instrumentation",
+        "name": "Instrumentation",
+        "definition": "Variables associated with instrumentation and instrument properties such as battery voltages, data logger temperatures, often useful for diagnosis.",
+        "category": null,
+        "provenance": "Originally from CUAHSI HIS GeneralCategoryCV. See http://his.cuahsi.org/mastercvreg/edit_cv11.aspx?tbl=GeneralCategoryCV.",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "majorOxideElement",
+        "name": "Major oxide or element",
+        "definition": "Variables associated with major oxides or elements",
+        "category": null,
+        "provenance": "Originally from PetDB. Syntax modified to remove underscores.",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "modelData",
+        "name": "Model data",
+        "definition": "Variables associated with modeled data",
+        "category": null,
+        "provenance": "Originally from PetDB. Syntax modified to remove underscores.",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "nobleGas",
+        "name": "Noble gas",
+        "definition": "Variables associated with noble gasses",
+        "category": null,
+        "provenance": "Originally from PetDB. Syntax modified to remove underscores.",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "radiogenicIsotopes",
+        "name": "Radiogenic isotopes",
+        "definition": "Variables associated with radiogenic isotopes",
+        "category": null,
+        "provenance": "Originally from PetDB. Syntax modified to remove underscores.",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "rareEarthElement",
+        "name": "Rare earth element",
+        "definition": "Variables associated with rare earth elements",
+        "category": null,
+        "provenance": "Originally from PetDB. Syntax modified to remove underscores.",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "ratio",
+        "name": "Ratio",
+        "definition": "Variables associated with a ratio",
+        "category": null,
+        "provenance": "Originally from PetDB. Syntax modified to remove underscores.",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "rockMode",
+        "name": "Rock mode",
+        "definition": "Variables associated with a rock mode",
+        "category": null,
+        "provenance": "Originally from PetDB. Syntax modified to remove underscores.",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "soil",
+        "name": "Soil",
+        "definition": "Variables associated with soil variables or processes",
+        "category": null,
+        "provenance": "Originally from CUAHSI HIS GeneralCategoryCV. See http://his.cuahsi.org/mastercvreg/edit_cv11.aspx?tbl=GeneralCategoryCV.",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "speciationRatio",
+        "name": "Speciation ratio",
+        "definition": "Variables associated with a speciation ratio",
+        "category": null,
+        "provenance": "Originally from PetDB. Syntax modified to remove underscores.",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "stableIsotopes",
+        "name": "Stable isotopes",
+        "definition": "Variables associated with stable isotopes",
+        "category": null,
+        "provenance": "Originally from PetDB. Syntax modified to remove underscores.",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "traceElement",
+        "name": "Trace element",
+        "definition": "Variables associated with trace elements",
+        "category": null,
+        "provenance": "Originally from PetDB. Syntax modified to remove underscores.",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "unknown",
+        "name": "Unknown",
+        "definition": "The VariableType is unknown.",
+        "category": null,
+        "provenance": "Originally from CUAHSI HIS GeneralCategoryCV. See http://his.cuahsi.org/mastercvreg/edit_cv11.aspx?tbl=GeneralCategoryCV.",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "uraniumSeries",
+        "name": "Uranium series",
+        "definition": "Variables associated with uranium series",
+        "category": null,
+        "provenance": "Originally from PetDB. Syntax modified to remove underscores.",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "volatile",
+        "name": "Volatile",
+        "definition": "Variables associated with volatile chemicals",
+        "category": null,
+        "provenance": "Originally from PetDB. Syntax modified to remove underscores.",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "waterQuality",
+        "name": "Water quality",
+        "definition": "Variables associated with water quality variables or processes",
+        "category": null,
+        "provenance": "Originally from CUAHSI HIS GeneralCategoryCV. See http://his.cuahsi.org/mastercvreg/edit_cv11.aspx?tbl=GeneralCategoryCV.",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "instrumentTimestamp",
+        "name": "Instrument Timestamp",
+        "definition": "Variable associated with a timestamp provided by an instrument",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "instrumentMetadata",
+        "name": "Instument Metadata",
+        "definition": "Variables associated with internal instrument details, for instance a record number or other data",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "instrumentMeasurement",
+        "name": "Instrument Measurement",
+        "definition": "Variables which are measurements generated by instruments",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    }
+]

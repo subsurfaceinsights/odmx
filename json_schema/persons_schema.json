@@ -1,0 +1,29 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "person_id": {
+                "type": "number",
+                "minimum": 1,
+                "multipleOf": 1
+            },
+            "person_first_name": {
+                "type": "string"
+            },
+            "person_middle_name": {
+                "type": ["string", "null"]
+            },
+            "person_last_name": {
+                "type": "string"
+            },
+            "orc_id": {
+                "type": ["string", "null"],
+                "minLength": 16,
+                "maxLength": 16
+            }
+        },
+        "required": ["person_id", "person_first_name", "person_middle_name",
+                     "person_last_name", "orc_id"]
+    }
+}

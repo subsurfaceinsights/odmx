@@ -1,0 +1,21 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "specimen_to_specimen_collection_bridge_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ],
+                "minimum": 1
+            },
+            "sampling_feature_id": {
+                "type": "integer"
+            },
+            "specimen_collection_id": {
+                "type": "integer"
+            }
+        }
+    }
+}

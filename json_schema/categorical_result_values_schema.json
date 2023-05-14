@@ -1,0 +1,28 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "value_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ],
+                "minimum": 1
+            },
+            "result_id": {
+                "type": "integer"
+            },
+            "data_value": {
+                "type": "string"
+            },
+            "value_date_time": {
+                "type": "string",
+                "format": "date-time"
+            },
+            "value_date_time_utc_offset": {
+                "type": "integer"
+            }
+        }
+    }
+}

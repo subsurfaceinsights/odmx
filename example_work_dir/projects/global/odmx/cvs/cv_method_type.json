@@ -1,0 +1,227 @@
+[
+    {
+        "term": "cruise",
+        "name": "Cruise",
+        "definition": "A method for performing a cruise action.",
+        "category": "FieldActivity",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "dataRetrieval",
+        "name": "Data retrieval",
+        "definition": "A method for retrieving data from a datalogger deployed at a monitoring site.",
+        "category": "Equipment",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "derivation",
+        "name": "Derivation",
+        "definition": "A method for creating results by deriving them from other results.",
+        "category": "Observation",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "equipmentDeployment",
+        "name": "Equipment deployment",
+        "definition": "A method for deploying a piece of equipment that will not make observations at a sampling feature.",
+        "category": "Observation",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "equipmentMaintenance",
+        "name": "Equipment maintenance",
+        "definition": "A method for performing periodic upkeep or servicing of field or laboratory equipment. Maintenance may be performed in the field, in a laboratory, or at a factory maintenance center.",
+        "category": "Equipment",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "equipmentProgramming",
+        "name": "Equipment programming",
+        "definition": "A method for creating or modifying the data collection program running on a datalogger or other equipment deployed at a monitoring site.",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "equipmentRetrieval",
+        "name": "Equipment retrieval",
+        "definition": "A method for retrieving equipment from a sampling feature at which or on which it was deployed.",
+        "category": "Equipment",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "estimation",
+        "name": "Estimation",
+        "definition": "A method for creating results by estimation or professional judgement.",
+        "category": "Observation",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "expedition",
+        "name": "Expedition",
+        "definition": "A method for performing an expedition action.",
+        "category": "FieldActivity",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "fieldActivity",
+        "name": "Field activity",
+        "definition": "A method for performing an activity in the field at or on a sampling feature.",
+        "category": "FieldActivity",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "genericNonObservation",
+        "name": "Generic non-observation",
+        "definition": "A method for completing a non-specific action that does not produce a result.",
+        "category": "Other",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "instrumentCalibration",
+        "name": "Instrument calibration",
+        "definition": "A method for calibrating an instrument either in the field or in the laboratory.",
+        "category": "Equipment",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "instrumentContinuingCalibrationVerification",
+        "name": "Instrument Continuing Calibration Verification",
+        "definition": "A method for verifying the instrument or meter calibration by measuring a calibration standard of known value as if it were a sample and comparing the measured result to the calibration acceptance criteria listed in the Standard Operating Procedure.",
+        "category": "Method",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "instrumentDeployment",
+        "name": "Instrument deployment",
+        "definition": "A method for deploying an instrument to make observations at a sampling feature.",
+        "category": "Observation",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "instrumentRetrieval",
+        "name": "Instrument retrieval",
+        "definition": "A method for retrieving or recovering an instrument that has been deployed at a smpling feature.",
+        "category": "Equipment",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "observation",
+        "name": "Observation",
+        "definition": "A method for creating observation results. This term should be used when a Result is generated but the more specific terms of Instrument deployment or Specimen analysis are not applicable.",
+        "category": "Observation",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "simulation",
+        "name": "Simulation",
+        "definition": "A method for creating results by running a simulation model.",
+        "category": "Observation",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "siteVisit",
+        "name": "Site visit",
+        "definition": "A method for performing a site visit action.",
+        "category": "FieldActivity",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "specimenAnalysis",
+        "name": "Specimen analysis",
+        "definition": "A method for ex situ analysis of a specimen using an instrument, typically in a laboratory, for the purpose of measuring properties of a specimen.",
+        "category": "Observation",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "specimenCollection",
+        "name": "Specimen collection",
+        "definition": "A method for collecting a specimen for ex situ analysis.",
+        "category": "SamplingFeature",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "specimenFractionation",
+        "name": "Specimen fractionation",
+        "definition": "A method for separating a specimen into multiple different fractions or size classes.",
+        "category": "SamplingFeature",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "specimenPreparation",
+        "name": "Specimen preparation",
+        "definition": "A method for processing a specimen collected in the field to produce a sample suitable for analysis using a particular analytical procedure.",
+        "category": "SamplingFeature",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "specimenPreservation",
+        "name": "Specimen preservation",
+        "definition": "A method for preserving a specimen either in the field or in a laboratory prior to ex situ analysis.",
+        "category": "SamplingFeature",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "submersibleLaunch",
+        "name": "Submersible launch",
+        "definition": "A method for launching a submersible from a vessel or ship.",
+        "category": "FieldActivity",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "unknown",
+        "name": "Unknown",
+        "definition": "The method type is unknown.",
+        "category": "Other",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    }
+]

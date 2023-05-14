@@ -1,0 +1,33 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "survey_electrode_geometry_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ],
+                "minimum": 1
+            },
+            "soilprobe_monitoring_id": {
+                "type": "integer"
+            },
+            "electrode_well": {
+                "type": "integer"
+            },
+            "electrode_number": {
+                "type": "integer"
+            },
+            "x_coordinate_meters": {
+                "type": "number"
+            },
+            "y_coordinate_meters": {
+                "type": "number"
+            },
+            "z_coordinate_meters": {
+                "type": "number"
+            }
+        }
+    }
+}

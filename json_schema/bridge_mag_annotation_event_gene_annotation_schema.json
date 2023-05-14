@@ -1,0 +1,27 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "bridge_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ],
+                "minimum": 1
+            },
+            "gene_annotation_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ]
+            },
+            "mag_annotation_event_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ]
+            }
+        }
+    }
+}

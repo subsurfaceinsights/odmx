@@ -1,0 +1,45 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "assembled_contigs_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ],
+                "minimum": 1
+            },
+            "number_of_contigs": {
+                "type": [
+                    "integer",
+                    "null"
+                ]
+            },
+            "qcd_reads_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ]
+            },
+            "total_assembled_length": {
+                "type": [
+                    "integer",
+                    "null"
+                ]
+            },
+            "n50": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "assembly_event_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ]
+            }
+        }
+    }
+}

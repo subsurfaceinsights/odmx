@@ -1,0 +1,442 @@
+[
+    {
+        "term": "borehole",
+        "name": "Borehole",
+        "definition": "A narrow shaft bored into the ground, either vertically or horizontally. A borehole includes the hole cavity and walls surrounding that cavity.",
+        "category": "SamplingPointOrCurve",
+        "provenance": "Example from OGC Observations & Measurements, but listed as Sample Type in SESAR",
+        "provenance_uri": null,
+        "note": "Term retrived from OGC Observations & Measurements (e.g., see https://www.seegrid.csiro.au/wiki/AppSchemas/ObservationsAndSampling#Sampling_model).  Parts of the definition came from Wikipedia (see http://en.wikipedia.org/wiki/Borehole).",
+        "dimensionality": "1D"
+    },
+    {
+        "term": "collectorOrRanneyTypeWell",
+        "name": "Collector or Ranney type well",
+        "definition": "An infiltration gallery consisting of one or more underground laterals through which groundwater is collected and a vertical caisson from which groundwater is removed. Also known as a \"horizontal well\". These wells produce large yield with small drawdown.",
+        "category": "SamplingPointOrCurve",
+        "provenance": "CUAHSI SiteTypeCV. Originally from USGS Site Types.",
+        "provenance_uri": null,
+        "note": null,
+        "dimensionality": null
+    },
+    {
+        "term": "composite",
+        "name": "Composite",
+        "definition": "A Composite sampling feature represents an aggregation of specific sampling features defined by a geographic location at which multiple sampling features have been installed. For example, a composite site might consist of a location on a stream where a streamflow gage, weather station, and shallow groundwater well have been installed.",
+        "category": "All",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null,
+        "dimensionality": null
+    },
+    {
+        "term": "criticalZoneObservatory",
+        "name": "Critical Zone Observatory",
+        "definition": "A Critical Zone Observatory (CZO) is a research field area with a mandate to address pressing interdisciplinary scientific questions concerning geological, physical, chemical, and biological processes and their couplings that govern critical zone system dynamics.",
+        "category": "SamplingSurface",
+        "provenance": "US National Science Foundation. See https://www.nsf.gov/funding/pgm_summ.jsp?pims_id=500044",
+        "provenance_uri": null,
+        "note": null,
+        "dimensionality": null
+    },
+    {
+        "term": "crossSection",
+        "name": "Cross section",
+        "definition": "The intersection of a body in three-dimensional space with a plane.  Represented as a polygon.",
+        "category": "SamplingSurface",
+        "provenance": "Term from OGC Observations & Measurements. Partial definition from Wikipedia.",
+        "provenance_uri": null,
+        "note": "Term retrived from OGC Observations & Measurements (e.g., see https://www.seegrid.csiro.au/wiki/AppSchemas/ObservationsAndSampling#Sampling_model).  Parts of the definition came from Wikipedia (see http://en.wikipedia.org/wiki/Cross_section_(geometry)).",
+        "dimensionality": "2D"
+    },
+    {
+        "term": "CTD",
+        "name": "CTD",
+        "definition": "A CTD (Conductivity, Temperature, and Depth) cast is a water column depth profile collected over a specific and relatively short date-time range, that can be considered as a parent specimen.",
+        "category": "Specimen",
+        "provenance": "SESAR. See http://www.geosamples.org/help/vocabularies#object.",
+        "provenance_uri": null,
+        "note": null,
+        "dimensionality": null
+    },
+    {
+        "term": "depthInterval",
+        "name": "Depth interval",
+        "definition": "A discrete segment along a longer vertical path, such as a borehole, soil profile or other depth profile, in which an observation or specimen is collected over the distance between the upper and lower depth limits of the interval. A Depth Interval is a sub-type of Interval.",
+        "category": "SamplingCurve",
+        "provenance": "CZchemDB",
+        "provenance_uri": null,
+        "note": null,
+        "dimensionality": "1D"
+    },
+    {
+        "term": "excavation",
+        "name": "Excavation",
+        "definition": "An artificially constructed cavity in the earth that is deeper than the soil (see soil hole), larger than a well bore (see well and test hole), and substantially open to the atmosphere. The diameter of an excavation is typically similar or larger than the depth. Excavations include building-foundation diggings, roadway cuts, and surface mines.",
+        "category": "SamplingPointOrVolume",
+        "provenance": "CUAHSI SiteTypeCV. Originally from USGS Site Types.",
+        "provenance_uri": null,
+        "note": null,
+        "dimensionality": null
+    },
+    {
+        "term": "extensometerWell",
+        "name": "Extensometer well",
+        "definition": "A well equipped to measure small changes in the thickness of the penetrated sediments, such as those caused by groundwater withdrawal or recharge.",
+        "category": "SamplingPointOrCurve",
+        "provenance": "CUAHSI SiteTypeCV. Originally from USGS Site Types.",
+        "provenance_uri": null,
+        "note": null,
+        "dimensionality": null
+    },
+    {
+        "term": "fieldArea",
+        "name": "Field area",
+        "definition": "A polygon area within which field experiments or observations of ambient conditions are conducted. A field area may contain many sites and has a geographical footprint that can be represented by a polygon.",
+        "category": "SamplingSurface",
+        "provenance": "Used by CriticalZone.org",
+        "provenance_uri": null,
+        "note": "Useful for Critical Zone Observatory network and other programs to describe a terrestrial research area.  Can be hiearchical (i.e. CRB-CZO > WhiteClayCreek@SWRC > TransectA.  See http://criticalzone.org/christina/infrastructure/field-areas-christina/).",
+        "dimensionality": "2D"
+    },
+    {
+        "term": "flightline",
+        "name": "Flightline",
+        "definition": "A path along which an aircraft travels while measuring a phenomena of study.",
+        "category": "SamplingCurve",
+        "provenance": "OGC Observations & Measurements",
+        "provenance_uri": null,
+        "note": "Term retrived from OGC Observations & Measurements (e.g., see https://www.seegrid.csiro.au/wiki/AppSchemas/ObservationsAndSampling#Sampling_model)",
+        "dimensionality": "1D"
+    },
+    {
+        "term": "hyporheicZoneWell",
+        "name": "Hyporheic-zone well",
+        "definition": "A permanent well, drive point, or other device intended to sample a saturated zone in close proximity to a stream.",
+        "category": "SamplingPointOrCurve",
+        "provenance": "CUAHSI SiteTypeCV. Originally from USGS Site Types.",
+        "provenance_uri": null,
+        "note": null,
+        "dimensionality": null
+    },
+    {
+        "term": "interconnectedWells",
+        "name": "Interconnected wells",
+        "definition": "Collector or drainage wells connected by an underground lateral.",
+        "category": "All",
+        "provenance": "CUAHSI SiteTypeCV. Originally from USGS Site Types.",
+        "provenance_uri": null,
+        "note": "This is a term from the USGS site types http://wdr.water.usgs.gov/nwisgmap/help/sitetype.html that was originally included in the CUAHSI SiteTypeCV.  It is more appropriate as a SamplingFeatureType.  However, we decided that it is too specific and was moved to the not supported list in favor of just having one \"observation well\" term. Specifics of the type of well, etc. should be included in the SamplingFeature description.",
+        "dimensionality": null
+    },
+    {
+        "term": "interval",
+        "name": "Interval",
+        "definition": "A discrete segment along a longer path in which an observation or specimen is collected over the distance between the upper and lower bounds of the interval. A Depth Interval is a sub-type of Interval.",
+        "category": "SamplingCurve",
+        "provenance": "OGC Observations & Measurements",
+        "provenance_uri": null,
+        "note": "Term retrived from OGC Observations & Measurements (e.g., see https://www.seegrid.csiro.au/wiki/AppSchemas/ObservationsAndSampling#Sampling_model)",
+        "dimensionality": "1D"
+    },
+    {
+        "term": "lysimeter",
+        "name": "Lysimeter",
+        "definition": "Device inserted into unsaturated zone to collect a water sample either under vacuum (tension lysimeter) or freely flowing water (zero-tension lysimeter)",
+        "category": "SamplingPointOrCurve",
+        "provenance": "Hooper 2013 White paper",
+        "provenance_uri": "https://drive.google.com/file/d/0B3v0QxIOuR_nWGprWXZSdDB1ODg/edit?usp=sharing",
+        "note": "This is a device, not a SiteType.  Suggest removing.",
+        "dimensionality": null
+    },
+    {
+        "term": "multipleWells",
+        "name": "Multiple wells",
+        "definition": "A group of wells that are pumped through a single header and for which little or no data about the individual wells are available.",
+        "category": "All",
+        "provenance": "Originally from USGS Site Types.",
+        "provenance_uri": null,
+        "note": "This is a term from the USGS site types http://wdr.water.usgs.gov/nwisgmap/help/sitetype.html that was originally included in the CUAHSI SiteTypeCV.  It is more appropriate as a SamplingFeatureType.  However, we decided that it is too specific and was moved to the not supported list in favor of just having one \"observation well\" term. Specifics of the type of well, etc. should be included in the SamplingFeature description.",
+        "dimensionality": null
+    },
+    {
+        "term": "networkInfrastructure",
+        "name": "Network infrastructure",
+        "definition": "A site that is primarily associated with monitoring or telemetry network infrastructure. For example a radio repeater or remote radio base station.",
+        "category": "SamplingPoint",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null,
+        "dimensionality": null
+    },
+    {
+        "term": "observatory",
+        "name": "Observatory",
+        "definition": "A research field area with shared infrastructure and a mandate to address pressing interdisciplinary scientific questions",
+        "category": "SamplingSurface",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null,
+        "dimensionality": null
+    },
+    {
+        "term": "other",
+        "name": "Other",
+        "definition": "Another Sampling Feature Type that is not otherwise listed.",
+        "category": "All",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null,
+        "dimensionality": null
+    },
+    {
+        "term": "phenocam",
+        "name": "Phenocam",
+        "definition": "A location where a camera is deployed with the specific objective of collecting Phenological data",
+        "category": "SamplingPoint",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null,
+        "dimensionality": null
+    },
+    {
+        "term": "pointCoverage",
+        "name": "Point coverage",
+        "definition": null,
+        "category": "SamplingVolume",
+        "provenance": "adapted from \"LidarCloud\" example from OGC O&M",
+        "provenance_uri": null,
+        "note": "We have a result type for this, but no corresponding SamplingFeatureType.",
+        "dimensionality": null
+    },
+    {
+        "term": "profile",
+        "name": "Profile",
+        "definition": "A one-dimensional grid at fixed (x, y, t) coordinates within a four-dimensional (x, y, z, t) coordinate reference system. The grid axis is aligned with the coordinate reference system z-axis. Typically used to characterize or measure phenomena as a function of depth.",
+        "category": "SamplingCurve",
+        "provenance": "OGC Observations & Measurements",
+        "provenance_uri": null,
+        "note": "Term retrived from OGC Observations & Measurements (e.g., see https://www.seegrid.csiro.au/wiki/AppSchemas/ObservationsAndSampling#Sampling_model)",
+        "dimensionality": "1D"
+    },
+    {
+        "term": "quadrat",
+        "name": "Quadrat",
+        "definition": "A small plot used to isolate a standard unit of area for study of the distribution of an item over a large area.",
+        "category": "SamplingSurface",
+        "provenance": "Term from OGC Observations & Measurements. Partial definition from Wikipedia.",
+        "provenance_uri": null,
+        "note": "Term retrived from OGC Observations & Measurements (e.g., see https://www.seegrid.csiro.au/wiki/AppSchemas/ObservationsAndSampling#Sampling_model). Parts of the definition came from Wikipedia (see http://en.wikipedia.org/wiki/Quadrat).",
+        "dimensionality": "2D"
+    },
+    {
+        "term": "scene",
+        "name": "Scene",
+        "definition": "A two-dimensional visual extent within a physical environment.",
+        "category": "SamplingSurface",
+        "provenance": "Term from OGC Observations & Measurements. Partial definition from Wikipedia.",
+        "provenance_uri": null,
+        "note": "Term retrived from OGC Observations & Measurements (e.g., see https://www.seegrid.csiro.au/wiki/AppSchemas/ObservationsAndSampling#Sampling_model).  Parts of the definition came from Wikipedia (see http://en.wikipedia.org/wiki/Scene_(perception)).",
+        "dimensionality": "2D"
+    },
+    {
+        "term": "shipsTrack",
+        "name": "Ships track",
+        "definition": "A path along which a ship or vessel travels while measuring a phenomena of study.  Represented as a line connecting the ship's consecutive positions on the surface of the earth.",
+        "category": "SamplingCurve",
+        "provenance": "OGC Observations & Measurements",
+        "provenance_uri": null,
+        "note": "Term retrived from OGC Observations & Measurements (e.g., see https://www.seegrid.csiro.au/wiki/AppSchemas/ObservationsAndSampling#Sampling_model)",
+        "dimensionality": "1D"
+    },
+    {
+        "term": "site",
+        "name": "Site",
+        "definition": "A facility or location at which observations have been collected. A site may have instruments or equipment installed and may contain multiple other sampling features (e.g., a stream gage, weather station, observation well, etc.). Additionally, many specimen sampling features may be collected at a site. Sites are also often referred to as stations. A site is represented as a point, but it may have a geographical footprint that is not a point. The site coordinates serve as a reference for the site and offsets may be specified from this reference location.",
+        "category": "SamplingPoint",
+        "provenance": "CUAHSI Observations Data Model",
+        "provenance_uri": null,
+        "note": null,
+        "dimensionality": "0D"
+    },
+    {
+        "term": "snowPit",
+        "name": "Snow Pit",
+        "definition": "A small pit, hole or excavation into snow at the top few meters of earth surface. Snow pit are created to measure snow composition and properties. Sometimes samples are taken which are then analyzed",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null,
+        "dimensionality": null
+    },
+    {
+        "term": "soilPit",
+        "name": "Soil pit",
+        "definition": "A small pit, hole or excavation into soil at the top few meters of earth surface. Soil generally includes some organic matter derived from plants. Soil holes are created to measure soil composition and properties. Sometimes electronic probes are inserted into soil holes to measure physical properties, and (or) the extracted soil is analyzed.",
+        "category": "SamplingPointOrCurve",
+        "provenance": "Adapted from USGS Site Types: soilHole",
+        "provenance_uri": null,
+        "note": null,
+        "dimensionality": "2D"
+    },
+    {
+        "term": "soilPitSection",
+        "name": "Soil pit section",
+        "definition": "Two-dimensional vertical face of a soil pit that is described and sampled.",
+        "category": "SamplingSurface",
+        "provenance": "CZchemDB",
+        "provenance_uri": null,
+        "note": null,
+        "dimensionality": "2D"
+    },
+    {
+        "term": "specimen",
+        "name": "Specimen",
+        "definition": "A physical sample (object or entity) obtained for observations, typically performed ex situ, often in a laboratory.",
+        "category": "Specimen",
+        "provenance": "OGC Observations & Measurements",
+        "provenance_uri": null,
+        "note": null,
+        "dimensionality": null
+    },
+    {
+        "term": "station",
+        "name": "Station",
+        "definition": "A facility with instruments and equipment for measuring environmental conditions.",
+        "category": "SamplingPointOrCurve",
+        "provenance": "example from OGC O&M; Hooper 2013 White Paper",
+        "provenance_uri": "https://www.seegrid.csiro.au/wiki/AppSchemas/ObservationsAndSampling#Sampling_model",
+        "note": "We chose to keep just Site.  This is equivalent to Site.",
+        "dimensionality": "0D"
+    },
+    {
+        "term": "streamGage",
+        "name": "Stream gage",
+        "definition": "A location used to monitor and test terrestrial bodies of water. Hydrometric measurements of water level, surface elevation (\"stage\") and/or volumetric discharge (flow) are generally taken, and observations of biota and water quality may also be made.",
+        "category": "SamplingPoint",
+        "provenance": "Term adapted from Wikipedia",
+        "provenance_uri": null,
+        "note": "Definition adapted from Wikpedia (http://en.wikipedia.org/wiki/Stream_gauge).",
+        "dimensionality": null
+    },
+    {
+        "term": "testHoleNotCompletedAsAWell",
+        "name": "Test hole not completed as a well",
+        "definition": "An uncased hole (or one cased only temporarily) that was drilled for water, or for geologic or hydrogeologic testing. It may be equipped temporarily with a pump in order to make a pumping test, but if the hole is destroyed after testing is completed, it is still a test hole. A core hole drilled as a part of mining or quarrying exploration work should be in this class.",
+        "category": "SamplingPointOrCurve",
+        "provenance": "CUAHSI SiteTypeCV. Originally from USGS Site Types.",
+        "provenance_uri": null,
+        "note": null,
+        "dimensionality": null
+    },
+    {
+        "term": "trajectory",
+        "name": "Trajectory",
+        "definition": "The path that a moving object follows through space as a function of time. A trajectory can be described by the geometry of the path or as the position of the object over time.",
+        "category": "SamplingCurve",
+        "provenance": "Term from OGC Observations & Measurements. Partial definition from Wikipedia.",
+        "provenance_uri": null,
+        "note": "Term retrived from OGC Observations & Measurements (e.g., see https://www.seegrid.csiro.au/wiki/AppSchemas/ObservationsAndSampling#Sampling_model). Parts of the definition came from Wikipedia (see http://en.wikipedia.org/wiki/Trajectory).",
+        "dimensionality": "1D"
+    },
+    {
+        "term": "transect",
+        "name": "Transect",
+        "definition": "A path along which ocurrences of a phenomena of study are counted or measured.",
+        "category": "SamplingCurve",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null,
+        "dimensionality": "1D"
+    },
+    {
+        "term": "traverse",
+        "name": "Traverse",
+        "definition": "A field control network consisting of survey stations placed along a line or path of travel.",
+        "category": "SamplingCurve",
+        "provenance": "Term from OGC Observations & Measurements. Partial definition from Wikipedia.",
+        "provenance_uri": null,
+        "note": "Term retrived from OGC Observations & Measurements (e.g., see https://www.seegrid.csiro.au/wiki/AppSchemas/ObservationsAndSampling#Sampling_model). Parts of the definition came from Wikipedia (see http://en.wikipedia.org/wiki/Traverse_(surveying)).",
+        "dimensionality": "1D"
+    },
+    {
+        "term": "unknown",
+        "name": "Unknown",
+        "definition": "Sampling Feature type is unknown.",
+        "category": "Unknown",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null,
+        "dimensionality": null
+    },
+    {
+        "term": "wasteInjectionWell",
+        "name": "Waste injection well",
+        "definition": "A facility used to convey industrial waste, domestic sewage, brine, mine drainage, radioactive waste, or other fluid into an underground zone. An oil-test or deep-water well converted to waste disposal should be in this category. A well where fresh water is injected to artificially recharge thegroundwaterr supply or to pressurize an oil or gas production zone by injecting a fluid should be classified as a well (not an injection-well facility), with additional information recorded under Use of Site.",
+        "category": "SamplingPointOrCurve",
+        "provenance": "CUAHSI SiteTypeCV. Originally from USGS Site Types.",
+        "provenance_uri": null,
+        "note": null,
+        "dimensionality": null
+    },
+    {
+        "term": "waterQualityStation",
+        "name": "Water quality station",
+        "definition": "A location used to monitor and test the quality of terrestrial bodies of water. Water quality stations may be locations at which physical water samples are collected for ex situ analysis.  Water qulaity stations may also have instruments and equipment for continuous, in situ measurement of water quality variables.",
+        "category": "SamplingPoint",
+        "provenance": "Adapted from \"StreamStation\" in Hooper 2013 white paper",
+        "provenance_uri": "Hooper 2013 White paper",
+        "note": null,
+        "dimensionality": null
+    },
+    {
+        "term": "weatherStation",
+        "name": "Weather station",
+        "definition": "A facility, either on land or sea, with instruments and equipment for measuring atmospheric conditions to provide information for weather forecasts and to study weather and climate.",
+        "category": "SamplingPoint",
+        "provenance": "Term adapted from Wikipedia",
+        "provenance_uri": null,
+        "note": "Definition adapted from Wikpedia (http://en.wikipedia.org/wiki/Weather_station).",
+        "dimensionality": null
+    },
+    {
+        "term": "well",
+        "name": "Well",
+        "definition": "A drilled or hand-augured hole drilled into land into which a casing has been inserted. Wells may be screened over varying lengths or unscreened. The USGS definition is more general than used here: \"A hole or shaft constructed in the earth intended to be used to locate, sample, or develop groundwater, oil, gas, or some other subsurface material. The diameter of a well is typically much smaller than the depth. Wells are also used to artificially recharge groundwater or to pressurize oil and gas production zones. Additional information about specific kinds of wells should be recorded under the secondary site types or the Use of Site field. Underground waste-disposal wells should be classified as waste-injection wells.\"",
+        "category": "SamplingPointOrCurve",
+        "provenance": "CUAHSI SiteTypeCV. Originally from USGS Site Types.",
+        "provenance_uri": "Hooper 2013 White paper",
+        "note": null,
+        "dimensionality": null
+    },
+    {
+        "term": "organism",
+        "name": "Organism",
+        "definition": "A specific living organism that is studied in situ, such as a inididual tree or tagged wild animal.",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null,
+        "dimensionality": null
+    },
+    {
+        "term": "rhoStick",
+        "name": "Rho Stick",
+        "definition": "A vertical probe which measures apparent resistance and temperature over the length of the probe",
+        "category": "SamplingPointOrCurve",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null,
+        "dimensionality": null
+    },
+    {
+        "term": "boundaryLayer",
+        "name": "Boundary Layer",
+        "definition": "A layer between two media in which an observation or specimen is collected.",
+        "category": "SamplingCurve",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null,
+        "dimensionality": "1D"
+    }
+]

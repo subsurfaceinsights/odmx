@@ -1,0 +1,31 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "method_type_cv": {
+                "type": "string"
+            },
+            "method_code": {
+                "type": "string"
+            },
+            "method_name": {
+                "type": "string"
+            },
+            "method_description": {
+                "type": ["string", "null"]
+            },
+            "method_link": {
+                "type": ["string", "null"],
+                "format": "iri"
+            },
+            "organization_id": {
+                "type": ["number", "null"],
+                "minimum": 1,
+                "multipleOf": 1
+            }
+        },
+        "required": ["method_type_cv", "method_code", "method_name",
+                     "method_description", "method_link", "organization_id"]
+    }
+}

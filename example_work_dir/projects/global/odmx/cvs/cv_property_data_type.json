@@ -1,0 +1,47 @@
+[
+    {
+        "term": "boolean",
+        "name": "Boolean",
+        "definition": "A boolean type is typically a logical type that can be either \"true\" or \"false\".",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "controlledList",
+        "name": "Controlled list",
+        "definition": "A predefined list of strings that a user can select from.",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "floatingPointNumber",
+        "name": "Floating point number",
+        "definition": "A floating-point number represents a limited-precision rational number that may have a fractional part.",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "integer",
+        "name": "Integer",
+        "definition": "An integer data type can hold a whole number, but no fraction. Integers may be either signed (allowing negative values) or unsigned (nonnegative values only).",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "string",
+        "name": "String",
+        "definition": "An array of characters including letters, digits, punctuation marks, symbols, etc.",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    }
+]

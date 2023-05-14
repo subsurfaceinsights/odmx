@@ -1,0 +1,24 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "bridge_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ],
+                "minimum": 1
+            },
+            "citation_id": {
+                "type": "integer"
+            },
+            "person_id": {
+                "type": "integer"
+            },
+            "author_order": {
+                "type": "integer"
+            }
+        }
+    }
+}

@@ -1,0 +1,33 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "gene_annotation_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ],
+                "minimum": 1
+            },
+            "cv_annotation_source": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "source_id": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "source_hit": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            }
+        }
+    }
+}

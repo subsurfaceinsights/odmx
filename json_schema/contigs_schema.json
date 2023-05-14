@@ -1,0 +1,51 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "contigs_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ],
+                "minimum": 1
+            },
+            "contig_length": {
+                "type": [
+                    "integer",
+                    "null"
+                ]
+            },
+            "mag_binning_event_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ]
+            },
+            "g_cpercentage": {
+                "type": [
+                    "number",
+                    "null"
+                ]
+            },
+            "contig_coverage": {
+                "type": [
+                    "number",
+                    "null"
+                ]
+            },
+            "fasta_file_path": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "fasta_file_name": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            }
+        }
+    }
+}

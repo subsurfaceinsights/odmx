@@ -1,0 +1,94 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "term": {
+                "type": "string"
+            },
+            "name": {
+                "type": "string"
+            },
+            "definition": {
+                "type": ["string", "null"]
+            },
+            "category": {
+                "type": ["string", "null"]
+            },
+            "provenance": {
+                "type": ["string", "null"]
+            },
+            "provenance_uri": {
+                "type": ["string", "null"],
+                "format": "iri"
+            },
+            "note": {
+                "type": ["string", "null"]
+            },
+            "default_unit": {
+                "type": ["string", "null"]
+            },
+            "default_unit_abbreviation": {
+                "type": ["string", "null"]
+            },
+            "dimension_symbol": {
+                "type": ["string", "null"]
+            },
+            "dimension_unitless": {
+                "type": "number",
+                "minimum": -10,
+                "maximum": 10,
+                "multipleOf": 1
+            },
+            "dimension_length": {
+                "type": "number",
+                "minimum": -10,
+                "maximum": 10,
+                "multipleOf": 1
+            },
+            "dimension_mass": {
+                "type": "number",
+                "minimum": -10,
+                "maximum": 10,
+                "multipleOf": 1
+            },
+            "dimension_time": {
+                "type": "number",
+                "minimum": -10,
+                "maximum": 10,
+                "multipleOf": 1
+            },
+            "dimension_current": {
+                "type": "number",
+                "minimum": -10,
+                "maximum": 10,
+                "multipleOf": 1
+            },
+            "dimension_temperature": {
+                "type": "number",
+                "minimum": -10,
+                "maximum": 10,
+                "multipleOf": 1
+            },
+            "dimension_amount": {
+                "type": "number",
+                "minimum": -10,
+                "maximum": 10,
+                "multipleOf": 1
+            },
+            "dimension_light": {
+                "type": "number",
+                "minimum": -10,
+                "maximum": 10,
+                "multipleOf": 1
+            }
+        },
+        "required": ["term", "name", "definition", "category", "provenance",
+                     "provenance_uri", "note", "default_unit",
+                     "default_unit_abbreviation", "dimension_symbol",
+                     "dimension_unitless", "dimension_length",
+                     "dimension_mass", "dimension_time", "dimension_current",
+                     "dimension_temperature", "dimension_amount",
+                     "dimension_light"]
+    }
+}

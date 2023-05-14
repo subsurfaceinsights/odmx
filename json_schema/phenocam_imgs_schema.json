@@ -1,0 +1,130 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "phenocam_image_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ],
+                "minimum": 1
+            },
+            "phenocam_dataset_id": {
+                "type": "integer"
+            },
+            "phenocam_equipment_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ]
+            },
+            "phenocam_image_name": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "observation_time_utc": {
+                "type": [
+                    "string",
+                    "null"
+                ],
+                "format": "date-time"
+            },
+            "google_drive_id": {
+                "type": "string"
+            },
+            "image_width": {
+                "type": "integer"
+            },
+            "image_height": {
+                "type": "integer"
+            },
+            "image_rotation": {
+                "type": [
+                    "number",
+                    "null"
+                ]
+            },
+            "exposure_time": {
+                "type": [
+                    "number",
+                    "null"
+                ]
+            },
+            "aperture": {
+                "type": [
+                    "number",
+                    "null"
+                ]
+            },
+            "flash_used": {
+                "type": [
+                    "boolean",
+                    "null"
+                ]
+            },
+            "focal_length": {
+                "type": [
+                    "number",
+                    "null"
+                ]
+            },
+            "iso_speed": {
+                "type": [
+                    "integer",
+                    "null"
+                ]
+            },
+            "metering_mode": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "sensor": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "exposure_mode": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "color_space": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "white_balance": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "exposure_bias": {
+                "type": [
+                    "number",
+                    "null"
+                ]
+            },
+            "max_aperture_value": {
+                "type": [
+                    "number",
+                    "null"
+                ]
+            },
+            "flag": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            }
+        }
+    }
+}

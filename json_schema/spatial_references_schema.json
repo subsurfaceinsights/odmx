@@ -1,0 +1,36 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "spatial_reference_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ],
+                "minimum": 1
+            },
+            "srs_code": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "srs_name": {
+                "type": "string"
+            },
+            "srs_description": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "srs_link": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            }
+        }
+    }
+}

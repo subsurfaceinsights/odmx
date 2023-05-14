@@ -1,0 +1,36 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "relation_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ],
+                "minimum": 1
+            },
+            "result_id": {
+                "type": "integer"
+            },
+            "relationship_type_cv": {
+                "type": "string"
+            },
+            "related_result_id": {
+                "type": "integer"
+            },
+            "version_code": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "related_result_sequence_number": {
+                "type": [
+                    "integer",
+                    "null"
+                ]
+            }
+        }
+    }
+}

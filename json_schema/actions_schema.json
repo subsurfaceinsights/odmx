@@ -1,0 +1,59 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "action_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ],
+                "minimum": 1
+            },
+            "action_type_cv": {
+                "type": "string"
+            },
+            "action_name": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "action_description": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "method_id": {
+                "type": "integer"
+            },
+            "begin_date_time": {
+                "type": "string",
+                "format": "date-time"
+            },
+            "begin_date_time_utc_offset": {
+                "type": "integer"
+            },
+            "end_date_time": {
+                "type": [
+                    "string",
+                    "null"
+                ],
+                "format": "date-time"
+            },
+            "end_date_time_utc_offset": {
+                "type": [
+                    "integer",
+                    "null"
+                ]
+            },
+            "action_file_link": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            }
+        }
+    }
+}

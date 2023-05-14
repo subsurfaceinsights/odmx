@@ -1,0 +1,194 @@
+[
+    {
+        "project_variable_name": "Li",
+        "odmx_variable_term": "aqLithiumIon_asLithium"
+    },
+    {
+        "project_variable_name": "Be",
+        "odmx_variable_term": "aqBerylliumIon_asBeryllium"
+    },
+    {
+        "project_variable_name": "B",
+        "odmx_variable_term": "Boron"
+    },
+    {
+        "project_variable_name": "Na",
+        "odmx_variable_term": "Sodium"
+    },
+    {
+        "project_variable_name": "Mg",
+        "odmx_variable_term": "Magnesium"
+    },
+    {
+        "project_variable_name": "Al",
+        "odmx_variable_term": "Aluminum"
+    },
+    {
+        "project_variable_name": "Si",
+        "odmx_variable_term": "Silicon"
+    },
+    {
+        "project_variable_name": "K",
+        "odmx_variable_term": "Potassium"
+    },
+    {
+        "project_variable_name": "V",
+        "odmx_variable_term": "Vanadium"
+    },
+    {
+        "project_variable_name": "Cr",
+        "odmx_variable_term": "Chromium"
+    },
+    {
+        "project_variable_name": "Mn",
+        "odmx_variable_term": "Manganese"
+    },
+    {
+        "project_variable_name": "Ca",
+        "odmx_variable_term": "Calcium"
+    },
+    {
+        "project_variable_name": "Fe",
+        "odmx_variable_term": "Iron"
+    },
+    {
+        "project_variable_name": "Se",
+        "odmx_variable_term": "Selenium"
+    },
+    {
+        "project_variable_name": "Ti",
+        "odmx_variable_term": "Titanium"
+    },
+    {
+        "project_variable_name": "Ni",
+        "odmx_variable_term": "Nickel"
+    },
+    {
+        "project_variable_name": "Co",
+        "odmx_variable_term": "Cobalt"
+    },
+    {
+        "project_variable_name": "Cu",
+        "odmx_variable_term": "Copper"
+    },
+    {
+        "project_variable_name": "Zn",
+        "odmx_variable_term": "Zinc"
+    },
+    {
+        "project_variable_name": "Ge",
+        "odmx_variable_term": "Germanium"
+    },
+    {
+        "project_variable_name": "As",
+        "odmx_variable_term": "Arsenic"
+    },
+    {
+        "project_variable_name": "Rb",
+        "odmx_variable_term": "Rubidium"
+    },
+    {
+        "project_variable_name": "Sr",
+        "odmx_variable_term": "Strontium"
+    },
+    {
+        "project_variable_name": "Zr",
+        "odmx_variable_term": "Zirconium"
+    },
+    {
+        "project_variable_name": "Mo",
+        "odmx_variable_term": "Molybdenum"
+    },
+    {
+        "project_variable_name": "Ag",
+        "odmx_variable_term": "Silver"
+    },
+    {
+        "project_variable_name": "Cd",
+        "odmx_variable_term": "Cadmium"
+    },
+    {
+        "project_variable_name": "Sn",
+        "odmx_variable_term": "Tin"
+    },
+    {
+        "project_variable_name": "Sb",
+        "odmx_variable_term": "Antimony"
+    },
+    {
+        "project_variable_name": "Cs",
+        "odmx_variable_term": "Cesium"
+    },
+    {
+        "project_variable_name": "Ba",
+        "odmx_variable_term": "Barium"
+    },
+    {
+        "project_variable_name": "Eu",
+        "odmx_variable_term": "Europium"
+    },
+    {
+        "project_variable_name": "Pb",
+        "odmx_variable_term": "Lead"
+    },
+    {
+        "project_variable_name": "Th",
+        "odmx_variable_term": "Thorium"
+    },
+    {
+        "project_variable_name": "U",
+        "odmx_variable_term": "Uranium"
+    },
+    {
+        "project_variable_name": "P",
+        "odmx_variable_term": "Phosphorus"
+    },
+    {
+        "project_variable_name": "DIC",
+        "odmx_variable_term": "DIC"
+    },
+    {
+        "project_variable_name": "NPOC",
+        "odmx_variable_term": "NPOC"
+    },
+    {
+        "project_variable_name": "TDN",
+        "odmx_variable_term": "TDN"
+    },
+    {
+        "project_variable_name": "Fluoride",
+        "odmx_variable_term": "Fluoride"
+    },
+    {
+        "project_variable_name": "Chloride",
+        "odmx_variable_term": "Chloride"
+    },
+    {
+        "project_variable_name": "Sulfate",
+        "odmx_variable_term": "Sulfate"
+    },
+    {
+        "project_variable_name": "Nitrate",
+        "odmx_variable_term": "Nitrate"
+    },
+    {
+        "project_variable_name": "Phosphate",
+        "odmx_variable_term": "Phosphate"
+    },
+    {
+        "project_variable_name": "Nitrite",
+        "odmx_variable_term": "Nitrite"
+    },
+    {
+        "project_variable_name": "Ammonia_N",
+        "odmx_variable_term": "Ammonia_N"
+    },
+    {
+        "project_variable_name": "deltaO18",
+        "odmx_variable_term": "deltaO18"
+    },
+    {
+        "project_variable_name": "deltaD",
+        "odmx_variable_term": "deltaD"
+    }
+]

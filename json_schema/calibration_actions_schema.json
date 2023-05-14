@@ -1,0 +1,26 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "action_id": {
+                "type": "integer"
+            },
+            "calibration_check_value": {
+                "type": [
+                    "number",
+                    "null"
+                ]
+            },
+            "instrument_output_variable_id": {
+                "type": "integer"
+            },
+            "calibration_equation": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            }
+        }
+    }
+}

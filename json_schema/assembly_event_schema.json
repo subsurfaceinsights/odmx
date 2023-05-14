@@ -1,0 +1,48 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "assembly_event_id": {
+                "type": "integer"
+            },
+            "method": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "assembly_event_date": {
+                "type": [
+                    "string",
+                    "null"
+                ],
+                "format": "date-time"
+            },
+            "assembly_event_date_utc_offset": {
+                "type": [
+                    "integer",
+                    "null"
+                ]
+            },
+            "version": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "assembly_event_type": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "qcd_reads_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ]
+            }
+        }
+    }
+}

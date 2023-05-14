@@ -1,0 +1,30 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "sampling_features_aliases_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ],
+                "minimum": 1
+            },
+            "alias": {
+                "type": "string"
+            },
+            "alias_category": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "sampling_feature_id": {
+                "type": "integer"
+            },
+            "display_priority": {
+                "type": "integer"
+            }
+        }
+    }
+}

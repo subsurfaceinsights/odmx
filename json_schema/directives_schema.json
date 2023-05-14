@@ -1,0 +1,21 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "directive_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ],
+                "minimum": 1
+            },
+            "directive_type_cv": {
+                "type": "string"
+            },
+            "directive_description": {
+                "type": "string"
+            }
+        }
+    }
+}

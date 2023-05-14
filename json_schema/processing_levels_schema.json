@@ -1,0 +1,18 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "processing_level_code": {
+                "type": "string"
+            },
+            "definition": {
+                "type": ["string", "null"]
+            },
+            "explanation": {
+                "type": ["string", "null"]
+            }
+        },
+        "required": ["processing_level_code", "definition", "explanation"]
+    }
+}

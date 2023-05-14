@@ -1,0 +1,32 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "soilprobe_monitoring_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ],
+                "minimum": 1
+            },
+            "sampling_feature_id": {
+                "type": "integer"
+            },
+            "monitoring_survey_name": {
+                "type": "string"
+            },
+            "first_measurement_date": {
+                "type": "string",
+                "format": "date-time"
+            },
+            "last_measurement_date": {
+                "type": "string",
+                "format": "date-time"
+            },
+            "ert_system_id": {
+                "type": "string"
+            }
+        }
+    }
+}

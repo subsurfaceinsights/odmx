@@ -1,0 +1,57 @@
+[
+    {
+        "column_name": "timestamp",
+        "variable_domain_cv": "instrumentTimestamp",
+        "acquiring_instrument_uuid": "c446fcf6-f93e-4665-9794-787bd2fa4bd5",
+        "variable_term": "nonedefined",
+        "units_term": "datalogger_time_stamp",
+        "unit_conversion": true,
+        "expose_as_datastream": false,
+        "sensor_type": "measured",
+        "notes": null
+    },
+    {
+        "column_name": "precipitation",
+        "variable_domain_cv": "instrumentMeasurement",
+        "acquiring_instrument_uuid": "a942f8f5-a49b-468b-85c7-252cd3ee06da",
+        "variable_term": "rainPrecipitation",
+        "units_term": "inch",
+        "unit_conversion": true,
+        "expose_as_datastream": true,
+        "sensor_type": "measured",
+        "notes": null
+    },
+    {
+        "column_name": "discharge",
+        "variable_domain_cv": "instrumentMeasurement",
+        "acquiring_instrument_uuid": "a942f8f5-a49b-468b-85c7-252cd3ee06da",
+        "variable_term": "waterStreamDischarge",
+        "units_term": "cubicFootPerSecond",
+        "unit_conversion": true,
+        "expose_as_datastream": true,
+        "sensor_type": "measured",
+        "notes": null
+    },
+    {
+        "column_name": "gage_height",
+        "variable_domain_cv": "instrumentMeasurement",
+        "acquiring_instrument_uuid": "a942f8f5-a49b-468b-85c7-252cd3ee06da",
+        "variable_term": "waterHeightAboveSensor",
+        "units_term": "foot",
+        "unit_conversion": true,
+        "expose_as_datastream": true,
+        "sensor_type": "measured",
+        "notes": null
+    },
+    {
+        "column_name": "dcp_battery_voltage",
+        "variable_domain_cv": "instrumentMeasurement",
+        "acquiring_instrument_uuid": "a942f8f5-a49b-468b-85c7-252cd3ee06da",
+        "variable_term": "batteryVoltage",
+        "units_term": "volt",
+        "unit_conversion": true,
+        "expose_as_datastream": true,
+        "sensor_type": "measured",
+        "notes": null
+    }
+]

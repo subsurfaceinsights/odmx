@@ -1,0 +1,44 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "term": {
+                "type": "string"
+            },
+            "name": {
+                "type": "string"
+            },
+            "definition": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "category": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "provenance": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "provenance_uri": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "note": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            }
+        }
+    }
+}

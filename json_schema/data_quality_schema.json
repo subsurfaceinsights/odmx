@@ -1,0 +1,41 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "data_quality_id": {
+                "type": "integer"
+            },
+            "data_quality_type_cv": {
+                "type": "string"
+            },
+            "data_quality_code": {
+                "type": "string"
+            },
+            "data_quality_value": {
+                "type": [
+                    "number",
+                    "null"
+                ]
+            },
+            "data_quality_value_units_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ]
+            },
+            "data_quality_description": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "data_quality_link": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            }
+        }
+    }
+}

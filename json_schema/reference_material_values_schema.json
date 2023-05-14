@@ -1,0 +1,39 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "reference_material_value_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ],
+                "minimum": 1
+            },
+            "reference_material_id": {
+                "type": "integer"
+            },
+            "reference_material_value": {
+                "type": "number"
+            },
+            "reference_material_accuracy": {
+                "type": [
+                    "number",
+                    "null"
+                ]
+            },
+            "variable_id": {
+                "type": "integer"
+            },
+            "units_id": {
+                "type": "integer"
+            },
+            "citation_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ]
+            }
+        }
+    }
+}

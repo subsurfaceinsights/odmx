@@ -1,0 +1,32 @@
+[
+    {
+        "property_name": "Location_Type",
+        "property_description": "Location type used by LBNL.",
+        "property_data_type_cv": "string",
+        "property_units_term": null
+    },
+    {
+        "property_name": "Location_Activity",
+        "property_description": "Location activity used by LBNL.",
+        "property_data_type_cv": "string",
+        "property_units_term": null
+    },
+    {
+        "property_name": "well_screen_top",
+        "property_description": "The top of a well screen, given in meters below the surface MSL.",
+        "property_data_type_cv": "floatingPointNumber",
+        "property_units_term": "meter"
+    },
+    {
+        "property_name": "well_screen_bottom",
+        "property_description": "The bottom of a well screen, given in meters below the surface MSL.",
+        "property_data_type_cv": "floatingPointNumber",
+        "property_units_term": "meter"
+    },
+    {
+        "property_name": "igsn",
+        "property_description": "international geo sampling number",
+        "property_data_type_cv": "string",
+        "property_units_term": null
+    }
+]

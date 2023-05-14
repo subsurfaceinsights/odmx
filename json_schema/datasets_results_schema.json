@@ -1,0 +1,21 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "bridge_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ],
+                "minimum": 1
+            },
+            "dataset_id": {
+                "type": "integer"
+            },
+            "result_id": {
+                "type": "integer"
+            }
+        }
+    }
+}

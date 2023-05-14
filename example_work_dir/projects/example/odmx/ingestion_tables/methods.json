@@ -1,0 +1,18 @@
+[
+    {
+        "method_type_cv": "specimenAnalysis",
+        "method_code": "1",
+        "method_name": "LBNL ICP MS",
+        "method_description": "Cation measured using ICP-MS in LBNL Lab",
+        "method_link": null,
+        "organization_id": 1001
+    },
+    {
+        "method_type_cv": "specimenCollection",
+        "method_code": "2",
+        "method_name": "LBNL Eastriver sample collection",
+        "method_description": "Sample collection of geochemical samples",
+        "method_link": null,
+        "organization_id": 1001
+    }
+]

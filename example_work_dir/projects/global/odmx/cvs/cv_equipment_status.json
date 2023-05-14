@@ -1,0 +1,38 @@
+[
+    {
+        "term": "offline",
+        "name": "Offline",
+        "definition": "The instrument is on, but offline because of connectivity issues",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "shutdown",
+        "name": "Shutdown",
+        "definition": "The instrument has been shutdown (either temporary or pemanently) and is not collecting data",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "online",
+        "name": "Online",
+        "definition": "The instrument is online, and has reported within the last expected period",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "late",
+        "name": "Late",
+        "definition": "The instrument is supposed to be online, but has not reported in the expected time",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    }
+]

@@ -1,0 +1,110 @@
+[
+    {
+        "term": "categoryObservation",
+        "name": "Category observation",
+        "definition": "A single ResultValue for a single Variable, measured on or at a single SamplingFeature, using a single Method.",
+        "category": "Measurement",
+        "provenance": "Adapted from OGC O&M",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "countObservation",
+        "name": "Count observation",
+        "definition": "A single ResultValue for a single Variable, counted on or at a single SamplingFeature, using a single Method, and having a specific ProcessingLevel.",
+        "category": "Measurement",
+        "provenance": "Adapted from OGC O&M",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "measurement",
+        "name": "Measurement",
+        "definition": "A single ResultValue for a single Variable, measured on or at a SamplingFeature, using a single Method, with specific Units, and having a specific ProcessingLevel.",
+        "category": "Measurement",
+        "provenance": "Adapted from OGC O&M",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "pointCoverage",
+        "name": "Point coverage",
+        "definition": "A series of ResultValues for a single Variable, measured on or at a single SamplingFeature, using a single Method, with specific Units, having a specific ProcessingLevel, with a fixed ValueDateTime, but measured over varying X,Y locations, where X and Y are horizontal coordinates.",
+        "category": "Coverage",
+        "provenance": "Adapted from OGC O&M",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "profileCoverage",
+        "name": "Profile coverage",
+        "definition": "A series of ResultValues for a single Variable, measured on or at a single SamplingFeature, using a single Method, with specific Units, having a specific ProcessingLevel, but measured over multiple locations along a depth profile with only one varying location dimension (e.g., Z, where Z is depth). ValueDateTime may be fixed or controlled.",
+        "category": "Coverage",
+        "provenance": "Adapted from OGC O&M",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "sectionCoverage",
+        "name": "Section coverage",
+        "definition": "A series of ResultValues for a single Variable, measured on or at a single SamplingFeature, using a single Method, with specific Units, having a specific ProcessingLevel, but measured over varying X (horizontal) and Z (depth) coordinates. ValueDateTime may be fixed or controlled.",
+        "category": "Coverage",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "spectraCoverage",
+        "name": "Spectra coverage",
+        "definition": "A series of ResultValues for a single Variable, measured on or at a single SamplingFeature, using a single Method, with specific Units, having a specific ProcessingLevel, but measured over multiple wavelengths of light. ValueDateTime may be fixed or controlled.",
+        "category": "Coverage",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "temporalObservation",
+        "name": "Temporal observation",
+        "definition": "A single ResultValue for a single Variable, measured on or at a SamplingFeature, using a single Method, with specific Units, and having a specific ProcessingLevel.",
+        "category": "Measurement",
+        "provenance": "Adapted from OGC O&M",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "timeSeriesCoverage",
+        "name": "Time series coverage",
+        "definition": "A series of ResultValues for a single Variable, measured on or at a single SamplingFeature of fixed location, using a single Method, with specific Units, having a specific ProcessingLevel, but measured over time.",
+        "category": "Coverage",
+        "provenance": "Adapted from WaterML 2.0",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "trajectoryCoverage",
+        "name": "Trajectory coverage",
+        "definition": "A series of ResultValues for a single Variable, measured on a single SamplingFeature, using a single Method, with specific Units, having a specific ProcessingLevel, but measured over varying X,Y, Z, and D locations, where X and Y are horizontal coordinates, Z is a vertical coordinate, and D is the distance along the trajectory. ValueDateTime may be fixed (DTS Temperature) or controlled (glider).",
+        "category": "Coverage",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "transectCoverage",
+        "name": "Transect coverage",
+        "definition": "A series of ResultValues for a single Variable, measured on or at a single SamplingFeature, using a single Method, with specific Units, having a specific ProcessingLevel, but measured over multiple locations along a transect having varying location dimensions (e.g.,  X and/or Y, where X and Y are horizontal coordintes). ValueDateTime may be fixed or controlled.",
+        "category": "Coverage",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "truthObservation",
+        "name": "Truth observation",
+        "definition": "A single ResultValue for a single Variable, measured on or at a single SamplingFeature, using a single Method.",
+        "category": "Measurement",
+        "provenance": "Adapted from OGC O&M",
+        "provenance_uri": null,
+        "note": null
+    }
+]

@@ -1,0 +1,24 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "instrument_action_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ],
+                "minimum": 1
+            },
+            "equipment_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ]
+            },
+            "action_id": {
+                "type": "integer"
+            }
+        }
+    }
+}

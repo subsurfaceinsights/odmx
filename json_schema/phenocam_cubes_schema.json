@@ -1,0 +1,53 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "phenocam_cube_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ],
+                "minimum": 1
+            },
+            "phenocam_dataset_id": {
+                "type": "integer"
+            },
+            "filter_setting1": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "filter_setting2": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "filter_setting3": {
+                "type": [
+                    "integer",
+                    "null"
+                ]
+            },
+            "cubefile_directory_on_server": {
+                "type": "string"
+            },
+            "phenocam_cube_file_name_on_server": {
+                "type": "string"
+            },
+            "first_image_datetime_utc": {
+                "type": "string",
+                "format": "date-time"
+            },
+            "last_image_datetime_utc": {
+                "type": "string",
+                "format": "date-time"
+            },
+            "number_images_in_cube": {
+                "type": "integer"
+            }
+        }
+    }
+}

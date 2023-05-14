@@ -1,0 +1,52 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "extracted_dnaid": {
+                "type": [
+                    "integer",
+                    "null"
+                ],
+                "minimum": 1
+            },
+            "sampling_feature_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ]
+            },
+            "extraction_kit_name": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "extraction_kit_id": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "dna_input_volume_ml": {
+                "type": [
+                    "number",
+                    "null"
+                ]
+            },
+            "extraction_date": {
+                "type": [
+                    "string",
+                    "null"
+                ],
+                "format": "date-time"
+            },
+            "extraction_notes": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            }
+        }
+    }
+}

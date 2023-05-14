@@ -1,0 +1,22 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "property_name": {
+                "type": "string"
+            },
+            "property_description": {
+                "type": ["string", "null"]
+            },
+            "property_data_type_cv": {
+                "type": "string"
+            },
+            "property_units_term": {
+                "type": ["string", "null"]
+            }
+        },
+        "required": ["property_name", "property_description",
+                     "property_data_type_cv", "property_units_term"]
+    }
+}

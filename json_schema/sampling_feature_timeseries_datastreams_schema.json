@@ -1,0 +1,92 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "datastream_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ],
+                "minimum": 1
+            },
+            "datastream_uuid": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "equipment_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ]
+            },
+            "sampling_feature_id": {
+                "type": "integer"
+            },
+            "datastream_type": {
+                "type": "string"
+            },
+            "variable_id": {
+                "type": "integer"
+            },
+            "units_id": {
+                "type": "integer"
+            },
+            "datastream_database": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "datastream_tablename": {
+                "type": "string"
+            },
+            "first_measurement_date": {
+                "type": [
+                    "string",
+                    "null"
+                ],
+                "format": "date-time"
+            },
+            "last_measurement_date": {
+                "type": [
+                    "string",
+                    "null"
+                ],
+                "format": "date-time"
+            },
+            "total_measurement_numbers": {
+                "type": [
+                    "integer",
+                    "null"
+                ]
+            },
+            "datastream_attribute": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "datastream_access_level": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "datastream_source_category": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "datastream_classifier": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            }
+        }
+    }
+}

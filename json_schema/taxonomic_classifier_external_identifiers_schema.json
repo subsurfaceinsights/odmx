@@ -1,0 +1,30 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "bridge_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ],
+                "minimum": 1
+            },
+            "taxonomic_classifier_id": {
+                "type": "integer"
+            },
+            "external_identifier_system_id": {
+                "type": "integer"
+            },
+            "taxonomic_classifier_external_identifier": {
+                "type": "string"
+            },
+            "taxonomic_classifier_external_identifier_uri": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            }
+        }
+    }
+}

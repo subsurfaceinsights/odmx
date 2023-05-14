@@ -1,0 +1,39 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "model_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ],
+                "minimum": 1
+            },
+            "model_code": {
+                "type": "string"
+            },
+            "model_name": {
+                "type": "string"
+            },
+            "model_description": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "version": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "model_link": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            }
+        }
+    }
+}

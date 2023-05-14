@@ -1,0 +1,30 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "relation_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ],
+                "minimum": 1
+            },
+            "sampling_feature_id": {
+                "type": "integer"
+            },
+            "relationship_type_cv": {
+                "type": "string"
+            },
+            "related_feature_id": {
+                "type": "integer"
+            },
+            "spatial_offset_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ]
+            }
+        }
+    }
+}

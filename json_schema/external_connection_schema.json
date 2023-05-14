@@ -1,0 +1,39 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "connection_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ],
+                "minimum": 1
+            },
+            "sampling_feature_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ]
+            },
+            "equipment_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ]
+            },
+            "action_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ]
+            },
+            "description": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            }
+        }
+    }
+}

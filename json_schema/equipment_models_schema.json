@@ -1,0 +1,42 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "equipment_manufacturer_name": {
+                "type": "string"
+            },
+            "equipment_model_part_number": {
+                "type": "string"
+            },
+            "equipment_model_name": {
+                "type": ["string", "null"]
+            },
+            "equipment_type_cv": {
+                "type": ["string", "null"]
+            },
+            "equipment_model_description": {
+                "type": ["string", "null"]
+            },
+            "is_instrument": {
+                "type": "boolean"
+            },
+            "equipment_model_specifications_file_link": {
+                "type": ["string", "null"]
+            },
+            "equipment_model_description_url": {
+                "type": ["string", "null"],
+                "format": "iri"
+            },
+            "is_retired": {
+                "type": ["boolean", "null"]
+            }
+        },
+        "required": ["equipment_manufacturer_name",
+                     "equipment_model_part_number", "equipment_model_name",
+                     "equipment_type_cv", "equipment_model_description",
+                     "is_instrument",
+                     "equipment_model_specifications_file_link",
+                     "equipment_model_description_url", "is_retired"]
+    }
+}

@@ -1,0 +1,30 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "relation_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ],
+                "minimum": 1
+            },
+            "data_set_id": {
+                "type": "integer"
+            },
+            "relationship_type_cv": {
+                "type": "string"
+            },
+            "related_dataset_id": {
+                "type": "integer"
+            },
+            "version_code": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            }
+        }
+    }
+}

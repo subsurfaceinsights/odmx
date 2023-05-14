@@ -1,0 +1,74 @@
+[
+    {
+        "term": "biology",
+        "name": "Biology",
+        "definition": "A taxonomy containing terms associated with biological organisms.",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "chemistry",
+        "name": "Chemistry",
+        "definition": "A taxonomy containing terms associated with chemistry, chemical analysis or processes.",
+        "category": null,
+        "provenance": "Originally from CUAHSI HIS GeneralCategoryCV.  See http://his.cuahsi.org/mastercvreg/edit_cv11.aspx?tbl=GeneralCategoryCV.",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "climate",
+        "name": "Climate",
+        "definition": "A taxonomy containing terms associated with the climate, weather, or atmospheric processes.",
+        "category": null,
+        "provenance": "Originally from CUAHSI HIS GeneralCategoryCV.  See http://his.cuahsi.org/mastercvreg/edit_cv11.aspx?tbl=GeneralCategoryCV.",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "geology",
+        "name": "Geology",
+        "definition": "A taxonomy containing terms associated with geology or geological processes.",
+        "category": null,
+        "provenance": "Originally from CUAHSI HIS GeneralCategoryCV.  See http://his.cuahsi.org/mastercvreg/edit_cv11.aspx?tbl=GeneralCategoryCV.",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "hydrology",
+        "name": "Hydrology",
+        "definition": "A taxonomy containing terms associated with hydrologic variables or processes.",
+        "category": null,
+        "provenance": "Originally from CUAHSI HIS GeneralCategoryCV.  See http://his.cuahsi.org/mastercvreg/edit_cv11.aspx?tbl=GeneralCategoryCV.",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "soil",
+        "name": "Soil",
+        "definition": "A taxonomy containing terms associated with soil variables or processes",
+        "category": null,
+        "provenance": "Originally from CUAHSI HIS GeneralCategoryCV.  See http://his.cuahsi.org/mastercvreg/edit_cv11.aspx?tbl=GeneralCategoryCV.",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "waterQuality",
+        "name": "Water quality",
+        "definition": "A taxonomy containing terms associated with water quality variables or processes.",
+        "category": null,
+        "provenance": "Originally from CUAHSI HIS GeneralCategoryCV.  See http://his.cuahsi.org/mastercvreg/edit_cv11.aspx?tbl=GeneralCategoryCV.",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "notapplicable",
+        "name": "Not Applicable",
+        "definition": null,
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    }
+]

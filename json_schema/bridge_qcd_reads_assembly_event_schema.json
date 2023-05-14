@@ -1,0 +1,23 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "id": {
+                "type": "integer"
+            },
+            "qcd_reads_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ]
+            },
+            "assembly_event_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ]
+            }
+        }
+    }
+}

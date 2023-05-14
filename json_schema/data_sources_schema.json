@@ -1,0 +1,32 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "shared_info": {
+                "type": "object",
+                "properties": {
+                    "data_source_type": {
+                        "type": "string"
+                    },
+                    "data_source_scope": {
+                        "type": "string",
+                        "enum": ["project_specific", "global"]
+                    }
+                },
+                "required": ["data_source_type", "data_source_scope"]
+            },
+            "harvesting_info": {
+                "type": ["object", "null"]
+            },
+            "ingestion_info": {
+                "type": ["object", "null"]
+            },
+            "processing_info": {
+                "type": ["object", "null"]
+            }
+        },
+        "required": ["shared_info", "harvesting_info", "ingestion_info",
+                     "processing_info"]
+    }
+}

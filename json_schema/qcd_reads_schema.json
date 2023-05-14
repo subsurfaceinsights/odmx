@@ -1,0 +1,39 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "qcd_reads_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ],
+                "minimum": 1
+            },
+            "qc_processing_method": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "number_of_reads": {
+                "type": [
+                    "integer",
+                    "null"
+                ]
+            },
+            "raw_reads_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ]
+            },
+            "processing_method_parameters": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            }
+        }
+    }
+}

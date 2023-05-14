@@ -1,0 +1,173 @@
+[
+    {
+        "term": "average",
+        "name": "Average",
+        "definition": "The values represent the average over a time interval, such as daily mean discharge or daily mean temperature.",
+        "category": null,
+        "provenance": "Adapted from CUAHSI HIS DataTypeCV.  See http://his.cuahsi.org/mastercvreg/edit_cv11.aspx?tbl=DataTy",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "bestEasySystematicEstimator",
+        "name": "Best easy systematic estimator",
+        "definition": "Best Easy Systematic Estimator BES = (Q1 +2Q2 +Q3)/4. Q1, Q2, and Q3 are first, second, and third quartiles. See Woodcock, F. and Engel, C., 2005: Operational Consensus Forecasts.Weather and Forecasting, 20, 101-111. (http://www.bom.gov.au/nmoc/bulletins/60/article_by_Woodcock_in_Weather_and_Forecasting.pdf) and Wonnacott, T. H., and R. J. Wonnacott, 1972: Introductory Statistics. Wiley, 510 pp.",
+        "category": null,
+        "provenance": "Adapted from CUAHSI HIS DataTypeCV.  See http://his.cuahsi.org/mastercvreg/edit_cv11.aspx?tbl=DataTy",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "categorical",
+        "name": "Categorical",
+        "definition": "The values are categorical rather than continuous valued quantities.",
+        "category": null,
+        "provenance": "Adapted from CUAHSI HIS DataTypeCV.  See http://his.cuahsi.org/mastercvreg/edit_cv11.aspx?tbl=DataTy",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "confidenceInterval",
+        "name": "Confidence Interval",
+        "definition": "In statistics, a confidence interval (CI) is a type of interval estimate of a statistical parameter. It is an observed interval (i.e., it is calculated from the observations), in principle different from sample to sample, that frequently includes the value of an unobservable parameter of interest if the experiment is repeated. How frequently the observed interval contains the parameter is determined by the confidence level or confidence coefficient.",
+        "category": null,
+        "provenance": "Wikipedia",
+        "provenance_uri": "https://en.wikipedia.org/wiki/Confidence_interval",
+        "note": null
+    },
+    {
+        "term": "constantOverInterval",
+        "name": "Constant over interval",
+        "definition": "The values are quantities that can be interpreted as constant for all time, or over the time interval to a subsequent measurement of the same variable at the same site.",
+        "category": null,
+        "provenance": "Adapted from CUAHSI HIS DataTypeCV.  See http://his.cuahsi.org/mastercvreg/edit_cv11.aspx?tbl=DataTy",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "continuous",
+        "name": "Continuous",
+        "definition": "A quantity specified at a particular instant in time measured with sufficient frequency (small spacing) to be interpreted as a continuous record of the phenomenon.",
+        "category": null,
+        "provenance": "Adapted from CUAHSI HIS DataTypeCV.  See http://his.cuahsi.org/mastercvreg/edit_cv11.aspx?tbl=DataTy",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "cumulative",
+        "name": "Cumulative",
+        "definition": "The values represent the cumulative value of a variable measured or calculated up to a given instant of time, such as cumulative volume of flow or cumulative precipitation.",
+        "category": null,
+        "provenance": "Adapted from CUAHSI HIS DataTypeCV.  See http://his.cuahsi.org/mastercvreg/edit_cv11.aspx?tbl=DataTy",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "incremental",
+        "name": "Incremental",
+        "definition": "The values represent the incremental value of a variable over a time interval, such as the incremental volume of flow or incremental precipitation.",
+        "category": null,
+        "provenance": "Adapted from CUAHSI HIS DataTypeCV.  See http://his.cuahsi.org/mastercvreg/edit_cv11.aspx?tbl=DataTy",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "maximum",
+        "name": "Maximum",
+        "definition": "The values are the maximum values occurring at some time during a time interval, such as annual maximum discharge or a daily maximum air temperature.",
+        "category": null,
+        "provenance": "Adapted from CUAHSI HIS DataTypeCV.  See http://his.cuahsi.org/mastercvreg/edit_cv11.aspx?tbl=DataTy",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "median",
+        "name": "Median",
+        "definition": "The values represent the median over a time interval, such as daily median discharge or daily median temperature.",
+        "category": null,
+        "provenance": "Adapted from CUAHSI HIS DataTypeCV.  See http://his.cuahsi.org/mastercvreg/edit_cv11.aspx?tbl=DataTy",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "minimum",
+        "name": "Minimum",
+        "definition": "The values are the minimum values occurring at some time during a time interval, such as 7-day low flow for a year or the daily minimum temperature.",
+        "category": null,
+        "provenance": "Adapted from CUAHSI HIS DataTypeCV.  See http://his.cuahsi.org/mastercvreg/edit_cv11.aspx?tbl=DataTy",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "mode",
+        "name": "Mode",
+        "definition": "The values are the most frequent values occurring at some time during a time interval, such as annual most frequent wind direction.",
+        "category": null,
+        "provenance": "Adapted from CUAHSI HIS DataTypeCV.  See http://his.cuahsi.org/mastercvreg/edit_cv11.aspx?tbl=DataTy",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "sporadic",
+        "name": "Sporadic",
+        "definition": "The phenomenon is sampled at a particular instant in time but with a frequency that is too coarse for interpreting the record as continuous. This would be the case when the spacing is significantly larger than the support and the time scale of fluctuation of the phenomenon, such as for example infrequent water quality samples.",
+        "category": null,
+        "provenance": "Adapted from CUAHSI HIS DataTypeCV.  See http://his.cuahsi.org/mastercvreg/edit_cv11.aspx?tbl=DataTy",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "standardDeviation",
+        "name": "Standard deviation",
+        "definition": "The values represent the standard deviation of a set of observations made over a time interval. Standard deviation computed using the unbiased formula SQRT(SUM((Xi-mean)^2)/(n-1)) are preferred. The specific formula used to compute variance can be noted in the methods description.",
+        "category": null,
+        "provenance": "Adapted from CUAHSI HIS DataTypeCV.  See http://his.cuahsi.org/mastercvreg/edit_cv11.aspx?tbl=DataTy",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "standardErrorOfMean",
+        "name": "Standard error of mean",
+        "definition": "The standard error of the mean (SEM) quantifies the precision of the mean. It is a measure of how far your sample mean is likely to be from the true population mean. It is expressed in the same units as the data.",
+        "category": null,
+        "provenance": "See https://en.wikipedia.org/wiki/Standard_error",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "standardErrorOfTheMean",
+        "name": "Standard error of the mean",
+        "definition": "The standard error of the mean (SEM) quantifies the precision of the mean. It is a measure of how far your sample mean is likely to be from the true population mean. It is expressed in the same units as the data.",
+        "category": null,
+        "provenance": "See https://en.wikipedia.org/wiki/Standard_error",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "unknown",
+        "name": "Unknown",
+        "definition": "The aggregation statistic is unknown.",
+        "category": null,
+        "provenance": "Adapted from CUAHSI HIS DataTypeCV.  See http://his.cuahsi.org/mastercvreg/edit_cv11.aspx?tbl=DataTy",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "variance",
+        "name": "Variance",
+        "definition": "The values represent the variance of a set of observations made over a time interval. Variance computed using the unbiased formula SUM((Xi-mean)^2)/(n-1) are preferred. The specific formula used to compute variance can be noted in the methods description.",
+        "category": null,
+        "provenance": "Adapted from CUAHSI HIS DataTypeCV.  See http://his.cuahsi.org/mastercvreg/edit_cv11.aspx?tbl=DataTy",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "instrumentReading",
+        "name": "Instrument Reading",
+        "definition": "The reading as provided by an analytical instrument",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    }
+]

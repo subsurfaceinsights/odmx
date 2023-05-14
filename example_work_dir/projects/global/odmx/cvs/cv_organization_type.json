@@ -1,0 +1,299 @@
+[
+    {
+        "term": "analyticalLaboratory",
+        "name": "Analytical laboratory",
+        "definition": "A laboratory within which ex situ analysis of of environmental samples is performed.",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "association",
+        "name": "Association",
+        "definition": "A group of persons associated for a common purpose.",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "center",
+        "name": "Center",
+        "definition": "A place where some function or activity occurs.",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "college",
+        "name": "College",
+        "definition": "An institution of higher education.",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "company",
+        "name": "Company",
+        "definition": "An business entity that provides services.",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "consortium",
+        "name": "Consortium",
+        "definition": "An association of individuals or organizations for the purpose of engaging in a joint venture.",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "department",
+        "name": "Department",
+        "definition": "A subdivision or unit within a university, institution, or agency.",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "division",
+        "name": "Division",
+        "definition": "A section of a large company, agency, or organization.",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "faithBasedOrganization",
+        "name": "Faith-based organization",
+        "definition": "An organization whose values are based on faith and/or beliefs, which has a mission based on social values of the particular faith, and which most often draws its activists (leaders, staff, volunteers) from a particular faith group.",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "foundation",
+        "name": "Foundation",
+        "definition": "An institution or organization supported by a donation or legacy appropriation.",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "fundingOrganization",
+        "name": "Funding organization",
+        "definition": "An organization that funds research or creative works.",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "governmentAgency",
+        "name": "Government agency",
+        "definition": "A department or other administrative unit of a government.",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "institute",
+        "name": "Institute",
+        "definition": "An organization founded to promote a cause.",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "laboratory",
+        "name": "Laboratory",
+        "definition": "A room, building, or institution equipped for scientific research, experimentation, or analysis.",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "library",
+        "name": "Library",
+        "definition": "An institution that holds books and or other forms of stored information for use by the public or other experts.",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "manufacturer",
+        "name": "Manufacturer",
+        "definition": "A person or company that makes a product.",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "museum",
+        "name": "Museum",
+        "definition": "A building or institution dedicated to the acquisition, conservation, study, exhibition, and educational interpretation of objects having scientific, historical, cultural, or artistic value.",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "natureCenter",
+        "name": "Nature center",
+        "definition": "An organization that promotes outdoor exploration, provides nature education, and or fosters appreciation and stewardship of the natural world.",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "nonProfitOrganization",
+        "name": "Non-profit organization",
+        "definition": "An organization dedicated to furthering a particular social cause or advocating for a shared point of view. In economic terms, it is an organization that uses its surplus of revenues to further achieve its ultimate objective, rather than distributing its income to the organization's shareholders, leaders, or members. Non-profits are tax exempt or charitable, meaning they do not pay income tax on the money that they receive for their organization. They can operate in religious, scientific, research, or educational settings.",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "park",
+        "name": "Park",
+        "definition": "An organization that operates federal, state, county, or municipal parks.",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "program",
+        "name": "Program",
+        "definition": "A set of structured activities.",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "publisher",
+        "name": "Publisher",
+        "definition": "An organization that publishes data.",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "researchAgency",
+        "name": "Research agency",
+        "definition": "A department or other administrative unit of a government with the express purpose of conducting research.",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "researchInstitute",
+        "name": "Research institute",
+        "definition": "An organization founded to conduct research.",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "researchOrganization",
+        "name": "Research organization",
+        "definition": "A group of cooperating researchers.",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "schoolPrimary",
+        "name": "School primary",
+        "definition": "An educational institution providing primary education.",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "schoolSecondary",
+        "name": "School secondary",
+        "definition": "An educational institution providing secondary education.",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "studentOrganization",
+        "name": "Student organization",
+        "definition": "A group of students who associate for a particular purpose.",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "university",
+        "name": "University",
+        "definition": "An institution of higher education.",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "unknown",
+        "name": "Unknown",
+        "definition": "The organization type is unknown.",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "vendor",
+        "name": "Vendor",
+        "definition": "A person or company that sells a product.",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "youthGroup",
+        "name": "Youth group",
+        "definition": "A group of young people that meet and participate in a variety of activities.",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "doeNationalLab",
+        "name": "Department of Energy National Laboratory",
+        "definition": "A department of Energy National Laboratory",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    }
+]

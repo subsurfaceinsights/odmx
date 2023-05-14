@@ -1,0 +1,36 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "term": {
+                "type": "string"
+            },
+            "name": {
+                "type": "string"
+            },
+            "definition": {
+                "type": ["string", "null"]
+            },
+            "category": {
+                "type": ["string", "null"]
+            },
+            "provenance": {
+                "type": ["string", "null"]
+            },
+            "provenance_uri": {
+                "type": ["string", "null"],
+                "format": "iri"
+            },
+            "note": {
+                "type": ["string", "null"]
+            },
+            "dimensionality": {
+                "type": ["string", "null"],
+                "enum": ["0D", "1D", "2D", "3D", null]
+            }
+        },
+        "required": ["term", "name", "definition", "category", "provenance",
+                     "provenance_uri", "note", "dimensionality"]
+    }
+}

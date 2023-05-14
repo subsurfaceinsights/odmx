@@ -1,0 +1,26 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "action_id": {
+                "type": "integer"
+            },
+            "is_factory_service": {
+                "type": "boolean"
+            },
+            "maintenance_code": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "maintenance_reason": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            }
+        }
+    }
+}

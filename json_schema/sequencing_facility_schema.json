@@ -1,0 +1,17 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "sequencing_facility_id": {
+                "type": "integer"
+            },
+            "sequencing_facility_name": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            }
+        }
+    }
+}

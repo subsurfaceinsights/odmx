@@ -1,0 +1,58 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "annotation_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ],
+                "minimum": 1
+            },
+            "annotation_type_cv": {
+                "type": "string"
+            },
+            "annotation_code": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "annotation_text": {
+                "type": "string"
+            },
+            "annotation_date_time": {
+                "type": [
+                    "string",
+                    "null"
+                ],
+                "format": "date-time"
+            },
+            "annotation_utc_offset": {
+                "type": [
+                    "integer",
+                    "null"
+                ]
+            },
+            "annotation_link": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "annotator_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ]
+            },
+            "citation_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ]
+            }
+        }
+    }
+}

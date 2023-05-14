@@ -1,0 +1,245 @@
+[
+    {
+        "term": "automated",
+        "name": "Automated",
+        "definition": "Sample collected using an automated sampler.",
+        "category": null,
+        "provenance": "Originally from CUAHSI SampleTypeCV. See: http://his.cuahsi.org/mastercvreg/edit_cv11.aspx?tbl=SampleTypeCV.",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "biota",
+        "name": "Biota",
+        "definition": "A specimen consisting of all or part of a biological organism, including flora or fauna.",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "core",
+        "name": "Core",
+        "definition": "Long cylindrical cores",
+        "category": null,
+        "provenance": "SESAR Sample type CV. See http://www.geosamples.org/help/vocabularies#object.",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "coreHalfRound",
+        "name": "Core half round",
+        "definition": "Half-cylindrical products of along-axis split of a whole round",
+        "category": null,
+        "provenance": "SESAR Sample type CV. See http://www.geosamples.org/help/vocabularies#object.",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "corePiece",
+        "name": "Core piece",
+        "definition": "Material occurring between unambiguous [as curated] breaks in recovery.",
+        "category": null,
+        "provenance": "SESAR Sample type CV. See http://www.geosamples.org/help/vocabularies#object.",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "coreQuarterRound",
+        "name": "Core quarter round",
+        "definition": "Quarter-cylindrical products of along-axis split of a half round.",
+        "category": null,
+        "provenance": "SESAR Sample type CV. See http://www.geosamples.org/help/vocabularies#object.",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "coreSection",
+        "name": "Core section",
+        "definition": "Arbitrarily cut segments of a \"core\"",
+        "category": null,
+        "provenance": "SESAR Sample type CV. See http://www.geosamples.org/help/vocabularies#object.",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "coreSectionHalf",
+        "name": "Core section half",
+        "definition": "Half-cylindrical products of along-axis split of a section or its component fragments through a selected diameter.",
+        "category": null,
+        "provenance": "SESAR Sample type CV. See http://www.geosamples.org/help/vocabularies#object.",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "coreSub-Piece",
+        "name": "Core sub-piece",
+        "definition": "Unambiguously mated portion of a larger piece noted for curatorial management of the material.",
+        "category": null,
+        "provenance": "SESAR Sample type CV. See http://www.geosamples.org/help/vocabularies#object.",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "coreWholeRound",
+        "name": "Core whole round",
+        "definition": "Cylindrical segments of core or core section material.",
+        "category": null,
+        "provenance": "SESAR Sample type CV. See http://www.geosamples.org/help/vocabularies#object.",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "cuttings",
+        "name": "Cuttings",
+        "definition": "Loose, coarse, unconsolidated material suspended in drilling fluid.",
+        "category": null,
+        "provenance": "SESAR Sample type CV. See http://www.geosamples.org/help/vocabularies#object.",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "dredge",
+        "name": "Dredge",
+        "definition": "A group of rocks collected by dragging a dredge along the seafloor.",
+        "category": null,
+        "provenance": "SESAR Sample type CV. See http://www.geosamples.org/help/vocabularies#object.",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "foliageDigestion",
+        "name": "Foliage digestion",
+        "definition": "Sample that consists of a digestion of plant foliage",
+        "category": null,
+        "provenance": "Originally from CUAHSI SampleTypeCV. See: http://his.cuahsi.org/mastercvreg/edit_cv11.aspx?tbl=SampleTypeCV.",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "foliageLeaching",
+        "name": "Foliage leaching",
+        "definition": "Sample that consists of leachate from foliage",
+        "category": null,
+        "provenance": "Originally from CUAHSI SampleTypeCV. See: http://his.cuahsi.org/mastercvreg/edit_cv11.aspx?tbl=SampleTypeCV.",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "forestFloorDigestion",
+        "name": "Forest floor digestion",
+        "definition": "Sample that consists of a digestion of forest floor material",
+        "category": null,
+        "provenance": "Originally from CUAHSI SampleTypeCV. See: http://his.cuahsi.org/mastercvreg/edit_cv11.aspx?tbl=SampleTypeCV.",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "grab",
+        "name": "Grab",
+        "definition": "A sample (sometimes mechanically collected) from a deposit or area, not intended to be representative of the deposit or area.",
+        "category": null,
+        "provenance": "SESAR Sample type CV. See http://www.geosamples.org/help/vocabularies#object.",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "individualSample",
+        "name": "Individual sample",
+        "definition": "A sample that is an individual unit, including rock hand samples, a biological specimen, or a bottle of fluid.",
+        "category": null,
+        "provenance": "SESAR Sample type CV. See http://www.geosamples.org/help/vocabularies#object.",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "litterFallDigestion",
+        "name": "Litter fall digestion",
+        "definition": "Sample that consists of a digestion of litter fall",
+        "category": null,
+        "provenance": "Originally from CUAHSI SampleTypeCV. See: http://his.cuahsi.org/mastercvreg/edit_cv11.aspx?tbl=SampleTypeCV.",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "orientedCore",
+        "name": "Oriented core",
+        "definition": "Core that can be positioned on the surface in the same way that it was arranged in the borehole before extraction.",
+        "category": null,
+        "provenance": "SESAR Sample type CV. See http://www.geosamples.org/help/vocabularies#object.",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "other",
+        "name": "Other",
+        "definition": "Sample does not fit any of the existing type designations. It is expected that further detailed description of the particular sample be provided.",
+        "category": null,
+        "provenance": "SESAR Sample type CV. See http://www.geosamples.org/help/vocabularies#object.",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "petriDishDryDeposition",
+        "name": "Petri dish (dry deposition)",
+        "definition": "Sample from dry deposition in a petri dish",
+        "category": null,
+        "provenance": "Originally from CUAHSI SampleTypeCV. See: http://his.cuahsi.org/mastercvreg/edit_cv11.aspx?tbl=SampleTypeCV.",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "precipitationBulk",
+        "name": "Precipitation bulk",
+        "definition": "Sample from bulk precipitation",
+        "category": null,
+        "provenance": "Originally from CUAHSI SampleTypeCV. See: http://his.cuahsi.org/mastercvreg/edit_cv11.aspx?tbl=SampleTypeCV.",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "rockPowder",
+        "name": "Rock powder",
+        "definition": "A sample created from pulverizing a rock to powder.",
+        "category": null,
+        "provenance": "SESAR Sample type CV. See http://www.geosamples.org/help/vocabularies#object.",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "standardReferenceSpecimen",
+        "name": "Standard reference specimen",
+        "definition": "Standard reference specimen",
+        "category": null,
+        "provenance": "Originally from CUAHSI SampleTypeCV. See: http://his.cuahsi.org/mastercvreg/edit_cv11.aspx?tbl=SampleTypeCV.",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "terrestrialSection",
+        "name": "Terrestrial section",
+        "definition": "A sample of a section of the near-surface Earth, generally in the critical zone.",
+        "category": null,
+        "provenance": "SESAR Sample type CV. See http://www.geosamples.org/help/vocabularies#object.",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "theSpecimenTypeIsUnknown",
+        "name": "The specimen type is unknown",
+        "definition": "The specimen type is unknown",
+        "category": null,
+        "provenance": "Originally from CUAHSI SampleTypeCV. See: http://his.cuahsi.org/mastercvreg/edit_cv11.aspx?tbl=SampleTypeCV.",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "thinSection",
+        "name": "Thin section",
+        "definition": "Thin section",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    }
+]

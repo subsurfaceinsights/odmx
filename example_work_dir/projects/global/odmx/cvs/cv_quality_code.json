@@ -1,0 +1,122 @@
+[
+    {
+        "term": "notAssessed",
+        "name": "Not Assessed",
+        "definition": "Data without quality assessment.",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null,
+        "qa_flag": "a"
+    },
+    {
+        "term": "bad",
+        "name": "Bad",
+        "definition": "Data is generically bad.",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null,
+        "qa_flag": "b"
+    },
+    {
+        "term": "NaN",
+        "name": "Not a Number",
+        "definition": "Data reported as not a number.",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null,
+        "qa_flag": "c"
+    },
+    {
+        "term": "Null",
+        "name": "Null",
+        "definition": "Data reported as null.",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null,
+        "qa_flag": "d"
+    },
+    {
+        "term": "outOfRange",
+        "name": "Out of Range",
+        "definition": "Data value is outside a valid range.",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null,
+        "qa_flag": "f"
+    },
+    {
+        "term": "flatLining",
+        "name": "Flatlining",
+        "definition": "Data has flatlined.",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null,
+        "qa_flag": "h"
+    },
+    {
+        "term": "noisy",
+        "name": "Noisy",
+        "definition": "Data is noisy.",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null,
+        "qa_flag": "k"
+    },
+    {
+        "term": "statisticsChange",
+        "name": "Statistics Change",
+        "definition": "Data statistics have changed.",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null,
+        "qa_flag": "m"
+    },
+    {
+        "term": "dataJump",
+        "name": "Data Jump",
+        "definition": "Data has unexpectedly changed values.",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null,
+        "qa_flag": "p"
+    },
+    {
+        "term": "auxDataDiscrepancy",
+        "name": "Auxiliary Data Discrepancy",
+        "definition": "Data shows a discrepancy with auxiliary data.",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null,
+        "qa_flag": "s"
+    },
+    {
+        "term": "marginal",
+        "name": "Marginal",
+        "definition": "Data has been manually marked as marginal.",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null,
+        "qa_flag": "w"
+    },
+    {
+        "term": "good",
+        "name": "Good",
+        "definition": "Data passed all quality assessment tests.",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null,
+        "qa_flag": "z"
+    }
+]

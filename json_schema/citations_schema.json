@@ -1,0 +1,30 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "citation_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ],
+                "minimum": 1
+            },
+            "title": {
+                "type": "string"
+            },
+            "publisher": {
+                "type": "string"
+            },
+            "publication_year": {
+                "type": "integer"
+            },
+            "citation_link": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            }
+        }
+    }
+}

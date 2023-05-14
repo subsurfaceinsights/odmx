@@ -1,0 +1,263 @@
+[
+    {
+        "term": "antenna",
+        "name": "Antenna",
+        "definition": "An electrical device that converts electric power into radio waves and vice versa.",
+        "category": "Communications component",
+        "provenance": "Definition adapted from Wikipedia. See http://en.wikipedia.org/wiki/Antenna_(radio)",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "automaticLevel",
+        "name": "Automatic level",
+        "definition": "A survey level that makes use of a compensator that ensures the line of sight remains horizontal once the operator has roughly leveled the instrument.",
+        "category": "Instrument",
+        "provenance": "Definition adapted from Wikipedia. See http://en.wikipedia.org/wiki/Levelling",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "battery",
+        "name": "Battery",
+        "definition": "A device consisting of one or more electrochemical cells that convert stored chemical energy into electrical energy.",
+        "category": "Power component",
+        "provenance": "Definition adapted from Wikipedia. See http://en.wikipedia.org/wiki/Battery_(electricity)",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "cable",
+        "name": "Cable",
+        "definition": "Two or more wires running side by side and bonded, twisted, or braided together to form a single assembly.",
+        "category": "Peripheral component",
+        "provenance": "Definition adapted from Wikipedia. See http://en.wikipedia.org/wiki/Cable",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "camera",
+        "name": "Camera",
+        "definition": "A device used to create photographic images",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "chargeRegulator",
+        "name": "Charge regulator",
+        "definition": "An electroinic device that limits the rate at which electric current is added to or drawn from electric batteries.",
+        "category": "Power component",
+        "provenance": "Definition adapted from Wikipedia. See http://en.wikipedia.org/wiki/Charge_controller",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "datalogger",
+        "name": "Datalogger",
+        "definition": "An electronic device that records data over time or in relation to location either with a built in instrument or sensor or via external instruments and sensors.",
+        "category": "Datalogger",
+        "provenance": "Definition adapted from Wikipedia. See http://en.wikipedia.org/wiki/Data_logger",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "electronicDevice",
+        "name": "Electronic device",
+        "definition": "A generic electronic device",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "enclosure",
+        "name": "Enclosure",
+        "definition": "A cabinet or box within which electrical or electronic equipment are mounted to protect them from the environment.",
+        "category": "Platform",
+        "provenance": "Definition adapted from Wikipedia. See http://en.wikipedia.org/wiki/Enclosure_(electrical)",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "fluorometer",
+        "name": "Fluorometer",
+        "definition": "A device used to measure paramters of flouroescence, including its intensity and wavelength distribution of emission spectrum after excitation by a certain spectrum of light.",
+        "category": "Sensor",
+        "provenance": "Definition adapted from Wikipedia. See https://en.wikipedia.org/wiki/Fluorometer",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "globalPositioningSystemReceiver",
+        "name": "Global positioning system receiver",
+        "definition": "A device that accurately calculates geographical location by receiving information from Global Positioning System satellites.",
+        "category": "Sensor",
+        "provenance": "Definition adapted from Wikipedia. See https://en.wikipedia.org/wiki/GPS_navigation_device",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "interface",
+        "name": "Interface",
+        "definition": "A device used to couple multiple other devices.",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "laboratoryInstrument",
+        "name": "Laboratory instrument",
+        "definition": "Any type of equipment, apparatus or device designed, constructed and refined to use well proven physical principles, relationships or technology to facilitate or enable the pursuit, acquisition, transduction and storage of repeatable, verifiable data, usually consisting of sets numerical measurements made upon otherwise unknown, unproven quantities, properties, phenomena, materials, forces or etc.",
+        "category": "Instrument",
+        "provenance": "Definition adapted from Wikipedia. See http://en.wikipedia.org/wiki/Scientific_instrument",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "levelStaff",
+        "name": "Level staff",
+        "definition": "A graduate wooden, fiberglass, or aluminum rod used to determine differences in elevation.",
+        "category": "Instrument",
+        "provenance": "Definition adapted from Wikipedia. See https://en.wikipedia.org/wiki/Level_staff",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "mast",
+        "name": "Mast",
+        "definition": "A pole that supports sensors, instruments, or measurement peripherals.",
+        "category": "Observation platform",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "measurementTower",
+        "name": "Measurement tower",
+        "definition": "A free standing tower that supports measuring instruments or sensors.",
+        "category": "Observation platform",
+        "provenance": "Definition adapted from Wikipedia. See http://en.wikipedia.org/wiki/Measurement_tower",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "multiplexer",
+        "name": "Multiplexer",
+        "definition": "A device that selects one of several analog or digital input signals and forwards the selected input into a single line.",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "powerSupply",
+        "name": "Power supply",
+        "definition": "An electronic device that supplies electric energy to an electrical load. The primary function of a power supply is to convert one form of electrical energy to another (e.g., solar to chemical).",
+        "category": "Power component",
+        "provenance": "Definition adapted from Wikipedia. See http://en.wikipedia.org/wiki/Power_supply",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "pressureTransducer",
+        "name": "Pressure transducer",
+        "definition": "A sensor that measures pressure, typically of gases or liquids.",
+        "category": "Sensor",
+        "provenance": "Definition adapted from Wikipedia. See http://en.wikipedia.org/wiki/Pressure_sensor",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "radio",
+        "name": "Radio",
+        "definition": "A device that transfers information via electromagnetic signals through the atmosphere or free space.",
+        "category": "Communications component",
+        "provenance": "Definition adapted from Wikipedia. See http://en.wikipedia.org/wiki/Radio",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "rhostick",
+        "name": "Rhostick",
+        "definition": "A vertical probe that measures 1D electrical resisivity profiles",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "sampler",
+        "name": "Sampler",
+        "definition": "A device used to collect specimens for later ex situ analysis.",
+        "category": "Sampling device",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "sensor",
+        "name": "Sensor",
+        "definition": "A device that detects events or changes in quantities and provides a corresponding output, generally as an electrical or optical signal.",
+        "category": "Sensor",
+        "provenance": "Definition adapted from Wikipedia. See http://en.wikipedia.org/wiki/Sensor",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "solarPanel",
+        "name": "Solar panel",
+        "definition": "A photovoltaic module that is electrically connected and mounted on a supporting structure.  Used to generate and supply electricity.",
+        "category": "Power component",
+        "provenance": "Definition adapted from Wikipedia. See http://en.wikipedia.org/wiki/Solar_panel",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "stormBox",
+        "name": "Storm box",
+        "definition": "An enclosure used to protect electronic equipment used for stormwater sampling.",
+        "category": "Platform",
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "totalStation",
+        "name": "Total station",
+        "definition": "An electronic and optical instrument used in modern surveying and building construction.  A total station is an electronic theodoloite integrated with an electronic distance meter to read slope distances from the instrument to a particular point.",
+        "category": "Instrument",
+        "provenance": "Definition adapted from Wikipedia. See https://en.wikipedia.org/wiki/Total_station",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "tripod",
+        "name": "Tripod",
+        "definition": "A portable, three-legged frame used as a platform for supporting the weight and maintaining the stability of some other object. Typically used as a data collection platform to which sensors are attached.",
+        "category": "Observation platform",
+        "provenance": "Definition adapted from Wikipedia. See http://en.wikipedia.org/wiki/Tripod",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "turbidimeter",
+        "name": "Turbidimeter",
+        "definition": "A water quality sensor that monitors light reflected off the particles suspended in water.",
+        "category": "Sensor",
+        "provenance": "Definition adapted from Wikipedia. See https://en.wikipedia.org/wiki/Nephelometer",
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "waterQualitySonde",
+        "name": "Water quality sonde",
+        "definition": "A water quality monitoring instrument having multiple attached sensors.",
+        "category": "Sensor",
+        "provenance": "Definition adapted from Wikipedia. See https://en.wikipedia.org/wiki/Sonde_(electronics)",
+        "provenance_uri": null,
+        "note": null
+    }
+]

@@ -1,0 +1,119 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "phenocam_dataset_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ],
+                "minimum": 1
+            },
+            "paf_project_id": {
+                "type": "integer"
+            },
+            "sampling_feature_id": {
+                "type": "integer"
+            },
+            "deployment_year": {
+                "type": "integer"
+            },
+            "first_image_datetime_utc": {
+                "type": "string",
+                "format": "date-time"
+            },
+            "last_image_datetime_utc": {
+                "type": "string",
+                "format": "date-time"
+            },
+            "images_in_dataset": {
+                "type": "integer"
+            },
+            "google_drive_folder_id": {
+                "type": "string"
+            },
+            "location_description": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "camera_direction_angle": {
+                "type": "number"
+            },
+            "camera_elevation_angle": {
+                "type": [
+                    "number",
+                    "null"
+                ]
+            },
+            "camera_height": {
+                "type": [
+                    "number",
+                    "null"
+                ]
+            },
+            "top_left_corner_image_lat": {
+                "type": [
+                    "number",
+                    "null"
+                ]
+            },
+            "top_left_corner_image_long": {
+                "type": [
+                    "number",
+                    "null"
+                ]
+            },
+            "top_right_corner_image_lat": {
+                "type": [
+                    "number",
+                    "null"
+                ]
+            },
+            "top_right_corner_image_long": {
+                "type": [
+                    "number",
+                    "null"
+                ]
+            },
+            "bottom_left_corner_image_lat": {
+                "type": [
+                    "number",
+                    "null"
+                ]
+            },
+            "bottom_left_corner_image_long": {
+                "type": [
+                    "number",
+                    "null"
+                ]
+            },
+            "bottom_right_corner_image_lat": {
+                "type": [
+                    "number",
+                    "null"
+                ]
+            },
+            "bottom_right_corner_image_long": {
+                "type": [
+                    "number",
+                    "null"
+                ]
+            },
+            "center_point_image_lat": {
+                "type": [
+                    "number",
+                    "null"
+                ]
+            },
+            "center_point_image_long": {
+                "type": [
+                    "number",
+                    "null"
+                ]
+            }
+        }
+    }
+}

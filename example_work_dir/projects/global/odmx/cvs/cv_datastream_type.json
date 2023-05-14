@@ -1,0 +1,47 @@
+[
+    {
+        "term": "phenocam",
+        "name": "phenocam",
+        "definition": "data calculated from a phenocam",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "physicalsensor",
+        "name": "physical sensor",
+        "definition": "data obtained fom a physical sensor, such as a weatherstation sensor",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "chemicaldata",
+        "name": "chemical data",
+        "definition": "data obtained from chemical analysis",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "biologicaldata",
+        "name": "biological data",
+        "definition": "data obtained from measuring some kind of biological property",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "satelliteimagery",
+        "name": "Satellite Imagery",
+        "definition": "data calculated from satellite imagery",
+        "category": null,
+        "provenance": null,
+        "provenance_uri": null,
+        "note": null
+    }
+]

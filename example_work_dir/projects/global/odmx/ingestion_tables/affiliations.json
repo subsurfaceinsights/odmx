@@ -1,0 +1,34 @@
+[
+    {
+        "affiliation_id": 1,
+        "person_id": 1,
+        "organization_id": 1,
+        "is_primary_organization_contact": null,
+        "affiliation_start_date": "2018-10-17",
+        "affiliation_end_date": null,
+        "phone": "603-443-2202",
+        "email": "roelof.versteeg@subsurfaceinsights.com",
+        "address": "62 Lebanon Street, Hanover, NH 03755",
+        "postal_code": null,
+        "state_province": null,
+        "country": null,
+        "person_link": null,
+        "job_title": "Owner/Operator"
+    },
+    {
+        "affiliation_id": 2,
+        "person_id": 2,
+        "organization_id": 1,
+        "is_primary_organization_contact": null,
+        "affiliation_start_date": "2018-10-17",
+        "affiliation_end_date": null,
+        "phone": null,
+        "email": "dougvj@gmail.com",
+        "address": "62 Lebanon Street, Hanover, NH 03755",
+        "postal_code": null,
+        "state_province": null,
+        "country": null,
+        "person_link": null,
+        "job_title": "Lead Developer"
+    }
+]

@@ -1,0 +1,36 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "datastream_provenance_file_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ],
+                "minimum": 1
+            },
+            "datastream_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ]
+            },
+            "equipment_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ]
+            },
+            "file_storage_name": {
+                "type": "string"
+            },
+            "file_storage_path": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            }
+        }
+    }
+}

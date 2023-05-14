@@ -1,0 +1,27 @@
+[
+    {
+        "features_of_interest_type_cv": "stream",
+        "features_of_interest_name": "East River",
+        "features_of_interest_description": "The actual East River Stream"
+    },
+    {
+        "features_of_interest_type_cv": "watershed",
+        "features_of_interest_name": "East River Watershed",
+        "features_of_interest_description": "The East river watershed"
+    },
+    {
+        "features_of_interest_type_cv": "stream",
+        "features_of_interest_name": "Coal Creek",
+        "features_of_interest_description": null
+    },
+    {
+        "features_of_interest_type_cv": "watershed",
+        "features_of_interest_name": "Coal Creek Watershed",
+        "features_of_interest_description": null
+    },
+    {
+        "features_of_interest_type_cv": "floodplain",
+        "features_of_interest_name": "East River Floodplain",
+        "features_of_interest_description": "The East River Floodplain Area"
+    }
+]

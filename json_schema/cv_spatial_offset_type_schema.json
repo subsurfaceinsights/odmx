@@ -1,0 +1,41 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "term": {
+                "type": "string"
+            },
+            "name": {
+                "type": "string"
+            },
+            "definition": {
+                "type": ["string", "null"]
+            },
+            "category": {
+                "type": ["string", "null"]
+            },
+            "provenance": {
+                "type": ["string", "null"]
+            },
+            "provenance_uri": {
+                "type": ["string", "null"],
+                "format": "iri"
+            },
+            "note": {
+                "type": ["string", "null"]
+            },
+            "offset1": {
+                "type": ["string", "null"]
+            },
+            "offset2": {
+                "type": ["string", "null"]
+            },
+            "offset3": {
+                "type": ["string", "null"]
+            }
+        },
+        "required": ["term", "name", "definition", "category", "provenance",
+                     "provenance_uri", "note", "offset1", "offset2", "offset3"]
+    }
+}

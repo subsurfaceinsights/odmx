@@ -1,0 +1,48 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "mag_collections_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ],
+                "minimum": 1
+            },
+            "mag_collections_name": {
+                "type": "string"
+            },
+            "final_genes_faa_file_path": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "final_genes_fna_file_path": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "final_genes_gff_file_path": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "final_scaffolds_fna_file_path": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "final_gbk_file_path": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            }
+        }
+    }
+}

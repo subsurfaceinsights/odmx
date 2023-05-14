@@ -1,0 +1,21 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "result_derivation_equations_id": {
+                "type": [
+                    "integer",
+                    "null"
+                ],
+                "minimum": 1
+            },
+            "derivation_equation_id": {
+                "type": "integer"
+            },
+            "result_id": {
+                "type": "integer"
+            }
+        }
+    }
+}

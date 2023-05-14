@@ -1,0 +1,110 @@
+[
+    {
+        "column_name": "timestamp",
+        "variable_domain_cv": "instrumentTimestamp",
+        "acquiring_instrument_uuid": "6c96b620-469b-4be6-8326-66f2c71bd02f",
+        "variable_term": "nonedefined",
+        "units_term": "datalogger_time_stamp",
+        "unit_conversion": true,
+        "expose_as_datastream": false,
+        "datastream_manual_qa_list": null,
+        "sensor_type": "measured",
+        "notes": null
+    },
+    {
+        "column_name": "precipitation_snow_adjusted[in]",
+        "variable_domain_cv": "instrumentMeasurement",
+        "acquiring_instrument_uuid": "6c96b620-469b-4be6-8326-66f2c71bd02f",
+        "variable_term": "rainPrecipitationSnowAdjusted",
+        "units_term": "inch",
+        "unit_conversion": true,
+        "expose_as_datastream": true,
+        "datastream_manual_qa_list": null,
+        "sensor_type": "measured",
+        "notes": null
+    },
+    {
+        "column_name": "precipitation[in]",
+        "variable_domain_cv": "instrumentMeasurement",
+        "acquiring_instrument_uuid": "6c96b620-469b-4be6-8326-66f2c71bd02f",
+        "variable_term": "rainPrecipitation",
+        "units_term": "inch",
+        "unit_conversion": true,
+        "expose_as_datastream": true,
+        "datastream_manual_qa_list": null,
+        "sensor_type": "measured",
+        "notes": null
+    },
+    {
+        "column_name": "snow_depth[in]",
+        "variable_domain_cv": "instrumentMeasurement",
+        "acquiring_instrument_uuid": "6c96b620-469b-4be6-8326-66f2c71bd02f",
+        "variable_term": "snowThickness",
+        "units_term": "inch",
+        "unit_conversion": true,
+        "expose_as_datastream": true,
+        "datastream_manual_qa_list": null,
+        "sensor_type": "measured",
+        "notes": null
+    },
+    {
+        "column_name": "global_radiation[w_m2]",
+        "variable_domain_cv": "instrumentMeasurement",
+        "acquiring_instrument_uuid": "6c96b620-469b-4be6-8326-66f2c71bd02f",
+        "variable_term": "solarRadiationIncomingBroadband",
+        "units_term": "wattPerSquareMeter",
+        "unit_conversion": true,
+        "expose_as_datastream": true,
+        "datastream_manual_qa_list": null,
+        "sensor_type": "measured",
+        "notes": null
+    },
+    {
+        "column_name": "temperature[degf]",
+        "variable_domain_cv": "instrumentMeasurement",
+        "acquiring_instrument_uuid": "6c96b620-469b-4be6-8326-66f2c71bd02f",
+        "variable_term": "airTemperature",
+        "units_term": "degreeFahrenheit",
+        "unit_conversion": true,
+        "expose_as_datastream": true,
+        "datastream_manual_qa_list": null,
+        "sensor_type": "measured",
+        "notes": null
+    },
+    {
+        "column_name": "wind_direction[deg]",
+        "variable_domain_cv": "instrumentMeasurement",
+        "acquiring_instrument_uuid": "6c96b620-469b-4be6-8326-66f2c71bd02f",
+        "variable_term": "windDirection",
+        "units_term": "degree",
+        "unit_conversion": true,
+        "expose_as_datastream": true,
+        "datastream_manual_qa_list": null,
+        "sensor_type": "measured",
+        "notes": null
+    },
+    {
+        "column_name": "wind_speed[mph]",
+        "variable_domain_cv": "instrumentMeasurement",
+        "acquiring_instrument_uuid": "6c96b620-469b-4be6-8326-66f2c71bd02f",
+        "variable_term": "windSpeed",
+        "units_term": "milePerHour",
+        "unit_conversion": true,
+        "expose_as_datastream": true,
+        "datastream_manual_qa_list": null,
+        "sensor_type": "measured",
+        "notes": null
+    },
+    {
+        "column_name": "snow_water_equivalent[in]",
+        "variable_domain_cv": "instrumentMeasurement",
+        "acquiring_instrument_uuid": "6c96b620-469b-4be6-8326-66f2c71bd02f",
+        "variable_term": "snowWaterEquivalent",
+        "units_term": "inch",
+        "unit_conversion": true,
+        "expose_as_datastream": true,
+        "datastream_manual_qa_list": null,
+        "sensor_type": "measured",
+        "notes": null
+    }
+]

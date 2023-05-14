@@ -1,0 +1,37 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "term": {
+                "type": "string"
+            },
+            "units_name": {
+                "type": "string"
+            },
+            "quantity_kind_cv": {
+                "type": "string"
+            },
+            "units_abbreviation": {
+                "type": ["string", "null"]
+            },
+            "units_link": {
+                "type": ["string", "null"],
+                "format": "iri"
+            },
+            "conversion_multiplier": {
+                "type": "number"
+            },
+            "conversion_offset": {
+                "type": "number"
+            },
+            "definition": {
+                "type": ["string", "null"]
+            }
+        },
+        "required": ["term", "units_name", "quantity_kind_cv",
+                     "units_abbreviation", "units_link",
+                     "conversion_multiplier", "conversion_offset",
+                     "definition"]
+    }
+}
