@@ -4,7 +4,7 @@ ODMX Data Model
 
 See [ODMX.org](https://odmx.org)
 
-# Getting Started
+## Getting Started
 
 Install the package by running pip:
 
@@ -12,38 +12,42 @@ Install the package by running pip:
 
 This will install the package and all dependencies.
 
-# Installing PostgreSQL
+## Installing PostgreSQL
 
-## Mac
+ODMX uses exclusively PostgresSQL with Postgis extension. 
+
+### Mac
 
 `brew install postgresql`
 
-## Linux
+### Linux
 
-`sudo apt-get install postgresql postgresql-contrib`
+`sudo apt-get install postgresql postgresql-contrib postgis postgresql-13-postgis-3`
 
-# Setting up PostgreSQL
+## Starting PostgreSQL
 
-## Mac
+### Mac
 
 `brew services start postgresql`
 
-## Linux
+### Linux
 
 `sudo service postgresql start`
 
-# Building an example project
+## Building an example project
 
-## Create a new work directory from example
+### Create a new work directory from example
 
 `cp ./example_work_dir ~/odmx_workspace`
 
-## Edit the config file for running the example
+### Edit the config file for running the example
+
+The config file is under `config.yml` in the work directory
 
 Edit the config file, set `db_user` and `db_pass` your postgres user and password. You must
-have permissions to create a database.
+have permissions to create a database, as the workflow will automatically handle database creation
 
-# Building the example database
+## Building the example database
 
 `python -m odmx.pipeline /path/to/odmx_workspace --project example --from-scratch True`
 
@@ -61,7 +65,13 @@ One useful option is to skip the harvest stage which pulls data from remote:
 
 This will only run the ingest and process stages
 
-# Run and use the REST API
+Once everything runs, you can start querying the database. 
+
+Subsequent reruns without the `--from-scratch True` parameter will attempt to pull and update the database with new data
+
+## Run and use the REST API
+
+The REST API is a part of the odmx python package. An API instance runs against a single project:
 
 `python -m odmx.rest_api --config /path/to/odmx_projects/config.yaml --project example`
 
@@ -69,15 +79,15 @@ The rest API will be running on localhost port 8000. This can be deployed to a
 production server using gunicorn or similar, and can be run behind a reverse proxy
 with authentication.
 
-## Run some queries using CURL
+### Run some queries using CURL
 
 These are some examples using CURL. They are easily translated to python requests,
-or any other HTTP client such as javascript's fetch. We use `python -m json.tool`
+or any other HTTP client such as javascript's fetch. We can use `python -m json.tool`
 to format the output for readability.
 
 The API follows general REST conventions. For GET, query parameters that
 start with `_` are special parameters specific to the API. All other query
-parameters are part of the data model
+parameters are part of the data model.
 
 There are a few special endpoints that are not part of the data model, such as
 `/api/odmx/v3/datastream_data`, which returns data for a datastream. Additional
@@ -86,49 +96,49 @@ involving sample data
 
 Full documentation of the API is forthcoming.
 
-### Data Model Query Examples
+#### Data Model Query Examples
 
-#### Get all CV Units:
+##### Get all CV Units:
 ```sh
 curl  localhost:8000/api/odmx/v3/cv_units | python -m json.tool
 ```
 
-#### Get a CV Unit by ID:
+##### Get a CV Unit by ID:
 ```sh
 curl  localhost:8000/api/odmx/v3/cv_units/1 | python -m json.tool
 ```
 
-#### Get all sampling features:
+##### Get all sampling features:
 ```sh
 curl  localhost:8000/api/odmx/v3/sampling_features | python -m json.tool
 ```
 
-#### Get a sampling feature by ID:
+##### Get a sampling feature by ID:
 ```sh
 curl  localhost:8000/api/odmx/v3/sampling_features/1 | python -m json.tool
 ```
 
-#### Get a sampling feature list by many IDs:
+##### Get a sampling feature list by many IDs:
 ```sh
 curl  localhost:8000/api/odmx/v3/sampling_features/1,2,3 | python -m json.tool
 ```
 
-#### Query sampling features by code:
+##### Query sampling features by code:
 ```sh
 curl  localhost:8000/api/odmx/v3/sampling_features\?sampling_feature_code=ER
 ```
 
-#### Do a fuzzy search on sampling feature code:
+##### Do a fuzzy search on sampling feature code:
 ```sh
 curl  localhost:8000/api/odmx/v3/sampling_features\?sampling_feature_code=ER&_fuzzy
 ```
 
-#### Only return certain fields:
+##### Only return certain fields:
 ```sh
 curl  localhost:8000/api/odmx/v3/sampling_features\?sampling_feature_code=ER&_fuzzy&_cols=sampling_feature_code,sampling_feature_name
 ```
 
-#### Specifying single fields returns flat list by default:
+##### Specifying single fields returns flat list by default:
 
 Rather than having many entries with a single key, if you specify a single
 column there will be a flat list returned.
@@ -137,7 +147,7 @@ column there will be a flat list returned.
 curl  localhost:8000/api/odmx/v3/sampling_features\?sampling_feature_code=ER&_fuzzy&_cols=sampling_feature_code
 ```
 
-#### Force JSON object list format, which is the default for multiple columns, for single column
+##### Force JSON object list format, which is the default for multiple columns, for single column
 
 If you always want to have the same return format regardless, simply explicitly specify it
 
@@ -145,7 +155,7 @@ If you always want to have the same return format regardless, simply explicitly 
 curl  localhost:8000/api/odmx/v3/sampling_features\?sampling_feature_code=ER&_fuzzy&_cols=sampling_feature_codes&_format=json_obj_list
 ```
 
-#### Return as CSV
+##### Return as CSV
 
 CSVs are more easily readable with spreadsheet software, but are also better for
 streaming data while processing it.
@@ -154,7 +164,7 @@ streaming data while processing it.
 curl  localhost:8000/api/odmx/v3/sampling_features\?sampling_feature_code=ER&_fuzzy&_cols=sampling_feature_code,sampling_feature_name&_format=csv
 ```
 
-#### Return as JSON table (with headers and rows keys)
+##### Return as JSON table (with headers and rows keys)
 
 The JSON table format is a more space efficient method of returning data.
 
@@ -170,13 +180,13 @@ what the data is.
 curl  localhost:8000/api/odmx/v3/sampling_features\?sampling_feature_code=ER&_fuzzy&_cols=sampling_feature_code,sampling_feature_name&_format=json_table
 ```
 
-### Querying Timeseries Datastreams
+#### Querying Timeseries Datastreams
 
 Timeseries data in ODMX is handled by a concept called datastreams.
 
 Here are some examples of querying data
 
-#### Find all variables ids that have datastreams:
+##### Find all variables ids that have datastreams:
 
 Here we are searching for all variables in the system that have data in a
 datastream
@@ -188,7 +198,7 @@ curl http://localhost:8000/api/odmx/v3/sampling_feature_timeseries_datastreams\?
 [1, 2, 35, 3, 37, 39, 563, 53, 54, 55, 22, 125]
 ```
 
-#### Find all sampling feature IDs that have datastreams:
+##### Find all sampling feature IDs that have datastreams:
 
 Here are all sampling features which have associated datastreams
 
@@ -200,7 +210,7 @@ curl http://localhost:8000/api/odmx/v3/sampling_feature_timeseries_datastreams\?
 [1, 3, 293, 5, 7, 9, 213, 215]
 ```
 
-#### Find variables associated with a sampling feature:
+##### Find variables associated with a sampling feature:
 
 Here we can use the datastreams table to find variables that are associated
 with a specific sampling feature
@@ -212,7 +222,7 @@ curl http://localhost:8000/api/odmx/v3/sampling_feature_timeseries_datastreams\?
 [1, 563, 54, 55, 125]
 ```
 
-### Datastream Queries Examples
+#### Datastream Queries Examples
 
 Here we will do a step by step for querying air temperature data
 
@@ -228,7 +238,7 @@ curl http://localhost:8000/api/odmx/v3/variables\?variable_term=airTemperature\&
 
 We know the variable_id we need is 1
 
-#### Find all datastreams associated with the variable
+##### Find all datastreams associated with the variable
 
 Let's figure out what datastreams are available:
 
@@ -240,7 +250,7 @@ curl http://localhost:8000/api/odmx/v3/sampling_feature_timeseries_datastreams\?
 ```
 
 
-#### Inspect the first datastream
+##### Inspect the first datastream
 
 ```sh
 curl http://localhost:8000/api/odmx/v3/datastreams/35 | python -m json.tool
@@ -267,7 +277,7 @@ curl http://localhost:8000/api/odmx/v3/datastreams/35 | python -m json.tool
 }
 ```
 
-#### Inspect associated sampling feature
+##### Inspect associated sampling feature
 
 ```sh
 curl http://localhost:8000/api/odmx/v3/sampling_features/7 | python -m json.tool
@@ -296,7 +306,7 @@ So we can see that this is public snotel data from a site in colorado.
 
 Let's look at its air temperature data
 
-#### Query all the data from the datastream (this can be a lot of data)
+##### Query all the data from the datastream (this can be a lot of data)
 
 If you're feeling up to it, pull all the data
 
@@ -334,7 +344,7 @@ The standard data return is the following
 - The data value
 - The qa/qc flag
 
-#### qa/qc flags
+##### qa/qc flags
 
 qa/qc flags set on data after going through a qa/qc process.
 
@@ -427,19 +437,19 @@ support for NaN
 
 For a CSV return, null values are empty cells
 
-#### Query datastream data restricted by date range
+##### Query datastream data restricted by date range
 
 ```sh
 curl http://localhost:8000/api/odmx/v3/datastream_data/35\?start_date=2010-01-01\&end_date=2012-01-02
 ```
 
-#### If you need finer time ranges, you can use the `start_datetime` and `end_datetime` parameters
+##### If you need finer time ranges, you can use the `start_datetime` and `end_datetime` parameters
 
 ```sh
 curl http://localhost:8000/api/odmx/v3/datastream_data/35\?&start_datetime=2010-01-01T00:00:00\&end_datetime=2010-01-01T12:00:00
 ```
 
-#### Query datastream downsampled data
+##### Query datastream downsampled data
 
 It's often important or necessary to downsample data for usage with visualization
 and similar tools. For this, there are two controlling parameters:
@@ -469,7 +479,7 @@ day will be in the specified timezone.
 curl http://localhost:8000/api/odmx/v3/datastream_data/35\?start_date=2010-01-01\&end_date=2010-01-02\&downsample_interval=day&downsample_method=mean&tz=America/Denver
 ```
 
-#### Let's find out the min/max temperature for each year and what day it occurred on
+##### Let's find out the min/max temperature for each year and what day it occurred on
 
 ```sh
 curl http://localhost:8000/api/odmx/v3/datastream_data/35\?downsample_interval=year\&downsample_method=min_max | python -m json.tool
@@ -525,7 +535,7 @@ Notice that with min_max we have 5 entries:
 ```
 
 
-#### Let's find the min/max for each day in the America/Denver timezone
+##### Let's find the min/max for each day in the America/Denver timezone
 
 Here we do the min/max for a few days.
 
@@ -564,7 +574,7 @@ curl http://localhost:8000/api/odmx/v3/datastream_data/35\?&start_date=2022-10-0
 
 Seems plausible
 
-#### Getting full output precision
+##### Getting full output precision
 
 By default, data returns favor convience of short values over accuracy under the
 assumption that the precision of the raw data is not high enough to warrant
@@ -608,7 +618,7 @@ in the database, but remember that the raw values ingested may not have
 been this precise to begin with, and some downsampling operations
 peform calculations that produce values
 
-#### Getting CSV returns
+##### Getting CSV returns
 
 As with the standard model endpoints, you can retrieve the data as a CSV with
 the `format` parameter. The `format` parameter can be set to `csv` or `json`
@@ -643,13 +653,13 @@ truncated_datetime_local,min_datetime_local,min_data_value,max_datetime_local,ma
 2023-01-01 00:00:00,2023-02-10 14:00:00,-29.4,2023-05-01 19:00:00,16.8
 ```
 
-###  Data Model Create/Update/Delete examples
+####  Data Model Create/Update/Delete examples
 
 The default REST API allows for updates to the database. This may not be
 desirable, so you can disable this with `--enable-writes false`
 CLI argument to the rest\_api module above.
 
-#### Create a new sampling feature:
+##### Create a new sampling feature:
 
 Following REST conventions, you can create a new ODMX entity with POST requests
 
@@ -666,7 +676,7 @@ curl -X POST -H "Content-Type: application/json" -d '{"sampling_feature_code":"T
 1234
 ```
 
-#### Update a sampling feature:
+##### Update a sampling feature:
 
 Also following REST conventions, PUT will update an existing entity.
 
@@ -674,7 +684,7 @@ Also following REST conventions, PUT will update an existing entity.
 curl -X PUT -H "Content-Type: application/json" -d '{"sampling_feature_name":"Test Sampling Feature Updated"}' localhost:8000/api/odmx/v3/sampling_features/1234
 ```
 
-#### Delete a sampling feature:
+##### Delete a sampling feature:
 
 Deleting an entity removes it from the system.
 
@@ -682,13 +692,13 @@ Deleting an entity removes it from the system.
 curl -X DELETE localhost:8000/api/odmx/v3/sampling_features/1
 ```
 
-# Using the ODMX Python API
+## Using the ODMX Python API
 
 The ODMX Python API is a simple database wrapper based around psycopg3. It has
 type checking and some basic validation. It is not a full ORM, but it is very
 easy to use.
 
-## Connecting to the database
+### Connecting to the database
 
 ```python
 from odmx.support.db import db
@@ -753,6 +763,17 @@ with con.transaction():
 
 ## Snapshot the database into new project directory
 
+It is often desirable to snapshot an ODMX project that is live, this allows retaining entities through `--from-scratch True` and 
+provides a degree of reproducability and provinance. The project's base tables and CV entries could, for example, be tracked in a git repository.
+
+If you wish to overwrite an existing project directory and have backups or version control, you can pass the `--overwrite True` parameter
+and set the output dir to that of the project directory
+
 ```
 python -m odmx.snapshot --config /path/to/odmx_projects/config.yaml --output-dir /path/to/odmx_projects/example_snapshot --project example --include-feeder True
 ```
+
+If you pass `--include-feeder True` then a snapshot of the feeder tables (which are data ingested into the database from various data sources) are also
+dumped under the `feeder` directory as CSV files. 
+
+
