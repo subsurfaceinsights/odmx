@@ -14,13 +14,13 @@ This will install the package and all dependencies.
 
 ## Installing PostgreSQL
 
-ODMX uses exclusively PostgresSQL with Postgis extension. 
+ODMX uses exclusively PostgresSQL with Postgis extension. This library is compatible with PostgreSQL 13. It may work with other versions, but has not been fully tested.
 
 ### Mac
 
 `brew install postgresql`
 
-### Linux
+### Ubuntu
 
 `sudo apt-get install postgresql postgresql-contrib postgis postgresql-13-postgis-3`
 
@@ -33,6 +33,8 @@ ODMX uses exclusively PostgresSQL with Postgis extension.
 ### Linux
 
 `sudo service postgresql start`
+
+Initial configuration will depend on your operating system. There are tutorials available for most setups (for example, [Ubuntu server](https://ubuntu.com/server/docs/databases-postgresql) or [Arch](https://wiki.archlinux.org/title/PostgreSQL))
 
 ## Building an example project
 
