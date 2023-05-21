@@ -369,7 +369,7 @@ class HydrovuDataSource(DataSource):
                 param_data.rename(columns={'value': col_name}, inplace=True)
                 data_df = pd.concat((data_df, param_data), axis=1)
             print(data_df)
-            vprint(f"hydrovu: Data collected for {self.name} page {count}")
+            vprint(f"hydrovu: Data collected for {self.device_name} page {count}")
             if len(data_df) == 0:
                 break
             count += 1
