@@ -64,7 +64,7 @@ def find_data_source_class(type: str):
         imports_to_try = [
             type, f'odmx.datasources.{type}'
         ]
-    camel_type = type.title().replace('_', '')
+    camel_type = type.split('.')[-1].title().replace('_', '')
     classes_to_try = [
         camel_type, f'{camel_type}DataSource'
     ]
