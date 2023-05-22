@@ -13,6 +13,7 @@ import datetime
 import odmx.support.general as ssigen
 from odmx.log import vprint
 from odmx.json_validation import open_json
+import deepdiff
 
 def populate_base_tables(odmx_db_con: db.Connection, global_path: str, project_path: str):
     """
@@ -190,7 +191,7 @@ def ingest_variable_mapping(con, it_name, it_json):
     ingest_generic_table(con, it_name, mapping_list)
 
 
-def ingest_sampling_features(con, it_name, it_json):
+def ingest_sampling_features(con, it_name, it_json, check_consistency=True):
     """
     Ingest sampling features into ODMX via preorder tree traversal.
 
@@ -199,6 +200,35 @@ def ingest_sampling_features(con, it_name, it_json):
     @param it_name The name of the ingestion table.
     @param it_json The ingestion table from the sampling features .json file.
     """
+    if check_consistency:
+        sampling_features_by_code = {}
+        sampling_features_by_uuid = {}
+        stack = it_json.copy()
+        while sf_item := stack.pop() if len(stack) != 0 else None:
+            code = sf_item['sampling_feature_code']
+            uuid = sf_item['sampling_feature_uuid']
+            if code in sampling_features_by_code:
+                first = sampling_features_by_code[code]
+                second = sf_item
+                diff = deepdiff.DeepDiff(first, second)
+                if diff:
+                    raise ValueError(f'Different sampling features with the '
+                                     f'same code: {code}\n{diff}')
+                else:
+                    raise ValueError(f'Duplicate sampling feature entries under code: {code}')
+            if uuid in sampling_features_by_uuid:
+                first = sampling_features_by_uuid[uuid]
+                second = sf_item
+                diff = deepdiff.DeepDiff(first, second)
+                if diff:
+                    raise ValueError(f'Different sampling features with the '
+                                     f'same uuid: {uuid}\n{diff}')
+                else:
+                    raise ValueError(f'Duplicate sampling feature entries unser uuid: {uuid}')
+            sampling_features_by_code[code] = sf_item
+            sampling_features_by_uuid[uuid] = sf_item
+            if sf_item['child_sampling_features']:
+                stack.extend(sf_item['child_sampling_features'])
     stack = it_json.copy()
     sf_item = stack.pop()
     while sf_item:
