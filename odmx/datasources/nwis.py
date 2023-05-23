@@ -25,12 +25,13 @@ class NwisDataSource(DataSource):
     Class for NWIS data source objects.
     """
 
-    def __init__(self, project_name, project_path, data_path, data_source_timezone, site_code):
+    def __init__(self, project_name, project_path, data_path,
+                 data_source_timezone, site_code):
         self.project_name = project_name
         self.project_path = project_path
         self.data_path = data_path
         self.data_source_timezone = data_source_timezone
-        self.data_source_path = f'nwis'
+        self.data_source_path = 'nwis'
         self.site_code = site_code
         self.feeder_table = f'nwis_{site_code}'
         self.equipment_directory = f'nwis/nwis_{site_code}'
@@ -258,11 +259,14 @@ class NwisDataSource(DataSource):
         self.generate_equipment_jsons(new_cols, overwrite=True)
 
         # The rest of the ingestion is generic.
-        general_timeseries_ingestion(feeder_db_con, feeder_table=self.feeder_table, df=df)
+        general_timeseries_ingestion(feeder_db_con,
+                                     feeder_table=self.feeder_table, df=df)
 
     def process(self, feeder_db_con, odmx_db_con, sampling_feature_code):
         """
         Process ingested NWIS data into timeseries datastreams.
         """
 
-        general_timeseries_processing(self, feeder_db_con, odmx_db_con, sampling_feature_code=sampling_feature_code)
+        general_timeseries_processing(self, feeder_db_con, odmx_db_con,
+                                      sampling_feature_code=\
+                                          sampling_feature_code)
