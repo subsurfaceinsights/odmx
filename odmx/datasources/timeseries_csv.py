@@ -14,6 +14,24 @@ from odmx.timeseries_ingestion import general_timeseries_ingestion
 from odmx.timeseries_processing import general_timeseries_processing
 
 
+def clean_name(col):
+    """
+    Generate ingested name from csv column name
+    """
+    replace_chars = {' ': '_', '-': '_', '/': '_', '²': '2', '³': '3',
+                     '°': 'deg', '__': '_', '%': 'percent'}
+    new_col = col.lower()
+    for key, value in replace_chars.items():
+        new_col = new_col.replace(key, value)
+    # Make sure our replacement worked
+    try:
+        new_col.encode('ascii')
+    except UnicodeEncodeError as exc:
+        raise RuntimeError(f"Column '{new_col}' derived from decagon "
+                           "data still has special characters. "
+                           "Check the find/replace list") from exc
+    return new_col
+
 class TimeseriesCsvDataSource(DataSource):
     """
     Class for generic timeseries csv data source objects.
@@ -57,10 +75,10 @@ class TimeseriesCsvDataSource(DataSource):
                                 self.data_source_name)
 
         # Find all csvs in the path for this data source
-        cav_paths_list = ssigen.get_files(file_path, '.csv')[1]
+        csv_paths_list = ssigen.get_files(file_path, '.csv')[1]
 
         dfs = []
-        for site_path in cav_paths_list:
+        for site_path in csv_paths_list:
             args = {
                 'parse_dates': True,
                 'infer_datetime_format': True,
@@ -69,20 +87,24 @@ class TimeseriesCsvDataSource(DataSource):
             df = ssigen.open_csv(site_path, args=args, lock=True)
 
             # Convert datetime to timestamp
-            df['datetime'] = pd.to_datetime(df['datetime'],
+            df['timestamp'] = pd.to_datetime(df['datetime'],
                                             format='%Y-%m-%d %H:%M:%S')
-            df['timestamp'] = df['datetime'].apply(lambda x: int(x.value/10**9))
-            if "UTC" in self.data_source_timezone:
-                tz_offset = int(self.data_source_timezone[-3:])
-                df['timestamp'] = df['timestamp'] + tz_offset
 
             # Add to list of dataframes
             dfs.append(df)
         df = pd.concat(dfs, ignore_index=True).drop_duplicates()
 
-        # Sort the DataFrame by datetime.
+        # Sort the DataFrame by timestamp and drop unused datetime column
         df.sort_values(by='timestamp', inplace=True)
-        df.reset_index(drop=True, inplace=True)
+        df.drop(columns='datetime', inplace=True)
+
+        # Ensure column names are compatible with database
+        new_cols = []
+        for col in df.columns.tolist():
+            new_col = clean_name(col)
+            new_cols.append(new_col)
+
+        df.columns = new_cols
 
         # The rest of the ingestion is generic.
         general_timeseries_ingestion(feeder_db_con,
