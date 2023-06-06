@@ -38,7 +38,8 @@ class TimeseriesCsvDataSource(DataSource):
     """
 
     def __init__(self, project_name, project_path, data_path,
-                 data_source_timezone, data_source_name, data_source_path):
+                 data_source_timezone, data_source_name, data_source_path,
+                 equipment_path):
         self.project_name = project_name
         self.project_path = project_path
         self.data_path = data_path
@@ -46,6 +47,8 @@ class TimeseriesCsvDataSource(DataSource):
         self.data_source_name = data_source_name
         self.feeder_table = f'feeder_{data_source_name}'
         self.data_source_path = data_source_path
+        self.equipment_path = (f'{project_path}/odmx/equipment'
+                               f'/{equipment_path}/device_{data_source_name}')
 
     def harvest(self):
         """
@@ -123,4 +126,6 @@ class TimeseriesCsvDataSource(DataSource):
 
         general_timeseries_processing(self, feeder_db_con, odmx_db_con,
                                       sampling_feature_code=\
-                                          sampling_feature_code)
+                                          sampling_feature_code,
+                                          equipment_directory=\
+                                              self.equipment_path)
