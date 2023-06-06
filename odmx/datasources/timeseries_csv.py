@@ -86,6 +86,12 @@ class TimeseriesCsvDataSource(DataSource):
             }
             df = ssigen.open_csv(site_path, args=args, lock=True)
 
+            # Make sure we have a datetime column, report error if not
+            if 'datetime' not in df.columns.tolist():
+                print(f"reading data from {site_path}")
+                print(f"No datetime column. Available columns are: {df.columns}")
+                return
+
             # Convert datetime to timestamp
             df['timestamp'] = pd.to_datetime(df['datetime'],
                                             format='%Y-%m-%d %H:%M:%S')
