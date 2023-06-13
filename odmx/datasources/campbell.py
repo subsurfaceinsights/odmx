@@ -28,8 +28,7 @@ class CampbellDataSource(DataSource):
                  feeder_table):
         self.project_name = project_name
         self.project_path = project_path
-        self.data_path = data_path
-        self.data_source_path = data_source_path
+        self.data_source_path = os.path.join(data_path, data_source_path)
         self.data_source_timezone = data_source_timezone
         self.feeder_table = feeder_table
 
@@ -37,13 +36,8 @@ class CampbellDataSource(DataSource):
         """
         Harvests data from a remote server.
         """
-
-        # Define variables.
-        local_base_path = self.data_source_path
-
-        # Pull the data.
         simple_rsync(remote_user, remote_server, remote_base_path,
-                     local_base_path, pull_list)
+                     self.data_source_path, pull_list)
 
     def ingest(self, feeder_db_con: db.Connection):
         """
@@ -59,10 +53,8 @@ class CampbellDataSource(DataSource):
 
         latest_timestamp = get_latest_timestamp(feeder_db_con, self.feeder_table)
 
-        # Define the path for files.
-        file_path = os.path.join(self.data_path, self.data_source_path)
         # Log the .dat files (they're actually .csv files).
-        dat_paths_list = ssigen.get_files(file_path, '.dat')[1]
+        dat_paths_list = ssigen.get_files(self.data_source_path, '.dat')[1]
         # Create a DataFrame for all of the files.
         dfs = []
         for dat_path in dat_paths_list:
