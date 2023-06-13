@@ -10,8 +10,9 @@ import odmx.support.general as ssigen
 import odmx.support.db as db
 from odmx.abstract_data_source import DataSource
 from odmx.harvesting import simple_rsync
-from odmx.timeseries_ingestion import general_timeseries_ingestion
+from odmx.timeseries_ingestion import general_timeseries_ingestion, get_latest_timestamp
 from odmx.timeseries_processing import general_timeseries_processing
+from odmx.log import vprint
 
 class CampbellDataSource(DataSource):
     """
@@ -49,6 +50,14 @@ class CampbellDataSource(DataSource):
         Manipulate harvested Campbell data in a file on the server into a
         feeder database.
         """
+        # These are very large files, TODO this should be done in chunks, but
+        # that will require a lot of refactoring since Erek wrote the ingestion
+        # around pandas DataFrames.
+
+        # We can avoid some of it by gating the data by the last ingested
+        # timestamp
+
+        latest_timestamp = get_latest_timestamp(feeder_db_con, self.feeder_table)
 
         # Define the path for files.
         file_path = os.path.join(self.data_path, self.data_source_path)
@@ -57,6 +66,14 @@ class CampbellDataSource(DataSource):
         # Create a DataFrame for all of the files.
         dfs = []
         for dat_path in dat_paths_list:
+            if latest_timestamp is not None:
+                # Get the last timestamp in the file.
+                file_last_timestamp = ssigen.get_last_timestamp_csv(dat_path)
+                if file_last_timestamp and file_last_timestamp <= latest_timestamp:
+                    vprint(f"Skipping file '{dat_path}' because it's last "
+                        "timestamp is before the last ingested timestamp.")
+                    continue
+
             args = {
                 'skiprows': [0, 2, 3],
                 'na_values': ['NAN', 'Null'],
@@ -65,8 +82,12 @@ class CampbellDataSource(DataSource):
             # TODO this takes a lot of memory, this should definitely be
             # checked against the existing table and only new data should be
             # processed
+            vprint(f"Opening file '{dat_path}'")
             df = ssigen.open_csv(dat_path, args=args, lock=True)
             dfs.append(df)
+        if len(dfs) == 0:
+            vprint("No new data to ingest.")
+            return
         df = pd.concat(dfs, ignore_index=True).drop_duplicates()
 
         # Make sure the column headers are lower case.
