@@ -245,7 +245,7 @@ def run_pipeline(conf: Config, work_dir: str):
                 f"Data source types {missing} are not valid for this project. "
                 f"Valid data source types are: {project_sources}."
             )
-        data_source_types = project_sources - conf.skip_data_source_types
+        data_source_types = project_sources - skip_data_source_types
 
 
 
