@@ -350,11 +350,10 @@ def run_pipeline(conf: Config, work_dir: str):
         print("Starting ingest process.")
         for data_source in data_sources:
             obj = data_source.data_source_obj
-            feeder_db_con = feeder_db_con if data_source.scope == 'project_specific' else global_db_con
             kwargs = data_source.ingestion_info
             params = set(get_method_params(obj.ingest))
             if 'feeder_db_con' in params:
-                kwargs['feeder_db_con'] = feeder_db_con
+                kwargs['feeder_db_con'] = feeder_db_con if data_source.scope == 'project_specific' else global_db_con
             if 'odmx_db_con' in params:
                 kwargs['odmx_db_con'] = odmx_db_con
             obj.ingest(**kwargs)
@@ -362,11 +361,10 @@ def run_pipeline(conf: Config, work_dir: str):
         print("Starting processing into ODMX process.")
         for data_source in data_sources:
             obj = data_source.data_source_obj
-            feeder_db_con = feeder_db_con if data_source.scope == 'project_specific' else global_db_con
             kwargs = data_source.processing_info
             params = set(get_method_params(obj.process))
             if 'feeder_db_con' in params:
-                kwargs['feeder_db_con'] = feeder_db_con
+                kwargs['feeder_db_con'] = feeder_db_con if data_source.scope == 'project_specific' else global_db_con
             if 'odmx_db_con' in params:
                 kwargs['odmx_db_con'] = odmx_db_con
             obj.process(**kwargs)
