@@ -534,6 +534,34 @@ def open_csv(file_path, args=None, lock=False, timeout=300):
 
     return csv_data
 
+def get_last_timestamp_csv(file_path, timestamp_index=0, max_line_size=8192):
+    # Read the last line of the file to get the timestamp. We do this
+    # by seeking to the file 4096 bytes, then reading the last line.
+    # This is a hack, but it works for campbell data.
+    # We need to open the file in binary mode to use seek.
+    with open(file_path, 'rb') as f:
+        # Get size
+        f.seek(0, os.SEEK_END)
+        size = f.tell()
+        print(size)
+        if size == 0:
+            print(f"Notice: file '{file_path}' is empty.")
+            return None
+        # Get the last line.
+        f.seek(-max_line_size, os.SEEK_END)
+        last_line = f.read().splitlines()[-1]
+        # Convert the bytes to a string.
+        last_line = last_line.decode('utf-8')
+        # Get the timestamp from the last line, which is the first
+        # element in the list.
+        file_last_timestamp = last_line.split(',')[timestamp_index]
+        # Remove quotes
+        file_last_timestamp = file_last_timestamp.replace('"', '')
+        # Parse the timestamp.
+        file_last_timestamp = pd.to_datetime(file_last_timestamp)
+        return file_last_timestamp
+
+
 
 def open_spreadsheet(file_path, args=None, lock=False, timeout=300):
     """
