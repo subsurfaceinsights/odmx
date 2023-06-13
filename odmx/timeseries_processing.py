@@ -29,7 +29,7 @@ import odmx.data_model as odmx
 
 def general_timeseries_processing(ds: DataSource,
                                   feeder_db_con: Connection,
-                                  odmx_db_con:Connection,
+                                  odmx_db_con: Connection,
                                   project_path: Optional[str] = None,
                                   data_source_timezone: Optional[str] = None,
                                   feeder_table: Optional[str] = None,

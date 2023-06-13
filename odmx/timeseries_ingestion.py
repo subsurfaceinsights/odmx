@@ -9,6 +9,19 @@ import odmx.support.math as ssimath
 import odmx.support.db as db
 from odmx.support.db import quote_id
 
+def get_latest_timestamp(feeder_db_con, feeder_table):
+    if not db.does_table_exist(feeder_db_con, feeder_table):
+        return None
+    if db.is_table_empty(feeder_db_con, feeder_table):
+        return None
+    query = f'''
+        SELECT timestamp FROM
+            {quote_id(feeder_db_con,
+                       feeder_table)}
+            ORDER BY timestamp DESC LIMIT 1
+    '''
+    result = feeder_db_con.execute(query).fetchone()[0]
+    return result
 
 def general_timeseries_ingestion(feeder_db_con, feeder_table, df):
     """
@@ -80,26 +93,18 @@ def general_timeseries_ingestion(feeder_db_con, feeder_table, df):
             print(f"Adding new columns '{new_columns}'")
             add_columns(feeder_db_con, feeder_table,
                     new_columns)
-        query = f'''
-            SELECT timestamp FROM
-                {quote_id(feeder_db_con,
-                           feeder_table)}
-                ORDER BY timestamp DESC LIMIT 1
-        '''
-        result = feeder_db_con.execute(query).fetchone()
-        # However, the table could exist but be empty (odd edge case that
-        # should only happen if the table is created, but then there's an
-        # ingestion error, and we try to ingest again).
-        if result is not None:
-            last_time = result[0]
+        last_time = get_latest_timestamp(feeder_db_con,
+                                         feeder_table)
+        print (f"Last timestamp in {feeder_table} is {last_time}")
+        if last_time is not None:
             df = df[df['timestamp'] > last_time]
-            # If the DataFrame is empty, there's no new data to ingest.
-            if df.empty:
-                print("No new data to ingest.\n")
-                return
         else:
             print(f"\"{feeder_table}\" is empty. Adding"
                   " to it.")
+        # If the DataFrame is empty, there's no new data to ingest.
+        if df.empty:
+            print("No new data to ingest.\n")
+            return
 
     print(f"Populating {feeder_table}.")
     # TODO the records generation is the slowest step here. We should
