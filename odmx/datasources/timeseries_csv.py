@@ -47,8 +47,7 @@ class TimeseriesCsvDataSource(DataSource):
         self.data_source_name = data_source_name
         self.feeder_table = f'feeder_{data_source_name}'
         self.data_source_path = data_source_path
-        self.equipment_path = (f'{project_path}/odmx/equipment'
-                               f'/{equipment_path}/device_{data_source_name}')
+        self.equipment_path = (f'{equipment_path}/device_{data_source_name}')
 
     def harvest(self):
         """
