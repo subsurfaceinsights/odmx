@@ -14,6 +14,8 @@ from odmx.log import vprint
 from odmx.json_validation import open_json
 
 
+UPDATE_ONLY = os.environ.get('UPDATE_ONLY', False)
+
 def populate_cvs(odmx_db_con: db.Connection, project_path: str):
     """
     Populate CVs into an ODMX database.
@@ -58,15 +60,36 @@ def populate_cvs(odmx_db_con: db.Connection, project_path: str):
                     objects_no_id.append(obj)
             # Remove the objects with no ID from the list.
             objects = [obj for obj in objects if obj.variable_id is not None]
-            # Insert the objects with ID
             # Pass the list to the proper create service function.
-            if objects:
-                num_inserted = odmx.write_variables_many(con, objects)
-                vprint(f'Inserted {num_inserted} rows with ID into {cv_name}.')
             # Insert the objects without ID
             if objects_no_id:
-                num_inserted = odmx.write_variables_many(con, objects_no_id)
-                vprint(f'Inserted {num_inserted} rows without ID into {cv_name}.')
+                # We have some annoying special handling. The variable_term
+                # must be unique, so we need to check if the variable_term
+                # already exists in the table. TODO proper upsert on non
+                # primary key fields
+                new_objects = []
+                for obj in objects_no_id:
+                    variable = odmx.read_variables_one_or_none(
+                            con,
+                            variable_term=obj.variable_term)
+                    if variable is not None:
+                        obj.variable_id = variable.variable_id
+                        objects.append(obj)
+                    else:
+                        new_objects.append(obj)
+                # Insert any new objects
+                if new_objects:
+                    if UPDATE_ONLY:
+                        raise ValueError('UPDATE_ONLY is set, but there are '
+                                         f'new objects to insert into {cv_name}')
+                    num_inserted = odmx.write_variables_many(con, new_objects)
+                    vprint(f'Inserted {num_inserted} new rows into {cv_name}.')
+            # Insert the objects with ID
+            if objects:
+                num_inserted = odmx.write_variables_many(con, objects, upsert=True)
+                vprint(f'Inserted/Updated {num_inserted} rows with ID into {cv_name}.')
+
+
             # Then split out min/max into its own set of objects.
             # This table has the term, ID, min, and max.
             min_max_list = [{k: v for k, v in d.items()
@@ -86,8 +109,29 @@ def populate_cvs(odmx_db_con: db.Connection, project_path: str):
                 obj['max_valid_range'] = float(obj['max_valid_range'])
             objects = [odmx.VariableQaMinMax(**dict_obj)
                        for dict_obj in min_max_list]
-            num_inserted = odmx.write_variable_qa_min_max_many(con, objects)
-            vprint(f'Inserted {num_inserted} rows into variable_qa_min_max.')
+            # for an upsert find the existing objects and add the primary key
+            # to the new objects
+            objects_no_id = []
+            objects_with_id = []
+            for obj in objects:
+                if obj.variable_qa_min_max_id is None:
+                    # See if we have an entry already
+                    existing = odmx.read_variable_qa_min_max_one_or_none(
+                            con, variable_id=obj.variable_id)
+                    if existing is not None:
+                        obj.variable_qa_min_max_id = existing.variable_qa_min_max_id
+                        objects_with_id.append(obj)
+                    else:
+                        objects_no_id.append(obj)
+                else:
+                    objects_with_id.append(obj)
+            if objects_no_id:
+                num_inserted = odmx.write_variable_qa_min_max_many(con, objects_no_id)
+                vprint(f'Inserted {num_inserted} new rows into variable_qa_min_max.')
+            if objects_with_id:
+                num_inserted = odmx.write_variable_qa_min_max_many(con, objects_with_id, upsert=True)
+                vprint(f'Inserted/Updated {num_inserted} rows with ID into variable_qa_min_max.')
+
         else:
             TableClass = odmx.get_table_class(cv_name)
             assert TableClass is not None, f'No table class found for {cv_name}'
@@ -101,11 +145,13 @@ def populate_cvs(odmx_db_con: db.Connection, project_path: str):
             # Remove the objects with no ID from the list.
             objects = [obj for obj in objects if getattr(obj, TableClass.PRIMARY_KEY) is not None]
             if objects:
-                num_inserted = TableClass.write_many(con, objects)
-                vprint(f'Inserted {num_inserted} rows with IDs into {cv_name}.')
+                num_inserted = TableClass.write_many(con, objects, upsert=True)
+                vprint(f'Inserted/Updated {num_inserted} rows with IDs into {cv_name}.')
             if objects_no_id:
+                if UPDATE_ONLY:
+                    raise ValueError('UPDATE_ONLY is set, but there are '
+                                     f'new objects to insert into {cv_name}')
                 num_inserted = TableClass.write_many(con, objects_no_id)
                 vprint(f'Inserted {num_inserted} rows without IDs into {cv_name}.')
-
 
 

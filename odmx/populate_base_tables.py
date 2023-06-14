@@ -83,6 +83,17 @@ def populate_base_tables(odmx_db_con: db.Connection, global_path: str, project_p
                 else:
                     ingest_generic_table(odmx_db_con, it_name, it_json)
 
+# unique columns that are not in the db TODO add this to the model
+special_unique_columns = {
+    'extension_properties': ['property_name'],
+    # TODO this is supposed to correspond to equipment_code I guess?
+    'equipment_models': ['equipment_model_part_number'],
+    'features_of_interest': ['features_of_interest_name'],
+    'variable_mapping': ['project_variable_name'],
+    'specimen_collection': ['specimen_collection_name'],
+}
+
+UPDATE_ONLY = os.environ.get('UPDATE_ONLY', False)
 
 def ingest_generic_table(con, it_name, it_json):
     """
@@ -97,16 +108,44 @@ def ingest_generic_table(con, it_name, it_json):
     TableType = odmx.get_table_class(it_name)
     if not TableType:
         raise ValueError(f'No table class found for {it_name}')
+    count = db.get_table_count(con, it_name)
+    unique_columns = []
+    if (count > 0):
+        # Get unique columns for this table
+        unique_columns = db.table_get_unique_columns(con, it_name)
+        # Add unique columns not captured by the schema
+        if it_name in special_unique_columns:
+            unique_columns += special_unique_columns[it_name]
+    vprint(f'Ingesting {it_name} with unique columns: {unique_columns}')
     # Try to parse any date time columns
     objects = [TableType.create_from_json_dict(dict_obj) for dict_obj in it_json]
     objects_without_ids = [obj for obj in objects if getattr(obj, TableType.PRIMARY_KEY) is None]
     objects_with_ids = [obj for obj in objects if getattr(obj, TableType.PRIMARY_KEY) is not None]
-    if objects_with_ids:
-        num_inserted = TableType.write_many(con, objects_with_ids)
-        vprint(f'Inserted {num_inserted} rows with IDs into {it_name}')
+    # For each entry without a primary key id, check if it exists in the database
+    # already. If it does, update the object with the existing id. If it doesn't,
+    # add it to the list of objects to be inserted as new rows.
     if objects_without_ids:
-        num_inserted = TableType.write_many(con, objects_without_ids)
-        vprint(f'Inserted {num_inserted} rows without IDs into {it_name}')
+        new_objects = []
+        for obj in objects_without_ids:
+            if not unique_columns:
+                new_objects.append(obj)
+                continue
+            for col in unique_columns:
+                kwargs = {col: getattr(obj, col)}
+                existing = TableType.read_one_or_none(con, **kwargs)
+                if existing:
+                    setattr(obj, TableType.PRIMARY_KEY, getattr(existing, TableType.PRIMARY_KEY))
+                    objects_with_ids.append(obj)
+                else:
+                    new_objects.append(obj)
+        if new_objects:
+            if UPDATE_ONLY:
+                raise ValueError(f'Found {len(new_objects)} new rows to insert into {it_name} but UPDATE_ONLY is set')
+            num_inserted = TableType.write_many(con, new_objects)
+            vprint(f'Inserted {num_inserted} new rows into {it_name}')
+    if objects_with_ids:
+        num_inserted = TableType.write_many(con, objects_with_ids, upsert=True)
+        vprint(f'Inserted/Updated {num_inserted} rows with IDs into {it_name}')
 
 
 def ingest_extension_properties(con, it_name, it_json):
