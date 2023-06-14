@@ -638,6 +638,18 @@ def get_table_id_column(
     return id_col
 
 @beartype
+def table_get_unique_columns(con: Connection, table: str) -> list[str]:
+    constraints = get_table_constraints(con, table)
+    unique_columns = []
+    for col in constraints:
+        if col['constraint_type'] == 'UNIQUE':
+            # Filter values of NOne
+            # col = {k: v for k, v in col.items() if v is not None}
+            # print(col)
+            unique_columns.append(col['column_name'])
+    return unique_columns
+
+@beartype
 def table_get_foreign_keys(con: Connection, table: str) -> list[dict]:
     schema = get_current_schema(con)
     query = '''
