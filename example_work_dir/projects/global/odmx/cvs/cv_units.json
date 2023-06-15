@@ -6127,7 +6127,7 @@
         "definition": null
     },
     {
-        "term": "kilopascal",
+        "term": "kiloPascal",
         "units_name": "Kilopascal",
         "quantity_kind_cv": "pressureOrStress",
         "conversion_multiplier": 1000.0,
