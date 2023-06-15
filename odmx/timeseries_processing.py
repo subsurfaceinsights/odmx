@@ -755,11 +755,16 @@ def check_datastream_entries(con, fix=True, check_empty=True):
                     FROM "{datastream_database}"."{datastream_tablename}"
                     WHERE data_value is not null ORDER BY utc_time DESC LIMIT 10
                     ''').fetchall()
-                print(f"\t - The last ten datapoints are:")
+                no_data = True
                 for datapoint in last_ten_datapoints:
+                    if no_data:
+                        no_data = False
+                        print(f"\t - The last non-null ten datapoints are:")
                     utc_datetime = datetime.datetime.utcfromtimestamp(
                         datapoint[0])
                     print(f"\t\t {utc_datetime} {datapoint[1]} ({datapoint[2]})")
+                if no_data:
+                    print("\t - There are no non-null datapoints.")
             if check_empty:
                 passed = False
     return passed
