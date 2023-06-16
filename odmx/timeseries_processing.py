@@ -126,9 +126,8 @@ def general_timeseries_processing(ds: DataSource,
     d2e_df = d2e_df.query('expose_as_datastream')
     assert d2e_df is not None
     if d2e_df.empty:
-        raise Exception(
-            "No data is set to be exposed for the current data source:"
-            f" {feeder_table}"
+        print("WARNING: No data is set to be exposed for the current data "
+            f"source: {feeder_table}"
         )
     # Convert back to a list of dictionaries, and run through the entries.
     d2e_list = d2e_df.to_dict(orient='records')
