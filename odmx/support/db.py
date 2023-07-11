@@ -21,7 +21,7 @@ from psycopg import Cursor
 import psycopg.sql
 from psycopg.sql import SQL, Identifier, Literal
 import psycopg.rows
-from odmx.support.config import Config
+from ssi.config import Config
 import argparse
 import json
 from contextlib import contextmanager
@@ -145,7 +145,7 @@ def add_db_parameters_to_config(config: Config,
     the application (for example, ODMX does not support mysql so anything
     dealing with that shouldn't allow a configuration for database type)
 
-    @param config The odmx.support.config.Config object to which standard database
+    @param config The ssi.config.Config object to which standard database
     configuration keys will be added.
 
     @param prefix A configuration prefix, for example 'ert' which is added to
@@ -164,28 +164,34 @@ def add_db_parameters_to_config(config: Config,
         db_help_name = prefix.rstrip('_') + " "
     config.add_config_param(
         prefix + 'db_user',
+        alternative='pguser',
         help=f"The {db_help_name}database user to authenticate with",
     )
     config.add_config_param(
         prefix + 'db_pass',
+        alternative='pgpassword',
         help=f"The {db_help_name}database password to authenticate with",
     )
     config.add_config_param(
         prefix + 'db_port',
+        alternative='pgport',
         optional=True,
         help=f"The port of the {db_help_name}database")
     config.add_config_param(
         prefix + 'db_host',
+        alternative='pghost',
         help=f"The host of the {db_help_name}database")
     if add_db_schema:
         config.add_config_param(
             prefix + 'db_schema',
+            alternative='pgschema',
             optional=True,
             help=f"The {db_help_name}database schema"
         )
     if add_db_name:
         config.add_config_param(
             prefix + 'db_name',
+            alternative='pgname',
             optional=True,
             help=f"The {db_help_name}database name"
         )
@@ -208,7 +214,7 @@ def connect(
     The other thing that you can do is use explicit transactions with
     with con.transaction():
 
-    @param config An odmx.support.config Config object containing DB config information
+    @param config An ssi.config Config object containing DB config information
     @param config_prefix The prefix to the configuration options. This is useful
         for sharing multiple db configurations in the same configuration space.
     @param db_user An override to the user found in the config.
@@ -233,6 +239,8 @@ def connect(
         db_port = db_port or config.get(config_prefix + 'db_port')
         db_schema = db_schema or config.get(config_prefix + 'db_schema')
     db_string = ""
+    if not db_port:
+        db_port = int(os.getenv('PGPORT') or 5432)
     if db_user:
         db_string += f"user={db_user} "
     if db_pass:
@@ -1701,7 +1709,7 @@ def generate_python_class_file_for_db_table(con: Connection, output_file: str):
         fp.write("import datetime\n")
         fp.write("from beartype.typing import Optional, Generator, List, ClassVar, Type, Dict, Any\n")
         fp.write("import beartype\n")
-        fp.write("import odmx.support.db as db\n\n")
+        fp.write("import ssi.db as db\n\n")
         fp.write("def beartype_wrap_init(cls):\n")
         fp.write("    assert dataclasses.is_dataclass(cls)\n")
         fp.write("    cls.__init__ = beartype.beartype(cls.__init__)\n")
