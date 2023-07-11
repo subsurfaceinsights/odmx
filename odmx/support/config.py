@@ -8,11 +8,11 @@ import sys
 import os
 import json
 import argparse
-from beartype.typing import Union, Optional, Callable
 from collections import namedtuple
-import yaml
 from beartype import beartype
-import odmx.support.validators
+from beartype.typing import Union, Optional, Callable
+import yaml
+import ssi.validators
 
 def map_to_cli_name(name: str):
     """
@@ -37,7 +37,7 @@ def map_to_cli_arg_name(name: str):
 
 class ConfigurationError(Exception):
     """
-    Class for all exceptions thrown by the odmx.support.config library
+    Class for all exceptions thrown by the ssi.config library
     """
 
 class ConfigurationNotSetError(ConfigurationError):
@@ -56,22 +56,22 @@ class ConfigParam():
     Class representing a single configuration argument
     """
     VALIDATORS={
-            'integer': odmx.support.validators.validate_int,
-            'int': odmx.support.validators.validate_int,
-            'float': odmx.support.validators.validate_float,
-            'url': odmx.support.validators.validate_url,
-            'port': odmx.support.validators.validate_port,
-            'hostname': odmx.support.validators.validate_hostname,
-            'bool': odmx.support.validators.validate_bool,
-            'boolean': odmx.support.validators.validate_bool,
-            'enum': odmx.support.validators.validate_enum,
+            'integer': ssi.validators.validate_int,
+            'int': ssi.validators.validate_int,
+            'float': ssi.validators.validate_float,
+            'url': ssi.validators.validate_url,
+            'port': ssi.validators.validate_port,
+            'hostname': ssi.validators.validate_hostname,
+            'bool': ssi.validators.validate_bool,
+            'boolean': ssi.validators.validate_bool,
+            'enum': ssi.validators.validate_enum,
         }
 
     @beartype
     #pylint: disable=redefined-builtin disable=too-many-arguments
     def __init__(self, name: str, help: Optional[str], default=None,
                  validator: Optional[Union[Callable, str]] = None,
-                 optional: bool=False,
+                 optional: bool=False, alternative=Optional[str],
                  validation_args=None):
         """
         See documentation for the Config class's add_config_param
@@ -90,6 +90,7 @@ class ConfigParam():
         self.value = None
         self.validation_args = validation_args
         self.optional = self.default is not None or optional
+        self.alternative = alternative
 
 
     def set_and_validate_value(self, value):
@@ -201,7 +202,8 @@ class Config():
     #pylint: disable=redefined-builtin
     #pylint: disable=too-many-arguments
     def add_config_param(self, name, help=None, default=None,
-                         validator=None, optional=False, **kwargs):
+                         validator=None, optional=False, alternative=None,
+                         **kwargs):
         """
         @param Name The name of the configuration parameter. The configuration
         parameter name is normalized to CAP_CASE form, so if 'hello-world' is
@@ -225,6 +227,9 @@ class Config():
         @param optional Whether the configuration parameter is optional. If
         it's optional, then the parameter will return None when not set by any
         configuration source. Otherwise, an exception is raised (the default)
+        @param alternative An alternative name for the configuration parameter.
+        This is useful for backwards compatibility or for allowing multiple
+        names for the same parameter.
         """
         # Some simple heuristics for common cases
         if 'choices' in kwargs and validator is None:
@@ -237,6 +242,7 @@ class Config():
             default=default,
             optional=optional,
             validator=validator,
+            alternative=alternative,
             validation_args=kwargs)
 
     def add_args_to_argparser(self, parser: argparse.ArgumentParser):
@@ -334,7 +340,11 @@ class Config():
         unset_params = []
         for param_name, param in self._params.items():
             if not self._validate_param(param_name, param, args):
-                unset_params.append(param_name)
+                if param.alternative:
+                    if not self._validate_param(param.alternative, param, args):
+                        unset_params.append(param_name)
+                else:
+                    unset_params.append(param_name)
 
         # Report parameters that were not set
         if unset_params:
