@@ -1892,8 +1892,6 @@ def generate_json_schemas_from_db(connection: Connection, json_schema_dir: str):
         with open(json_schema_file, 'w', encoding="utf-8") as f:
             json.dump(schema, f, indent=4)
 
-
-
 def reset_db(connection: Connection, name, sql_template=None):
     """
     Drop and recreate a database, restoring from a sql template if.
@@ -1918,7 +1916,6 @@ def reset_db(connection: Connection, name, sql_template=None):
         for s in sql:
             db_con.execute(s)
         db_con.commit()
-
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
