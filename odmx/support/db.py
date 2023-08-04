@@ -1,10 +1,22 @@
 #!/usr/bin/env python3
-
+# pylint: disable=unused-variable
 """
 Convenience functions for handling DB operations as well as generating DB
 classes based on existing DB schemas
 
 Authors: Erek Alper, Doug Johnson
+
+pylint for unused-variable is disabled for now in anticipation of those
+variables being intended for something
+
+protected-access is allowed on a per-line basis to avoid breaking things
+
+redefined-outer-name is allowed on a per-line basis to avoid breaking it for
+    other code that calls it and names that arg explicitly, but should
+    probably be addressed at some point (applies to arg upsert)
+
+todo: There are a lot of formatted strings that could probably be replaced with
+    f-strings to make this easier to read. preferably with testing in place
 """
 
 import os
@@ -69,7 +81,7 @@ class ListDict:
             """JSON serializer for objects not serializable by default json code"""
             if isinstance(obj, (datetime.datetime, datetime.date, datetime.time)):
                 return obj.isoformat()
-            return json.encoder.JSONEncoder.default(obj)
+            return json.encoder.JSONEncoder.default(self, obj)
         if as_list:
             return json.dumps(self.to_list(), default=json_serial)
         else:
@@ -87,7 +99,8 @@ class ListDictFactory:
             self.field_pos = {}
         else:
             self.fields = [c.name for c in cursor.description]
-            self.field_pos = {c.name: i for i, c in enumerate(cursor.description)}
+            self.field_pos = \
+                {c.name: i for i, c in enumerate(cursor.description)}
 
     def __call__(self, values: Sequence[Any]) -> ListDict:
         return ListDict(values, self.field_pos)
@@ -130,7 +143,7 @@ Connection = psycopg.Connection
 Transaction = psycopg.Transaction
 
 @beartype
-def add_db_parameters_to_config(config: Config,
+def add_db_parameters_to_config(config_obj: Config,
                                 prefix: Optional[str] = None,
                                 add_db_schema: bool = False,
                                 add_db_name: bool = False):
@@ -145,7 +158,7 @@ def add_db_parameters_to_config(config: Config,
     the application (for example, ODMX does not support mysql so anything
     dealing with that shouldn't allow a configuration for database type)
 
-    @param config The ssi.config.Config object to which standard database
+    @param config_obj The ssi.config.Config object to which standard database
     configuration keys will be added.
 
     @param prefix A configuration prefix, for example 'ert' which is added to
@@ -162,34 +175,34 @@ def add_db_parameters_to_config(config: Config,
         if not prefix.endswith("_"):
             prefix += "_"
         db_help_name = prefix.rstrip('_') + " "
-    config.add_config_param(
+    config_obj.add_config_param(
         prefix + 'db_user',
         alternative='pguser',
         help=f"The {db_help_name}database user to authenticate with",
     )
-    config.add_config_param(
+    config_obj.add_config_param(
         prefix + 'db_pass',
         alternative='pgpassword',
         help=f"The {db_help_name}database password to authenticate with",
     )
-    config.add_config_param(
+    config_obj.add_config_param(
         prefix + 'db_port',
         alternative='pgport',
         optional=True,
         help=f"The port of the {db_help_name}database")
-    config.add_config_param(
+    config_obj.add_config_param(
         prefix + 'db_host',
         alternative='pghost',
         help=f"The host of the {db_help_name}database")
     if add_db_schema:
-        config.add_config_param(
+        config_obj.add_config_param(
             prefix + 'db_schema',
             alternative='pgschema',
             optional=True,
             help=f"The {db_help_name}database schema"
         )
     if add_db_name:
-        config.add_config_param(
+        config_obj.add_config_param(
             prefix + 'db_name',
             alternative='pgname',
             optional=True,
@@ -198,7 +211,7 @@ def add_db_parameters_to_config(config: Config,
 
 @beartype
 def connect(
-        config: Optional[Config] = None,
+        config_obj: Optional[Config] = None,
         config_prefix: Optional[str] = None,
         db_user: Optional[str] = None,
         db_pass: Optional[str] = None,
@@ -214,30 +227,33 @@ def connect(
     The other thing that you can do is use explicit transactions with
     with con.transaction():
 
-    @param config An ssi.config Config object containing DB config information
-    @param config_prefix The prefix to the configuration options. This is useful
-        for sharing multiple db configurations in the same configuration space.
+    @param config_obj An ssi.config Config object containing DB config
+        information
+    @param config_prefix The prefix to the configuration options. This is
+        useful for sharing multiple db configurations in the same configuration
+        space.
     @param db_user An override to the user found in the config.
     @param db_pass An override to the password found in the config.
     @param db_name An override to the database name found in the config.
     @param db_host An override to the host name found in the config.
     @param db_port An override to the port number found in the config.
     @param db_schema The main schema of the DB
-    @param additional_args Additional arguments to the psycopg2 connect function
+    @param additional_args Additional arguments to the psycopg2 connect
+        function
     @return A connnection to the database
     """
 
-    if config:
+    if config_obj:
         if not config_prefix:
             config_prefix = ""
         elif not config_prefix.endswith('_'):
             config_prefix = f"{config_prefix}_"
-        db_user = db_user or config.get(config_prefix + 'db_user')
-        db_pass = db_pass or config.get(config_prefix + 'db_pass')
-        db_name = db_name or config.get(config_prefix + 'db_name')
-        db_host = db_host or config.get(config_prefix + 'db_host')
-        db_port = db_port or config.get(config_prefix + 'db_port')
-        db_schema = db_schema or config.get(config_prefix + 'db_schema')
+        db_user = db_user or config_obj.get(config_prefix + 'db_user')
+        db_pass = db_pass or config_obj.get(config_prefix + 'db_pass')
+        db_name = db_name or config_obj.get(config_prefix + 'db_name')
+        db_host = db_host or config_obj.get(config_prefix + 'db_host')
+        db_port = db_port or config_obj.get(config_prefix + 'db_port')
+        db_schema = db_schema or config_obj.get(config_prefix + 'db_schema')
     db_string = ""
     if not db_port:
         db_port = int(os.getenv('PGPORT') or 5432)
@@ -262,187 +278,187 @@ def connect(
             row_factory=ListDictFactory)
 @beartype
 @contextmanager
-def schema_scope(con: Connection, schema: str):
+def schema_scope(connection: Connection, schema: str):
     """
     Context manager to set the search path to a schema for a connection
     and reset it when the context is exited.
     """
-    current_schema = get_current_schema(con)
+    current_schema = get_current_schema(connection)
     if current_schema != schema:
-        set_current_schema(con, schema)
+        set_current_schema(connection, schema)
     try:
-        yield con
+        yield connection
     finally:
         if current_schema != schema:
-            set_current_schema(con, current_schema)
+            set_current_schema(connection, current_schema)
 
-def quote_id(con: Connection,
+def quote_id(connection: Connection,
              string_to_quote: str):
     """
     Returns a properly quoted string for use in a raw SQL query as an
     identifier. E.g., if in MySQL, will properly apply `` to a string. If in
     PostgreSQL, will apply "".
 
-    @param con The connection or engine.
+    @param connection The connection or engine.
     @param string_to_quote The string to quote.
     @return The properly quoted string.
     """
-    return psycopg.sql.Identifier(string_to_quote).as_string(con)
+    return psycopg.sql.Identifier(string_to_quote).as_string(connection)
 
-def quote_val(con: Connection,
+def quote_val(connection: Connection,
               string_to_quote: str):
     """
     Returns a properly quoted string for use in a raw SQL query as a value.
     """
-    return psycopg.sql.Literal(string_to_quote).as_string(con)
+    return psycopg.sql.Literal(string_to_quote).as_string(connection)
 
-def does_db_exist(con: Connection, db: str) -> bool:
+def does_db_exist(connection: Connection, db: str) -> bool:
     """
     Returns whether a database exists or not.
 
-    @param con The connection for the database in question.
+    @param connection The connection for the database in question.
     @param db The database name in question.
     @return A True/False value saying whether or not a database exists.
     """
-    result = con.execute('''
+    result = connection.execute('''
         SELECT 1 FROM pg_database WHERE datname = %s
     ''', [db])
     db_exists = bool(result.fetchall())
     return db_exists
 
-def drop_database(con: Connection, db: str) -> None:
+def drop_database(connection: Connection, db: str) -> None:
     """
     Drop or create a database.
 
-    @param con The connection to use to connect to SQL.
+    @param connection The connection to use to connect to SQL.
     @param db The name of the database to check/drop.
     """
-    db_exists = does_db_exist(con, db)
+    db_exists = does_db_exist(connection, db)
     if not db_exists:
         info(f"Database \"{db}\" does not exist to drop. Continuing.")
     else:
         info(f"Dropping database \"{db}\".")
         # Remove any potential users from the database if we're in postgres.
-        con.execute('''
+        connection.execute('''
             SELECT pg_terminate_backend(pid) FROM pg_stat_activity
             WHERE datname = %s
         ''', [db])
         # TODO Set isolation level to autocommit?
 
         # Drop the database.
-        con.execute(SQL('''
+        connection.execute(SQL('''
             DROP DATABASE {}
         ''').format(Identifier(db)))
 
-def drop_schema(con: Connection, schema: str) -> None:
-    con.execute(SQL('''
+def drop_schema(connection: Connection, schema: str) -> None:
+    connection.execute(SQL('''
         DROP SCHEMA IF EXISTS {} CASCADE
     ''').format(Identifier(schema)))
 
 def create_database_as_copy(
-        con: Connection, src: str, dst: str) -> None:
+        connection: Connection, src: str, dst: str) -> None:
     """
     Creates a database as a copy of an existing one
 
-    @param con The connection/engine to use
+    @param connection The connection/engine to use
     @param src The name of the database to copy from
     @param dst The name of the database to create
     """
     # TODO String interpolation to a dead end function is a waste (See logging)
     info(f'Creating database "{dst}" as a copy of "{src}"')
-    con.execute(SQL('''
+    connection.execute(SQL('''
         CREATE DATABASE {} WITH TEMPLATE {}
     ''').format(Identifier(dst), Identifier(src)))
 
 
-def create_database(con: Connection, db: str) -> bool:
+def create_database(connection: Connection, db: str) -> bool:
     """
     Create a database if it doesn't exist yet.
 
-    @param con The connection to use to connect to SQL.
+    @param connection The connection to use to connect to SQL.
     @param db The name of the database to check/create.
     @return A True/False value saying whether or not a database was created.
     """
 
-    db_exists = does_db_exist(con, db)
+    db_exists = does_db_exist(connection, db)
     if db_exists:
         info(f"Database \"{db}\" already exists; can't create.")
         return False
-    con.execute(SQL('''
+    connection.execute(SQL('''
         CREATE DATABASE {}
     ''').format(Identifier(db)))
     return True
 
 
-def does_schema_exist(con: Connection, schema: str) -> bool:
+def does_schema_exist(connection: Connection, schema: str) -> bool:
     """
     Returns whether a schema exists or not.
 
-    @param con The connection for the database in question.
+    @param connection The connection for the database in question.
     @param schema The schema name for the database in question.
     @return A True/False value saying whether or not a schema exists.
     """
 
-    query = '''
+    _query = '''
         SELECT schema_name FROM information_schema.schemata
         WHERE schema_name = %s
     '''
-    result = con.execute(query, [schema])
+    result = connection.execute(_query, [schema])
     schema_exists = bool(result.fetchall())
     return schema_exists
 
 
-def create_schema(con: Connection, schema: str) -> bool:
+def create_schema(connection: Connection, schema: str) -> bool:
     """
     Create a schema if it doesn't exist yet.
 
-    @param con The connection to use to connect to SQL.
+    @param connection The connection to use to connect to SQL.
     @param db The name of the database the schema lives in.
     @param schema The name of the schema to be created.
     @return A True/False value saying whether or not a schema was created.
     """
     # Check if the feeder schema exists.
-    schema_exists = does_schema_exist(con, schema)
+    schema_exists = does_schema_exist(connection, schema)
     if schema_exists:
         info(f"The schema \"{schema}\" already exists. Continuing.")
         return False
     else:
         info(f"The schema \"{schema}\" does not exist. Creating it.")
-        query = SQL('''
+        _query = SQL('''
             CREATE SCHEMA {}
         ''')
-        con.execute(query.format(Identifier(schema)))
+        connection.execute(_query.format(Identifier(schema)))
     return True
 
 
-def get_schema_tables(con: Connection, schema: str):
+def get_schema_tables(connection: Connection, schema: str):
     """
     Returns A list of all tables present in a given schema.
 
-    @param con The connection for the database in question.
+    @param connection The connection for the database in question.
     @param schema The schema name for the database in question.
     @return A list of tuples of all tables in the schema.
     """
 
-    query = '''
+    _query = '''
         SELECT * FROM information_schema.tables
         WHERE table_schema = %s
     '''
-    result = con.execute(query, [schema])
+    result = connection.execute(_query, [schema])
     return result.fetchall()
 
 
-def does_table_exist(con: Connection, table: str)->bool:
+def does_table_exist(connection: Connection, table: str)->bool:
     """
     Returns whether a table exists or not.
 
-    @param con The connection for the database in question.
+    @param connection The connection for the database in question.
     @param schema The schema name for the database in question.
     @param table The table name in question.
     @return A True/False value saying whether or not a table exists.
     """
-    schema = get_current_schema(con)
-    result = con.execute('''
+    schema = get_current_schema(connection)
+    result = connection.execute('''
         SELECT table_name FROM information_schema.tables
         WHERE table_schema = %s AND table_name = %s
     ''', [schema, table])
@@ -450,87 +466,88 @@ def does_table_exist(con: Connection, table: str)->bool:
     return table_exists
 
 @beartype
-def get_table_count(con: Connection, table: str) -> int:
+def get_table_count(connection: Connection, table: str) -> int:
     """
     Returns the number of rows in a table.
 
-    @param con The connection for the database in question.
+    @param connection The connection for the database in question.
     @param schema The schema name for the database in question.
     @param table The table name in question.
     @return The number of rows in the table.
     """
-    result =con.execute(SQL('''
+    result = connection.execute(SQL('''
         SELECT COUNT(*) FROM {}
     ''').format(Identifier(table))).fetchone()
     assert result is not None
     return int(result[0])
 
 @beartype
-def is_table_empty(con: Connection, table: str) -> bool:
+def is_table_empty(connection: Connection, table: str) -> bool:
     """
     Returns whether a table is empty or not.
 
-    @param con The connection for the database in question.
+    @param connection The connection for the database in question.
     @param schema The schema name for the database in question.
     @param table The table name in question.
     @return A True/False value saying whether or not the table is empty.
     """
-    return get_table_count(con, table) == 0
+    return get_table_count(connection, table) == 0
 
 @beartype
-def get_tables(con: Connection, schema: Optional[str] = None) -> list[str]:
+def get_tables(connection: Connection,
+               schema: Optional[str] = None) -> list[str]:
     """
     Returns a list of all tables in a database.
     """
     if not schema:
-        schema = get_current_schema(con)
-    query = '''
+        schema = get_current_schema(connection)
+    _query = '''
         SELECT * FROM information_schema.tables
         WHERE table_schema = %s
     '''
-    result = con.execute(query, [schema])
+    result = connection.execute(_query, [schema])
     tables = []
     for row in result:
         tables.append(row['table_name'])
     return tables
 
 @beartype
-def get_columns(con: Connection, table: str,
+def get_columns(connection: Connection, table: str,
                 schema: Optional[str] = None, cache: bool=True) -> List:
     return [i['column_name'] for i in get_column_info(
-        con, table, schema, cache)]
+        connection, table, schema, cache)]
 
 @beartype
-def get_column_info(con: Connection, table: str,
+def get_column_info(connection: Connection, table: str,
                     schema: Optional[str] = None, cache: bool=True) -> List:
     """
     Returns a list of a table's columns and their types in a tuples
     (column_name, column_type, is_nullable).
     """
     if not schema:
-        schema = get_current_schema(con)
+        schema = get_current_schema(connection)
     if cache:
-        if hasattr(con, '__ssi_column_info_cache'):
-            data = con.__ssi_column_info_cache.get((table, schema))
+        if hasattr(connection, '__ssi_column_info_cache'):
+            data = connection.__ssi_column_info_cache.get((table, schema))  # pylint: disable=protected-access
             if data:
                 return data
         else:
-            con.__ssi_column_info_cache = {}
-    query = '''
+            connection.__ssi_column_info_cache = {}  # pylint: disable=protected-access
+    _query = '''
         SELECT * FROM information_schema.columns
         WHERE table_schema = %s AND table_name = %s
     '''
-    result = con.execute(query, [schema, table])
+    result = connection.execute(_query, [schema, table])
     columns = []
     for row in result:
         columns.append(row.as_dict())
     if cache:
-        con.__ssi_column_info_cache[(table, schema)] = columns
+        connection.__ssi_column_info_cache[(table, schema)] = columns  # pylint: disable=protected-access
     return columns
 
 
 @beartype
-def add_column_to_table(con: Connection,
+def add_column_to_table(connection: Connection,
                         table: str,
                         column: str,
                         dtype: str):
@@ -544,17 +561,17 @@ def add_column_to_table(con: Connection,
     """
     # TODO(doug) Se whould quote new col here but not sure if it should be
     # identifier quote or not
-    query = SQL('''
+    _query = SQL('''
         ALTER TABLE {}
         ADD COLUMN {} {}
     ''').format(Identifier(table), Identifier(column), Literal(dtype))
     info(f"Adding column {column} to "
          f"{table} as {dtype}")
-    con.execute(query)
+    connection.execute(_query)
 
 @beartype
-def get_current_schema(con: Connection) -> Optional[str]:
-    result = con.execute('''
+def get_current_schema(connection: Connection) -> Optional[str]:
+    result = connection.execute('''
         SELECT current_schema()
     ''')
     result = result.fetchone()
@@ -562,26 +579,25 @@ def get_current_schema(con: Connection) -> Optional[str]:
     return result[0]
 
 @beartype
-def set_current_schema(con: Connection, schema: str):
-    con.execute(SQL('''
+def set_current_schema(connection: Connection, schema: str):
+    connection.execute(SQL('''
         SET search_path TO {}
     ''').format(schema))
-    if get_current_schema(con) != schema:
-        raise Exception(f"Failed to set schema to {schema}, probably doesn't exist")
+    if get_current_schema(connection) != schema:
+        raise ValueError(f"Failed to set schema to {schema}, probably doesn't exist")
 
 @beartype
 def get_table_constraints(
-        con: Connection,
-        table: str,
-        cache: bool = True) -> List:
+        connection: Connection,
+        table: str) -> List:
     """
     Get the constraints for a table
     @param con The connection or engine to operate with
     @param table The name of the table to get constraints for
-    @param cache Whether to cache the results
+    @param cache Whether to cache the results (not used, kept to add later)
     @return A list of constraint dicts
     """
-    query = '''
+    _query = '''
         SELECT c.*, tc.*
         FROM information_schema.table_constraints tc
         JOIN information_schema.constraint_column_usage AS ccu USING (constraint_schema, constraint_name)
@@ -590,7 +606,7 @@ def get_table_constraints(
         WHERE tc.table_schema = %s
         AND tc.table_name = %s
     '''
-    result = con.execute(query, [get_current_schema(con), table])
+    result = connection.execute(_query, [get_current_schema(connection), table])
     constraints = []
     for row in result:
         constraints.append(row.as_dict())
@@ -599,7 +615,7 @@ def get_table_constraints(
 
 @beartype
 def get_table_id_column(
-        con: Connection,
+        connection: Connection,
         table: str,
         schema: Optional[str] = None,
         cache: bool = True) -> Optional[str]:
@@ -612,17 +628,17 @@ def get_table_id_column(
     # Sometimes the schema is a blank string, we should treat this the same
     # as None, but ideally we shuold trace where this is coming from
     if not schema:
-        schema = get_current_schema(con)
-    if hasattr(con, '__ssi_id_col_cache'):
-        _id_col_cache = con.__ssi_id_col_cache
+        schema = get_current_schema(connection)
+    if hasattr(connection, '__ssi_id_col_cache'):
+        _id_col_cache = connection.__ssi_id_col_cache  # pylint: disable=protected-access
     else:
-        con.__ssi_id_col_cache = _id_col_cache = {}
+        connection.__ssi_id_col_cache = _id_col_cache = {}  # pylint: disable=protected-access
     if cache and (schema, table) in _id_col_cache:
         id_col = _id_col_cache[(schema, table)]
         #print(f"Using cache for {schema}.{table} id column: {id_col}")
         return id_col
     # See https://stackoverflow.com/questions/1214576/how-do-i-get-the-primary-keys-of-a-table-from-postgres-via-plpgsql
-    query = '''
+    _query = '''
         SELECT c.column_name
         FROM information_schema.table_constraints tc
         JOIN information_schema.constraint_column_usage AS ccu USING (constraint_schema, constraint_name)
@@ -632,7 +648,7 @@ def get_table_id_column(
         AND tc.table_schema = %s
         AND tc.table_name = %s
     '''
-    result = con.execute(query, [schema, table])
+    result = connection.execute(_query, [schema, table])
     if result.rowcount == 0:
         id_col = None
     else:
@@ -646,8 +662,8 @@ def get_table_id_column(
     return id_col
 
 @beartype
-def table_get_unique_columns(con: Connection, table: str) -> list[str]:
-    constraints = get_table_constraints(con, table)
+def table_get_unique_columns(connection: Connection, table: str) -> list[str]:
+    constraints = get_table_constraints(connection, table)
     unique_columns = []
     for col in constraints:
         if col['constraint_type'] == 'UNIQUE':
@@ -658,9 +674,9 @@ def table_get_unique_columns(con: Connection, table: str) -> list[str]:
     return unique_columns
 
 @beartype
-def table_get_foreign_keys(con: Connection, table: str) -> list[dict]:
-    schema = get_current_schema(con)
-    query = '''
+def table_get_foreign_keys(connection: Connection, table: str) -> list[dict]:
+    schema = get_current_schema(connection)
+    _query = '''
         SELECT
             tc.constraint_name,
             tc.table_name,
@@ -679,12 +695,12 @@ def table_get_foreign_keys(con: Connection, table: str) -> list[dict]:
             constraint_type = 'FOREIGN KEY'
             AND tc.table_name=%s AND tc.table_schema=%s
     '''
-    r = con.execute(query, (table, schema))
+    r = connection.execute(_query, (table, schema))
     return [i.as_dict() for i in r.fetchall()]
 
 @beartype
 def insert(
-        con: Connection,
+        connection: Connection,
         data: dict,
         table: str,
         check: bool=False):
@@ -700,7 +716,7 @@ def insert(
         check_msg = ""
         # Check that the data dictionary has the same keys as the table
         # columns.
-        cols = set(get_columns(con, table))
+        cols = set(get_columns(connection, table))
         data_keys = set(data.keys())
         for i in data_keys - cols:
             check_msg +=(f"Key {i} in data is not in table {table}\n")
@@ -712,10 +728,10 @@ def insert(
             raise ValueError(check_msg)
     columns = ', '.join(['{}' for _ in data.keys()])
     values = ', '.join(['%s' for _ in data.keys()])
-    id_col = get_table_id_column(con, table)
+    id_col = get_table_id_column(connection, table)
     if id_col is None:
         id_col = '*'
-    query = SQL(f'''
+    _query = SQL(f'''
         INSERT INTO {{table}} ({columns})
         VALUES ({values})
         RETURNING {{id_col}}
@@ -723,24 +739,24 @@ def insert(
             *[Identifier(i) for i in data.keys()],
             table=Identifier(table),
             id_col=Identifier(id_col))
-    r = con.execute(query, tuple(data.values())).fetchone()
+    r = connection.execute(_query, tuple(data.values())).fetchone()
     assert r is not None
     return r[0]
 
 @beartype
-def adjust_autoincrement_cols(con: Connection, table: str):
+def adjust_autoincrement_cols(connection: Connection, table: str):
     # Adjust the auto increment sequence if it exists. We have to
     # search for it in the table definition because the
     # association used by pg_get_serial_sequence is not created
     # by tools like DBWrench
-    column_info = get_column_info(con, table)
+    column_info = get_column_info(connection, table)
     for column in column_info:
         col = column['column_name']
         column_default = column['column_default']
         if column_default and 'nextval' in column_default:
             # UGH
             sequence_name = column_default.split("'")[1]
-            con.execute(SQL('''
+            connection.execute(SQL('''
                 SELECT setval({sequence_name}, coalesce(max({col}),0)+1, true)
                 FROM {table}
             ''').format(
@@ -752,13 +768,13 @@ def adjust_autoincrement_cols(con: Connection, table: str):
 _last_tmp_table = 0
 @beartype
 def insert_file(
-        con: Connection,
+        connection: Connection,
         fp: TextIO,
         table: str,
         skip_header=False,
         sep='\t',
         columns=None,
-        upsert=True)->int:
+        upsert=True)->int:  # pylint: disable=redefined-outer-name
     """
     Insert data from a file into a table
     @param con The connection or engine to operate with
@@ -771,26 +787,26 @@ def insert_file(
         assumed to be the same as the table
     """
     if columns is None:
-        columns = get_columns(con, table)
+        columns = get_columns(connection, table)
     if skip_header:
         fp.readline()
-    id_col = get_table_id_column(con, table)
+    id_col = get_table_id_column(connection, table)
     # Upserts are not valid when there is no id column passed in or there is
     # no ID column defined in the table
     if not id_col or id_col not in columns:
-        upsert = False
+        upsert = False  # pylint: disable=redefined-outer-name
     # Create a temporary table for this transaction
     if upsert:
-        global _last_tmp_table
+        global _last_tmp_table  #pylint: disable=global-statement
         tmp_table=table+'_tmp_'+str(_last_tmp_table)
         _last_tmp_table += 1
-        with con.transaction():
+        with connection.transaction():
             assert id_col
-            cur = con.cursor()
+            cur = connection.cursor()
             cur.execute(SQL("""
                 CREATE TEMP TABLE {tmp_table} (LIKE {table} INCLUDING ALL)
                 ON COMMIT DROP
-            """).format(tmp_table=Identifier(tmp_table), table=Identifier(table)))
+            """).format(tmp_table=Identifier(tmp_table),table=Identifier(table)))
             # Copy the data into the temporary table
             col_id_list = [Identifier(i) for i in columns]
             cols = SQL(', '.join(['{}' for _ in columns])).format(
@@ -805,9 +821,9 @@ def insert_file(
             ''').format(Identifier(tmp_table), cols),[sep]) as copy:
                 for line in fp:
                     copy.write(line)
-            # Insert the data from the temporary table into the real table with an
-            # upsert
-            query = SQL('''
+            # Insert the data from the temporary table into the real table
+            # with an upsert
+            _query = SQL('''
                 INSERT INTO {table}
                     SELECT *
                     FROM {tmp_table}
@@ -819,11 +835,11 @@ def insert_file(
                 cols=cols,
                 cols_set=cols_set,
                 id_col=Identifier(id_col))
-            cur.execute(query)
+            cur.execute(_query)
             count = cur.rowcount
             fp.close()
     else:
-        cur = con.cursor()
+        cur = connection.cursor()
         col_id_list = [Identifier(i) for i in columns]
         cols = SQL(', '.join(['{}' for _ in columns])).format(
             *col_id_list)
@@ -836,15 +852,15 @@ def insert_file(
                 copy.write(line)
         count = cur.rowcount
         fp.close()
-    adjust_autoincrement_cols(con, table)
+    adjust_autoincrement_cols(connection, table)
     return count
 
 def insert_many(
-        con: Connection,
+        connection: Connection,
         table: str,
         data: List[Union[Dict, List]],
         columns: Optional[List[str]] = None,
-        upsert=True) -> int:
+        upsert=True) -> int:  # pylint: disable=redefined-outer-name
     """
     Insert multiple rows into a table from a list of dictionaries of data.
     If the dictionaries do not have the same keys, the keys will be unioned
@@ -869,7 +885,7 @@ def insert_many(
                 _columns = _columns.union(keys)
             columns = list(_columns)
     else:
-        columns = get_columns(con, table)
+        columns = get_columns(connection, table)
         if isinstance(data[0], list):
             if (len(columns) != len(data[0])):
                 raise ValueError(
@@ -893,16 +909,17 @@ def insert_many(
                 f.write('\t'.join([sanitize_entry(i) for i in row]) + '\n')
         f.flush()
         f.seek(0)
-        fp = open(f.name, 'r')
-        count = insert_file(con, fp, table, columns=columns, upsert=upsert)
+        fp = open(f.name, 'r', encoding="utf-8")
+        count = insert_file(connection, fp, table, columns=columns,
+                            upsert=upsert)
         fp.close()
     return count
 
 def insert_many_df(
-        con: Connection,
+        connection: Connection,
         table: str,
         df: DataFrame,
-        upsert=True):
+        upsert=True):  # pylint: disable=redefined-outer-name
     """
     Improved/Simplified DF to sql
     """
@@ -910,17 +927,18 @@ def insert_many_df(
     count = df.shape[0]
     # Write from temp csv
     with tempfile.NamedTemporaryFile(mode='w', newline='') as f:
-        df.to_csv(f, sep='\t', index=False, header=False, na_rep='\\N', float_format='%.18f')
+        df.to_csv(f, sep='\t', index=False, header=False, na_rep='\\N',
+                  float_format='%.18f')
         f.flush()
         f.seek(0)
-        fp = open(f.name, 'r')
-        insert_file(con, fp, table, columns=columns, upsert=upsert)
+        fp = open(f.name, 'r', encoding="utf-8")
+        insert_file(connection, fp, table, columns=columns, upsert=upsert)
         fp.close()
     return count
 
 
-
-def upsert(con: Connection, table: str, data: dict, schema: Optional[str] = None):
+def upsert(connection: Connection, table: str, data: dict,
+            schema: Optional[str] = None):
     """
     Upsert a row into a table from a dictionary of data
     @param table The name of the table to insert into
@@ -928,20 +946,20 @@ def upsert(con: Connection, table: str, data: dict, schema: Optional[str] = None
     @param data A dictionary of data to upsert
     @return The last inserted ID/primary key
     """
-    id_col = get_table_id_column(con, table, schema)
+    id_col = get_table_id_column(connection, table, schema)
     if id_col is None or (id_col in data and data[id_col] is None):
         del data[id_col]
         # Demote to insert
-        return insert(con, data, table, check=False)
-    columns = ', '.join([quote_id(con, i) for i in data.keys()])
+        return insert(connection, data, table, check=False)
+    columns = ', '.join([quote_id(connection, i) for i in data.keys()])
     values = ', '.join(['%s' for _ in data.keys()])
-    updates = ', '.join([f'{quote_id(con, i)} = %s' for i in data.keys()])
+    updates = ', '.join([f'{quote_id(connection, i)} = %s' for i in data.keys()])
     if id_col is not None:
-       id_col = quote_id(con, id_col)
+        id_col = quote_id(connection, id_col)
     else:
         id_col = 'ctid'
-    table = quote_id(con, table)
-    query = f'''
+    table = quote_id(connection, table)
+    _query = f'''
         INSERT INTO {table}
             ({columns})
         VALUES
@@ -952,13 +970,13 @@ def upsert(con: Connection, table: str, data: dict, schema: Optional[str] = None
     '''
     # Duplicatet the values for the Vlaues and Set clauses
     values = list(data.values()) + list(data.values())
-    r = con.execute(query, values) # pyright: ignore [reportGeneralTypeIssues]
+    r = connection.execute(_query, values) # pyright: ignore [reportGeneralTypeIssues]
     r = r.fetchone()
     assert r is not None
     return r[0]
 
 @beartype
-def query(con: Connection, table: str, params: Optional[dict] = None, filter_none=True):
+def query(connection: Connection, table: str, params: Optional[dict] = None, filter_none=True):
     """
     Query a database and return the results as a DB cursor
     @param con A database connection
@@ -973,16 +991,16 @@ def query(con: Connection, table: str, params: Optional[dict] = None, filter_non
             ['{} = %s' for _ in params.keys()])
     else:
         params = {}
-    query = SQL('''
+    _query = SQL('''
         SELECT *
         FROM {table}
     ''' + where).format(
         *[Identifier(k) for k in params.keys()],
         table=Identifier(table))
-    return con.execute(query, list(params.values()))
+    return connection.execute(_query, list(params.values()))
 
 @beartype
-def query_fuzzy(con: Connection, table: str, params: Optional[dict] = None):
+def query_fuzzy(connection: Connection, table: str, params: Optional[dict] = None):
     """
     Query a database and return the results as a DB cursor
     @param con A database connection
@@ -994,17 +1012,17 @@ def query_fuzzy(con: Connection, table: str, params: Optional[dict] = None):
         where = ' WHERE '+ ' AND '.join(['{} LIKE %s' for _ in params.keys()])
     else:
         params = {}
-    query = SQL(f'''
+    _query = SQL(f'''
         SELECT *
         FROM {{table}}
         {where}
     ''').format(
         *[Identifier(i) for i in params.keys()],
         table=Identifier(table))
-    return con.execute(query, list(params.values()))
+    return connection.execute(_query, list(params.values()))
 
 @beartype
-def query_any(con: Connection, table: str, params: Optional[dict] = None):
+def query_any(connection: Connection, table: str, params: Optional[dict] = None):
     """
     Query a database and return the results matching a list of parameters
     """
@@ -1020,7 +1038,7 @@ def query_any(con: Connection, table: str, params: Optional[dict] = None):
         where = ' WHERE '+ ' OR '.join(l)
     else:
         params = {}
-    query = SQL(f'''
+    _query = SQL(f'''
         SELECT *
         FROM {{table}}
         {where}
@@ -1030,11 +1048,11 @@ def query_any(con: Connection, table: str, params: Optional[dict] = None):
     complete_list = []
     for param in params:
         complete_list.extend(params[param])
-    return con.execute(query, complete_list)
+    return connection.execute(_query, complete_list)
 
 @beartype
 def query_one(
-        con: Connection,
+        connection: Connection,
         table: str, params: Optional[dict] = None) -> dict[str, Any]:
     """
     Query a database and return the only result.
@@ -1050,7 +1068,7 @@ def query_one(
     if params:
         # filter null values
         params = {k: v for k, v in params.items() if v is not None}
-    r = query(con, table, params)
+    r = query(connection, table, params)
     if r.rowcount > 1:
         raise MultipleResultsFound(
                 f'Expected 1 result in table {table} '
@@ -1064,7 +1082,7 @@ def query_one(
 
 @beartype
 def query_one_or_none(
-        con: Connection,
+        connection: Connection,
         table: str, params: Optional[dict] = None) -> Optional[dict[str, Any]]:
     """
     Query a database and return the only result or None if there is no result.
@@ -1076,14 +1094,14 @@ def query_one_or_none(
     @return A dictionary of the result, None if there were no results
     """
     try:
-        return query_one(con, table, params)
+        return query_one(connection, table, params)
     except NoResultsFound:
         return None
 
 
 @beartype
 def update(
-        con: Connection,
+        connection: Connection,
         table: str,
         data: dict,
         filter_none=True):
@@ -1095,19 +1113,19 @@ def update(
     @return The ID of the updated row
     """
     # Filter out None values
-    id_col = get_table_id_column(con, table)
-    id = None
+    id_col = get_table_id_column(connection, table)
+    col_id = None
     if id_col is None:
         raise ValueError(f'No ID column found in table {table}')
     if id_col not in data:
         raise ValueError(f'Column {id_col} not found in data')
-    id = data[id_col]
+    col_id = data[id_col]
     del data[id_col]
     if filter_none:
         data = {k: v for k, v in data.items() if v is not None}
     updates = SQL(', '.join(['{} = %s' for _ in data.keys()])).format(
         *[Identifier(i) for i in data.keys()])
-    query = SQL('''
+    _query = SQL('''
         UPDATE {table}
         SET
             {updates}
@@ -1120,8 +1138,8 @@ def update(
         id_col = Identifier(id_col))
     values = list(data.values())
     print(values)
-    con.execute(query, [*values, id])
-    return id
+    connection.execute(_query, [*values, col_id])
+    return col_id
 
 class NoCommonColumnsException(Exception):
     pass
@@ -1170,19 +1188,19 @@ def cross_con_table_copy(
             raise ValueError(
                     f'ID column mismatch between {table_src} and {table_dst}')
         id_col_type = None
-        for info in get_column_info(con_dst, table_dst):
-            name = info['column_name']
-            data_type = info['data_type']
+        for info_block in get_column_info(con_dst, table_dst):
+            name = info_block['column_name']
+            data_type = info_block['data_type']
             if name == id_col:
                 id_col_type = data_type
         id_col_type = postgres_type_to_python_type(id_col_type)
         if id_col_type == 'int' or 'datetime' in id_col_type:
-            query = SQL('''
+            _query = SQL('''
                 SELECT MAX({id_col}) FROM {table_dst}
             ''').format(
                 id_col=Identifier(id_col),
                 table_dst=Identifier(table_dst))
-            r = con_dst.execute(query)
+            r = con_dst.execute(_query)
             max_id = r.fetchone()[0]
             if max_id is not None:
                 max_id = quote_val(con_src, max_id)
@@ -1201,14 +1219,14 @@ def cross_con_table_copy(
             constraints = get_table_constraints(con_src, table_src)
             for constraint in constraints:
                 definition = f'{constraint["constraint_type"]} ({constraint["column_name"]})'
-                query = SQL(f'''
+                _query = SQL(f'''
                     ALTER TABLE {{table_dst}}
                     ADD CONSTRAINT {{constraint}}
                     {definition}
                 ''').format(
                     table_dst=Identifier(table_dst),
                     constraint=Identifier(constraint['constraint_name']))
-                con_dst.execute(query)
+                con_dst.execute(_query)
         common_columns = columns_by_name.keys()
         # Create the same constraints
     columns = [columns_by_name[c] for c in common_columns]
@@ -1234,16 +1252,16 @@ def cross_con_table_copy(
     return count
 
 def dump_table_as_json(
-        con: Connection,
+        connection: Connection,
         table: str,
         outfp: TextIO):
     """
     Dump a table as a json file
-    @param con The connection to the database
+    @param connection The connection to the database
     @param table The name of the table to dump
     @return The number of rows dumped
     """
-    with con.cursor() as cur:
+    with connection.cursor() as cur:
         cur.execute(f"SELECT * FROM {table}")
         count = 0
         outfp.write('[\n')
@@ -1256,7 +1274,7 @@ def dump_table_as_json(
         outfp.write(']\n')
 
 def dump_table_as_csv(
-        con: Connection,
+        connection: Connection,
         table: str,
         outfp: TextIO):
     """
@@ -1266,7 +1284,7 @@ def dump_table_as_csv(
     @return The number of rows dumped
     """
     rows = 0
-    with con.cursor() as cur:
+    with connection.cursor() as cur:
         with cur.copy(
                 SQL('COPY {} TO STDOUT WITH CSV HEADER').format(
                     Identifier(table))) as copy:
@@ -1275,33 +1293,33 @@ def dump_table_as_csv(
                 rows += 1
     return rows
 
-def postgres_type_to_python_type(type: str) -> str:
+def postgres_type_to_python_type(data_type: str) -> str:
     # Map postgres types to python types
     python_type = None
-    if type == "integer":
+    if data_type == "integer":
         python_type = "int"
-    elif type == "character varying":
+    elif data_type == "character varying":
         python_type = "str"
-    elif type == "timestamp without time zone":
+    elif data_type == "timestamp without time zone":
         python_type = "datetime.datetime"
-    elif type == "date":
+    elif data_type == "date":
         python_type = "datetime.date"
-    elif type == "boolean":
+    elif data_type == "boolean":
         python_type = "bool"
-    elif type == "numeric":
+    elif data_type == "numeric":
         python_type = "float"
-    elif type == "text":
+    elif data_type == "text":
         python_type = "str"
-    elif type == "double precision":
+    elif data_type == "double precision":
         python_type = "float"
-    elif type == "bigint":
+    elif data_type == "bigint":
         python_type = "int"
     else:
         warnings.warn(f"Unknown type {type}")
         python_type = "str"
     return python_type
 
-def delete(con: Connection, table: str, params: Optional[dict] = None):
+def delete(connection: Connection, table: str, params: Optional[dict] = None):
     """
     Delete rows from a table
     @param con A database connection
@@ -1315,21 +1333,21 @@ def delete(con: Connection, table: str, params: Optional[dict] = None):
             *[Identifier(i) for i in params.keys()])
     else:
         params = {}
-    query = SQL('''
+    _query = SQL('''
         DELETE FROM {table}
         {where}
     ''').format(
         table=Identifier(table),
         where=where)
-    return con.execute(query, list(params.values()))
+    return connection.execute(_query, list(params.values()))
 
-def get_column_comments(con: Connection, table: str) -> dict[str, str]:
+def get_column_comments(connection: Connection, table: str) -> dict[str, str]:
     """
     Return the comments associated with each column,
     useful for generating docstrings and similar
     """
-    schema = get_current_schema(con)
-    query = '''
+    schema = get_current_schema(connection)
+    _query = '''
         SELECT
             c.column_name,
             pgd.description
@@ -1345,17 +1363,17 @@ def get_column_comments(con: Connection, table: str) -> dict[str, str]:
             c.table_schema = %s
             AND c.table_name = %s
     '''
-    r = con.execute(query, [table, schema])
+    r = connection.execute(_query, [table, schema])
     return {i[0]: i[1] for i in r.fetchall()}
 
 def get_table_comment(
-        con: Connection,
+        connection: Connection,
         table: str) -> Optional[str]:
     """
     Return the comments associated with a table
     """
-    schema = get_current_schema(con)
-    query = '''
+    schema = get_current_schema(connection)
+    _query = '''
         SELECT pg_catalog.obj_description(c.oid, 'pg_class'), t.table_name
         FROM information_schema.tables AS t
         INNER JOIN pg_catalog.pg_class AS c ON t.table_name::text = c.relname
@@ -1363,7 +1381,7 @@ def get_table_comment(
         AND t.table_schema = %s
         AND t.table_type = 'BASE TABLE'
     '''
-    r = con.execute(query, [table, schema])
+    r = connection.execute(_query, [table, schema])
     if r.rowcount == 0:
         return None
     r = r.fetchone()
@@ -1385,17 +1403,17 @@ def sanitize_snake_case_name(name: str) -> str:
 
 
 def generate_python_class_for_db_table(
-        con: Connection, table: str, fp: TextIO) -> None:
+        connection: Connection, table: str, fp: TextIO) -> None:
     print("Processing table", table)
     snake_case_table = sanitize_snake_case_name(table)
     camel_case_table = generate_camel_case_name(table)
-    table_comment = get_table_comment(con, table)
+    table_comment = get_table_comment(connection, table)
     required_columns = []
-    column_comments = get_column_comments(con, table)
+    column_comments = get_column_comments(connection, table)
     optional_columns = []
     columns_by_name = {}
     column_position = 0
-    for column_info in get_column_info(con, table):
+    for column_info in get_column_info(connection, table):
         column_position += 1
         column_info['column'] = sanitize_snake_case_name(column_info['column_name'])
         column_info['comment'] = column_comments.get(column_info['column_name'], "")
@@ -1424,17 +1442,17 @@ def generate_python_class_for_db_table(
     for column_info in columns_by_name.values():
         parameter_comments += (f"    @param {column_info['column_name']} {column_info['comment']}\n")
     fp.write(parameter_comments)
-    fp.write(f"\n")
-    fp.write(f"    This is an automatically generated class\n")
+    fp.write("\n")
+    fp.write("    This is an automatically generated class\n")
     fp.write( '    """\n')
     for column_info in (required_columns + optional_columns):
         column = column_info['column']
-        type = column_info['data_type']
+        data_type = column_info['data_type']
         optional = column_info['optional']
         column_position = column_info['position']
         column_comment = column_info['comment']
         column_comment = column_comment.replace('\n', ' ')
-        python_type = postgres_type_to_python_type(type)
+        python_type = postgres_type_to_python_type(data_type)
         column_info['python_type'] = python_type
         if optional:
             python_declaration = f"{column}: Optional[{python_type}] = None"
@@ -1442,30 +1460,30 @@ def generate_python_class_for_db_table(
             python_declaration = f"{column}: {python_type}"
         column_info['python_declaration'] = python_declaration
         fp.write(f"    {python_declaration}")
-        fp.write(f" # {column_info['column_name']} {type} (default: {column_info.get('default', '')})\n")
-    id_col = get_table_id_column(con, table)
+        fp.write(f" # {column_info['column_name']} {data_type} (default: {column_info.get('default', '')})\n")
+    id_col = get_table_id_column(connection, table)
     if id_col is None:
-        fp.write(f"    PRIMARY_KEY: ClassVar[Optional] = None\n")
+        fp.write("    PRIMARY_KEY: ClassVar[Optional] = None\n")
         id_col_type = "None"
     else:
         id_col_type = postgres_type_to_python_type(columns_by_name[id_col]['data_type'])
         fp.write(f"    PRIMARY_KEY: ClassVar[str] = '{id_col}'\n\n")
 
-    fp.write(f"    def to_json_dict(self) -> Dict[str, Any]:\n")
-    fp.write(f"        obj = dataclasses.asdict(self)\n")
+    fp.write("    def to_json_dict(self) -> Dict[str, Any]:\n")
+    fp.write("        obj = dataclasses.asdict(self)\n")
     for column_info in (required_columns + optional_columns):
         column = column_info['column']
-        type = column_info['data_type']
-        python_type = postgres_type_to_python_type(type)
+        data_type = column_info['data_type']
+        python_type = postgres_type_to_python_type(data_type)
         if python_type == "datetime.datetime" or python_type == "datetime.date" or python_type == "datetime.time":
             if column_info['optional']:
                 fp.write(f"        if self.{column} is not None:\n")
                 fp.write(f"            obj['{column}'] = self.{column}.isoformat()\n")
             else:
                 fp.write(f"        obj['{column}'] = self.{column}.isoformat()\n")
-    fp.write(f"        return obj\n")
+    fp.write("        return obj\n")
 
-    foreign_keys = table_get_foreign_keys(con, table)
+    foreign_keys = table_get_foreign_keys(connection, table)
     for foreign_key in foreign_keys:
         foreign_table = foreign_key['foreign_table_name']
         foreign_column = sanitize_snake_case_name(foreign_key['foreign_column_name'])
@@ -1479,7 +1497,7 @@ def generate_python_class_for_db_table(
         if column.endswith("_id"):
             entity_name = column[:-3]
         fp.write("\n")
-        fp.write(f"    @beartype.beartype\n")
+        fp.write("    @beartype.beartype\n")
         fp.write(f"    def get_{entity_name}(self, con: db.Connection) -> Optional['{foreign_table_class}']:\n")
         fp.write(f"        return read_{foreign_table}_one_or_none(con, {foreign_column}=self.{column})\n")
     write_param_list = []
@@ -1503,22 +1521,22 @@ def generate_python_class_for_db_table(
             python_type = f"Optional[{python_type}] = None"
             update_param_list.append(f"{column}: {python_type}")
 
-    fp.write(f"\n")
+    fp.write("\n")
 
 
     pack_params_to_dict = "    data = {\n"
     for column_name in columns_by_name.keys():
         pack_params_to_dict += f"        '{column_name}': {column_name},\n"
     pack_params_to_dict += "    }\n"
-    fp.write(f"@beartype.beartype\n")
-    fp.write(f"def create_{snake_case_table}_from_json_dict(json_obj: dict):\n")
-    fp.write(f"        \"\"\"\n")
-    fp.write(f"        Create a {camel_case_table} from a json object dict\n")
-    fp.write(f"        doing type conversions (IE, datetime str) as necessary\n")
-    fp.write(f"        \"\"\"\n")
+    fp.write("@beartype.beartype\n")
+    fp.write("def create_{snake_case_table}_from_json_dict(json_obj: dict):\n")
+    fp.write("        \"\"\"\n")
+    fp.write("        Create a {camel_case_table} from a json object dict\n")
+    fp.write("        doing type conversions (IE, datetime str) as necessary\n")
+    fp.write("        \"\"\"\n")
     for column_info in (required_columns + optional_columns):
-        type = column_info['data_type']
-        python_type = postgres_type_to_python_type(type)
+        data_type = column_info['data_type']
+        python_type = postgres_type_to_python_type(data_type)
         column_info['python_type'] = python_type
         column = column_info['column_name']
         if python_type == 'datetime.datetime' or python_type == 'datetime.date' or python_type == 'datetime.time':
@@ -1529,135 +1547,135 @@ def generate_python_class_for_db_table(
                 fp.write(f"        json_obj['{column}'] = {python_type}.fromisoformat(json_obj['{column}'])\n")
     fp.write(f"        return {camel_case_table}(**json_obj)\n\n")
     fp.write("\n")
-    fp.write(f"@beartype.beartype\n")
+    fp.write("@beartype.beartype\n")
     fp.write(f"def write_{snake_case_table}_obj(con: db.Connection, obj: {camel_case_table}) -> {id_col_type}:\n")
-    fp.write(f'    """\n')
+    fp.write('    """\n')
     fp.write(f"    Write a {camel_case_table} object to the database\n")
-    fp.write(f"    @param con: database connection\n")
+    fp.write("    @param con: database connection\n")
     fp.write(f"    @param obj: {camel_case_table} object\n")
-    fp.write(f"    @return id of the inserted/updated row\n")
-    fp.write(f'    """\n')
+    fp.write("    @return id of the inserted/updated row\n")
+    fp.write('    """\n')
     fp.write(f"    return db.upsert(con, '{table}', dataclasses.asdict(obj))\n\n")
-    fp.write(f"@beartype.beartype\n")
+    fp.write("@beartype.beartype\n")
     write_param_list = ',\n            '.join(write_param_list)
     fp.write(f"def write_{snake_case_table}(\n")
-    fp.write(f"            con: db.Connection,\n")
+    fp.write("            con: db.Connection,\n")
     fp.write(f"            {write_param_list}) -> {id_col_type}:\n")
-    fp.write(f'    """\n')
+    fp.write('    """\n')
     fp.write(f"    Write to the {snake_case_table} table in the database\n")
-    fp.write(f"    @param con: database connection\n")
+    fp.write("    @param con: database connection\n")
     fp.write(parameter_comments)
-    fp.write(f"    @return id of the inserted/updated row\n")
-    fp.write(f'    """\n')
+    fp.write("    @return id of the inserted/updated row\n")
+    fp.write('    """\n')
     fp.write(pack_params_to_dict)
     fp.write(f"    return db.upsert(con, '{table}', data)\n\n")
-    fp.write(f"@beartype.beartype\n")
+    fp.write("@beartype.beartype\n")
     fp.write(f"def write_{snake_case_table}_many(con: db.Connection, objs: List[{camel_case_table}], upsert: bool = False) -> int:\n")
-    fp.write(f'    """\n')
+    fp.write('    """\n')
     fp.write(f"    Write a list of {camel_case_table} objects to the database\n")
-    fp.write(f"    @param con: database connection\n")
+    fp.write("    @param con: database connection\n")
     fp.write(f"    @param objs: list of {camel_case_table} objects\n")
-    fp.write(f"    @param upsert: if True, update existing rows based on ID\n")
-    fp.write(f"    @return The number of rows inserted\n")
-    fp.write(f'    """\n')
+    fp.write("    @param upsert: if True, update existing rows based on ID\n")
+    fp.write("    @return The number of rows inserted\n")
+    fp.write('    """\n')
     fp.write(f"    return db.insert_many(con, '{table}', [dataclasses.asdict(obj) for obj in objs], upsert=upsert)\n\n")
     update_param_list = ',\n            '.join(update_param_list)
-    fp.write(f"@beartype.beartype\n")
+    fp.write("@beartype.beartype\n")
     fp.write(f"def update_{snake_case_table}(con: db.Connection, {update_param_list}) -> int:\n")
-    fp.write(f'    """\n')
+    fp.write('    """\n')
     fp.write(f"    Update a row in the {snake_case_table} table in the database\n")
-    fp.write(f"    @param con: database connection\n")
+    fp.write("    @param con: database connection\n")
     fp.write(parameter_comments)
-    fp.write(f"    @return The number of rows updated\n")
-    fp.write(f'    """\n')
+    fp.write("    @return The number of rows updated\n")
+    fp.write('    """\n')
     fp.write(pack_params_to_dict)
     fp.write(f"    return db.update(con, '{table}', data)\n\n")
 
-    fp.write(f"@beartype.beartype\n")
+    fp.write("@beartype.beartype\n")
     read_param_list = ',\n             '.join(read_param_list)
     fp.write(f"def read_{snake_case_table}(\n")
-    fp.write(f"            con: db.Connection,\n")
+    fp.write("            con: db.Connection,\n")
     fp.write(f"            {read_param_list}) -> Generator[{camel_case_table}, None, None]:\n")
-    fp.write(f'    """\n')
+    fp.write('    """\n')
     fp.write(f"    Read from the {snake_case_table} table in the database, optionally filtered by a parameter\n")
-    fp.write(f"    Returns a generator so that not all rows are fetched in memory at once\n")
-    fp.write(f"    @param con: database connection\n")
+    fp.write("    Returns a generator so that not all rows are fetched in memory at once\n")
+    fp.write("    @param con: database connection\n")
     fp.write(parameter_comments)
     fp.write(f"    @return generator of {camel_case_table} objects\n")
-    fp.write(f'    """\n')
+    fp.write('    """\n')
     fp.write(pack_params_to_dict)
     fp.write(f"    result = db.query(con, '{table}', data)\n")
-    fp.write(f"    for row in result:\n")
+    fp.write("    for row in result:\n")
     fp.write(f"        yield {camel_case_table}(**row.as_dict())\n\n")
-    fp.write(f"@beartype.beartype\n")
+    fp.write("@beartype.beartype\n")
     fp.write(f"def read_{snake_case_table}_fuzzy(con: db.Connection, {read_param_list}) -> Generator[{camel_case_table}, None, None]:\n")
-    fp.write(f'    """\n')
+    fp.write('    """\n')
     fp.write(f"    Read from the {snake_case_table} table in the database, optionally filtered by fuzzy parameter matching\n")
-    fp.write(f"    Returns a generator so that not all rows are fetched in memory at once\n")
-    fp.write(f"    @param con: database connection\n")
+    fp.write("    Returns a generator so that not all rows are fetched in memory at once\n")
+    fp.write("    @param con: database connection\n")
     fp.write(parameter_comments)
     fp.write(f"    @return generator of {camel_case_table} objects\n")
-    fp.write(f'    """\n')
+    fp.write('    """\n')
     fp.write(pack_params_to_dict)
     fp.write(f"    result = db.query_fuzzy(con, '{table}', data)\n")
-    fp.write(f"    for row in result:\n")
+    fp.write("    for row in result:\n")
     fp.write(f"        yield {camel_case_table}(**row.as_dict())\n\n")
-    fp.write(f"@beartype.beartype\n")
+    fp.write("@beartype.beartype\n")
     read_param_lists_list = ',\n             '.join(read_param_lists_list)
     fp.write(f"def read_{snake_case_table}_any(con: db.Connection, {read_param_lists_list}) -> Generator[{camel_case_table}, None, None]:\n")
-    fp.write(f'    """\n')
+    fp.write('    """\n')
     fp.write(f"    Read from the {snake_case_table} table in the database, optionally filtered by fuzzy parameter matching\n")
-    fp.write(f"    Returns a generator so that not all rows are fetched in memory at once\n")
-    fp.write(f"    @param con: database connection\n")
+    fp.write("    Returns a generator so that not all rows are fetched in memory at once\n")
+    fp.write("    @param con: database connection\n")
     fp.write(parameter_comments)
     fp.write(f"    @return generator of {camel_case_table} objects\n")
-    fp.write(f'    """\n')
+    fp.write('    """\n')
     fp.write(pack_params_to_dict)
     fp.write(f"    result = db.query_any(con, '{table}', data)\n")
-    fp.write(f"    for row in result:\n")
+    fp.write("    for row in result:\n")
     fp.write(f"        yield {camel_case_table}(**row.as_dict())\n\n")
-    fp.write(f"@beartype.beartype\n")
+    fp.write("@beartype.beartype\n")
     fp.write(f"def read_{snake_case_table}_one_or_none(con: db.Connection, {read_param_list}) -> Optional[{camel_case_table}]:\n")
-    fp.write(f'    """\n')
+    fp.write('    """\n')
     fp.write(f"    Read from the {snake_case_table} table in the database, filtered by a required parameter.\n")
-    fp.write(f"    Returns None if no row is found.\n")
-    fp.write(f"    Raises MultipleResultsFound if more than one ro/w matches\n")
-    fp.write(f"    @param con: database connection\n")
-    fp.write(f'    """\n')
+    fp.write("    Returns None if no row is found.\n")
+    fp.write("    Raises MultipleResultsFound if more than one ro/w matches\n")
+    fp.write("    @param con: database connection\n")
+    fp.write('    """\n')
     fp.write(pack_params_to_dict)
     fp.write(f"    result = db.query_one_or_none(con, '{table}', data)\n")
-    fp.write(f"    if result is None:\n")
-    fp.write(f"        return None\n")
+    fp.write("    if result is None:\n")
+    fp.write("        return None\n")
     fp.write(f"    return {camel_case_table}(**result)\n\n")
-    fp.write(f"@beartype.beartype\n")
+    fp.write("@beartype.beartype\n")
     fp.write(f"def read_{snake_case_table}_one(con: db.Connection, {read_param_list}) -> {camel_case_table}:\n")
-    fp.write(f'    """\n')
+    fp.write('    """\n')
     fp.write(f"    Read from the {snake_case_table} table in the database, filtered by a required parameter.\n")
-    fp.write(f"    Raises MultipleResultsFound if more than one row matches\n")
-    fp.write(f"    Raises NoResultsFound if no row matches\n")
-    fp.write(f"    @param con: database connection\n")
-    fp.write(f'    """\n')
+    fp.write("    Raises MultipleResultsFound if more than one row matches\n")
+    fp.write("    Raises NoResultsFound if no row matches\n")
+    fp.write("    @param con: database connection\n")
+    fp.write('    """\n')
     fp.write(pack_params_to_dict)
     fp.write(f"    result = db.query_one(con, '{table}', data)\n")
     fp.write(f"    return {camel_case_table}(**result)\n\n")
-    fp.write(f"@beartype.beartype\n")
+    fp.write("@beartype.beartype\n")
     fp.write(f"def read_{snake_case_table}_all(con: db.Connection, {read_param_list}) -> List[{camel_case_table}]:\n")
-    fp.write(f'    """\n')
+    fp.write('    """\n')
     fp.write(f"    Read from the {snake_case_table} table in the database, \n")
-    fp.write(f"    optionally filtered by parameters\n")
-    fp.write(f"    @param con: database connection\n")
-    fp.write(f'    """\n')
+    fp.write("    optionally filtered by parameters\n")
+    fp.write("    @param con: database connection\n")
+    fp.write('    """\n')
     fp.write(pack_params_to_dict)
     fp.write(f"    result = db.query(con, '{table}', data)\n")
     fp.write(f"    return [{camel_case_table}(**row.as_dict()) for row in result]\n\n")
-    fp.write(f"@beartype.beartype\n")
+    fp.write("@beartype.beartype\n")
     if id_col is not None:
         fp.write(f"def read_{snake_case_table}_by_id(con: db.Connection, {id_col}: {id_col_type}) -> Optional[{camel_case_table}]:\n")
         fp.write(f"    result = db.query_one(con, '{table}', {{'{id_col}': {id_col}}})\n")
-        fp.write(f"    if result is None:\n")
-        fp.write(f"        return None\n")
+        fp.write("    if result is None:\n")
+        fp.write("        return None\n")
         fp.write(f"    return {camel_case_table}(**result)\n\n")
-        fp.write(f"@beartype.beartype\n")
+        fp.write("@beartype.beartype\n")
         fp.write(f"def delete_{snake_case_table}_by_id(con: db.Connection, {id_col}: {id_col_type}):\n")
         fp.write(f"    db.delete(con, '{table}', {{'{id_col}': {id_col}}})\n")
     fp.write("# Associate the functions with the class\n")
@@ -1682,7 +1700,7 @@ def generate_python_class_for_db_table(
 #    Generate corresponding FastAPI functions for DB table operations
 #    """
 
-def generate_python_class_file_for_db_table(con: Connection, output_file: str):
+def generate_python_class_file_for_db_table(connection: Connection, output_file: str):
     """
     Generate a python class file for each table in the database.
     This is useful for autocompletion and similar IDE integration.
@@ -1700,7 +1718,7 @@ def generate_python_class_file_for_db_table(con: Connection, output_file: str):
       relies on reflection. Generating our own classes allows us to have
       IDE integration and typecheaking with beartype
     """
-    with open(output_file, "w") as fp:
+    with open(output_file, "w", encoding="utf-8") as fp:
         fp.write('"""\n')
         fp.write('Autogenerated python classes for database tables\n')
         fp.write(f"Generated on {datetime.datetime.now()} by db module\n")
@@ -1714,27 +1732,27 @@ def generate_python_class_file_for_db_table(con: Connection, output_file: str):
         fp.write("    assert dataclasses.is_dataclass(cls)\n")
         fp.write("    cls.__init__ = beartype.beartype(cls.__init__)\n")
         fp.write("    return cls\n\n")
-        for table in get_tables(con):
-            generate_python_class_for_db_table(con, table, fp)
-        fp.write(f"_table_classes_by_name = {{\n")
-        for table in get_tables(con):
+        for table in get_tables(connection):
+            generate_python_class_for_db_table(connection, table, fp)
+        fp.write("_table_classes_by_name = {{\n")
+        for table in get_tables(connection):
             snake_case_table = sanitize_snake_case_name(table)
             camel_case_table = generate_camel_case_name(snake_case_table)
             fp.write(f"    '{table}': {camel_case_table},\n")
         fp.write("}\n\n")
-        fp.write(f"def get_table_class(table_name: str) -> Optional[Type]:\n")
+        fp.write("def get_table_class(table_name: str) -> Optional[Type]:\n")
         fp.write("    return _table_classes_by_name.get(table_name)\n\n")
 
 
 
-def test_python_class_file_for_db_table(con: Connection, file_path: str):
+def test_python_class_file_for_db_table(connection: Connection, file_path: str):
     print(f"Importing {file_path}...")
     import importlib
     module_name = file_path.replace("./", "").replace('/', '.').replace('.py', '')
     print(f"module_name: {module_name}")
     module = importlib.import_module(module_name)
     print(f"Successfully imported {module_name}!")
-    for table in get_tables(con):
+    for table in get_tables(connection):
         print(f"Testing {table}...")
         snake_case_table = sanitize_snake_case_name(table)
         camel_case_table = generate_camel_case_name(snake_case_table)
@@ -1746,10 +1764,10 @@ def test_python_class_file_for_db_table(con: Connection, file_path: str):
             read_table_by_id = getattr(module, f"read_{snake_case_table}_by_id")
             write_table = getattr(module, f"write_{snake_case_table}")
             write_table_obj = getattr(module, f"write_{snake_case_table}_obj")
-            objects = read_table(con)
+            objects = read_table(connection)
             for obj in objects:
                 assert isinstance(obj, TableClass)
-            all_objects = read_table_all(con)
+            all_objects = read_table_all(connection)
             for obj in all_objects:
                 assert isinstance(obj, TableClass)
 
@@ -1771,7 +1789,7 @@ class NewColumnsException(Exception):
         super().__init__(message)
         self.columns = columns
 
-def query_df(con: Connection, table: str, where: Optional[dict] = None) -> DataFrame:
+def query_df(connection: Connection, table: str, where: Optional[dict] = None) -> DataFrame:
     """
     Returns a table as a DataFrame, optionnally filtered by where paraemters
 
@@ -1781,20 +1799,20 @@ def query_df(con: Connection, table: str, where: Optional[dict] = None) -> DataF
         values set to None are ignored, this is not filtering by NULL.
     @return The requested table as a DataFrame
     """
-    table = quote_id(con, table)
+    table = quote_id(connection, table)
     where_clause = ""
     if where:
         where = {k: v for k, v in where.items() if v is not None}
         where_clause = "WHERE " + " AND ".join(
-            [f"{quote_id(con, k)} = {quote_val(con, v)}" for k, v in where])
-    query = f"SELECT * FROM {table} {where_clause}"
-    return pd.read_sql(query, con)
+            [f"{quote_id(connection, k)} = {quote_val(connection, v)}" for k, v in where])
+    _query = f"SELECT * FROM {table} {where_clause}"
+    return pd.read_sql(_query, connection)
 
-def generate_json_schema_from_db_table(con: Connection, table: str) -> dict:
+def generate_json_schema_from_db_table(connection: Connection, table: str) -> dict:
     """
     Generates a JSON schema from a database table
     """
-    columns = get_column_info(con, table)
+    columns = get_column_info(connection, table)
     properties = {}
     for column in columns:
         property_type = None
@@ -1827,7 +1845,7 @@ def generate_json_schema_from_db_table(con: Connection, table: str) -> dict:
             prop['format'] = property_format
         if (column['column_default'] is not None and
             column['column_default'].startswith('nextval')):
-               prop['minimum'] = 1
+            prop['minimum'] = 1
         properties[column['column_name']] = prop
     return {
         'type': 'array',
@@ -1837,7 +1855,7 @@ def generate_json_schema_from_db_table(con: Connection, table: str) -> dict:
         }
     }
 
-def generate_json_schemas_from_db(con: Connection, json_schema_dir: str):
+def generate_json_schemas_from_db(connection: Connection, json_schema_dir: str):
     """
     Generate json schema files from the ODMX database
     """
@@ -1845,13 +1863,13 @@ def generate_json_schemas_from_db(con: Connection, json_schema_dir: str):
         os.makedirs(json_schema_dir)
     elif not os.path.isdir(json_schema_dir):
         raise ValueError(f"{json_schema_dir} is not a directory")
-    tables = get_tables(con)
+    tables = get_tables(connection)
     for table in tables:
         json_schema_file = os.path.join(json_schema_dir, table + '_schema.json')
         print("Generating schema for", table)
-        schema = generate_json_schema_from_db_table(con, table)
+        schema = generate_json_schema_from_db_table(connection, table)
         if os.path.exists(json_schema_file):
-            with open(json_schema_file, 'r') as f:
+            with open(json_schema_file, 'r', encoding="utf-8") as f:
                 try:
                     old_schema = json.load(f)
                 except json.decoder.JSONDecodeError:
@@ -1862,25 +1880,25 @@ def generate_json_schemas_from_db(con: Connection, json_schema_dir: str):
             else:
                 print("Schema changed from existing file, adding to .new")
                 json_schema_file += '.new'
-        with open(json_schema_file, 'w') as f:
+        with open(json_schema_file, 'w', encoding="utf-8") as f:
             json.dump(schema, f, indent=4)
 
 
 
-def reset_db(con: Connection, name, sql_template=None):
+def reset_db(connection: Connection, name, sql_template=None):
     """
     Drop and recreate a database, restoring from a sql template if.
     necessary
     """
-    drop_database(con, name)
-    create_database(con, name)
+    drop_database(connection, name)
+    create_database(connection, name)
     print(name)
-    con = con.connect(
-        f"dbname={name} user={con.info.user} password={con.info.password} "
-        f"host={con.info.host} port={con.info.port}")
+    db_con = connection.connect(
+        f"dbname={name} user={connection.info.user} password={connection.info.password} "
+        f"host={connection.info.host} port={connection.info.port}")
     if sql_template is not None:
         print(f"Populating {name} from {sql_template}.")
-        with open(sql_template) as f:
+        with open(sql_template, encoding="utf-8") as f:
             sql = f.read()
         # Remove comments
         sql = re.sub(r'/\*.*?\*/', '', sql, flags=re.DOTALL)
@@ -1889,8 +1907,8 @@ def reset_db(con: Connection, name, sql_template=None):
         # Remove empty statements
         sql = [s for s in sql if s.strip()]
         for s in sql:
-            con.execute(s)
-        con.commit()
+            db_con.execute(s)
+        db_con.commit()
 
 
 if __name__ == "__main__":
