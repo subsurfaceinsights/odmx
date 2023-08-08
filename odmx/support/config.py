@@ -288,7 +288,7 @@ class Config():
         cli_value = None
         file_value = None
         if args and cli_arg_param_name in args:
-            cli_value = args.__getattribute__(cli_arg_param_name)
+            cli_value = args.getattr(self, cli_arg_param_name)
             self._trace(param_name, cli_value, "command line")
         for config_file in self.config_files:
             file = config_file.filename
