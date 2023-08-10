@@ -1345,9 +1345,10 @@ def delete(connection: Connection, table: str, params: Optional[dict] = None, ca
     @return A delete statement
     """
     where = ''
+    # Filter out None values
     if params:
-        where = SQL(' WHERE ')+ SQL(' AND '.join(['{} = %s' for _ in params.keys()])).format(
-            *[Identifier(i) for i in params.keys()])
+        where = 'WHERE ' + ' AND '.join(
+            ['{} = %s' for _ in params.keys()])
     else:
         params = {}
     _query = SQL('''
