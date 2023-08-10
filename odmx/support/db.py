@@ -1336,7 +1336,7 @@ def postgres_type_to_python_type(data_type: str) -> str:
         python_type = "str"
     return python_type
 
-def delete(connection: Connection, table: str, params: Optional[dict] = None, cascade: bool = False):
+def delete(connection: Connection, table: str, params: Optional[dict] = None):
     """
     Delete rows from a table
     @param con A database connection
@@ -1351,14 +1351,11 @@ def delete(connection: Connection, table: str, params: Optional[dict] = None, ca
             ['{} = %s' for _ in params.keys()])
     else:
         params = {}
-    _query = SQL('''
-        DELETE FROM {table}
-        {where}
-        {'CASCADE' if cascade else ''}
-    ''').format(
-        table=Identifier(table),
-        where=where)
-    return connection.execute(_query, list(params.values()))
+    _query = SQL(f'''
+        DELETE FROM {table} ''' + where).format(
+        *[Identifier(k) for k in params.keys()],
+        table=Identifier(table))
+    return con.execute(_query, list(params.values()))
 
 def get_column_comments(connection: Connection, table: str) -> dict[str, str]:
     """
