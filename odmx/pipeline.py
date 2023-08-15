@@ -272,7 +272,7 @@ def run_pipeline(conf: Config, pipeline_work_dir: str):
         )
 
     con = db.connect(
-        config=conf,
+        config_obj=conf,
     )
     project_db = f'odmx_{conf.project_name}'
     sql_dir = os.path.realpath(
@@ -282,14 +282,14 @@ def run_pipeline(conf: Config, pipeline_work_dir: str):
         print("Wiping global feeder database.")
         reset_db(con, 'odmx_feeder_global')
         with db.connect(
-            config=conf,
+            config_obj=conf,
             db_name='odmx_feeder_global'
         ) as db_con:
             db.create_schema(db_con, 'feeder')
     if wipe_feeder:
         try:
             with db.connect(
-                config=conf,
+                config_obj=conf,
                 db_name=project_db
             ) as db_con:
                 # TODO cleanup pathing
@@ -304,7 +304,7 @@ def run_pipeline(conf: Config, pipeline_work_dir: str):
         reset_db(con, project_db, sql_template=odmx_sql_template)
         # Connect to the ODMX database and create the feeder schema.
         with db.connect(
-            config=conf,
+            config_obj=conf,
             db_name=project_db
         ) as odmx_db_con:
             db.create_schema(odmx_db_con, 'feeder')
@@ -325,15 +325,15 @@ def run_pipeline(conf: Config, pipeline_work_dir: str):
             )
 
     odmx_db_con = db.connect(
-        config=conf,
+        config_obj=conf,
         db_name=project_db)
     db.set_current_schema(odmx_db_con, 'odmx')
     feeder_db_con = db.connect(
-        config=conf,
+        config_obj=conf,
         db_name=project_db)
     db.set_current_schema(feeder_db_con, 'feeder')
     global_db_con = db.connect(
-        config=conf,
+        config_obj=conf,
         db_name='odmx_feeder_global')
     db.set_current_schema(global_db_con, 'feeder')
 
