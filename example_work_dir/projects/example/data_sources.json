@@ -40,6 +40,32 @@
     },
     {
         "shared_info": {
+            "data_source_type": "nwis_geochem",
+            "data_source_scope": "global",
+            "data_source_timezone": "MST",
+            "site_code": "09111250"
+        },
+        "harvesting_info": {},
+        "ingestion_info": {},
+        "processing_info": {
+            "sampling_feature_code": "NWIS-09111250"
+        }
+    },
+    {
+        "shared_info": {
+            "data_source_type": "nwis_geochem",
+            "data_source_scope": "global",
+            "data_source_timezone": "MST",
+            "site_code": "385106106571000"
+        },
+        "harvesting_info": {},
+        "ingestion_info": {},
+        "processing_info": {
+            "sampling_feature_code": "NWIS-385106106571000"
+        }
+    },
+    {
+        "shared_info": {
             "data_source_type": "snotel",
             "data_source_scope": "global",
             "data_source_timezone": "Etc/GMT+8",
