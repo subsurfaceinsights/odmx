@@ -28,5 +28,11 @@
         "property_description": "international geo sampling number",
         "property_data_type_cv": "string",
         "property_units_term": null
+    },
+    {
+        "property_name": "value_qualifier_code",
+        "property_description": "USGS Value Qualifier Code(s). See https://help.waterdata.usgs.gov/code/val_qual_cd_query?fmt=rdb&inline=true",
+        "property_data_type_cv": "string",
+        "property_units_term": null
     }
 ]
