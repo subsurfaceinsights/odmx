@@ -121,18 +121,23 @@ def general_timeseries_ingestion(feeder_db_con, feeder_table, df):
                      #write_cols, update_cols)
 
 
-def add_columns(feeder_con, feeder_table, columns):
+def add_columns(feeder_con, feeder_table, columns, col_type=None,
+                override_all=None):
     """
     Adds columns to a given table
     """
     # Now we need to add columns and define their types. Construct a string
     # for that.
+    if col_type is None:
+        col_type = 'double precision'
+    if override_all is None:
+        override_all = False
     col_str = ''
     for i, col in enumerate(columns):
-        col_type = 'double precision'
-        if col == 'timestamp':
-            col_type = 'timestamp without time zone NOT NULL'
-        col_str = f'{col_str}ADD COLUMN \"{col}\" {col_type}'
+        _col_type = col_type
+        if col == 'timestamp' and not override_all:
+            _col_type = 'timestamp without time zone NOT NULL'
+        col_str = f'{col_str}ADD COLUMN \"{col}\" {_col_type}'
         if i < len(columns) - 1:
             col_str = f'{col_str}, '
     query = f'''
