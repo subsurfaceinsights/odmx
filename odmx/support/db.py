@@ -20,6 +20,11 @@ todo: There are a lot of formatted strings that could probably be replaced with
 """
 
 import os
+import argparse
+import json
+import re
+import datetime
+from contextlib import contextmanager
 from beartype.typing import Union, List, Dict, Optional, Any, TextIO, Sequence, Tuple
 from beartype import beartype
 import warnings
@@ -27,17 +32,17 @@ import difflib
 import tempfile
 import pandas as pd
 from pandas import DataFrame
-import datetime
 import psycopg
 from psycopg import Cursor
 import psycopg.sql
 from psycopg.sql import SQL, Identifier, Literal
 import psycopg.rows
-from ssi.config import Config
-import argparse
-import json
-from contextlib import contextmanager
-import re
+try:
+    from ssi.config import Config
+    ver = 'ssi'
+except:  # pylint: disable=bare-except
+    from odmx.support.config import Config
+    ver = 'external'
 
 class ListDict:
     """
@@ -158,7 +163,7 @@ def add_db_parameters_to_config(config_obj: Config,
     the application (for example, ODMX does not support mysql so anything
     dealing with that shouldn't allow a configuration for database type)
 
-    @param config_obj The ssi.config.Config object to which standard database
+    @param config_obj The config.Config object to which standard database
     configuration keys will be added.
 
     @param prefix A configuration prefix, for example 'ert' which is added to
@@ -589,7 +594,8 @@ def set_current_schema(connection: Connection, schema: str):
 @beartype
 def get_table_constraints(
         connection: Connection,
-        table: str) -> List:
+        table: str,
+        cache: bool = True) -> List:
     """
     Get the constraints for a table
     @param con The connection or engine to operate with
@@ -1727,7 +1733,10 @@ def generate_python_class_file_for_db_table(connection: Connection, output_file:
         fp.write("import datetime\n")
         fp.write("from beartype.typing import Optional, Generator, List, ClassVar, Type, Dict, Any\n")
         fp.write("import beartype\n")
-        fp.write("import ssi.db as db\n\n")
+        if ver == 'ssi':
+            fp.write("import ssi.db as db\n\n")
+        else:
+            fp.write("import odmx.support.db as db\n\n")
         fp.write("def beartype_wrap_init(cls):\n")
         fp.write("    assert dataclasses.is_dataclass(cls)\n")
         fp.write("    cls.__init__ = beartype.beartype(cls.__init__)\n")
@@ -1940,4 +1949,3 @@ if __name__ == "__main__":
         test_python_class_file_for_db_table(con, args.output_file)
     if args.command == 'gen_json_schema':
         generate_json_schemas_from_db(con, args.json_schema_dir)
-

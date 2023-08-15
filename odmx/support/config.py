@@ -12,7 +12,10 @@ from collections import namedtuple
 from beartype import beartype
 from beartype.typing import Union, Optional, Callable
 import yaml
-import ssi.validators
+try:
+    from ssi import validators
+except:  # pylint: disable=bare-except
+    from odmx.support import validators
 
 def map_to_cli_name(name: str):
     """
@@ -37,7 +40,7 @@ def map_to_cli_arg_name(name: str):
 
 class ConfigurationError(Exception):
     """
-    Class for all exceptions thrown by the ssi.config library
+    Class for all exceptions thrown by the config library
     """
 
 class ConfigurationNotSetError(ConfigurationError):
@@ -56,15 +59,15 @@ class ConfigParam():
     Class representing a single configuration argument
     """
     VALIDATORS={
-            'integer': ssi.validators.validate_int,
-            'int': ssi.validators.validate_int,
-            'float': ssi.validators.validate_float,
-            'url': ssi.validators.validate_url,
-            'port': ssi.validators.validate_port,
-            'hostname': ssi.validators.validate_hostname,
-            'bool': ssi.validators.validate_bool,
-            'boolean': ssi.validators.validate_bool,
-            'enum': ssi.validators.validate_enum,
+            'integer': validators.validate_int,
+            'int': validators.validate_int,
+            'float': validators.validate_float,
+            'url': validators.validate_url,
+            'port': validators.validate_port,
+            'hostname': validators.validate_hostname,
+            'bool': validators.validate_bool,
+            'boolean': validators.validate_bool,
+            'enum': validators.validate_enum,
         }
 
     @beartype
