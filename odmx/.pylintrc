@@ -1,0 +1,126 @@
+[MASTER]
+ignore=support,
+       data_model.py,
+       datasources/ssi/owc_geochem.py,
+       datasources/ssi/owc_microbial.py
+
+[MESSAGES CONTROL]
+
+disable=too-many-lines,
+        too-many-locals,
+        too-many-branches,
+        too-many-statements,
+        too-many-arguments,
+        too-many-nested-blocks,
+        too-many-boolean-expressions,
+        too-few-public-methods,
+        global-statement,
+        unnecessary-lambda,
+        duplicate-code,
+        unused-argument,
+        no-value-for-parameter,
+        unnecessary-lambda-assignment,
+        cell-var-from-loop,
+        not-context-manager,
+        too-many-return-statements,
+        unused-variable,
+        arguments-differ,
+        missing-timeout,
+        too-many-instance-attributes,
+        no-member,
+        method-cache-max-size-none
+
+
+[REPORTS]
+
+
+[REFACTORING]
+
+
+
+[FORMAT]
+
+# Expected format of line ending, e.g. empty (any line ending), LF or CRLF.
+# expected-line-ending-format=LF
+
+# Number of spaces of indent required inside a hanging or continued line.
+indent-after-paren=4
+
+# String used as indentation unit. This is usually "    " (4 spaces) or "\t" (1
+# tab).
+indent-string='    '
+
+# Maximum number of characters on a single line.
+max-line-length=79
+
+
+[STRING]
+
+
+[SIMILARITIES]
+
+
+[VARIABLES]
+
+
+[LOGGING]
+
+
+[BASIC]
+
+# Good variable names which should always be accepted, separated by a comma.
+good-names=_,
+           a,
+           c,
+           d,
+           e,
+           f,
+           i,
+           j,
+           k,
+           l,
+           p,
+           r,
+           t,
+           v,
+           x,
+           y,
+           z,
+           cv,
+           dd,
+           df,
+           ds,
+           dt,
+           qa,
+           re,
+           sf,
+           tz
+
+
+[MISCELLANEOUS]
+
+# List of note tags to take in consideration, separated by a comma.
+notes=
+
+
+[SPELLING]
+
+
+[TYPECHECK]
+
+
+[CLASSES]
+
+
+[IMPORTS]
+
+
+[DESIGN]
+
+
+[EXCEPTIONS]
+
+# Exceptions that will emit a warning when being caught. Defaults to
+# "BaseException, Exception".
+overgeneral-exceptions=builtins.BaseException,
+                       builtins.Exception
