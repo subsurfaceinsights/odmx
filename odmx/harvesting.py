@@ -4,8 +4,8 @@ A script to house common harvesting functions used by data modules.
 """
 
 import os
-import odmx.support.rsync as ssisyn
 import pandas as pd
+import odmx.support.rsync as ssisyn
 from odmx.log import vprint
 
 def simple_rsync(remote_user, remote_server, remote_base_path, local_base_path,

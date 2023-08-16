@@ -9,19 +9,15 @@ import uuid
 from calendar import timegm
 import datetime
 import json
-from typing import Dict, Optional
-from pandas.core.indexing import convert_missing_indexer
+from typing import Optional
 import pytz
 import numpy as np
 import pandas as pd
-import odmx.support.general as ssigen
 import odmx.support.qaqc as ssiqa
-import odmx.support.db as db
-from beartype import beartype
+from odmx.support import db
 from odmx.support.db import quote_id as qid
 from odmx.support.db import Connection
 from odmx.log import vprint
-from psycopg.errors import DuplicateObject
 from odmx.json_validation import open_json
 from odmx.abstract_data_source import DataSource
 import odmx.data_model as odmx
@@ -112,7 +108,7 @@ def general_timeseries_processing(ds: DataSource,
         feeder_table,
     )
     if not feeder_table_exists:
-        raise Exception(
+        raise ValueError(
             f"Feeder table {feeder_table} does not exist."
         )
 
@@ -127,8 +123,7 @@ def general_timeseries_processing(ds: DataSource,
     assert d2e_df is not None
     if d2e_df.empty:
         print("WARNING: No data is set to be exposed for the current data "
-            f"source: {feeder_table}"
-        )
+            f"source: {feeder_table}")
     # Convert back to a list of dictionaries, and run through the entries.
     d2e_list = d2e_df.to_dict(orient='records')
     for entry in d2e_list:
@@ -170,7 +165,7 @@ def general_timeseries_processing(ds: DataSource,
 
         # Define the view.
         vprint(f"{d2e_column_name} should be exposed as a view. Continuing.")
-        mat_view_name = (f"{feeder_table}_{d2e_column_name}")
+        mat_view_name = f"{feeder_table}_{d2e_column_name}"
         # At this point we need to find out how many bytes the materialized
         # view's name is. PostgreSQL has a 63 byte limit for table names, and
         # we want to add 10 bytes to the name shortly, so here it can be no
@@ -194,9 +189,11 @@ def general_timeseries_processing(ds: DataSource,
             quantity_kind_cv = unit.quantity_kind_cv
             quantity_kind = odmx.read_cv_quantity_kind_one(
                 odmx_db_con, term=quantity_kind_cv)
-            assert quantity_kind, f"Could not find quantity kind {quantity_kind_cv}"
+            assert quantity_kind, ("Could not find quantity "
+                                   f"kind {quantity_kind_cv}")
             default_unit = quantity_kind.default_unit
-            assert default_unit, f"Could not find default unit for quantity kind {quantity_kind_cv}"
+            assert default_unit, ("Could not find default unit for quantity "
+                                  f"kind {quantity_kind_cv}")
             d2e_units = odmx.read_cv_units_one(
                 odmx_db_con, term=default_unit)
             assert d2e_units, f"Could not find default unit {default_unit}"
@@ -207,10 +204,13 @@ def general_timeseries_processing(ds: DataSource,
         if (odmx_db_con.info.host != feeder_db_con.info.host or
             odmx_db_con.info.dbname != feeder_db_con.info.dbname or
             odmx_db_con.info.port != feeder_db_con.info.port):
-            vprint(f"Feeder db is foreign. Pulling data from foreign db.")
+            vprint("Feeder db is foreign. Pulling data from foreign db.")
             # Create the table if necessary.
-            with db.schema_scope(odmx_db_con, 'feeder'), db.schema_scope(feeder_db_con, 'feeder'):
-                count = db.cross_con_table_copy(feeder_db_con, feeder_table, odmx_db_con,
+            with (db.schema_scope(odmx_db_con, 'feeder'),
+                  db.schema_scope(feeder_db_con, 'feeder')):
+                count = db.cross_con_table_copy(feeder_db_con,
+                                                feeder_table,
+                                                odmx_db_con,
                                             feeder_table)
                 if count:
                     vprint(f"Inserted {count} rows into {feeder_table}")
@@ -254,7 +254,8 @@ def general_timeseries_processing(ds: DataSource,
         if d2e_variable_term == 'waterDepthBelowTopOfCasing':
             # Check if we have a TOC extension property to trigger a
             # calculated datastream.
-            extension_property_values = odmx.read_sampling_feature_extension_property_values_all(
+            extension_property_values = \
+                odmx.read_sampling_feature_extension_property_values_all(
                     odmx_db_con, sampling_feature_id=sf_id)
             toc_value = None
             for ext_prop in extension_property_values:
@@ -317,7 +318,7 @@ def ingest_equipment(con, equipment_json,
                 equipment_model_id =\
                         equipment_model_id['equipment_model_id'].item()
             except ValueError as e:
-                raise Exception(
+                raise ValueError(
                     f"Equipment code '{equipment_item['equipment_code']}' "
                     "not found in equipment_models table under "
                     "equipment_model_part_number. This is what's available:\n "
@@ -363,7 +364,8 @@ def ingest_equipment(con, equipment_json,
             positions = odmx.read_equipment_position_all(
                     con,
                     equipment_id = equipment_id,
-                    position_start_date_utc=equipment_item['position_start_date_utc'])
+                    position_start_date_utc=\
+                        equipment_item['position_start_date_utc'])
             # If the equipment position already exists, we need to find out
             # if this is a new position, or if it needs updating.
             equipment_position_id = None
@@ -396,8 +398,10 @@ def ingest_equipment(con, equipment_json,
             # this equipment entry and a given person.
             person_id = odmx.read_persons_one(
                     con,
-                    person_first_name = equipment_item['equipment_owner_first_name'],
-                    person_last_name = equipment_item['equipment_owner_last_name']
+                    person_first_name = \
+                        equipment_item['equipment_owner_first_name'],
+                    person_last_name = \
+                        equipment_item['equipment_owner_last_name']
             ).person_id
             assert person_id is not None
             equipment_persons_bridge_id = None
@@ -512,8 +516,8 @@ def create_view(odmx_con, feeder_table, view_name, unit,
             else:
                 multiplier = str(1)
                 offset = str(0)
-            # Create the actual view. This should account for any text "NAN" and
-            # such.
+            # Create the actual view. This should account for any text "NAN"
+            # and such.
             query = f'''
                 CREATE VIEW {qid(odmx_con, view_name)}
                 AS SELECT timestamp AS utc_time, ({multiplier} * ({offset}
@@ -560,7 +564,8 @@ def materialize(odmx_con, mat_view_name, view_name,
     # Check to see if the materialized view exists or not.
     vprint("Checking to see if the materialized view exists.")
     with db.schema_scope(odmx_con, 'datastreams'):
-        last_mat_view_time = create_mat_view_table_or_return_latest(odmx_con, mat_view_name)
+        last_mat_view_time = \
+            create_mat_view_table_or_return_latest(odmx_con, mat_view_name)
         last_mat_view_time = last_mat_view_time or 0
         # The latest materialized view time is UTC in Unix format, so we
         # need to convert it to local time and "normal" format.
@@ -578,11 +583,11 @@ def materialize(odmx_con, mat_view_name, view_name,
         '''
         result = odmx_con.execute(query, [last_mat_view_time])
 
-        # Since we now have the appropriate data from the view itself, we can turn
-        # it into a DataFrame so that we can do QA/QC on it.
+        # Since we now have the appropriate data from the view itself, we can
+        # turn it into a DataFrame so that we can do QA/QC on it.
         view_df = pd.DataFrame(result.fetchall(), dtype='object')
-        # Need to check to make sure that view_df has any entries. If not, it means
-        # no new data exists and we can move on.
+        # Need to check to make sure that view_df has any entries. If not, it
+        # means no new data exists and we can move on.
         if view_df.empty:
             vprint("No new data exists to materialize.")
         else:
@@ -593,7 +598,8 @@ def materialize(odmx_con, mat_view_name, view_name,
             # First, do the timezone conversion.
             view_df.sort_values(by='utc_time')
             view_df['utc_time'] = (pd.to_datetime(view_df['utc_time'])
-                                   .dt.tz_localize(ds_timezone, ambiguous='infer')
+                                   .dt.tz_localize(ds_timezone,
+                                                   ambiguous='infer')
                                    .dt.tz_convert('UTC'))
             # Turn it into Unix time, as that's what the database table takes.
             view_df['utc_time'] = view_df['utc_time'].astype(np.int64) // 10**9
@@ -605,7 +611,8 @@ def materialize(odmx_con, mat_view_name, view_name,
             vprint("Writing the materialized view to the database.")
             num_inserted = db.insert_many_df(
                     odmx_con, mat_view_name, view_df, upsert=False)
-            vprint(f"Inserted {num_inserted} rows into datastreams.{mat_view_name}")
+            vprint((f"Inserted {num_inserted} rows into "
+                    f"datastreams.{mat_view_name}"))
             # The following is the old mechanism
             #check_cols = ['utc_time']
             #write_cols = ['utc_time', 'data_value', 'qa_flag']
@@ -619,6 +626,7 @@ def materialize(odmx_con, mat_view_name, view_name,
 
 def get_lastest_equipment_position(con,
                             equipment_id) -> Optional[odmx.EquipmentPosition]:
+    """ Get latest equipment postiion"""
     positions = odmx.read_equipment_position_all(
             con, equipment_id=equipment_id)
     latest_position = None
@@ -673,7 +681,7 @@ def check_datastream_entries(con, fix=True, check_empty=True):
             FROM "{datastream_database}"."{datastream_tablename}"
             """
         raw_total = con.execute(query).fetchone()[0]
-        assert (result.rowcount == 1)
+        assert result.rowcount == 1
         row = result.fetchone()
         if (first_measurement_date != row['first_measurement_date'] or
             last_measurement_date != row['last_measurement_date'] or
@@ -692,22 +700,24 @@ def check_datastream_entries(con, fix=True, check_empty=True):
             passed = False
             if fix:
                 if row['first_measurement_date']:
-                    first_measurement_date_datetime = datetime.datetime.utcfromtimestamp(
+                    first_measurement_date_datetime = \
+                        datetime.datetime.utcfromtimestamp(
                         row['first_measurement_date'])
                 else:
                     first_measurement_date_datetime = None
                 if row['last_measurement_date']:
-                    last_measurement_date_datetime = datetime.datetime.utcfromtimestamp(
+                    last_measurement_date_datetime = \
+                    datetime.datetime.utcfromtimestamp(
                         row['last_measurement_date'])
                 else:
                     last_measurement_date_datetime = None
-                query = f"""
+                query = """
                     UPDATE sampling_feature_timeseries_datastreams
                     SET first_measurement_date = %s,
                         last_measurement_date = %s,
                         total_measurement_numbers = %s
                     WHERE datastream_id = %s"""
-                con.execute(query,[first_measurement_date_datetime,
+                con.execute(query, [first_measurement_date_datetime,
                                    last_measurement_date_datetime,
                                    row['total_measurement_numbers'],
                                    datastream_id])
@@ -732,7 +742,8 @@ def check_datastream_entries(con, fix=True, check_empty=True):
                     variable_id = (
                         SELECT variable_id
                         FROM sampling_feature_timeseries_datastreams
-                        WHERE datastream_id = %s)""", [datastream_id]).fetchone()[0]
+                        WHERE datastream_id = %s)""",
+                    [datastream_id]).fetchone()[0]
             variable_min, variable_max = con.execute(
                 """
                 SELECT
@@ -752,18 +763,23 @@ def check_datastream_entries(con, fix=True, check_empty=True):
                     f'''
                     SELECT utc_time, data_value, qa_flag
                     FROM "{datastream_database}"."{datastream_tablename}"
-                    WHERE data_value is not null ORDER BY utc_time DESC LIMIT 10
+                    WHERE data_value is not null
+                     ORDER BY utc_time DESC LIMIT 10
                     ''').fetchall()
+
                 no_data = True
+
                 for datapoint in last_ten_datapoints:
                     if no_data:
                         no_data = False
-                        print(f"\t - The last non-null ten datapoints are:")
+                        print("\t - The last non-null ten datapoints are:")
                     utc_datetime = datetime.datetime.utcfromtimestamp(
                         datapoint[0])
-                    print(f"\t\t {utc_datetime} {datapoint[1]} ({datapoint[2]})")
+                    print(f"\t\t {utc_datetime} {datapoint[1]} "
+                          f"({datapoint[2]})")
                 if no_data:
                     print("\t - There are no non-null datapoints.")
+
             if check_empty:
                 passed = False
     return passed
@@ -786,9 +802,11 @@ def create_datastream_entry(con, mat_view_name, view_df,
     @param d2e_units_id The ODMX units ID for this datastream.
     """
     with db.schema_scope(con, 'odmx'):
-        vprint("Adding/editing the sampling_feature_timeseries_datastreams entry.")
+        vprint(("Adding/editing the sampling_feature_timeseries_datastreams "
+                "entry."))
         # Start by trying to find the current entry in the database table.
-        datastream = odmx.read_sampling_feature_timeseries_datastreams_one_or_none(
+        datastream = \
+            odmx.read_sampling_feature_timeseries_datastreams_one_or_none(
                 con, datastream_tablename=mat_view_name)
 
         # Get the UUID.
@@ -828,10 +846,11 @@ def create_datastream_entry(con, mat_view_name, view_df,
                 first_meas_date = datetime.datetime.utcfromtimestamp(
                     filtered_df.min())
 
-        # Get the total number of measurements. Try finding it in the database. If
-        # it's there, add it to the length of the view.
+        # Get the total number of measurements. Try finding it in the database.
+        # If it's there, add it to the length of the view.
         if datastream is not None:
-            total_measurement_numbers = (datastream.total_measurement_numbers if
+            total_measurement_numbers = \
+                (datastream.total_measurement_numbers if
                     datastream.total_measurement_numbers is not None else 0)
             total_measurement_numbers += len(filtered_df)
         # If it isn't in the database, set it to the length of the view.
@@ -839,8 +858,8 @@ def create_datastream_entry(con, mat_view_name, view_df,
             filtered_df = view_df.loc[view_df['qa_flag'] == 'z']
             total_measurement_numbers = len(filtered_df)
 
-        # Construct the `datastream_attribute`. To start, we find the depth offset
-        # info. Begin with an offset of zero.
+        # Construct the `datastream_attribute`. To start, we find the depth
+        # offset info. Begin with an offset of zero.
         offset = 0
         # Find the equipment ID based on the UUID.
         equipment_entry = odmx.read_equipment_one(
@@ -853,7 +872,7 @@ def create_datastream_entry(con, mat_view_name, view_df,
             offset = position.equipment_z_offset_m
             if offset is None:
                 offset = 0
-        # Start climbing the related equipment ladder to find any other offsets.
+        # Start climbing the related equipment ladder to find any other offsets
         new_equipment_id = equipment_id
         while True:
             # Find a piece of related `isAttachedTo` equipment.
@@ -877,7 +896,7 @@ def create_datastream_entry(con, mat_view_name, view_df,
             if position is not None:
                 assert position.equipment_z_offset_m is not None
                 offset += position.equipment_z_offset_m
-        # We want to make datastream attribute text human readable on the frontend.
+        # Make datastream attribute text human readable on the frontend.
         if offset < 0:
             depth_elevation_text = 'sensor_depth'
             depth_elevation_units_text = 'sensor_depth_units'
@@ -917,7 +936,8 @@ def create_datastream_entry(con, mat_view_name, view_df,
         )
         vprint("sampling_feature_timeseries_datastreams entry complete.")
 
-def create_mat_view_table_or_return_latest(con, mat_view_table) -> Optional[datetime.datetime]:
+def create_mat_view_table_or_return_latest(
+        con, mat_view_table) -> Optional[datetime.datetime]:
     """
     Check if a materialized view table exists if it does return the latest
     datetime value or None if the table is empty.
@@ -963,7 +983,8 @@ def generic_toc_calc_datastream(odmx_con,
 
         # Create mat view table or get the latest entry
         calc_view_name = f'{mat_view_name}_toc_wl_calc'
-        last_mat_view_time = create_mat_view_table_or_return_latest(odmx_con, calc_view_name)
+        last_mat_view_time = \
+            create_mat_view_table_or_return_latest(odmx_con, calc_view_name)
         last_mat_view_time = last_mat_view_time or 0
 
         # Turn the view into a DataFrame so that we can do QA/QC on it.
@@ -1027,10 +1048,10 @@ def qa_checks(df, con, variable_id, units_id,
             con, variable_id=variable_id)
         var_min = min_max.min_valid_range
         var_max = min_max.max_valid_range
-        # Make sure that the units of the data match the standard for the variable
-        # in question. If they don't, it means the units are intentionally non-
-        # standard (unconverted), and so we need to match the min/max values to
-        # the desired units.
+        # Make sure that the units of the data match the standard for the
+        # variable in question. If they don't, it means the units are
+        # intentionally non-standard (unconverted), and so we need to match
+        # the min/max values to the desired units.
         # Get the quantity kind via the variable to check this.
         variable = odmx.read_variables_one(con, variable_id=variable_id)
         quantity_kind_cv = variable.quantity_kind_cv
@@ -1069,13 +1090,14 @@ def qa_checks(df, con, variable_id, units_id,
                     end = datetime.datetime.fromisoformat(end).timestamp()
                 qa_flag = manual_qa['qa_flag']
                 # TODO better checks on the qa_flag? Maybe take the CV table?
-                if qa_flag not in set(['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i',
-                                       'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r',
-                                       's', 't', 'u', 'v', 'w', 'x', 'y', 'z']):
+                if qa_flag not in set(['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h',
+                                       'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p',
+                                       'q', 'r', 's', 't', 'u', 'v', 'w', 'x',
+                                       'y', 'z']):
                     raise ValueError(f"Invalid qa_flag {qa_flag} in "
                                      "manual_qa_list")
-                vprint(f"QA/QC: Marking data between {start} and {end} with flag "
-                       f"'{qa_flag}'.")
+                vprint(f"QA/QC: Marking data between {start} and {end} with "
+                       f"flag '{qa_flag}'.")
                 df.set_index('utc_time', inplace=True)
                 df.loc[(df.index >= start) & (df.index <= end),
                        'qa_flag'] = qa_flag
@@ -1094,7 +1116,8 @@ def m1_10_calc_datastream(odmx_con, ds_timezone,
         print(f"Creating calculated channels for {view_name}.")
         # Find out if the measured view exists.
         calc_view_name = 'm1_10_at200_m1_wl_avg_calc'
-        last_mat_view_time = create_mat_view_table_or_return_latest(odmx_con, calc_view_name)
+        last_mat_view_time = \
+            create_mat_view_table_or_return_latest(odmx_con, calc_view_name)
         last_mat_view_time = last_mat_view_time or 0
 
         # Turn the view into a DataFrame so that we can do QA/QC on it.
@@ -1112,7 +1135,7 @@ def m1_10_calc_datastream(odmx_con, ds_timezone,
                                .dt.tz_localize(ds_timezone, ambiguous='infer')
                                .dt.tz_convert('UTC'))
         # Turn it into Unix time, as that's what the db table takes.
-        view_df['utc_time'] = (view_df['utc_time'].astype(np.int64) // 10**9)
+        view_df['utc_time'] = view_df['utc_time'].astype(np.int64) // 10**9
         # Try to pare down to only data we care about, if possible.
         try:
             view_df = view_df[view_df['utc_time'] > last_mat_view_time]
@@ -1174,7 +1197,8 @@ def m1_10_calc_datastream(odmx_con, ds_timezone,
         # Do the actual calculation.
         vprint("Performing calculations.")
         for i in plm1_list:
-            mask = ((view_df['utc_time'] >= i[0]) & (view_df['utc_time'] <= i[1]))
+            mask = \
+                (view_df['utc_time'] >= i[0]) & (view_df['utc_time'] <= i[1])
             view_df['data_value'] = np.where(
                 mask,
                 plm1_toc - (plm1_toc - i[2]) + view_df['data_value'],
@@ -1230,7 +1254,7 @@ def m6_60_calc_datastream(odmx_con, ds_timezone,
                            .dt.tz_localize(ds_timezone, ambiguous='infer')
                            .dt.tz_convert('UTC'))
     # Turn it into Unix time, as that's what the db table takes.
-    view_df['utc_time'] = (view_df['utc_time'].astype(np.int64) // 10**9)
+    view_df['utc_time'] = view_df['utc_time'].astype(np.int64) // 10**9
     # Try to pare down to only data we care about, if possible.
     try:
         view_df = view_df[view_df['utc_time'] > last_mat_view_time]
@@ -1300,7 +1324,7 @@ def m6_60_calc_datastream(odmx_con, ds_timezone,
     # Do the actual calculation.
     vprint("Performing calculations.")
     for i in plm6_list:
-        mask = ((view_df['utc_time'] >= i[0]) & (view_df['utc_time'] <= i[1]))
+        mask = (view_df['utc_time'] >= i[0]) & (view_df['utc_time'] <= i[1])
         view_df['data_value'] = np.where(
             mask,
             plm6_toc - (plm6_toc - i[2]) + view_df['data_value'],

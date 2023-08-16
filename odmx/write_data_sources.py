@@ -25,20 +25,20 @@ def write_data_sources(project: str,
     base_path = os.environ.get('SSI_BASE', '/opt/ssi')
     project_path = f"{base_path}/projects/{project}"
     if not os.path.exists(project_path):
-        raise Exception(f"Project path {project_path} does not exist")
+        raise OSError(f"Project path {project_path} does not exist")
 
     # Load file inputs
-    with open(device_list, 'r') as d:
+    with open(device_list, 'r', encoding='utf-8') as d:
         devices = json.load(d)
 
     # Check if we already have a datasources, and if so what's in it
     file_path = f"{project_path}/data_sources.json"
 
     if os.path.exists(file_path):
-        with open(file_path) as f:
+        with open(file_path, encoding='utf-8') as f:
             data_sources = json.load(f)
     else:
-        raise Exception(f"{file_path} not found. Check SSI_BASE variable")
+        raise OSError(f"{file_path} not found. Check SSI_BASE variable")
     existing_devices = []
     for source in data_sources:
         if datasource in source['shared_info']['data_source_name']:
@@ -50,7 +50,7 @@ def write_data_sources(project: str,
     if 'hydrovu' in datasource:
         pass
     else:
-        raise Exception(f"Helper script not compatible with {datasource}")
+        raise ValueError(f"Helper script not compatible with {datasource}")
 
     for device in devices:
         device_id = device['id']

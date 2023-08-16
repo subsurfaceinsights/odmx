@@ -8,10 +8,10 @@ import sys
 import os
 import json
 import argparse
-from collections import namedtuple
-from beartype import beartype
-from beartype.typing import Union, Optional, Callable
 import yaml
+from collections import namedtuple
+from beartype.typing import Union, Optional, Callable
+from beartype import beartype
 try:
     from ssi import validators
 except:  # pylint: disable=bare-except

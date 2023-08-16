@@ -74,7 +74,7 @@ class WeatherflowDataSource(DataSource):
                 df['time_epoch[s]'] = pd.to_datetime(df['time_epoch[s]'],
                                                      unit='s')
             except OverflowError as e:
-                raise Exception(
+                raise OverflowError(
                     f"One of the timestamps in file {csv_path} cannot be"
                     " converted properly. Please check to see what's wrong."
                 ) from e

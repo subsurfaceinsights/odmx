@@ -6,10 +6,11 @@ A script to house common timeseries ingestion functions.
 
 import numpy as np
 import odmx.support.math as ssimath
-import odmx.support.db as db
+from odmx.support import db
 from odmx.support.db import quote_id
 
 def get_latest_timestamp(feeder_db_con, feeder_table):
+    """ Get latest timestamp"""
     if not db.does_table_exist(feeder_db_con, feeder_table):
         return None
     if db.is_table_empty(feeder_db_con, feeder_table):
@@ -140,4 +141,3 @@ def add_columns(feeder_con, feeder_table, columns):
             {col_str}
     '''
     return feeder_con.execute(query)
-

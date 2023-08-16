@@ -6,16 +6,17 @@ Read base project data from .json files into an ODMX database.
 
 import os
 import argparse
+import deepdiff
 import odmx.support.config as ssiconf
-import odmx.support.db as db
+from odmx.support import db
 import odmx.data_model as odmx
-import datetime
 import odmx.support.general as ssigen
 from odmx.log import vprint
 from odmx.json_validation import open_json
-import deepdiff
 
-def populate_base_tables(odmx_db_con: db.Connection, global_path: str, project_path: str):
+def populate_base_tables(odmx_db_con: db.Connection,
+                         global_path: str,
+                         project_path: str):
     """
     Populate base tables into an ODMX database.
 
@@ -28,23 +29,26 @@ def populate_base_tables(odmx_db_con: db.Connection, global_path: str, project_p
     project_it_path = os.path.join(project_odmx_path, 'ingestion_tables')
     global_it_path = os.path.join(global_odmx_path, 'ingestion_tables')
     with db.schema_scope(odmx_db_con, 'odmx'):
-        # TODO For now, some of this needs to be hard-coded, because we've not yet
-        # addressed how we deal with persons, affiliations, organizations, and
-        # equipment_models. Those are meant to be global tables, and although they
-        # currently live in the "global" project, they're meant to be higher-level
-        # than that. But they're "localized" for now, and need to be ingested in
-        # certain order (also need to decide how they're meant to link together).
+        # TODO For now, some of this needs to be hard-coded, because we've not
+        # yet addressed how we deal with persons, affiliations, organizations,
+        # and equipment_models. Those are meant to be global tables, and
+        # although they currently live in the "global" project, they're meant
+        # to be higher-level than that. But they're "localized" for now, and
+        # need to be ingested in a certain order (also need to decide how
+        #  they're meant to link together).
         # "global" ingestion tables order.
-        global_it_files, global_it_paths = ssigen.get_files(global_it_path, 'json')
+        global_it_files, global_it_paths = ssigen.get_files(global_it_path,
+                                                            'json')
         global_it_order = ['organizations.json', 'persons.json',
                            'affiliations.json', 'equipment_models.json']
-        # Same deal for the project specific files. Some need to be ingested before
-        # others.
+        # Same deal for the project specific files. Some need to be ingested
+        # before others.
         project_it_files, project_it_paths = ssigen.get_files(project_it_path,
                                                               'json')
-        # Begin with a dedicated starting order, regardless of whether that file
-        # exists.
-        starting_order = ['features_of_interest.json', 'extension_properties.json',
+        # Begin with a dedicated starting order, regardless of whether that
+        # file exists.
+        starting_order = ['features_of_interest.json',
+                          'extension_properties.json',
                           'sampling_features.json']
         # Pare down the starting order based on if those files exist.
         starting_order = [i for i in starting_order if i in project_it_files]
@@ -56,8 +60,8 @@ def populate_base_tables(odmx_db_con: db.Connection, global_path: str, project_p
         it_files = global_it_files + project_it_files
         it_paths = global_it_paths + project_it_paths
 
-        # Create a mapping dictionary for specialized ingestion tables and which
-        # function ingests them.
+        # Create a mapping dictionary for specialized ingestion tables and
+        # which function ingests them.
         ingestion_mapping_dict = {
             'extension_properties': ingest_extension_properties,
             'equipment_models': ingest_equipment_models,
@@ -75,11 +79,13 @@ def populate_base_tables(odmx_db_con: db.Connection, global_path: str, project_p
             it_json = open_json(it_path)
             # TODO A bit more hardcoding, since we're not 100% settled on:
             # - Why organization IDs are hardcoded in `organizations`.
-            # - `equipment_models` has the column `manufacturer_name` which needs
-            #   to be converted to `model_manufacturer_id` (`organization_id`).
+            # - `equipment_models` has the column `manufacturer_name` which
+            #    needs to be converted to
+            #    `model_manufacturer_id` (`organization_id`).
             with odmx_db_con.transaction():
                 if it_name in ingestion_mapping_dict:
-                    ingestion_mapping_dict[it_name](odmx_db_con, it_name, it_json)
+                    ingestion_mapping_dict[it_name](odmx_db_con,
+                                                    it_name, it_json)
                 else:
                     ingest_generic_table(odmx_db_con, it_name, it_json)
 
@@ -105,12 +111,12 @@ def ingest_generic_table(con, it_name, it_json):
     """
 
     # Create a list of objects from the .json file.
-    TableType = odmx.get_table_class(it_name)
-    if not TableType:
+    table_type = odmx.get_table_class(it_name)
+    if not table_type:
         raise ValueError(f'No table class found for {it_name}')
     count = db.get_table_count(con, it_name)
     unique_columns = []
-    if (count > 0):
+    if count > 0:
         # Get unique columns for this table
         unique_columns = db.table_get_unique_columns(con, it_name)
         # Add unique columns not captured by the schema
@@ -118,12 +124,17 @@ def ingest_generic_table(con, it_name, it_json):
             unique_columns += special_unique_columns[it_name]
     vprint(f'Ingesting {it_name} with unique columns: {unique_columns}')
     # Try to parse any date time columns
-    objects = [TableType.create_from_json_dict(dict_obj) for dict_obj in it_json]
-    objects_without_ids = [obj for obj in objects if getattr(obj, TableType.PRIMARY_KEY) is None]
-    objects_with_ids = [obj for obj in objects if getattr(obj, TableType.PRIMARY_KEY) is not None]
-    # For each entry without a primary key id, check if it exists in the database
-    # already. If it does, update the object with the existing id. If it doesn't,
-    # add it to the list of objects to be inserted as new rows.
+    objects = \
+        [table_type.create_from_json_dict(dict_obj) for dict_obj in it_json]
+    objects_without_ids = \
+        [obj for obj in objects if getattr(obj,
+                                           table_type.PRIMARY_KEY) is None]
+    objects_with_ids = \
+        [obj for obj in objects if getattr(obj,
+                                           table_type.PRIMARY_KEY) is not None]
+    # For each entry without a primary key id, check if it exists in the
+    # database already. If it does, update the object with the existing id.
+    # If it doesn't, add it to the list of objects to be inserted as new rows.
     if objects_without_ids:
         new_objects = []
         for obj in objects_without_ids:
@@ -132,21 +143,24 @@ def ingest_generic_table(con, it_name, it_json):
                 continue
             for col in unique_columns:
                 kwargs = {col: getattr(obj, col)}
-                existing = TableType.read_one_or_none(con, **kwargs)
+                existing = table_type.read_one_or_none(con, **kwargs)
                 if existing:
-                    setattr(obj, TableType.PRIMARY_KEY, getattr(existing, TableType.PRIMARY_KEY))
+                    setattr(obj, table_type.PRIMARY_KEY,
+                            getattr(existing, table_type.PRIMARY_KEY))
                     objects_with_ids.append(obj)
                 else:
                     new_objects.append(obj)
         if new_objects:
             if UPDATE_ONLY:
-                raise ValueError(f'Found {len(new_objects)} new rows to insert into {it_name} but UPDATE_ONLY is set')
-            num_inserted = TableType.write_many(con, new_objects)
+                raise ValueError((f'Found {len(new_objects)} new rows to '
+                                  f'insert into {it_name} but UPDATE_ONLY is '
+                                  'set'))
+            num_inserted = table_type.write_many(con, new_objects)
             vprint(f'Inserted {num_inserted} new rows into {it_name}')
     if objects_with_ids:
-        num_inserted = TableType.write_many(con, objects_with_ids, upsert=True)
+        num_inserted = table_type.write_many(con, objects_with_ids,
+                                             upsert=True)
         vprint(f'Inserted/Updated {num_inserted} rows with IDs into {it_name}')
-
 
 def ingest_extension_properties(con, it_name, it_json):
     """
@@ -165,7 +179,8 @@ def ingest_extension_properties(con, it_name, it_json):
     for extension_property in ep_list:
         property_units_term = extension_property['property_units_term']
         if property_units_term:
-            units = odmx.read_cv_units_one_or_none(con, term=property_units_term)
+            units = odmx.read_cv_units_one_or_none(con,
+                                                   term=property_units_term)
             if units is None:
                 raise ValueError(f'Could not find units for '
                                  f'property_units_term: {property_units_term}')
@@ -253,8 +268,8 @@ def ingest_sampling_features(con, it_name, it_json, check_consistency=True):
                 if diff:
                     raise ValueError(f'Different sampling features with the '
                                      f'same code: {code}\n{diff}')
-                else:
-                    raise ValueError(f'Duplicate sampling feature entries under code: {code}')
+                raise ValueError(('Duplicate sampling feature entries under '
+                                  f'code: {code}'))
             if uuid in sampling_features_by_uuid:
                 first = sampling_features_by_uuid[uuid]
                 second = sf_item
@@ -262,8 +277,8 @@ def ingest_sampling_features(con, it_name, it_json, check_consistency=True):
                 if diff:
                     raise ValueError(f'Different sampling features with the '
                                      f'same uuid: {uuid}\n{diff}')
-                else:
-                    raise ValueError(f'Duplicate sampling feature entries unser uuid: {uuid}')
+                raise ValueError(('Duplicate sampling feature entries under '
+                                  f'uuid: {uuid}'))
             sampling_features_by_code[code] = sf_item
             sampling_features_by_uuid[uuid] = sf_item
             if sf_item['child_sampling_features']:
@@ -282,7 +297,8 @@ def ingest_sampling_features(con, it_name, it_json, check_consistency=True):
         # If the sampling feature entry doesn't exist, we write it.
         else:
             sf_id = None
-        vprint(f'Inserting sampling feature {sf_item["sampling_feature_code"]}')
+        vprint(('Inserting sampling '
+                f'feature {sf_item["sampling_feature_code"]}'))
         sf_id = odmx.write_sampling_features(con,
             sampling_feature_id=sf_id,
             sampling_feature_uuid=sf_item['sampling_feature_uuid'],
@@ -309,7 +325,8 @@ def ingest_sampling_features(con, it_name, it_json, check_consistency=True):
                 alias = alias_entry['alias']
                 alias_category = alias_entry['alias_category']
                 display_priority = alias_entry['display_priority']
-                existing_alias = odmx.read_sampling_features_aliases_one_or_none(
+                existing_alias = \
+                    odmx.read_sampling_features_aliases_one_or_none(
                     con,
                     alias_category=alias_category,
                     sampling_feature_id=sf_id
@@ -318,7 +335,8 @@ def ingest_sampling_features(con, it_name, it_json, check_consistency=True):
                 if existing_alias:
                     vprint(f"Updating alias {existing_alias.alias} to "
                            f"{alias}")
-                    existing_alias_id = existing_alias.sampling_features_aliases_id
+                    existing_alias_id = \
+                        existing_alias.sampling_features_aliases_id
                 odmx.write_sampling_features_aliases(
                     con,
                     sampling_features_aliases_id=existing_alias_id,
@@ -334,8 +352,8 @@ def ingest_sampling_features(con, it_name, it_json, check_consistency=True):
             if relation_to_parent is None:
                 raise ValueError(
                         f"Sampling feature {sf_item['sampling_feature_code']} "
-                        f"has parent {current_parent['sampling_feature_code']} but no "
-                        "relation_to_parent value.")
+                        f"has parent {current_parent['sampling_feature_code']}"
+                        " but no relation_to_parent value.")
             existing_related_feature = odmx.read_related_features_one_or_none(
                     con,
                     sampling_feature_id=sf_id,
@@ -355,9 +373,11 @@ def ingest_sampling_features(con, it_name, it_json, check_consistency=True):
             )
         if 'related_features' in sf_item:
             for related_feature in sf_item['related_features']:
-                relation_to_related_feature = related_feature['relation_to_related_feature']
+                relation_to_related_feature = \
+                    related_feature['relation_to_related_feature']
                 related_feature_id = related_feature['related_feature_id']
-                existing_related_feature = odmx.read_related_features_one_or_none(
+                existing_related_feature = \
+                    odmx.read_related_features_one_or_none(
                         con,
                         sampling_feature_id=sf_id,
                         relationship_type_cv=relation_to_related_feature,
@@ -384,36 +404,36 @@ def ingest_sampling_features(con, it_name, it_json, check_consistency=True):
             for extension_property in sf_item['extension_properties']:
                     # Start by making sure that the extension property type
                     # exists in the database already.
-                    property = odmx.read_extension_properties_one_or_none(
-                        con,
-                        property_name=extension_property['property_name']
+                ext_property = odmx.read_extension_properties_one_or_none(
+                    con,
+                    property_name=extension_property['property_name']
+                )
+                property_id = None
+                if ext_property:
+                    property_id = ext_property.property_id
+                else:
+                    raise ValueError(
+                        "The extension property"
+                        f" {extension_property['property_name']} is"
+                        " not present in the system. Please"
+                        " investigate."
                     )
-                    property_id = None
-                    if property:
-                        property_id = property.property_id
-                    else:
-                        raise Exception(
-                            "The extension property"
-                            f" {extension_property['property_name']} is"
-                            " not present in the system. Please"
-                            " investigate."
-                        )
-                    bridge = odmx.read_sampling_feature_extension_property_values_one_or_none(
-                        con,
-                        sampling_feature_id=sf_id,
-                        property_id=property_id
-                    )
-                    bridge_id = None
-                    if bridge:
-                        bridge_id = bridge.bridge_id
-                    assert(property_id is not None)
-                    odmx.write_sampling_feature_extension_property_values(
-                        con,
-                        bridge_id=bridge_id,
-                        sampling_feature_id=sf_id,
-                        property_id=property_id,
-                        property_value=extension_property['property_value']
-                    )
+                bridge = odmx.read_sampling_feature_extension_property_values_one_or_none(  # pylint: disable=line-too-long
+                    con,
+                    sampling_feature_id=sf_id,
+                    property_id=property_id
+                )
+                bridge_id = None
+                if bridge:
+                    bridge_id = bridge.bridge_id
+                assert property_id is not None
+                odmx.write_sampling_feature_extension_property_values(
+                    con,
+                    bridge_id=bridge_id,
+                    sampling_feature_id=sf_id,
+                    property_id=property_id,
+                    property_value=extension_property['property_value']
+                )
         # If there are "children", we process them next.
         if ('child_sampling_features' in sf_item
                 and sf_item['child_sampling_features'] is not None):
@@ -427,7 +447,7 @@ def ingest_sampling_features(con, it_name, it_json, check_consistency=True):
         else:
             sf_item = None
         db.adjust_autoincrement_cols(con, 'sampling_features')
-        db.adjust_autoincrement_cols(con, 'sampling_feature_extension_property_values')
+        db.adjust_autoincrement_cols(con, 'sampling_feature_extension_property_values')  # pylint: disable=line-too-long
         db.adjust_autoincrement_cols(con, 'related_features')
         db.adjust_autoincrement_cols(con, 'sampling_features_aliases')
 

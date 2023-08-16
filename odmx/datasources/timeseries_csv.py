@@ -47,7 +47,7 @@ class TimeseriesCsvDataSource(DataSource):
         self.data_source_name = data_source_name
         self.feeder_table = f'feeder_{data_source_name}'
         self.data_source_path = data_source_path
-        self.equipment_path = (f'{equipment_path}/device_{data_source_name}')
+        self.equipment_path = f'{equipment_path}/device_{data_source_name}'
 
     def harvest(self):
         """
@@ -91,7 +91,8 @@ class TimeseriesCsvDataSource(DataSource):
             # Make sure we have a datetime column, report error if not
             if 'datetime' not in df.columns.tolist():
                 print(f"reading data from {site_path}")
-                print(f"No datetime column. Available columns are: {df.columns}")
+                print("No datetime column. Available columns are:"
+                      f" {df.columns}")
                 return
 
             # Convert datetime to timestamp

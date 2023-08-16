@@ -23,8 +23,9 @@ class DataSource(ABC):
 
         If there are additional parameters that are needed for a specific
         data source, they can be added in the subclass's constructor.
-        The data_source.json file should have a shared_info key which corresponds
-        to the parameters that are needed for all stages, which is set here in
+        The data_source.json file should have a shared_info key which
+        corresponds to the parameters that are needed for all stages,
+        which is set here in
         __init__
 
         Common shared parameters include site identifiers for pulling data,
@@ -36,16 +37,17 @@ class DataSource(ABC):
     def harvest(self):
         """
         Placeholder abstract method for harvesting data. The harvest stage is
-        for gathering data from its source and saving it to the local disk under
-        the data directory. The data should be saved in a format that is easy to
-        ingest in the ingest stage.
+        for gathering data from its source and saving it to the local disk
+        under the data directory. The data should be saved in a format that is
+        easy to ingest in the ingest stage.
 
         If a subclass specifies additional parameters in its constructor, then
         they should be set in the harvesting_info key of the data_source.json
         entry for that data source.
 
-        Common additional parameters include a path to authentication credentials
-        for accessing the data source, special parameters for pulling data, etc.
+        Common additional parameters include a path to authentication
+        credentials for accessing the data source, special parameters for
+        pulling data, etc.
 
         If data already exists in the data directory, this method should handle
         updating the data in the data directory. Sometimes this stage is not
@@ -62,8 +64,8 @@ class DataSource(ABC):
 
         If there are additional parameters that are needed for a specific
         data source, they can be added in the subclass's constructor.
-        The data_source.json file should have a ingest_info key which corresponds
-        to the parameters that are needed for the ingest stage
+        The data_source.json file should have a ingest_info key which
+        corresponds to the parameters that are needed for the ingest stage
         """
 
     @abstractmethod
@@ -77,8 +79,8 @@ class DataSource(ABC):
 
         If there are additional parameters that are needed for a specific
         data source, they can be added in the subclass's constructor.
-        The data_source.json file should have a process_info key which corresponds
-        to the parameters that are needed for the process stage
+        The data_source.json file should have a process_info key which
+        corresponds to the parameters that are needed for the process stage
 
         A common additional parameter is the associated sampling feature code
         """

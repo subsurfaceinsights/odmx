@@ -4,7 +4,7 @@
 Module for LBNLSFA phenology data harvesting, ingestion, and processing.
 """
 
-from odmx.gradient import GradientDataSource
+from odmx.datasources.ssi.gradient import GradientDataSource
 
 
 class PhenologyDataSource(GradientDataSource):

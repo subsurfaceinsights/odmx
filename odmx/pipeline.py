@@ -9,31 +9,31 @@ import os
 import sys
 import argparse
 import importlib
-from odmx.support.config import Config
 import json
-from odmx.log import set_verbose
+import dataclasses
+from odmx.support.config import Config
+# from odmx.log import set_verbose
 from odmx.log import vprint
 from odmx.timeseries_processing import check_datastream_entries
 from odmx.populate_base_tables import populate_base_tables
 from odmx.populate_cvs import populate_cvs
 from odmx.json_validation import open_json
 from odmx.abstract_data_source import DataSource
-import odmx.support.db as db
-from odmx.support.db import Connection
-import dataclasses
+from odmx.support import db
+# from odmx.support.db import Connection
 from odmx.support.db import reset_db
-from beartype import beartype
-from beartype.typing import Optional
 from odmx.shared_conf import setup_base_config, validate_config
+# from beartype import beartype
+# from beartype.typing import Optional
 
 @dataclasses.dataclass
-class data_source_info:
+class DataSourceInfo:
     """
     Shared information for a data source.
     """
     # The type of the data source. This is used to lookup the module that
     # contains the data source class.
-    type: str
+    data_source_type: str
     # The scope of the data source. This is used to determine which database
     # the data source will be ingested into, one of 'project' or 'global'.
     scope: str
@@ -55,16 +55,17 @@ class MissingDataSourceError(Exception):
     """
 
 _data_source_class_cache = {}
-def find_data_source_class(type: str):
-    if type in _data_source_class_cache:
-        return _data_source_class_cache[type]
-    if '.' in type:
-        imports_to_try = [type]
+def find_data_source_class(data_source_type: str):
+    """ Find data source class"""
+    if data_source_type in _data_source_class_cache:
+        return _data_source_class_cache[data_source_type]
+    if '.' in data_source_type:
+        imports_to_try = [data_source_type]
     else:
         imports_to_try = [
-            type, f'odmx.datasources.{type}'
+            data_source_type, f'odmx.datasources.{data_source_type}'
         ]
-    camel_type = type.split('.')[-1].title().replace('_', '')
+    camel_type = data_source_type.split('.')[-1].title().replace('_', '')
     classes_to_try = [
         camel_type, f'{camel_type}DataSource'
     ]
@@ -77,7 +78,7 @@ def find_data_source_class(type: str):
                     found = getattr(module, j)
                     vprint('Found data source class '
                            f'{module.__name__}.{found.__name__} for {type}')
-                    _data_source_class_cache[type] = found
+                    _data_source_class_cache[data_source_type] = found
                     return found
                 except AttributeError:
                     tried.append(f'{i}.{j}')
@@ -94,9 +95,10 @@ def find_data_source_class(type: str):
         )
 
 def get_method_params(method):
+    """ Return method parameters"""
     return method.__code__.co_varnames[:method.__code__.co_argcount]
 
-def run_pipeline(conf: Config, work_dir: str):
+def run_pipeline(conf: Config, pipeline_work_dir: str):
     """
     The main function that runs the pipeline.
 
@@ -106,19 +108,19 @@ def run_pipeline(conf: Config, work_dir: str):
 
     # Define paths.
     project_name = conf.project_name
-    project_path = os.path.join(work_dir, 'projects', project_name)
-    global_path = os.path.join(work_dir, 'projects', 'global')
-    data_path = os.path.join(work_dir, 'data', project_name)
-    global_data_path = os.path.join(work_dir, 'data', 'global')
+    project_path = os.path.join(pipeline_work_dir, 'projects', project_name)
+    global_path = os.path.join(pipeline_work_dir, 'projects', 'global')
+    data_path = os.path.join(pipeline_work_dir, 'data', project_name)
+    global_data_path = os.path.join(pipeline_work_dir, 'data', 'global')
     data_sources_path = os.path.join(project_path,
                                      'data_sources.json')
     if not os.path.exists(data_sources_path):
-        raise Exception(
+        raise OSError(
                 f"Could not find data sources file '{data_sources_path}'.")
     if not os.path.exists(project_path):
-        raise Exception(f"Could not find project path '{project_path}'.")
+        raise OSError(f"Could not find project path '{project_path}'.")
     if not os.path.exists(global_path):
-        raise Exception(f"Could not find global path '{global_path}'.")
+        raise OSError(f"Could not find global path '{global_path}'.")
     if not os.path.exists(data_path):
         print(f"Creating data path '{data_path}'.")
         os.makedirs(data_path)
@@ -131,7 +133,7 @@ def run_pipeline(conf: Config, work_dir: str):
     for num, d in enumerate(data_sources_json):
         original_entry = d.copy()
         i = d['shared_info']
-        type = i['data_source_type']
+        data_source_type = i['data_source_type']
         del i['data_source_type']
         scope = i['data_source_scope']
         del i['data_source_scope']
@@ -141,7 +143,7 @@ def run_pipeline(conf: Config, work_dir: str):
         harvesting_info = d.get('harvesting_info', {}) or {}
         ingestion_info = d.get('ingestion_info', {}) or {}
         processing_info = d.get('processing_info', {}) or {}
-        data_source_class = find_data_source_class(type)
+        data_source_class = find_data_source_class(data_source_type)
         # Now we check the data source class for the required methods and
         # make sure required parameters are passed.
         def check_dict_against_method_params(d, method):
@@ -168,20 +170,19 @@ def run_pipeline(conf: Config, work_dir: str):
                     if method.__defaults__ is not None:
                         if p not in method.__kwdefaults__:
                             continue
-                    raise Exception(
+                    raise KeyError(
                         f"Data Source JSON missing expected parameter {p} "
-                        f"for {data_source_class.__name__}.{method.__name__}() "
-                        f"while processing data_sources.json entry no {num+1} "
-                        f"of type {type}. This happens when a parameter in the"
-                        " JSON is missing or has a null value but is required "
-                        "Full entry: \n"
+                        f"for {data_source_class.__name__}.{method.__name__}()"
+                        f" while processing data_sources.json entry no {num+1}"
+                        f" of type {type}. This happens when a parameter in "
+                        "the JSON is missing or has a null value but is "
+                        "required. Full entry: \n"
                         f"{json.dumps(original_entry, indent=4)}\n"
                         f"Method signature: {params}"
                     )
-                else:
-                    dict_params.remove(p)
+                dict_params.remove(p)
             if len(dict_params) > 0:
-                raise Exception(
+                raise KeyError(
                     "Data Source JSON contains unknown parameters "
                     f"{dict_params} for "
                     f"{data_source_class.__name__}.{method.__name__} while "
@@ -203,12 +204,14 @@ def run_pipeline(conf: Config, work_dir: str):
         # Now we can instantiate the data source class.
         data_source_obj = data_source_class(
             project_name=project_name,
-            project_path=project_path if scope == 'project_specific' else global_path,
-            data_path=data_path if scope == 'project_specific' else global_data_path,
+            project_path=\
+                project_path if scope == 'project_specific' else global_path,
+            data_path=\
+                data_path if scope == 'project_specific' else global_data_path,
             **shared_info)
 
-        data_sources.append(data_source_info(
-            type=type,
+        data_sources.append(DataSourceInfo(
+            data_source_type=data_source_type,
             scope=scope,
             data_source_obj=data_source_obj,
             harvesting_info=harvesting_info,
@@ -216,7 +219,7 @@ def run_pipeline(conf: Config, work_dir: str):
             processing_info=processing_info
         ))
     # Check that the passed data source names are valid for this project.
-    project_sources = set({i.type
+    project_sources = set({i.data_source_type
                             for i in data_sources})
 
     if conf.data_source_types is None:
@@ -224,24 +227,24 @@ def run_pipeline(conf: Config, work_dir: str):
     else:
         data_source_types = set(conf.data_source_types)
         if conf.skip_data_source_types is not None:
-            raise Exception(
+            raise ValueError(
                 "Cannot pass both `data_source_types` and"
                 " `skip_data_source_types`.")
         missing = set(conf.data_source_types) - project_sources
         if missing:
-            raise Exception(
+            raise ValueError(
                 f"Data source types {missing} are not valid for this project. "
                 f"Valid data source types are: {project_sources}."
             )
     if conf.skip_data_source_types is not None:
         skip_data_source_types = set(conf.skip_data_source_types)
         if conf.data_source_types is not None:
-            raise Exception(
+            raise ValueError(
                 "Cannot pass both `data_source_types` and"
                 " `skip_data_source_types`.")
         missing = skip_data_source_types - project_sources
         if missing:
-            raise Exception(
+            raise ValueError(
                 f"Data source types {missing} are not valid for this project. "
                 f"Valid data source types are: {project_sources}."
             )
@@ -250,7 +253,7 @@ def run_pipeline(conf: Config, work_dir: str):
 
 
     data_sources = [i for i in data_sources
-                    if i.type
+                    if i.data_source_type
                     in data_source_types]
 
     from_scratch = conf.from_scratch
@@ -263,7 +266,7 @@ def run_pipeline(conf: Config, work_dir: str):
         wipe_global = True
 
     if wipe_odmx and 'populate' not in conf.data_processes:
-        raise Exception(
+        raise OSError(
             "Cannot wipe ODMX database without populating it. "
             "Please add 'populate' to the data_processes list."
         )
@@ -293,7 +296,7 @@ def run_pipeline(conf: Config, work_dir: str):
                 print("Wiping feeder schema in odmx project database")
                 db.drop_schema(db_con, 'feeder')
                 db.create_schema(db_con, 'feeder')
-        except Exception as e:
+        except OSError as e:
             print("Error wiping feeder schema in odmx project database")
             print(e)
     if wipe_odmx:
@@ -316,7 +319,7 @@ def run_pipeline(conf: Config, work_dir: str):
         data_processes = set(conf.data_processes)
         missing = set(conf.data_processes) - valid_data_processes
         if missing:
-            raise Exception(
+            raise ValueError(
                 f"Data processes {missing} are not valid. "
                 f"Valid data processes are: {valid_data_processes}."
             )
@@ -353,7 +356,8 @@ def run_pipeline(conf: Config, work_dir: str):
             kwargs = data_source.ingestion_info
             params = set(get_method_params(obj.ingest))
             if 'feeder_db_con' in params:
-                kwargs['feeder_db_con'] = feeder_db_con if data_source.scope == 'project_specific' else global_db_con
+                kwargs['feeder_db_con'] = feeder_db_con if \
+                    data_source.scope == 'project_specific' else global_db_con
             if 'odmx_db_con' in params:
                 kwargs['odmx_db_con'] = odmx_db_con
             obj.ingest(**kwargs)
@@ -364,7 +368,8 @@ def run_pipeline(conf: Config, work_dir: str):
             kwargs = data_source.processing_info
             params = set(get_method_params(obj.process))
             if 'feeder_db_con' in params:
-                kwargs['feeder_db_con'] = feeder_db_con if data_source.scope == 'project_specific' else global_db_con
+                kwargs['feeder_db_con'] = feeder_db_con if \
+                    data_source.scope == 'project_specific' else global_db_con
             if 'odmx_db_con' in params:
                 kwargs['odmx_db_con'] = odmx_db_con
             obj.process(**kwargs)

@@ -1943,7 +1943,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
     config.validate_config(args)
     con = connect(
-        config=config)
+        config_obj=config)
     if args.command == 'gen_db_class_file':
         generate_python_class_file_for_db_table(con, args.output_file)
         test_python_class_file_for_db_table(con, args.output_file)
