@@ -8,8 +8,8 @@ import sys
 import os
 import json
 import argparse
-import yaml
 from collections import namedtuple
+import yaml
 from beartype.typing import Union, Optional, Callable
 from beartype import beartype
 try:
