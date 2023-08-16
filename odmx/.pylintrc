@@ -1,8 +1,8 @@
 [MASTER]
 ignore=support,
        data_model.py,
-       datasources/ssi/owc_geochem.py,
-       datasources/ssi/owc_microbial.py
+       owc_geochem.py,
+       owc_microbial.py
 
 [MESSAGES CONTROL]
 
@@ -28,7 +28,9 @@ disable=too-many-lines,
         missing-timeout,
         too-many-instance-attributes,
         no-member,
-        method-cache-max-size-none
+        method-cache-max-size-none,
+        import-error,
+        no-name-in-module
 
 
 [REPORTS]
