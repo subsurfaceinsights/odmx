@@ -291,10 +291,11 @@ def run_pipeline(conf: Config, pipeline_work_dir: str):
         ) as db_con:
             db.create_schema(db_con, 'feeder')
     if wipe_feeder:
+        reset_db(con, f'odmx_feeder_{conf.project_name}')
         try:
             with db.connect(
                 config_obj=conf,
-                db_name=project_db
+                db_name=f'odmx_feeder_{conf.project_name}'
             ) as db_con:
                 # TODO cleanup pathing
                 print("Wiping feeder schema in odmx project database")
