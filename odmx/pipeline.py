@@ -256,20 +256,7 @@ def run_pipeline(conf: Config, pipeline_work_dir: str):
                     if i.data_source_type
                     in data_source_types]
 
-    from_scratch = conf.from_scratch
-    wipe_odmx = conf.wipe_odmx
-    wipe_feeder = conf.wipe_feeder
-    wipe_global = conf.wipe_global
-    if from_scratch:
-        print(f"from_scratch: {from_scratch}")
-        wipe_odmx = True
-        print(f"wipe_odmx: {wipe_odmx}")
-        wipe_feeder = True
-        print(f"wipe_feeder: {wipe_feeder}")
-        wipe_global = True
-        print(f"wipe_global: {wipe_global}")
-
-    if wipe_odmx and 'populate' not in conf.data_processes:
+    if conf.wipe_odmx and 'populate' not in conf.data_processes:
         raise OSError(
             "Cannot wipe ODMX database without populating it. "
             "Please add 'populate' to the data_processes list."
@@ -282,7 +269,7 @@ def run_pipeline(conf: Config, pipeline_work_dir: str):
     sql_dir = os.path.realpath(
             f'{os.path.dirname(__file__)}/db/odmsqlscript')
     odmx_sql_template = f'{sql_dir}/ODMX_Schema_Latest.sql'
-    if wipe_global:
+    if conf.wipe_global:
         print("Wiping global feeder database.")
         reset_db(con, 'odmx_feeder_global')
         with db.connect(
@@ -290,7 +277,7 @@ def run_pipeline(conf: Config, pipeline_work_dir: str):
             db_name='odmx_feeder_global'
         ) as db_con:
             db.create_schema(db_con, 'feeder')
-    if wipe_feeder:
+    if conf.wipe_feeder:
         reset_db(con, f'odmx_feeder_{conf.project_name}')
         try:
             with db.connect(
@@ -304,7 +291,7 @@ def run_pipeline(conf: Config, pipeline_work_dir: str):
         except OSError as e:
             print("Error wiping feeder schema in odmx project database")
             print(e)
-    if wipe_odmx:
+    if conf.wipe_odmx:
         print("Wiping ODMX database.")
         reset_db(con, project_db, sql_template=odmx_sql_template)
         # Connect to the ODMX database and create the feeder schema.
