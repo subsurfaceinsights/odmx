@@ -1119,7 +1119,7 @@ def m1_10_calc_datastream(odmx_con, ds_timezone,
         last_mat_view_time = \
             create_mat_view_table_or_return_latest(odmx_con, calc_view_name)
         last_mat_view_time = last_mat_view_time or 0
-
+        print(f"Last view time was {last_mat_view_time}")
         # Turn the view into a DataFrame so that we can do QA/QC on it.
         vprint("Starting the process of materializing the view.")
         query = f'''
@@ -1193,6 +1193,7 @@ def m1_10_calc_datastream(odmx_con, ds_timezone,
         ).timestamp()
         plm1_time6_dot = 9119.20 * 0.3048
         plm1_list.append([plm1_time6_start, plm1_time6_end, plm1_time6_dot])
+        print(f"Calculated data stream contains: {plm1_list}")
 
         # Do the actual calculation.
         vprint("Performing calculations.")
