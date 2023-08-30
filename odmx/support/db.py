@@ -37,12 +37,23 @@ from psycopg import Cursor
 import psycopg.sql
 from psycopg.sql import SQL, Identifier, Literal
 import psycopg.rows
+
+# This module is designed to work with both the ssi and odmx packages
+# To make this work we have to try importing from both. In addition, If
+# we have both available, we have to accomodate the complicated type checking
+# of the aliasing with a type alias
 try:
     from ssi.config import Config
     ver = 'ssi'
+    try:
+        from odmx.support.config import Config as OdmxConfig
+        ConfigType = Union[Config, OdmxConfig]
+    except:  # pylint: disable=bare-except
+        ConfigType = type(Config)
 except:  # pylint: disable=bare-except
     from odmx.support.config import Config
     ver = 'external'
+    ConfigType = type(Config)
 
 class ListDict:
     """
@@ -148,7 +159,7 @@ Connection = psycopg.Connection
 Transaction = psycopg.Transaction
 
 @beartype
-def add_db_parameters_to_config(config_obj: Config,
+def add_db_parameters_to_config(config_obj: ConfigType,
                                 prefix: Optional[str] = None,
                                 add_db_schema: bool = False,
                                 add_db_name: bool = False):
@@ -216,7 +227,7 @@ def add_db_parameters_to_config(config_obj: Config,
 
 @beartype
 def connect(
-        config_obj: Optional[Config] = None,
+        config_obj: Optional[ConfigType] = None,
         config_prefix: Optional[str] = None,
         db_user: Optional[str] = None,
         db_pass: Optional[str] = None,
