@@ -1119,7 +1119,7 @@ def m1_10_calc_datastream(odmx_con, ds_timezone,
         last_mat_view_time = \
             create_mat_view_table_or_return_latest(odmx_con, calc_view_name)
         last_mat_view_time = last_mat_view_time or 0
-        print(f"Last view time was {last_mat_view_time}")
+        vprint(f"Last view time was {last_mat_view_time}")
         # Turn the view into a DataFrame so that we can do QA/QC on it.
         vprint("Starting the process of materializing the view.")
         query = f'''
@@ -1131,7 +1131,7 @@ def m1_10_calc_datastream(odmx_con, ds_timezone,
         view_df.columns = ['utc_time', 'data_value', 'qa_flag']
         view_df.sort_values(by='utc_time')
         # Do the timezone conversion.
-        view_df['utc_time'] = (pd.to_datetime(view_df['utc_time'])
+        view_df['utc_time'] = (pd.to_datetime(view_df['utc_time'], unit='s')
                                .dt.tz_localize(ds_timezone, ambiguous='infer')
                                .dt.tz_convert('UTC'))
         # Turn it into Unix time, as that's what the db table takes.
@@ -1193,7 +1193,7 @@ def m1_10_calc_datastream(odmx_con, ds_timezone,
         ).timestamp()
         plm1_time6_dot = 9119.20 * 0.3048
         plm1_list.append([plm1_time6_start, plm1_time6_end, plm1_time6_dot])
-        print(f"Calculated data stream contains: {plm1_list}")
+        vprint(f"Calculated data stream contains: {plm1_list}")
 
         # Do the actual calculation.
         vprint("Performing calculations.")
@@ -1251,7 +1251,7 @@ def m6_60_calc_datastream(odmx_con, ds_timezone,
     view_df.columns = ['utc_time', 'data_value', 'qa_flag']
     view_df.sort_values(by='utc_time')
     # Do the timezone conversion.
-    view_df['utc_time'] = (pd.to_datetime(view_df['utc_time'])
+    view_df['utc_time'] = (pd.to_datetime(view_df['utc_time'], unit='s')
                            .dt.tz_localize(ds_timezone, ambiguous='infer')
                            .dt.tz_convert('UTC'))
     # Turn it into Unix time, as that's what the db table takes.
@@ -1347,6 +1347,7 @@ def m6_60_calc_datastream(odmx_con, ds_timezone,
     # Materialize it.
     # Write the materialized view to the database.
     vprint("Writing the materialized view to the database.")
+    db.insert_many_df(odmx_con, calc_view_name, view_df, upsert=False)
     create_datastream_entry(odmx_con, calc_view_name, view_df,
                             sf_id,
                             d2e_acquiring_instrument_uuid, variable_id,
