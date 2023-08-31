@@ -261,9 +261,13 @@ def run_pipeline(conf: Config, pipeline_work_dir: str):
     wipe_feeder = conf.wipe_feeder
     wipe_global = conf.wipe_global
     if from_scratch:
+        print(f"from_scratch: {from_scratch}")
         wipe_odmx = True
+        print(f"wipe_odmx: {wipe_odmx}")
         wipe_feeder = True
+        print(f"wipe_feeder: {wipe_feeder}")
         wipe_global = True
+        print(f"wipe_global: {wipe_global}")
 
     if wipe_odmx and 'populate' not in conf.data_processes:
         raise OSError(
@@ -276,7 +280,7 @@ def run_pipeline(conf: Config, pipeline_work_dir: str):
     )
     project_db = f'odmx_{conf.project_name}'
     sql_dir = os.path.realpath(
-            f'{os.path.dirname(__file__)}/../db/odmsqlscript')
+            f'{os.path.dirname(__file__)}/db/odmsqlscript')
     odmx_sql_template = f'{sql_dir}/ODMX_Schema_Latest.sql'
     if wipe_global:
         print("Wiping global feeder database.")
