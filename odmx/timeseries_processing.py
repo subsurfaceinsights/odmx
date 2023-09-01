@@ -237,20 +237,15 @@ def general_timeseries_processing(ds: DataSource,
         # This bit is hardcoded for the two calculated datastreams we currently
         # do for LBNL.
         # TODO support hooks from the actual data source class
-        if view_name == 'm1_10_at200_m1_wl_avg_meas_view':
-            m1_10_calc_datastream(
+        if view_name in ['m1_10_at200_m1_wl_avg_meas_view',
+                         'm3_30_at200_m6_wl_avg_meas_view']:
+            plm_calc_datastream(
                 odmx_db_con,
                 data_source_timezone,
                 mat_view_name,
                 sf_id, d2e_acquiring_instrument_uuid
             )
-        elif view_name == 'm3_30_at200_m6_wl_avg_meas_view':
-            m6_60_calc_datastream(
-                odmx_db_con,
-                data_source_timezone,
-                mat_view_name,
-                sf_id, d2e_acquiring_instrument_uuid
-            )
+
         if d2e_variable_term == 'waterDepthBelowTopOfCasing':
             # Check if we have a TOC extension property to trigger a
             # calculated datastream.
@@ -1104,18 +1099,66 @@ def qa_checks(df, con, variable_id, units_id,
                 df['utc_time'] = df.index
         return df
 
-
-def m1_10_calc_datastream(odmx_con, ds_timezone,
+def plm_calc_datastream(odmx_con, ds_timezone,
                           view_name, sf_id,
                           d2e_acquiring_instrument_uuid):
     """
     Create a calculated datastream for the m1_10 data source. This is meant to
     be temporary, and replaced with a different methodology eventually.
     """
+    # Define constants used for these calculations
+    FT_TO_M = 0.3048
+    plm_dict = {
+        'm1_10': {
+            'toc': 2777.70,
+            'positions': [
+                {'start': 315532800.0,  # 1980, 1, 1, 0, 0, 0
+                 'end': 1494077450.0,  # 2017, 5, 6, 13, 30, 50
+                 'elevation_ft': 9119.59},
+                {'start': 1494077460.0,  # 2017, 5, 6, 13, 31, 0
+                 'end': 1505915460.0,  # 2017, 9, 20, 13, 51, 0
+                 'elevation_ft': 9119.42},
+                {'start': 1505915520.0,  # 2017, 9, 20, 13, 52, 0
+                 'end': 1509284520.0,  # 2017, 10, 29, 13, 42, 0
+                 'elevation_ft': 9119.38},
+                {'start': 1509284521.0,  # 2017, 10, 29, 13, 42, 1
+                 'end': 1509462120.0,  # 2017, 10, 31, 15, 2, 0
+                 'elevation_ft': 9119.22},
+                {'start': 1509462240.0,  # 2017, 10, 31, 15, 4, 0
+                 'end': 1512218520.0,  # 2017, 12, 2, 12, 42, 0
+                 'elevation_ft': 9119.38},
+                {'start': 1512218521.0,  # 2017, 12, 2, 12, 42, 1
+                 'end': 7258118400.0,  # 2200, 1, 1, 0, 0, 0
+                 'elevation_ft': 9119.20}]},
+        'm3_30': {
+            'toc': 2750.77,
+            'positions': [
+                {'start': 315532800.0,  # 1980, 1, 1, 0, 0, 0
+                 'end': 1496766050.0,  # 2017, 6, 6, 16, 20, 50
+                 'elevation_ft': 9023.61},
+                {'start': 1496766055.0,  # 2017, 6, 6, 16, 20, 55
+                 'end': 1504525850.0,  # 2017, 9, 4, 11, 50, 50
+                 'elevation_ft': 9023.51},
+                {'start': 1504525855.0,  # 2017, 9, 4, 11, 50, 55
+                 'end': 1504804850.0,  # 2017, 9, 7, 17, 20, 50
+                 'elevation_ft': 9023.86},
+                {'start': 1504804855.0,  # 2017, 9, 7, 17, 20, 55
+                 'end': 1505906450.0,  # 2017, 9, 20, 11, 20, 50
+                 'elevation_ft': 9026.65},
+                {'start': 1505906455.0,  # 2017, 9, 20, 11, 20, 55
+                 'end': 1507827305.0,  # 2017, 10, 12, 16, 55, 5
+                 'elevation_ft': 9026.11},
+                {'start': 1507827310.0,  # 2017, 10, 12, 16, 55, 10
+                 'end': 1508843110.0,  # 2017, 10, 24, 11, 5, 10
+                 'elevation_ft': 9026.24},
+                {'start': 1508843115.0,  # 2017, 10, 24, 11, 5, 15
+                 'end': 7258118400.0,  # 2200, 1, 1, 0, 0, 0
+                 'elevation_ft': 9026.110}]}}
     with db.schema_scope(odmx_con, 'datastreams'):
         vprint(f"Creating calculated channels for {view_name}.")
         # Find out if the measured view exists.
-        calc_view_name = view_name.strip('_meas_view')+'_calc'
+        calc_view_name = view_name.replace('_meas', '_calc')
+        vprint(f"Calculated view name is {calc_view_name}")
         last_mat_view_time = \
             create_mat_view_table_or_return_latest(odmx_con, calc_view_name)
         last_mat_view_time = last_mat_view_time or 0
@@ -1143,65 +1186,23 @@ def m1_10_calc_datastream(odmx_con, ds_timezone,
             pass
 
         # Hardcode lots of constants.
-        plm1_toc = 2777.70
-        plm1_list = []
-        plm1_time1_start = datetime.datetime(
-            1980, 1, 1, 0, 0, 0, tzinfo=datetime.timezone.utc
-        ).timestamp()
-        plm1_time1_end = datetime.datetime(
-            2017, 5, 6, 13, 30, 50, tzinfo=datetime.timezone.utc
-        ).timestamp()
-        plm1_time1_dot = 9119.59 * 0.3048
-        plm1_list.append([plm1_time1_start, plm1_time1_end, plm1_time1_dot])
-        plm1_time2_start = datetime.datetime(
-            2017, 5, 6, 13, 31, 0, tzinfo=datetime.timezone.utc
-        ).timestamp()
-        plm1_time2_end = datetime.datetime(
-            2017, 9, 20, 13, 51, 0, tzinfo=datetime.timezone.utc
-        ).timestamp()
-        plm1_time2_dot = 9119.42 * 0.3048
-        plm1_list.append([plm1_time2_start, plm1_time2_end, plm1_time2_dot])
-        plm1_time3_start = datetime.datetime(
-            2017, 9, 20, 13, 52, 0, tzinfo=datetime.timezone.utc
-        ).timestamp()
-        plm1_time3_end = datetime.datetime(
-            2017, 10, 29, 13, 42, 0, tzinfo=datetime.timezone.utc
-        ).timestamp()
-        plm1_time3_dot = 9119.38 * 0.3048
-        plm1_list.append([plm1_time3_start, plm1_time3_end, plm1_time3_dot])
-        plm1_time4_start = datetime.datetime(
-            2017, 10, 29, 13, 42, 1, tzinfo=datetime.timezone.utc
-        ).timestamp()
-        plm1_time4_end = datetime.datetime(
-            2017, 10, 31, 15, 2, 0, tzinfo=datetime.timezone.utc
-        ).timestamp()
-        plm1_time4_dot = 9119.22 * 0.3048
-        plm1_list.append([plm1_time4_start, plm1_time4_end, plm1_time4_dot])
-        plm1_time5_start = datetime.datetime(
-            2017, 10, 31, 15, 4, 0, tzinfo=datetime.timezone.utc
-        ).timestamp()
-        plm1_time5_end = datetime.datetime(
-            2017, 12, 2, 12, 42, 0, tzinfo=datetime.timezone.utc
-        ).timestamp()
-        plm1_time5_dot = 9119.38 * 0.3048
-        plm1_list.append([plm1_time5_start, plm1_time5_end, plm1_time5_dot])
-        plm1_time6_start = datetime.datetime(
-            2017, 12, 2, 12, 42, 1, tzinfo=datetime.timezone.utc
-        ).timestamp()
-        plm1_time6_end = datetime.datetime(
-            2200, 1, 1, 0, 0, 0, tzinfo=datetime.timezone.utc
-        ).timestamp()
-        plm1_time6_dot = 9119.20 * 0.3048
-        plm1_list.append([plm1_time6_start, plm1_time6_end, plm1_time6_dot])
+        plm_info = plm_dict[view_name.split('_at200')[0]]
+        plm_toc = plm_info['toc']
+        plm_list = []
+        for position in plm_info['positions']:
+            plm_list.append([position['start'],
+                             position['end'],
+                             position['elevation_ft']*FT_TO_M])
 
         # Do the actual calculation.
         vprint("Performing calculations.")
-        for i in plm1_list:
+        vprint(f"plm_list contains: {plm_list}")
+        for i in plm_list:
             mask = \
                 (view_df['utc_time'] >= i[0]) & (view_df['utc_time'] <= i[1])
             view_df['data_value'] = np.where(
                 mask,
-                plm1_toc - (plm1_toc - i[2]) + view_df['data_value'],
+                plm_toc - (plm_toc - i[2]) + view_df['data_value'],
                 view_df['data_value']
             )
         # Now apply any and all QA/QC checks.
@@ -1222,132 +1223,3 @@ def m1_10_calc_datastream(odmx_con, ds_timezone,
                                 sf_id,
                                 d2e_acquiring_instrument_uuid, variable_id,
                                 units_id)
-
-
-def m6_60_calc_datastream(odmx_con, ds_timezone,
-                          view_name,
-                          sf_id,
-                          d2e_acquiring_instrument_uuid):
-    """
-    Create a calculated datastream for the m6_60 data source. This is meant to
-    be temporary, and replaced with a different methodology eventually.
-    """
-
-    vprint(f"Starting the process of materializing the view {view_name}.")
-    # Find out if the measured materialized view exists.
-    calc_view_name = view_name.strip('_meas_view')+'_calc'
-    last_mat_view_time = create_mat_view_table_or_return_latest(
-            odmx_con, calc_view_name)
-    last_mat_view_time = last_mat_view_time or 0
-    # Turn the view into a DataFrame so that we can do QA/QC on it.
-    vprint("Starting the process of materializing the view.")
-    query = f'''
-        SELECT * FROM {qid(odmx_con, view_name)}
-        WHERE utc_time > {last_mat_view_time}
-    '''
-    result = odmx_con.execute(query)
-    view_df = pd.DataFrame(result.fetchall(), dtype='object')
-    view_df.columns = ['utc_time', 'data_value', 'qa_flag']
-    view_df.sort_values(by='utc_time')
-    # Do the timezone conversion.
-    view_df['utc_time'] = (pd.to_datetime(view_df['utc_time'], unit='s')
-                           .dt.tz_localize(ds_timezone, ambiguous='infer')
-                           .dt.tz_convert('UTC'))
-    # Turn it into Unix time, as that's what the db table takes.
-    view_df['utc_time'] = view_df['utc_time'].astype(np.int64) // 10**9
-    # Try to pare down to only data we care about, if possible.
-    try:
-        view_df = view_df[view_df['utc_time'] > last_mat_view_time]
-    except NameError:
-        pass
-
-    # Hardcode lots of constants.
-    plm6_toc = 2750.77
-    plm6_list = []
-    plm6_time1_start = datetime.datetime(
-        1980, 1, 1, 0, 0, 0, tzinfo=datetime.timezone.utc
-    ).timestamp()
-    plm6_time1_end = datetime.datetime(
-        2017, 6, 6, 16, 20, 50, tzinfo=datetime.timezone.utc
-    ).timestamp()
-    plm6_time1_dot = 9023.61 * 0.3048
-    plm6_list.append([plm6_time1_start, plm6_time1_end, plm6_time1_dot])
-    plm6_time2_start = datetime.datetime(
-        2017, 6, 6, 16, 20, 55, tzinfo=datetime.timezone.utc
-    ).timestamp()
-    plm6_time2_end = datetime.datetime(
-        2017, 9, 4, 11, 50, 50, tzinfo=datetime.timezone.utc
-    ).timestamp()
-    plm6_time2_dot = 9023.51 * 0.3048
-    plm6_list.append([plm6_time2_start, plm6_time2_end, plm6_time2_dot])
-    plm6_time3_start = datetime.datetime(
-        2017, 9, 4, 11, 50, 55, tzinfo=datetime.timezone.utc
-    ).timestamp()
-    plm6_time3_end = datetime.datetime(
-        2017, 9, 7, 17, 20, 50, tzinfo=datetime.timezone.utc
-    ).timestamp()
-    plm6_time3_dot = 9023.86 * 0.3048
-    plm6_list.append([plm6_time3_start, plm6_time3_end, plm6_time3_dot])
-    plm6_time4_start = datetime.datetime(
-        2017, 9, 7, 17, 20, 55, tzinfo=datetime.timezone.utc
-    ).timestamp()
-    plm6_time4_end = datetime.datetime(
-        2017, 9, 20, 11, 20, 50, tzinfo=datetime.timezone.utc
-    ).timestamp()
-    plm6_time4_dot = 9026.65 * 0.3048
-    plm6_list.append([plm6_time4_start, plm6_time4_end, plm6_time4_dot])
-    plm6_time5_start = datetime.datetime(
-        2017, 9, 20, 11, 20, 55, tzinfo=datetime.timezone.utc
-    ).timestamp()
-    plm6_time5_end = datetime.datetime(
-        2017, 10, 12, 16, 55, 5, tzinfo=datetime.timezone.utc
-    ).timestamp()
-    plm6_time5_dot = 9026.11 * 0.3048
-    plm6_list.append([plm6_time5_start, plm6_time5_end, plm6_time5_dot])
-    plm6_time6_start = datetime.datetime(
-        2017, 10, 12, 16, 55, 10, tzinfo=datetime.timezone.utc
-    ).timestamp()
-    plm6_time6_end = datetime.datetime(
-        2017, 10, 24, 11, 5, 10, tzinfo=datetime.timezone.utc
-    ).timestamp()
-    plm6_time6_dot = 9026.24 * 0.3048
-    plm6_list.append([plm6_time6_start, plm6_time6_end, plm6_time6_dot])
-    plm6_time7_start = datetime.datetime(
-        2017, 10, 24, 11, 5, 15, tzinfo=datetime.timezone.utc
-    ).timestamp()
-    plm6_time7_end = datetime.datetime(
-        2200, 1, 1, 0, 0, 0, tzinfo=datetime.timezone.utc
-    ).timestamp()
-    plm6_time7_dot = 9026.11 * 0.3048
-    plm6_list.append([plm6_time7_start, plm6_time7_end, plm6_time7_dot])
-
-    # Do the actual calculation.
-    vprint("Performing calculations.")
-    for i in plm6_list:
-        mask = (view_df['utc_time'] >= i[0]) & (view_df['utc_time'] <= i[1])
-        view_df['data_value'] = np.where(
-            mask,
-            plm6_toc - (plm6_toc - i[2]) + view_df['data_value'],
-            view_df['data_value']
-        )
-
-    with db.schema_scope(odmx_con, 'odmx'):
-        # (waterLevel)
-        variable_id = odmx.read_variables_one(
-                odmx_con, variable_term='waterLevel').variable_id
-        # (meter)
-        units_id = odmx.read_cv_units_one(
-                odmx_con, term='meter').units_id
-
-    # Now apply any and all QA/QC checks.
-    view_df['data_value'] = view_df['data_value'].astype(float)
-    view_df = qa_checks(view_df, odmx_con, variable_id,
-                        units_id)
-    # Materialize it.
-    # Write the materialized view to the database.
-    vprint("Writing the materialized view to the database.")
-    db.insert_many_df(odmx_con, calc_view_name, view_df, upsert=False)
-    create_datastream_entry(odmx_con, calc_view_name, view_df,
-                            sf_id,
-                            d2e_acquiring_instrument_uuid, variable_id,
-                            units_id)
