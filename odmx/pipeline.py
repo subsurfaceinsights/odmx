@@ -277,20 +277,6 @@ def run_pipeline(conf: Config, pipeline_work_dir: str):
             db_name='odmx_feeder_global'
         ) as db_con:
             db.create_schema(db_con, 'feeder')
-    if conf.wipe_feeder:
-        reset_db(con, f'odmx_feeder_{conf.project_name}')
-        try:
-            with db.connect(
-                config_obj=conf,
-                db_name=f'odmx_feeder_{conf.project_name}'
-            ) as db_con:
-                # TODO cleanup pathing
-                print("Wiping feeder schema in odmx project database")
-                db.drop_schema(db_con, 'feeder')
-                db.create_schema(db_con, 'feeder')
-        except OSError as e:
-            print("Error wiping feeder schema in odmx project database")
-            print(e)
     if conf.wipe_odmx:
         print("Wiping ODMX database.")
         reset_db(con, project_db, sql_template=odmx_sql_template)
@@ -387,9 +373,6 @@ if __name__ == '__main__':
     config.add_config_param('wipe_odmx', default=False, validator='bool',
                             optional=True, help="If this flag is set, recreate"
                             " the ODMX database.")
-    config.add_config_param('wipe_feeder', default=False, validator='bool',
-                            optional=True, help="If this flag is set, recreate"
-                            " the feeder database.")
     config.add_config_param('wipe_global', default=False, validator='bool',
                             optional=True, help="If this flag is set, recreate"
                             " the global feeder database.")
@@ -415,7 +398,6 @@ if __name__ == '__main__':
     # If the --from-scratch flag was set, we supersede other wiping flags.
     if config.from_scratch:
         config.wipe_odmx = True
-        config.wipe_feeder = True
         config.wipe_global = True
         config.wipe_ert = True
     # Parse the --data-source-types and --data-processes flags, since
