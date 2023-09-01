@@ -138,7 +138,7 @@ def general_timeseries_processing(ds: DataSource,
             d2e_ds_manual_qa_list = (
                 entry['datastream_manual_qa_list'])
 
-        print(f"Working on column: {d2e_column_name}")
+        vprint(f"Working on column: {d2e_column_name}")
         # Look up the variable and units ID.
         # TODO wouldn't it be better to not have an unknown map?
         if d2e_variable_term is None:
@@ -244,7 +244,7 @@ def general_timeseries_processing(ds: DataSource,
                 mat_view_name,
                 sf_id, d2e_acquiring_instrument_uuid
             )
-        elif view_name == 'm6_60_at200_m6_wl_avg_meas_view':
+        elif view_name == 'm3_30_at200_m6_wl_avg_meas_view':
             m6_60_calc_datastream(
                 odmx_db_con,
                 data_source_timezone,
@@ -1113,15 +1113,15 @@ def m1_10_calc_datastream(odmx_con, ds_timezone,
     be temporary, and replaced with a different methodology eventually.
     """
     with db.schema_scope(odmx_con, 'datastreams'):
-        print(f"Creating calculated channels for {view_name}.")
+        vprint(f"Creating calculated channels for {view_name}.")
         # Find out if the measured view exists.
-        calc_view_name = 'm1_10_at200_m1_wl_avg_calc'
+        calc_view_name = view_name.strip('_meas_view')+'_calc'
         last_mat_view_time = \
             create_mat_view_table_or_return_latest(odmx_con, calc_view_name)
         last_mat_view_time = last_mat_view_time or 0
-        vprint(f"Last view time was {last_mat_view_time}")
+
         # Turn the view into a DataFrame so that we can do QA/QC on it.
-        vprint("Starting the process of materializing the view.")
+        vprint(f"Starting the process of materializing the view {view_name}.")
         query = f'''
             SELECT * FROM {qid(odmx_con, view_name)}
             WHERE utc_time > {last_mat_view_time}
@@ -1193,7 +1193,6 @@ def m1_10_calc_datastream(odmx_con, ds_timezone,
         ).timestamp()
         plm1_time6_dot = 9119.20 * 0.3048
         plm1_list.append([plm1_time6_start, plm1_time6_end, plm1_time6_dot])
-        vprint(f"Calculated data stream contains: {plm1_list}")
 
         # Do the actual calculation.
         vprint("Performing calculations.")
@@ -1234,9 +1233,9 @@ def m6_60_calc_datastream(odmx_con, ds_timezone,
     be temporary, and replaced with a different methodology eventually.
     """
 
-    print(f"Creating calculated channels for {view_name}.")
+    vprint(f"Starting the process of materializing the view {view_name}.")
     # Find out if the measured materialized view exists.
-    calc_view_name = 'm6_60_at200_m6_wl_avg_calc'
+    calc_view_name = view_name.strip('_meas_view')+'_calc'
     last_mat_view_time = create_mat_view_table_or_return_latest(
             odmx_con, calc_view_name)
     last_mat_view_time = last_mat_view_time or 0
