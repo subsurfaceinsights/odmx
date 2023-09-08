@@ -513,4 +513,4 @@ class NwisGeochemDataSource(DataSource):
                                           feature_action_id,stddev)
                         except:  # pylint: disable=bare-except
                             print('this needs tlc', rowvalue)
-        print(f'Variables to add: {need_to_add}')
+        print(f'New Variables to add: {need_to_add}')
