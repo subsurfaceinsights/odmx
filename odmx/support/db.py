@@ -43,15 +43,15 @@ import psycopg.rows
 # we have both available, we have to accomodate the complicated type checking
 # of the aliasing with a type alias
 try:
-    from ssi.config import Config
+    from ssi.config import Config  # pylint: disable=import-error
     ver = 'ssi'
     try:
-        from odmx.support.config import Config as OdmxConfig
+        from odmx.support.config import Config as OdmxConfig  # pylint: disable=import-error
         ConfigType = Union[Config, OdmxConfig]
     except:  # pylint: disable=bare-except
         ConfigType = Config
 except:  # pylint: disable=bare-except
-    from odmx.support.config import Config
+    from odmx.support.config import Config  # pylint: disable=import-error
     ver = 'external'
     ConfigType = Config
 
