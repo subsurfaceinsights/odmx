@@ -49,11 +49,11 @@ try:
         from odmx.support.config import Config as OdmxConfig
         ConfigType = Union[Config, OdmxConfig]
     except:  # pylint: disable=bare-except
-        ConfigType = type(Config)
+        ConfigType = Config
 except:  # pylint: disable=bare-except
     from odmx.support.config import Config
     ver = 'external'
-    ConfigType = type(Config)
+    ConfigType = Config
 
 class ListDict:
     """
