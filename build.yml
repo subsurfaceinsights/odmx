@@ -2,6 +2,8 @@ targets:
   odmx:
     build: .
     resolve_symlinks: true
+    non_dockerfile_deps:
+      - python-ssi-config
     args:
       PYLINT_VER: $PYLINT_VER
       PYTEST_VER: $PYTEST_VER
