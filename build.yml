@@ -4,6 +4,7 @@ targets:
     resolve_symlinks: true
     non_dockerfile_deps:
       - python-ssi-config
+      - python-ssi-db
     args:
       PYLINT_VER: $PYLINT_VER
       PYTEST_VER: $PYTEST_VER
