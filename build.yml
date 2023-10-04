@@ -9,3 +9,13 @@ targets:
       PYLINT_VER: $PYLINT_VER
       PYTEST_VER: $PYTEST_VER
 
+  odmx-api-v3:
+    build: .
+    resolve_symlinks: true
+    deps:
+      - odmx
+    args:
+      PYLINT_VER: $PYLINT_VER
+      PYTEST_VER: $PYTEST_VER
+
+

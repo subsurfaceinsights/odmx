@@ -740,6 +740,7 @@ async def handle_odmx_request(scope: Scope,
 
 def get_connection():
     """ Get Connection """
+    assert config is not None
     con = db.connect(config, db_name=f'odmx_{config.project_name}')
     db.set_current_schema(con, 'odmx')
     return con
@@ -759,8 +760,9 @@ async def app(scope: Scope, receive: Receive, send: Send) -> None:
     else:
         await not_found(send, f'No handler for {scope["path"]}')
 
-
-if __name__ == '__main__':
+config = None
+def setup_config():
+    global config
     config = Config()
     config.add_config_param('project_name',
                             help='Project Name to serve requests for')
@@ -768,6 +770,11 @@ if __name__ == '__main__':
                             help='Enable write operations',
                             validator='boolean',
                             default=True)
+    return config
+
+
+if __name__ == '__main__':
+    config = setup_config()
     parser = ArgumentParser()
     parser.add_argument('--config', help='Config file to use')
     config.add_args_to_argparser(parser)
@@ -776,6 +783,11 @@ if __name__ == '__main__':
     if args.config is not None:
         config.add_yaml_file(args.config, True, False)
     config.validate_config(args)
-    _ENABLE_WRITES = config.enable_writes
-    print(f'Enable writes: {_ENABLE_WRITES}')
     uvicorn.run(app)
+else:
+    config = setup_config()
+    config.validate_config()
+
+assert config is not None
+_ENABLE_WRITES = config.enable_writes
+print(f'Enable writes: {_ENABLE_WRITES}')
