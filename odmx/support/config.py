@@ -332,6 +332,12 @@ class Config():
                 return False
         return True
 
+    def is_validated(self):
+        """
+        Returns whether the configuration set has been validated
+        """
+        return self._validated
+
     def validate_config(self, args=None):
         """
         Goes through all defined parameters and pulls them from sources in the
