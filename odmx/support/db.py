@@ -1420,7 +1420,8 @@ def sanitize_snake_case_name(name: str) -> str:
 
 
 def generate_python_class_for_db_table(
-        connection: Connection, table: str, fp: TextIO) -> None:
+        connection: Connection, table: str, fp: TextIO,
+        derived_class=False) -> None:
     print("Processing table", table)
     snake_case_table = sanitize_snake_case_name(table)
     camel_case_table = generate_camel_case_name(table)
@@ -1451,7 +1452,10 @@ def generate_python_class_for_db_table(
         columns_by_name[column_info['column_name']] = column_info
     fp.write("@beartype_wrap_init\n")
     fp.write("@dataclasses.dataclass\n")
-    fp.write(f"class {camel_case_table}:\n")
+    derived_statement = ""
+    if derived_class:
+        derived_statement = f"(Base)"
+    fp.write(f"class {camel_case_table}{derived_statement}:\n")
     fp.write( '    """\n')
     if table_comment:
         fp.write(f"    {table_comment}\n\n")
@@ -1462,6 +1466,7 @@ def generate_python_class_for_db_table(
     fp.write("\n")
     fp.write("    This is an automatically generated class\n")
     fp.write( '    """\n')
+    fp.write("\n")
     for column_info in (required_columns + optional_columns):
         column = column_info['column']
         data_type = column_info['data_type']
@@ -1484,7 +1489,9 @@ def generate_python_class_for_db_table(
         id_col_type = "None"
     else:
         id_col_type = postgres_type_to_python_type(columns_by_name[id_col]['data_type'])
-        fp.write(f"    PRIMARY_KEY: ClassVar[str] = '{id_col}'\n\n")
+        fp.write(f"    PRIMARY_KEY: ClassVar[str] = '{id_col}'\n")
+    fp.write(f"    TABLE_NAME: ClassVar[str] = '{table}'\n")
+    fp.write("\n")
 
     fp.write("    def to_json_dict(self) -> Dict[str, Any]:\n")
     fp.write("        obj = dataclasses.asdict(self)\n")
@@ -1546,9 +1553,9 @@ def generate_python_class_for_db_table(
         pack_params_to_dict += f"        '{column_name}': {column_name},\n"
     pack_params_to_dict += "    }\n"
     fp.write("@beartype.beartype\n")
-    fp.write("def create_{snake_case_table}_from_json_dict(json_obj: dict):\n")
+    fp.write(f"def create_{snake_case_table}_from_json_dict(json_obj: dict):\n")
     fp.write("        \"\"\"\n")
-    fp.write("        Create a {camel_case_table} from a json object dict\n")
+    fp.write(f"        Create a {camel_case_table} from a json object dict\n")
     fp.write("        doing type conversions (IE, datetime str) as necessary\n")
     fp.write("        \"\"\"\n")
     for column_info in (required_columns + optional_columns):
@@ -1742,7 +1749,7 @@ def generate_python_class_file_for_db_table(connection: Connection, output_file:
         fp.write('"""\n')
         fp.write("import dataclasses\n")
         fp.write("import datetime\n")
-        fp.write("from beartype.typing import Optional, Generator, List, ClassVar, Type, Dict, Any\n")
+        fp.write("from beartype.typing import Optional, Generator, List, ClassVar, Type, Dict, Any, Callable\n")
         fp.write("import beartype\n")
         if ver == 'ssi':
             fp.write("import ssi.db as db\n\n")
@@ -1752,9 +1759,29 @@ def generate_python_class_file_for_db_table(connection: Connection, output_file:
         fp.write("    assert dataclasses.is_dataclass(cls)\n")
         fp.write("    cls.__init__ = beartype.beartype(cls.__init__)\n")
         fp.write("    return cls\n\n")
+        fp.write("class Base:\n")
+        fp.write("    PRIMARY_KEY: ClassVar[Optional[str]] = None\n")
+        fp.write("    TABLE_NAME: ClassVar[Optional[str]] = None\n")
+        fp.write("    to_json_dict: ClassVar[Optional[Callable]] = None\n")
+        fp.write("    create_from_json_dict: ClassVar[Optional[Callable]] = None\n")
+        fp.write("    write: ClassVar[Optional[Callable]] = None\n")
+        fp.write("    update: ClassVar[Optional[Callable]] = None\n")
+        fp.write("    write_many: ClassVar[Optional[Callable]] = None\n")
+        fp.write("    read: ClassVar[Optional[Callable]] = None\n")
+        fp.write("    read_fuzzy: ClassVar[Optional[Callable]] = None\n")
+        fp.write("    read_any: ClassVar[Optional[Callable]] = None\n")
+        fp.write("    read_one: ClassVar[Optional[Callable]] = None\n")
+        fp.write("    read_one_or_none: ClassVar[Optional[Callable]] = None\n")
+        fp.write("    read_all: ClassVar[Optional[Callable]] = None\n")
+        fp.write("    delete: ClassVar[Optional[Callable]] = None\n")
+        fp.write("    read_by_id: ClassVar[Optional[Callable]] = None\n")
+        fp.write("    delete_by_id: ClassVar[Optional[Callable]] = None\n")
+        fp.write("\n\n")
+
         for table in get_tables(connection):
-            generate_python_class_for_db_table(connection, table, fp)
-        fp.write("_table_classes_by_name = {{\n")
+            generate_python_class_for_db_table(connection, table, fp,
+                                               derived_class=True)
+        fp.write("_table_classes_by_name = {\n")
         for table in get_tables(connection):
             snake_case_table = sanitize_snake_case_name(table)
             camel_case_table = generate_camel_case_name(snake_case_table)
