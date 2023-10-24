@@ -361,8 +361,8 @@ async def handle_datastreams(path_elements,
         if 'qa_flag_mode' in query_vars:
             qa_flag_mode = query_vars['qa_flag_mode']
             if qa_flag_mode not in ['greater_or_eq', 'less_or_eq', 'equal']:
-                await bad_request(send, ('qa_flag_mode must be greater, less, '
-                                         'or equal'))
+                await bad_request(send, ('qa_flag_mode must be greater_or_eq, '
+                                         'less_or_eq or equal'))
                 return
         else:
             qa_flag_mode = 'greater_or_eq'
