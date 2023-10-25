@@ -80,11 +80,21 @@ async def start_db_send_json_obj_list(send: Send) -> None:
     await start_body(send, 200, 'application/json')
     await send_body_part(send, '[')
 
-
-async def start_db_send_json_table_list(send: Send, cols: list) -> None:
+async def start_db_send_json_table_list(send: Send, cols: list,
+                                        limit: Optional[int],
+                                        offset: Optional[int]) -> None:
     """ Send headers and start body for json table list"""
     await start_body(send, 200, 'application/json')
-    await send_body_part(send, '{"headers":' + json.dumps(cols) + ',"rows":[')
+    limit_section = ''
+    if limit is not None:
+        limit_section = f'"limit":{limit},'
+    offset_section = ''
+    if offset is not None:
+        offset_section = f'"offset":{offset},'
+    limit_offset_section = limit_section + offset_section
+    await send_body_part(send,
+                         '{"headers":' + json.dumps(cols) + \
+                        f',{limit_offset_section}"rows":[')
 
 
 async def start_db_send_csv(send: Send, cols: list) -> None:
@@ -142,7 +152,7 @@ def process_csv_row(d: list):
     """
     Produces a CSV row from a list, escaping values as needed.
     """
-    def process(v):
+    def process(v) -> str:
         if v is None:
             v = ''
         v = str(v)
@@ -157,9 +167,9 @@ def process_csv_row(d: list):
         if escape:
             v = '"' + v + '"'
         return v
-    d = [process(v) for v in d]
-    d = ','.join(d)
-    return d
+    d2 = [process(v) for v in d]
+    d3 = ','.join(d2)
+    return d3
 
 
 async def send_db_model_csv(
@@ -205,28 +215,38 @@ async def send_db_models_single_col_list(model_objs, send: Send, col):
         else:
             await send_body_part(send, ',')
         await send_body_part(send, json.dumps(json_obj[col]))
+    if first:
+        await start_db_send_json_obj_list(send)
     await end_db_send_json_obj_list(send)
 
+
 async def send_db_models_single_col_list_distinct(model_objs, send: Send, col):
-    """ Send distinct single column model list"""
+    """ Send single column model list with only distinct values"""
     distinct = set()
     for model_obj in model_objs:
         json_obj = model_obj.to_json_dict()
         distinct.add(json_obj[col])
     await send_json(send, list(distinct))
 
-async def send_db_models_json_table_list(model_objs, send: Send, cols: list):
+async def send_db_models_json_table_list(model_objs, send: Send,
+                                         cols: Optional[list],
+                                         limit: Optional[int],
+                                         offset: Optional[int]):
     """ Send json table model list"""
     first = True
     for model_obj in model_objs:
         if first:
             if cols is None:
                 cols = list(model_obj.to_json_dict().keys())
-            await start_db_send_json_table_list(send, cols)
+            await start_db_send_json_table_list(send, cols, limit, offset)
             first = False
         else:
             await send_body_part(send, ',')
         await send_db_model_json_list(model_obj, send, cols)
+    if first:
+        if cols is None:
+            cols = []
+        await start_db_send_json_table_list(send, cols, limit, offset)
     await end_db_send_json_table_list(send)
 
 
@@ -242,6 +262,10 @@ async def send_db_models_csv(model_objs, send: Send, cols=None):
         else:
             await send_body_part(send, '\n')
         await send_db_model_csv(model_obj, send, cols)
+    if first:
+        if cols is None:
+            cols = []
+        await start_db_send_csv(send, cols)
     await end_db_send_csv(send)
 
 
@@ -263,9 +287,9 @@ async def send_json(send: Send, obj):
 
 def parse_qs(query_string: bytes) -> Dict[str, List[str]]:
     """ parse query """
-    query_string = query_string.decode('utf-8')
+    query_string_str = query_string.decode('utf-8')
     query_vars = {}
-    for var in query_string.split('&'):
+    for var in query_string_str.split('&'):
         if '=' in var:
             k, v = var.split('=')
             if k in query_vars:
@@ -322,24 +346,18 @@ async def handle_datastreams(path_elements,
         #db.set_current_schema(con, datastream.datastream_database)
         db.set_current_schema(con, 'datastreams')
         try:
-            if 'start_date' in query_vars:
-                start_date = date.fromisoformat(query_vars['start_date'])
-            else:
-                start_date = None
-            if 'end_date' in query_vars:
-                end_date = date.fromisoformat(query_vars['end_date'])
-            else:
-                end_date = None
-            if 'start_datetime' in query_vars:
-                start_datetime = \
-                    datetime.fromisoformat(query_vars['start_datetime'])
-            else:
-                start_datetime = None
-            if 'end_datetime' in query_vars:
-                end_datetime = \
-                    datetime.fromisoformat(query_vars['end_datetime'])
-            else:
-                end_datetime = None
+            async def get_date(key):
+                """ get date"""
+                if key in query_vars:
+                    key_str = query_vars[key]
+                    if not isinstance(key_str, str):
+                        raise ValueError(f'{key} must be a single date')
+                    return date.fromisoformat(key_str)
+                return None
+            start_date = await get_date('start_date')
+            end_date = await get_date('end_date')
+            start_datetime = await get_date('start_datetime')
+            end_datetime = await get_date('end_datetime')
         except ValueError as e:
             await bad_request(send, str(e))
             return
@@ -414,6 +432,9 @@ async def handle_datastreams(path_elements,
                 'stddev': 'STDDEV',
                 'variance': 'VARIANCE',
             }
+            if not isinstance(downsample_method, str):
+                await bad_request(send, 'downsample_method must be a string')
+                return
             downsample_function = downsample_functions.get(downsample_method)
             if downsample_function:
                 sql_clause = f"""
@@ -509,7 +530,7 @@ async def handle_datastreams(path_elements,
                     return
 
         sql_args = [timezone, start_datetime, end_datetime, qa_flag]
-        data = con.execute(sql_clause, sql_args)
+        data = con.execute(sql_clause, sql_args) # pyright: ignore[reportGeneralTypeIssues]
 
         query_format = query_vars.get('format', 'json')
         if query_format == 'json':
@@ -541,6 +562,7 @@ async def handle_datastreams(path_elements,
 
 _ENABLE_WRITES = False
 
+
 async def handle_odmx_request(scope: Scope,
                               receive: Receive,
                               send: Send) -> None:
@@ -571,7 +593,11 @@ async def handle_odmx_request(scope: Scope,
         else:
             query_format = None
         if '_cols' in query_vars:
-            cols = query_vars['_cols'].split(',')
+            query_vars_str = query_vars['_cols']
+            if not isinstance(query_vars_str, str):
+                await bad_request(send, '_cols must be a single string')
+                return
+            cols = query_vars_str.split(',')
             del query_vars['_cols']
         else:
             cols = None
@@ -580,12 +606,24 @@ async def handle_odmx_request(scope: Scope,
             fuzzy = True
             del query_vars['_fuzzy']
         if '_limit' in query_vars:
-            limit = int(query_vars['_limit'])
+            limit_str = query_vars['_limit']
+            if not isinstance(limit_str, str):
+                await bad_request(send, '_limit must be a single integer')
+                return
+            limit = int(limit_str)
             del query_vars['_limit']
         else:
             limit = None
         if '_offset' in query_vars:
-            offset = int(query_vars['_offset'])
+            offset_str = query_vars['_offset']
+            if not isinstance(offset_str, str):
+                await bad_request(send, '_offset must be a single integer')
+                return
+            try:
+                offset = int(offset_str)
+            except ValueError:
+                await bad_request(send, f'Invalid offset "{offset_str}"')
+                return
             del query_vars['_offset']
         else:
             offset = None
@@ -609,9 +647,13 @@ async def handle_odmx_request(scope: Scope,
         for k, v in params.items():
             if v.annotation is not inspect.Parameter.empty:
                 types[k] = v.annotation
+        new_query_vars = {}
         for k, v in query_vars.items():
             if k not in params:
                 await bad_request(send, f'Unknown query parameter "{k}"')
+                return
+            if isinstance(v, list):
+                await bad_request(send, f'Multiple values for "{k}"')
                 return
             if k in types:
                 t = types[k]
@@ -629,14 +671,18 @@ async def handle_odmx_request(scope: Scope,
                     v = date.fromisoformat(v)
                 elif t == Optional[time]:
                     v = time.fromisoformat(v)
-                query_vars[k] = v
+                new_query_vars[k] = v
+        query_vars = new_query_vars
 
         if len(path_elements) == 1:
             try:
                 if not fuzzy:
-                    model_objs = table_class.read(con, **query_vars)
+                    model_objs = table_class.read(con, **query_vars,
+                                                  _limit=limit, _offset=offset)
                 else:
-                    model_objs = table_class.read_fuzzy(con, **query_vars)
+                    model_objs = table_class.read_fuzzy(con, **query_vars,
+                                                        _limit=limit,
+                                                        _offset=offset)
             except IOError as e:
                 await bad_request(send, str(e))
                 return
@@ -646,14 +692,14 @@ async def handle_odmx_request(scope: Scope,
                 else:
                     query_format = 'json_flat_list'
             if query_format == 'json_flat_list':
-                if cols is not None and len(cols) != 1:
+                if cols is None or len(cols) != 1:
                     await bad_request(send, ('Single list requires exactly '
                                              'one column'))
                     return
                 if distinct:
                     await send_db_models_single_col_list_distinct(model_objs,
-                                                                  send,
-                                                                  cols[0])
+                                                                   send,
+                                                                   cols[0])
                 else:
                     await send_db_models_single_col_list(model_objs,
                                                          send,
@@ -661,7 +707,8 @@ async def handle_odmx_request(scope: Scope,
             elif query_format == 'json_obj_list':
                 await send_db_models_json_obj_list(model_objs, send, cols)
             elif query_format == 'json_table':
-                await send_db_models_json_table_list(model_objs, send, cols)
+                await send_db_models_json_table_list(model_objs, send, cols,
+                                                     limit, offset)
             elif query_format == 'csv':
                 await send_db_models_csv(model_objs, send, cols)
             else:
@@ -740,7 +787,6 @@ async def handle_odmx_request(scope: Scope,
 
 def get_connection():
     """ Get Connection """
-    assert config is not None
     con = db.connect(config, db_name=f'odmx_{config.project_name}')
     db.set_current_schema(con, 'odmx')
     return con
@@ -760,9 +806,8 @@ async def app(scope: Scope, receive: Receive, send: Send) -> None:
     else:
         await not_found(send, f'No handler for {scope["path"]}')
 
-config = None
+
 def setup_config():
-    global config
     config = Config()
     config.add_config_param('project_name',
                             help='Project Name to serve requests for')
@@ -770,24 +815,39 @@ def setup_config():
                             help='Enable write operations',
                             validator='boolean',
                             default=True)
+    config.add_config_param('host',
+                            help='Host to listen on',
+                            default='127.0.0.1')
+    config.add_config_param('port',
+                            help='Port to listen on',
+                            validator='integer',
+                            default='8000')
+    config.add_config_param('workers',
+                            help='Number of workers',
+                            validator='integer',
+                            default='1')
+    config.add_config_param('debug',
+                            help='Debug',
+                            validator='boolean',
+                            default=True)
+    db.add_db_parameters_to_config(config)
     return config
-
 
 if __name__ == '__main__':
     config = setup_config()
     parser = ArgumentParser()
     parser.add_argument('--config', help='Config file to use')
     config.add_args_to_argparser(parser)
-    db.add_db_parameters_to_config(config)
     args = parser.parse_args()
     if args.config is not None:
         config.add_yaml_file(args.config, True, False)
     config.validate_config(args)
-    uvicorn.run(app)
+    _ENABLE_WRITES = config.enable_writes
+    print(f'Enable writes: {_ENABLE_WRITES}')
+    uvicorn.run("odmx.rest_api:app" if not config.debug else app,
+                host=config.host,
+                port=int(config.port),
+                workers=int(config.workers))
 else:
     config = setup_config()
     config.validate_config()
-
-assert config is not None
-_ENABLE_WRITES = config.enable_writes
-print(f'Enable writes: {_ENABLE_WRITES}')
