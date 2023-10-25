@@ -7,10 +7,10 @@ Module for Campbell data arvesting, ingestion, and processing.
 import os
 import pandas as pd
 import odmx.support.general as ssigen
-import odmx.support.db as db
+from odmx.support import db
 from odmx.abstract_data_source import DataSource
-from odmx.harvesting import simple_rsync
-from odmx.timeseries_ingestion import general_timeseries_ingestion, get_latest_timestamp
+from odmx.timeseries_ingestion import general_timeseries_ingestion,\
+    get_latest_timestamp
 from odmx.timeseries_processing import general_timeseries_processing
 from odmx.log import vprint
 
@@ -32,9 +32,9 @@ class CampbellDataSource(DataSource):
         self.data_source_timezone = data_source_timezone
         self.feeder_table = feeder_table
 
-    def harvest(self, remote_user, remote_server, remote_base_path, pull_list):
+    def harvest(self):
         """
-        Harvests data from a remote server.
+        There is no harvesting to be done for this data type.
         """
         simple_rsync(remote_user, remote_server, remote_base_path,
                      self.data_source_path, pull_list)
@@ -51,7 +51,8 @@ class CampbellDataSource(DataSource):
         # We can avoid some of it by gating the data by the last ingested
         # timestamp
 
-        latest_timestamp = get_latest_timestamp(feeder_db_con, self.feeder_table)
+        latest_timestamp = get_latest_timestamp(feeder_db_con,
+                                                self.feeder_table)
 
         # Log the .dat files (they're actually .csv files).
         dat_paths_list = ssigen.get_files(self.data_source_path, '.dat')[1]
@@ -61,7 +62,8 @@ class CampbellDataSource(DataSource):
             if latest_timestamp is not None:
                 # Get the last timestamp in the file.
                 file_last_timestamp = ssigen.get_last_timestamp_csv(dat_path)
-                if file_last_timestamp and file_last_timestamp <= latest_timestamp:
+                if file_last_timestamp and \
+                    file_last_timestamp <= latest_timestamp:
                     vprint(f"Skipping file '{dat_path}' because it's last "
                         "timestamp is before the last ingested timestamp.")
                     continue
@@ -92,7 +94,10 @@ class CampbellDataSource(DataSource):
         # The rest of the ingestion is generic.
         general_timeseries_ingestion(feeder_db_con, self.feeder_table, df)
 
-    def process(self, feeder_db_con: db.Connection, odmx_db_con: db.Connection, sampling_feature_code: str, equipment_directory: str):
+    def process(self, feeder_db_con: db.Connection,
+                odmx_db_con: db.Connection,
+                sampling_feature_code: str,
+                equipment_directory: str):
         """
         Process ingested Campbell data into timeseries datastreams.
         """
@@ -100,5 +105,6 @@ class CampbellDataSource(DataSource):
         general_timeseries_processing(self,
                                       feeder_db_con,
                                       odmx_db_con,
-                                      sampling_feature_code=sampling_feature_code,
+                                      sampling_feature_code=\
+                                          sampling_feature_code,
                                       equipment_directory=equipment_directory)
