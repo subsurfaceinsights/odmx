@@ -256,16 +256,7 @@ def run_pipeline(conf: Config, pipeline_work_dir: str):
                     if i.data_source_type
                     in data_source_types]
 
-    from_scratch = conf.from_scratch
-    wipe_odmx = conf.wipe_odmx
-    wipe_feeder = conf.wipe_feeder
-    wipe_global = conf.wipe_global
-    if from_scratch:
-        wipe_odmx = True
-        wipe_feeder = True
-        wipe_global = True
-
-    if wipe_odmx and 'populate' not in conf.data_processes:
+    if conf.wipe_odmx and 'populate' not in conf.data_processes:
         raise OSError(
             "Cannot wipe ODMX database without populating it. "
             "Please add 'populate' to the data_processes list."
@@ -278,28 +269,15 @@ def run_pipeline(conf: Config, pipeline_work_dir: str):
     sql_dir = os.path.realpath(
             f'{os.path.dirname(__file__)}/db/odmsqlscript')
     odmx_sql_template = f'{sql_dir}/ODMX_Schema_Latest.sql'
-    if wipe_global:
+    if conf.wipe_global:
         print("Wiping global feeder database.")
         reset_db(con, 'odmx_feeder_global')
         with db.connect(
-            config=conf,
+            config_obj=conf,
             db_name='odmx_feeder_global'
         ) as db_con:
             db.create_schema(db_con, 'feeder')
-    if wipe_feeder:
-        try:
-            with db.connect(
-                config_obj=conf,
-                db_name=project_db
-            ) as db_con:
-                # TODO cleanup pathing
-                print("Wiping feeder schema in odmx project database")
-                db.drop_schema(db_con, 'feeder')
-                db.create_schema(db_con, 'feeder')
-        except Exception as e:
-            print("Error wiping feeder schema in odmx project database")
-            print(e)
-    if wipe_odmx:
+    if conf.wipe_odmx:
         print("Wiping ODMX database.")
         reset_db(con, project_db, sql_template=odmx_sql_template)
         # Connect to the ODMX database and create the feeder schema.
@@ -395,9 +373,6 @@ if __name__ == '__main__':
     config.add_config_param('wipe_odmx', default=False, validator='bool',
                             optional=True, help="If this flag is set, recreate"
                             " the ODMX database.")
-    config.add_config_param('wipe_feeder', default=False, validator='bool',
-                            optional=True, help="If this flag is set, recreate"
-                            " the feeder database.")
     config.add_config_param('wipe_global', default=False, validator='bool',
                             optional=True, help="If this flag is set, recreate"
                             " the global feeder database.")
@@ -423,7 +398,6 @@ if __name__ == '__main__':
     # If the --from-scratch flag was set, we supersede other wiping flags.
     if config.from_scratch:
         config.wipe_odmx = True
-        config.wipe_feeder = True
         config.wipe_global = True
         config.wipe_ert = True
     # Parse the --data-source-types and --data-processes flags, since
