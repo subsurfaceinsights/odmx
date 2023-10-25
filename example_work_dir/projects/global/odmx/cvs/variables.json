@@ -1349,8 +1349,8 @@
         "sampled_medium_cv": "equipment",
         "quantity_kind_cv": "angle",
         "variable_source_uri": null,
-        "min_valid_range": 0,
-        "max_valid_range": 360.0
+        "min_valid_range": -3.142,
+        "max_valid_range": 3.142
     },
     {
         "variable_term": "instrumentOrientationY",
@@ -1360,8 +1360,8 @@
         "sampled_medium_cv": "equipment",
         "quantity_kind_cv": "angle",
         "variable_source_uri": null,
-        "min_valid_range": 0,
-        "max_valid_range": 360.0
+        "min_valid_range": -3.142,
+        "max_valid_range": 3.142
     },
     {
         "variable_term": "instrumentOrientationZ",
@@ -1371,8 +1371,8 @@
         "sampled_medium_cv": "equipment",
         "quantity_kind_cv": "angle",
         "variable_source_uri": null,
-        "min_valid_range": 0,
-        "max_valid_range": 360.0
+        "min_valid_range": -3.142,
+        "max_valid_range": 3.142
     },
     {
         "variable_term": "rainPrecipitation15Minutes",
