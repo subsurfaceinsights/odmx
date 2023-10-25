@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-
+#pylint: disable=missing-timeout
 """
 Subpackage to handle general code functions.
 """
@@ -201,7 +201,7 @@ def choose_item(items):
         val2 = row[1]
         print(f"\nUsing {val1}, {val2}.")
         return user_input, val1, val2
-    raise Exception("Not sure what kind of object the list is.")
+    raise ValueError("Not sure what kind of object the list is.")
 
 
 # def group_df_date_or_time(df, group_col, date_or_time):
@@ -280,11 +280,9 @@ def rectangle(top, bottom, left, right, width, height):
     return None
 
 
-#TODO Unclear why bottomright is unused
-#pylint: disable=unused-argument
 def rectangle2(topleft, topright, bottomleft, bottomright):
     """
-    Get a list of (x, y) points inside of a rectangle.
+    Get a list of (x, y) points along the bottom edge of a rectangle.
 
     @param topleft The top left coordinate of the rectangle.
     @param topright The bottom left coordinate of the rectangle.
@@ -294,13 +292,11 @@ def rectangle2(topleft, topright, bottomleft, bottomright):
     """
 
     return [(x, y) for x in range(topleft[0], topright[0] + 1)
-            for y in range(topleft[1], bottomleft[1] + 1)]
+            for y in range(bottomleft[1], bottomright[1] + 1)]
 
-#TODO Unclear why topright and bottomleft is unused
-#pylint: disable=unused-argument
-def rectangle3(topleft, topright, bottomleft, bottomright):
+def rectangle3(topleft, bottomright):
     """
-    Yet another function to get a list of (x, y) points inside of a rectangle.
+    Return y_max, y_min, x_min, x_max for a rectangle.
 
     @param topleft The top left coordinate of the rectangle.
     @param topright The bottom left coordinate of the rectangle.
@@ -423,12 +419,12 @@ def open_json(file_path, args=None, lock=False, timeout=300,
     # Define the actual opening routine.
     def open_the_file(file_path=file_path):
         try:
-            with open(file_path) as json_file:
+            with open(file_path, encoding="utf-8") as json_file:
                 return json.load(json_file, **args)
         except FileNotFoundError as e:
             raise FileNotFoundError(f"No file found at: {file_path}.") from e
         except json.decoder.JSONDecodeError as e:
-            raise Exception(f"The .json file {file_path} could not be"
+            raise ValueError(f"The .json file {file_path} could not be"
                             " decoded properly.") from e
 
     # Define the args parameter explicitly if nothing was passed.
@@ -469,24 +465,29 @@ def write_json(
     @param lock If the file exists, whether it should be locked before writing
     @param timeout The number of seconds to timeout for filelock
     """
-    def write_the_file(data):
+    def write_the_file(data, args_to_apply):
         os.makedirs(os.path.dirname(file_path), exist_ok=True)
-        with open(file_path, "w+") as json_file:
+        with open(file_path, "w+", encoding="utf-8") as json_file:
             if merge:
                 old_data = json.load(json_file)
                 old_data.update(data)
                 data = old_data
-            json.dump(data, json_file)
+            json.dump(data, json_file, **args_to_apply)
+
+    # Define the args parameter explicitly if nothing was passed.
+    if args is None:
+        args = {}
+
     if lock:
         try:
             with filelock.FileLock(f'{file_path}.lock', timeout=timeout):
-                write_the_file(data)
+                write_the_file(data, args)
         except filelock.Timeout as e:
             raise filelock.Timeout(
                 f"Another script holds the lock on {file_path}."
             ) from e
     else:
-        write_the_file(data)
+        write_the_file(data, args)
 
 def open_csv(file_path, args=None, lock=False, timeout=300):
     """
@@ -534,6 +535,32 @@ def open_csv(file_path, args=None, lock=False, timeout=300):
 
     return csv_data
 
+def get_last_timestamp_csv(file_path, timestamp_index=0, max_line_size=8192):
+    # Read the last line of the file to get the timestamp. We do this
+    # by seeking to the file 4096 bytes, then reading the last line.
+    # This is a hack, but it works for campbell data.
+    # We need to open the file in binary mode to use seek.
+    with open(file_path, 'rb') as f:
+        # Get size
+        f.seek(0, os.SEEK_END)
+        size = f.tell()
+        print(size)
+        if size == 0:
+            print(f"Notice: file '{file_path}' is empty.")
+            return None
+        # Get the last line.
+        f.seek(-max_line_size, os.SEEK_END)
+        last_line = f.read().splitlines()[-1]
+        # Convert the bytes to a string.
+        last_line = last_line.decode('utf-8')
+        # Get the timestamp from the last line, which is the first
+        # element in the list.
+        file_last_timestamp = last_line.split(',')[timestamp_index]
+        # Remove quotes
+        file_last_timestamp = file_last_timestamp.replace('"', '')
+        # Parse the timestamp.
+        file_last_timestamp = pd.to_datetime(file_last_timestamp)
+        return file_last_timestamp
 
 def open_spreadsheet(file_path, args=None, lock=False, timeout=300):
     """

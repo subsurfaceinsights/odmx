@@ -102,7 +102,8 @@ class SnotelDataSource(DataSource):
     Class for SNOTEL data source objects.
     """
 
-    def __init__(self, project_name, project_path, data_path, station_id, data_source_timezone):
+    def __init__(self, project_name, project_path, data_path, station_id,
+                 data_source_timezone):
         self.project_name = project_name
         self.project_path = project_path
         self.station_id = station_id
@@ -403,4 +404,5 @@ class SnotelDataSource(DataSource):
         general_timeseries_processing(self,
                                       feeder_db_con=feeder_db_con,
                                       odmx_db_con=odmx_db_con,
-                                      sampling_feature_code=sampling_feature_code)
+                                      sampling_feature_code=\
+                                          sampling_feature_code)

@@ -558,6 +558,24 @@
         "parent_organization_id": null
     },
     {
+        "organization_id": 30048,
+        "organization_type_cv": "manufacturer",
+        "organization_code": "Hukseflux",
+        "organization_name": "Hukseflux",
+        "organization_description": "Hukseflux makes sensors and measuring systems for monitoring energy transfer.",
+        "organization_link": "https://www.hukseflux.com/",
+        "parent_organization_id": null
+    },
+    {
+        "organization_id": 30049,
+        "organization_type_cv": "manufacturer",
+        "organization_code": "Eosense",
+        "organization_name": "Eosense",
+        "organization_description": "Eosense makes sensors for monitoring environmental gas flux and concentration.",
+        "organization_link": "https://eosense.com/",
+        "parent_organization_id": null
+    },
+    {
         "organization_id": 38000,
         "organization_type_cv": "manufacturer",
         "organization_code": "unknown",

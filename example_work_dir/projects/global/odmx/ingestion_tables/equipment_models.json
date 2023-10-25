@@ -275,6 +275,17 @@
         "is_retired": false
     },
     {
+        "equipment_manufacturer_name": "Decagon",
+        "equipment_model_part_number": "Barometer",
+        "equipment_model_name": "Decagon Barometer",
+        "equipment_type_cv": "sensor",
+        "equipment_model_description": null,
+        "is_instrument": true,
+        "equipment_model_specifications_file_link": null,
+        "equipment_model_description_url": null,
+        "is_retired": false
+    },
+    {
         "equipment_manufacturer_name": "In-Situ",
         "equipment_model_part_number": "Aqua TROLL 200 Data Logger",
         "equipment_model_name": "In-Situ",
@@ -591,6 +602,72 @@
         "is_instrument": true,
         "equipment_model_specifications_file_link": null,
         "equipment_model_description_url": null,
+        "is_retired": false
+    },
+    {
+        "equipment_manufacturer_name": "Apogee",
+        "equipment_model_part_number": "SO-421",
+        "equipment_model_name": "SO-421 Oxygen Sensor",
+        "equipment_type_cv": "sensor",
+        "equipment_model_description": "SO-421 SDI-12: Fast Response Thermistor Reference Oxygen Sensor",
+        "is_instrument": true,
+        "equipment_model_specifications_file_link": null,
+        "equipment_model_description_url": "https://www.apogeeinstruments.com/so-421-sdi-12-fast-response-thermistor-reference-oxygen-sensor/",
+        "is_retired": false
+    },
+    {
+        "equipment_manufacturer_name": "Apogee",
+        "equipment_model_part_number": "SQ-521",
+        "equipment_model_name": "SQ-521 Full-spectrum Quantum Sensor",
+        "equipment_type_cv": "sensor",
+        "equipment_model_description": "SQ-521-SS SDI-12 Digital Output Full-spectrum Quantum Sensor",
+        "is_instrument": true,
+        "equipment_model_specifications_file_link": null,
+        "equipment_model_description_url": "https://www.apogeeinstruments.com/sq-521-ss-sdi-12-digital-output-full-spectrum-quantum-sensor/",
+        "is_retired": false
+    },
+    {
+        "equipment_manufacturer_name": "Apogee",
+        "equipment_model_part_number": "SN-500",
+        "equipment_model_name": "SN-500 Net Radiometer",
+        "equipment_type_cv": "sensor",
+        "equipment_model_description": "SN-500-SS: Net Radiometer",
+        "is_instrument": true,
+        "equipment_model_specifications_file_link": null,
+        "equipment_model_description_url": "https://www.apogeeinstruments.com/sn-500-ss-net-radiometer/",
+        "is_retired": false
+    },
+    {
+        "equipment_manufacturer_name": "Apogee",
+        "equipment_model_part_number": "SI-411",
+        "equipment_model_name": "SI-411 Radiometer",
+        "equipment_type_cv": "sensor",
+        "equipment_model_description": "SI-411-SS: Research-Grade SDI-12 Digital Output Standard Field of View Infrared Radiometer Sensor",
+        "is_instrument": true,
+        "equipment_model_specifications_file_link": null,
+        "equipment_model_description_url": "https://www.apogeeinstruments.com/si-411-ss-research-grade-sdi-12-digital-output-standard-field-of-view-infrared-radiometer-sensor/",
+        "is_retired": false
+    },
+    {
+        "equipment_manufacturer_name": "Hukseflux",
+        "equipment_model_part_number": "HFP01",
+        "equipment_model_name": "HFP01 Heat Flux Plate",
+        "equipment_type_cv": "sensor",
+        "equipment_model_description": "HFP01 Heat Flux Plate",
+        "is_instrument": true,
+        "equipment_model_specifications_file_link": null,
+        "equipment_model_description_url": "https://www.hukseflux.com/products/heat-flux-sensors/heat-flux-sensors/hfp01-heat-flux-sensor",
+        "is_retired": false
+    },
+    {
+        "equipment_manufacturer_name": "Eosense",
+        "equipment_model_part_number": "eosFD",
+        "equipment_model_name": "eosFD Soil CO2 Flux Sensor",
+        "equipment_type_cv": "sensor",
+        "equipment_model_description": "eosFD Soil CO2 Flux Sensor",
+        "is_instrument": true,
+        "equipment_model_specifications_file_link": null,
+        "equipment_model_description_url": "https://www.campbellsci.com/eosfd",
         "is_retired": false
     }
 ]
