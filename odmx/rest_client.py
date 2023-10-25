@@ -119,7 +119,9 @@ class ApiClient:
                    qa_flag_mode: str ='greater_or_eq',
                    downsample_interval: Optional[str] = None,
                    downsample_method: Optional[str] = 'mean',
-                   format: str='json'):
+                   format: str='json',
+                   open_interval: Optional[str] = None,
+                   tz: Optional[str] = None) -> str:
         """
         Get a datastream from the server.
         - datastream_id: The id of the datastream to get.
@@ -140,6 +142,12 @@ class ApiClient:
             'mean', 'sum', 'count', 'stddev', 'variance', 'min', 'max'
             'min_max'
         - format: The format to return the data in, must be 'json' or 'csv'.
+        - tz: The timezone to use for the data, must be interpretable by
+                pytz.timezone()
+        - open_interval: If specified, whether the start and end dates are
+            open or closed. Closed is the default, which means that the
+            start and end dates are included in the data. The specified
+            options are 'none', 'start', 'end', 'both'. The default is 'none'
         """
         params = {}
         if full_precision:
@@ -162,7 +170,11 @@ class ApiClient:
             params['downsample_method'] = downsample_method
         if format:
             params['format'] = format
-        response = self.session.get(self.url + 'datastream/' + str(datastream_id), params=params)
+        if tz:
+            params['tz'] = tz
+        if open_interval:
+            params['open_interval'] = open_interval
+        response = self.session.get(self.url + 'datastream_data/' + str(datastream_id), params=params)
         if response.status_code != 200:
             raise ApiException(response.status_code, response.text)
         if format == 'json':

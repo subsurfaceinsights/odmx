@@ -3,7 +3,7 @@ ODMX REST API
 """
 import json
 import inspect
-from typing import Any, Awaitable, Callable, Dict, List, Optional
+from typing import Any, Awaitable, Callable, Dict, List, Optional, Union
 from datetime import datetime, date, time
 from argparse import ArgumentParser
 from psycopg.errors import InvalidParameterValue
@@ -11,7 +11,8 @@ import uvicorn
 from odmx.support.config import Config
 from  odmx.support import db
 import odmx.data_model as odmx
-
+import urllib.parse
+import traceback
 
 Scope = Dict[str, Any]
 Receive = Callable[[], Awaitable[Dict[str, Any]]]
@@ -285,13 +286,17 @@ async def send_json(send: Send, obj):
     """ send json"""
     await send_body(send, 200, json.dumps(obj), 'application/json')
 
-def parse_qs(query_string: bytes) -> Dict[str, List[str]]:
+def parse_qs(query_string: bytes) -> Dict[str, Union[str, List[str]]]:
     """ parse query """
     query_string_str = query_string.decode('utf-8')
     query_vars = {}
     for var in query_string_str.split('&'):
         if '=' in var:
             k, v = var.split('=')
+            # Decode the value
+            v = v.replace('+', ' ')
+            v = urllib.parse.unquote(v)
+
             if k in query_vars:
                 query_vars[k].append(v)
             else:
@@ -336,7 +341,7 @@ async def handle_datastreams(path_elements,
         datastream = \
             odmx.read_sampling_feature_timeseries_datastreams_one_or_none(
                 con, datastream_id=datastream_id)
-        if 'full_precision' in query_vars:
+        if 'full_precision' in query_vars and query_vars['full_precision'] != '0':
             con.execute("SET extra_float_digits = 3")
         else:
             con.execute("SET extra_float_digits = -5")
@@ -346,19 +351,23 @@ async def handle_datastreams(path_elements,
         #db.set_current_schema(con, datastream.datastream_database)
         db.set_current_schema(con, 'datastreams')
         try:
-            async def get_date(key):
+            async def get_date(key, is_datetime=False):
                 """ get date"""
                 if key in query_vars:
                     key_str = query_vars[key]
                     if not isinstance(key_str, str):
                         raise ValueError(f'{key} must be a single date')
-                    return date.fromisoformat(key_str)
+                    if is_datetime:
+                        return datetime.fromisoformat(key_str)
+                    else:
+                        return date.fromisoformat(key_str)
                 return None
             start_date = await get_date('start_date')
             end_date = await get_date('end_date')
-            start_datetime = await get_date('start_datetime')
-            end_datetime = await get_date('end_datetime')
+            start_datetime = await get_date('start_datetime', True)
+            end_datetime = await get_date('end_datetime', True)
         except ValueError as e:
+            traceback.print_exception(e)
             await bad_request(send, str(e))
             return
         if start_date and start_datetime:
@@ -376,6 +385,21 @@ async def handle_datastreams(path_elements,
                 return
         else:
             qa_flag = 'z'
+        start_op = '>='
+        end_op = '<='
+        if 'open_interval' in query_vars:
+            open_interval = query_vars['open_interval']
+            if open_interval not in ['none', 'start', 'end', 'both']:
+                await bad_request(send, ('closed_interval must be start, '
+                                         'end or both'))
+                return
+            if open_interval == 'start':
+                start_op = '>'
+            elif open_interval == 'end':
+                end_op = '<'
+            elif open_interval == 'both':
+                start_op = '>'
+                end_op = '<'
         if 'qa_flag_mode' in query_vars:
             qa_flag_mode = query_vars['qa_flag_mode']
             if qa_flag_mode not in ['greater_or_eq', 'less_or_eq', 'equal']:
@@ -413,8 +437,8 @@ async def handle_datastreams(path_elements,
                 FROM {quoted_table}
             ) AS data
             WHERE
-                datetime_local >= %s AND
-                datetime_local <= %s AND
+                datetime_local {start_op} %s AND
+                datetime_local {end_op} %s AND
                 qa_flag {qa_flag_mode} %s
         """
         if downsample_interval:
