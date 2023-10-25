@@ -5,10 +5,8 @@ Read controlled vocabulary (CV) data from .json files into an ODMX database.
 """
 
 import os
-import argparse
 import odmx.support.general as ssigen
-import odmx.support.db as db
-import odmx.support.config as ssiconf
+from odmx.support import db
 import odmx.data_model as odmx
 from odmx.log import vprint
 from odmx.json_validation import open_json
@@ -29,7 +27,7 @@ def populate_cvs(odmx_db_con: db.Connection, project_path: str):
     if os.path.exists(cvs_path):
         vprint(f'Found CVs directory at {cvs_path}')
     else:
-        vprint(f'There are no custom CVs for this project')
+        vprint('There are no custom CVs for this project')
         return
     # Find all of the CV .json files.
     cv_files, cv_paths = ssigen.get_files(cvs_path, 'json')
@@ -81,14 +79,16 @@ def populate_cvs(odmx_db_con: db.Connection, project_path: str):
                 if new_objects:
                     if UPDATE_ONLY:
                         raise ValueError('UPDATE_ONLY is set, but there are '
-                                         f'new objects to insert into {cv_name}')
+                                         'new objects to insert '
+                                         f'into {cv_name}')
                     num_inserted = odmx.write_variables_many(con, new_objects)
                     vprint(f'Inserted {num_inserted} new rows into {cv_name}.')
             # Insert the objects with ID
             if objects:
-                num_inserted = odmx.write_variables_many(con, objects, upsert=True)
-                vprint(f'Inserted/Updated {num_inserted} rows with ID into {cv_name}.')
-
+                num_inserted = odmx.write_variables_many(con, objects,
+                                                         upsert=True)
+                vprint((f'Inserted/Updated {num_inserted} rows with ID '
+                        f'into {cv_name}.'))
 
             # Then split out min/max into its own set of objects.
             # This table has the term, ID, min, and max.
@@ -119,39 +119,49 @@ def populate_cvs(odmx_db_con: db.Connection, project_path: str):
                     existing = odmx.read_variable_qa_min_max_one_or_none(
                             con, variable_id=obj.variable_id)
                     if existing is not None:
-                        obj.variable_qa_min_max_id = existing.variable_qa_min_max_id
+                        obj.variable_qa_min_max_id = \
+                            existing.variable_qa_min_max_id
                         objects_with_id.append(obj)
                     else:
                         objects_no_id.append(obj)
                 else:
                     objects_with_id.append(obj)
             if objects_no_id:
-                num_inserted = odmx.write_variable_qa_min_max_many(con, objects_no_id)
-                vprint(f'Inserted {num_inserted} new rows into variable_qa_min_max.')
+                num_inserted = \
+                    odmx.write_variable_qa_min_max_many(con, objects_no_id)
+                vprint((f'Inserted {num_inserted} new rows into '
+                        'variable_qa_min_max.'))
             if objects_with_id:
-                num_inserted = odmx.write_variable_qa_min_max_many(con, objects_with_id, upsert=True)
-                vprint(f'Inserted/Updated {num_inserted} rows with ID into variable_qa_min_max.')
+                num_inserted = \
+                    odmx.write_variable_qa_min_max_many(con, objects_with_id,
+                                                        upsert=True)
+                vprint((f'Inserted/Updated {num_inserted} rows with ID into'
+                        ' variable_qa_min_max.'))
 
         else:
-            TableClass = odmx.get_table_class(cv_name)
-            assert TableClass is not None, f'No table class found for {cv_name}'
+            table_class = odmx.get_table_class(cv_name)
+            assert table_class is not None, ('No table class found '
+                                            f'for {cv_name}')
             # Create a list of objects from the .json file.
-            objects = [TableClass(**dict_obj)
+            objects = [table_class(**dict_obj)
                        for dict_obj in cv_json]
             objects_no_id = []
             for obj in objects:
-                if getattr(obj, TableClass.PRIMARY_KEY) is None:
+                if getattr(obj, table_class.PRIMARY_KEY) is None:
                     objects_no_id.append(obj)
             # Remove the objects with no ID from the list.
-            objects = [obj for obj in objects if getattr(obj, TableClass.PRIMARY_KEY) is not None]
+            objects = \
+                [obj for obj in objects if \
+                 getattr(obj, table_class.PRIMARY_KEY) is not None]
             if objects:
-                num_inserted = TableClass.write_many(con, objects, upsert=True)
-                vprint(f'Inserted/Updated {num_inserted} rows with IDs into {cv_name}.')
+                num_inserted = table_class.write_many(con, objects,
+                                                      upsert=True)
+                vprint((f'Inserted/Updated {num_inserted} rows with IDs '
+                        f'into {cv_name}.'))
             if objects_no_id:
                 if UPDATE_ONLY:
                     raise ValueError('UPDATE_ONLY is set, but there are '
                                      f'new objects to insert into {cv_name}')
-                num_inserted = TableClass.write_many(con, objects_no_id)
-                vprint(f'Inserted {num_inserted} rows without IDs into {cv_name}.')
-
-
+                num_inserted = table_class.write_many(con, objects_no_id)
+                vprint((f'Inserted {num_inserted} rows without IDs '
+                        f'into {cv_name}.'))

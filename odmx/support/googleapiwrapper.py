@@ -31,7 +31,7 @@ def api_connect(service_type, scope):
         'sheets': 'spreadsheets',
     }
     if service_type not in service_map:
-        raise Exception(f"The service type {service_type} is not supported.")
+        raise ValueError(f"The service type {service_type} is not supported.")
 
     # Make a mapping dictionary for the current versions of the APIs.
     version_map = {
@@ -43,7 +43,7 @@ def api_connect(service_type, scope):
     scope = scope.lower()
     scope_map = ['read', 'readwrite']
     if scope not in scope_map:
-        raise Exception(f"The scope {scope} is not supported.")
+        raise ValueError(f"The scope {scope} is not supported.")
 
     # Define the base system path for the API credentials.
     api_path = os.path.join('/opt', 'ssi', 'config', 'googleapi', service_type,

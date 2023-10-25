@@ -10,6 +10,7 @@ import json
 import uuid
 import datetime
 import shutil
+from functools import cache
 from deepdiff import DeepDiff
 import requests
 import yaml
@@ -21,7 +22,6 @@ from odmx.timeseries_processing import general_timeseries_processing
 from odmx.log import vprint
 from odmx.write_equipment_jsons import get_mapping,\
     gen_equipment_entry, gen_data_to_equipment_entry
-from functools import cache
 # TODO make manual qa list configurable here
 
 
@@ -30,8 +30,10 @@ class HydrovuDataSource(DataSource):
     Class for Hydrovu data source objects.
     """
 
-    def __init__(self, project_name, project_path, data_path, device_name, device_type, device_id, data_source_timezone):
-        self.data_source_path = f'{data_path}/hydrovu/{device_name}_{device_type}.csv'
+    def __init__(self, project_name,project_path, data_path, device_name,
+                 device_type, device_id, data_source_timezone):
+        self.data_source_path = (f'{data_path}/hydrovu/{device_name}_'
+                                 f'{device_type}.csv')
         self.project_name = project_name
         self.project_path = project_path
         self.device_name = device_name
@@ -45,8 +47,9 @@ class HydrovuDataSource(DataSource):
         elif device_type == 'at200':
             self.device_code = "Aqua TROLL 200 Data Logger"
         else:
-            raise Exception(f"Unknown Device type {device_type}")
-        self.equipment_directory = f'{project_path}/hydrovu/{device_name}_{device_type}'
+            raise ValueError(f"Unknown Device type {device_type}")
+        self.equipment_directory = (f'{project_path}/hydrovu/{device_name}_'
+                                    f'{device_type}')
         self.feeder_table = f'{device_name.lower()}_{device_type.lower()}'
         self.data_source_timezone = data_source_timezone
         self.param_df = pd.DataFrame([{"id": "10",
@@ -255,7 +258,7 @@ class HydrovuDataSource(DataSource):
             if not overwrite:
                 vprint(f"Skipping, {data_to_equipment_map_file} exists")
                 return
-            with open(data_to_equipment_map_file, 'r') as f:
+            with open(data_to_equipment_map_file, 'r', encoding='utf-8') as f:
                 existing_map = json.load(f)
                 deepdiff = DeepDiff(existing_map, data_to_equipment_map)
                 if deepdiff:
@@ -369,7 +372,8 @@ class HydrovuDataSource(DataSource):
                 param_data.rename(columns={'value': col_name}, inplace=True)
                 data_df = pd.concat((data_df, param_data), axis=1)
             print(data_df)
-            vprint(f"hydrovu: Data collected for {self.device_name} page {count}")
+            vprint((f"hydrovu: Data collected for {self.device_name} "
+                    f"page {count}"))
             if len(data_df) == 0:
                 break
             count += 1
@@ -424,4 +428,5 @@ class HydrovuDataSource(DataSource):
         Process ingested Hydrovu data into timeseries datastreams.
         """
         general_timeseries_processing(self, feeder_db_con, odmx_db_con,
-                                      sampling_feature_code=sampling_feature_code)
+                                      sampling_feature_code=\
+                                          sampling_feature_code)

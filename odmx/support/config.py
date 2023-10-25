@@ -8,11 +8,11 @@ import sys
 import os
 import json
 import argparse
-from beartype.typing import Union, Optional, Callable
 from collections import namedtuple
 import yaml
+from beartype.typing import Union, Optional, Callable
 from beartype import beartype
-import odmx.support.validators
+from odmx.support import validators
 
 def map_to_cli_name(name: str):
     """
@@ -56,15 +56,15 @@ class ConfigParam():
     Class representing a single configuration argument
     """
     VALIDATORS={
-            'integer': odmx.support.validators.validate_int,
-            'int': odmx.support.validators.validate_int,
-            'float': odmx.support.validators.validate_float,
-            'url': odmx.support.validators.validate_url,
-            'port': odmx.support.validators.validate_port,
-            'hostname': odmx.support.validators.validate_hostname,
-            'bool': odmx.support.validators.validate_bool,
-            'boolean': odmx.support.validators.validate_bool,
-            'enum': odmx.support.validators.validate_enum,
+            'integer': validators.validate_int,
+            'int': validators.validate_int,
+            'float': validators.validate_float,
+            'url': validators.validate_url,
+            'port': validators.validate_port,
+            'hostname': validators.validate_hostname,
+            'bool': validators.validate_bool,
+            'boolean': validators.validate_bool,
+            'enum': validators.validate_enum,
         }
 
     @beartype
@@ -282,7 +282,7 @@ class Config():
         cli_value = None
         file_value = None
         if args and cli_arg_param_name in args:
-            cli_value = args.__getattribute__(cli_arg_param_name)
+            cli_value = args.__getattribute__(cli_arg_param_name)  # pylint: disable=unnecessary-dunder-call
             self._trace(param_name, cli_value, "command line")
         for config_file in self.config_files:
             file = config_file.filename

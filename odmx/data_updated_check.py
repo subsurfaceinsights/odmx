@@ -11,7 +11,7 @@ import urllib.parse
 import datetime
 import yaml
 import pandas as pd
-import odmx.support.db as db
+from odmx.support import db
 from odmx.support.api_client import ApiClient
 import odmx.support.general as ssigen
 from odmx import odmx
@@ -46,7 +46,7 @@ def main(project_name):
     # Create the API connection.
     print("Establishing the remote API connection.")
     pull_config_file = os.path.join(config_path, 'pull_config.yml')
-    with open(pull_config_file, 'r') as f:
+    with open(pull_config_file, 'r', encoding='utf-8') as f:
         config = yaml.load(f, Loader=yaml.Loader)
     api_endpoint = urllib.parse.urlparse(
         config['UPSTREAM_API_ENDPOINT']

@@ -1,12 +1,16 @@
-from odmx.support.config import Config
-from argparse import ArgumentParser
-from odmx.log import set_verbose, vprint
-import odmx.support.db as db
-import beartype
+"""
+Basic configuration tools
+"""
 import os
+from argparse import ArgumentParser
+import beartype
+from odmx.support.config import Config
+from odmx.log import set_verbose, vprint
+from odmx.support import db
 
 @beartype.beartype
 def setup_base_config(config: Config, parser: ArgumentParser):
+    """ Setup base config object"""
     parser.add_argument('work_dir', help="Path to the work directory")
     config.add_config_param('project_name', help="The name of the project to"
                             " work with. E.g., \"testing\".")
@@ -15,6 +19,7 @@ def setup_base_config(config: Config, parser: ArgumentParser):
     db.add_db_parameters_to_config(config)
 
 def validate_config(config, parser):
+    """ Validate config object"""
     config.add_args_to_argparser(parser)
     args = parser.parse_args()
     config_file_path = os.path.join(args.work_dir, 'config.yaml')

@@ -1,10 +1,13 @@
-import odmx.support.db as db
-from odmx.support.config import Config
-from odmx.shared_conf import setup_base_config, validate_config
-from typing import TextIO
+"""
+ODMX Take snapshot
+"""
 import json
 import os
 import argparse
+from typing import TextIO
+from odmx.support import db
+from odmx.support.config import Config
+from odmx.shared_conf import setup_base_config, validate_config
 import odmx.data_model as odmx
 
 # These are covered by special handlers
@@ -76,7 +79,8 @@ def handle_sampling_features(con: db.Connection, output: TextIO):
         del alias['sampling_feature_id']
         del alias['sampling_features_aliases_id']
         sampling_feature['sampling_feature_aliases'].append(alias)
-    extension_properties = odmx.read_sampling_feature_extension_property_values(con)
+    extension_properties = \
+        odmx.read_sampling_feature_extension_property_values(con)
     for extension_property in extension_properties:
         sampling_feature = sampling_features_by_id[
                 extension_property.sampling_feature_id]
@@ -84,7 +88,8 @@ def handle_sampling_features(con: db.Connection, output: TextIO):
             sampling_feature['extension_properties'] = []
         extension_property = extension_property.to_json_dict()
         property_name = odmx.read_extension_properties_one(
-                con, property_id=extension_property['property_id']).property_name
+                con,
+                property_id=extension_property['property_id']).property_name
         extension_property['property_name'] = property_name
         del extension_property['sampling_feature_id']
         del extension_property['property_id']
@@ -105,10 +110,11 @@ def handle_sampling_features(con: db.Connection, output: TextIO):
             sampling_feature['child_sampling_features'] = []
     for sampling_feature in sampling_features:
         written += 1
-        if 'parent_sampling_feature_id' not in sampling_feature or sampling_feature['parent_sampling_feature_id'] is None:
+        if 'parent_sampling_feature_id' not in sampling_feature or \
+            sampling_feature['parent_sampling_feature_id'] is None:
             sampling_features_tree.append(sampling_feature)
         else:
-            parent = sampling_features_by_id[sampling_feature['parent_sampling_feature_id']]
+            parent = sampling_features_by_id[sampling_feature['parent_sampling_feature_id']]  # pylint: disable=line-too-long
             parent['child_sampling_features'].append(sampling_feature)
             del sampling_feature['parent_sampling_feature_id']
     json.dump(sampling_features_tree, output, indent=4)
@@ -144,6 +150,7 @@ def snapshot_table(con: db.Connection, table_name: str, output: TextIO):
 
 
 def main():
+    """ Snapshot a table to a file in JSON format"""
     config = Config("Snapshot a table to a file in JSON format.")
     parser = argparse.ArgumentParser()
     setup_base_config(config, parser)
@@ -188,16 +195,17 @@ def main():
         tables = db.get_tables(odmx_db_con)
     if config.exclude_tables:
         tables = [
-                table for table in tables if table not in config.exclude_tables.split(",")]
+                table for table in tables if table \
+                    not in config.exclude_tables.split(",")]
     for table in tables:
         if table in excluded_tables:
             continue
         if table.startswith("cv_") or table in pseudo_cvs:
-            dir = os.path.join(output_dir, "cvs")
+            directory = os.path.join(output_dir, "cvs")
         else:
-            dir = os.path.join(output_dir, "ingestion_tables")
-        filename = os.path.join(dir, f"{table}.json")
-        with open(filename, "w") as output:
+            directory = os.path.join(output_dir, "ingestion_tables")
+        filename = os.path.join(directory, f"{table}.json")
+        with open(filename, "w", encoding="utf-8") as output:
             print(f"Snapshotting table {table}")
             written = snapshot_table(odmx_db_con, table, output)
         if written == 0:
@@ -212,13 +220,15 @@ def main():
         feeder_tables = db.get_tables(odmx_db_con)
         if config.exclude_tables:
             feeder_tables = [
-                    table for table in feeder_tables if table not in config.exclude_tables.split(",")]
+                    table for table in feeder_tables if table \
+                        not in config.exclude_tables.split(",")]
         if config.tables:
             feeder_tables = [
-                    table for table in feeder_tables if table in config.tables.split(",")]
+                    table for table in feeder_tables if table \
+                        in config.tables.split(",")]
         for table in feeder_tables:
             filename = os.path.join(dump_dir, f"{table}.csv")
-            with open(filename, "wb") as output:
+            with open(filename, "wb", encoding="utf-8") as output:
                 print(f"Dumping feeder table {table}")
                 rows = db.dump_table_as_csv(odmx_db_con, table, output)
             print(f"Feeder table {table} dumped to "
