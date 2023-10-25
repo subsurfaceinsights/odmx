@@ -13308,5 +13308,27 @@
         "units_abbreviation": "PLN",
         "units_link": "http://qudt.org/vocab/unit#Zloty",
         "definition": "Poland"
+    },
+    {
+        "term": "molePerSquareMeterPerSecond",
+        "units_name": "Mole per Square Meter per Second",
+        "quantity_kind_cv": "particleFlux",
+        "conversion_multiplier": 1.0,
+        "conversion_offset": 0.0,
+        "units_id": 1211,
+        "units_abbreviation": "mol/(m^2*s)",
+        "units_link": "",
+        "definition": "Default unit for particle flux. Actual measurements are typically in \u00b5mol/m^2 s or mmol/m^2 s"
+    },
+    {
+        "term": "cubicMeterPerSecondPerSquareMeter",
+        "units_name": "Cubic Meter per Second Per Square Meter",
+        "quantity_kind_cv": "particleFlux",
+        "conversion_multiplier": 1.0,
+        "conversion_offset": 0.0,
+        "units_id": 1212,
+        "units_abbreviation": "m^3/(s*m^2)",
+        "units_link": "",
+        "definition": "Default unit for particle flux. Actual measurements are typically in \u00b5mol/m^2 s or mmol/m^2 s"
     }
 ]
