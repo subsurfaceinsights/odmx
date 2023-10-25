@@ -165,28 +165,34 @@ def add_db_parameters_to_config(config_obj: ConfigType,
         db_help_name = prefix.rstrip('_') + " "
     config_obj.add_config_param(
         prefix + 'db_user',
+        alternative='pguser',
         help=f"The {db_help_name}database user to authenticate with",
     )
     config_obj.add_config_param(
         prefix + 'db_pass',
+        alternative='pgpassword',
         help=f"The {db_help_name}database password to authenticate with",
     )
     config_obj.add_config_param(
         prefix + 'db_port',
+        alternative='pgport',
         optional=True,
         help=f"The port of the {db_help_name}database")
     config_obj.add_config_param(
         prefix + 'db_host',
+        alternative='pghost',
         help=f"The host of the {db_help_name}database")
     if add_db_schema:
         config_obj.add_config_param(
             prefix + 'db_schema',
+            alternative='pgschema',
             optional=True,
             help=f"The {db_help_name}database schema"
         )
     if add_db_name:
         config_obj.add_config_param(
             prefix + 'db_name',
+            alternative='pgname',
             optional=True,
             help=f"The {db_help_name}database name"
         )
