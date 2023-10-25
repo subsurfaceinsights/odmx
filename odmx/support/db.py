@@ -994,7 +994,7 @@ def upsert(connection: Connection, table: str, data: dict,
     return r[0]
 
 @beartype
-def query(connection: Connection, table: str, params: Optional[dict] = None, filter_none=True):
+def query(connection: Connection, table: str, params: Optional[dict] = None, filter_none=True, limit: Optional[int] = None, offset: Optional[int] = None):
     """
     Query a database and return the results as a DB cursor
     @param con A database connection
@@ -1015,10 +1015,14 @@ def query(connection: Connection, table: str, params: Optional[dict] = None, fil
     ''' + where).format(
         *[Identifier(k) for k in params.keys()],
         table=Identifier(table))
+    if limit is not None:
+        _query += SQL(' LIMIT {limit}').format(limit=limit)
+    if offset is not None:
+        _query += SQL(' OFFSET {offset}') .format(offset=offset)
     return connection.execute(_query, list(params.values()))
 
 @beartype
-def query_fuzzy(connection: Connection, table: str, params: Optional[dict] = None):
+def query_fuzzy(connection: Connection, table: str, params: Optional[dict] = None, limit: Optional[int] = None, offset: Optional[int] = None):
     """
     Query a database and return the results as a DB cursor
     @param con A database connection
@@ -1037,10 +1041,14 @@ def query_fuzzy(connection: Connection, table: str, params: Optional[dict] = Non
     ''').format(
         *[Identifier(i) for i in params.keys()],
         table=Identifier(table))
+    if limit is not None:
+        _query += SQL(' LIMIT {limit}').format(limit=limit)
+    if offset is not None:
+        _query += SQL(' OFFSET {offset}') .format(offset=offset)
     return connection.execute(_query, list(params.values()))
 
 @beartype
-def query_any(connection: Connection, table: str, params: Optional[dict] = None):
+def query_any(connection: Connection, table: str, params: Optional[dict] = None, limit: Optional[int] = None, offset: Optional[int] = None):
     """
     Query a database and return the results matching a list of parameters
     """
@@ -1063,6 +1071,10 @@ def query_any(connection: Connection, table: str, params: Optional[dict] = None)
     ''').format(
         *[Identifier(i) for i in params.keys()],
         table=Identifier(table))
+    if limit is not None:
+        _query += SQL(' LIMIT {limit}').format(limit=limit)
+    if offset is not None:
+        _query += SQL(' OFFSET {offset}') .format(offset=offset)
     complete_list = []
     for param in params:
         complete_list.extend(params[param])
@@ -1619,43 +1631,52 @@ def generate_python_class_for_db_table(
     read_param_list = ',\n             '.join(read_param_list)
     fp.write(f"def read_{snake_case_table}(\n")
     fp.write("            con: db.Connection,\n")
-    fp.write(f"            {read_param_list}) -> Generator[{camel_case_table}, None, None]:\n")
+    fp.write(f"            {read_param_list},\n")
+    fp.write("               _limit: Optional[int] = None,\n")
+    fp.write("               _offset: Optional[int] = None,\n")
+    fp.write(f"         ) -> Generator[{camel_case_table}, None, None]:\n")
     fp.write('    """\n')
     fp.write(f"    Read from the {snake_case_table} table in the database, optionally filtered by a parameter\n")
     fp.write("    Returns a generator so that not all rows are fetched in memory at once\n")
     fp.write("    @param con: database connection\n")
     fp.write(parameter_comments)
+    fp.write("    @param _limit: limit the number of rows returned. Useful for pagination\n")
+    fp.write("    @param _offset: offset the rows returned. Useful for pagination\n")
     fp.write(f"    @return generator of {camel_case_table} objects\n")
     fp.write('    """\n')
     fp.write(pack_params_to_dict)
-    fp.write(f"    result = db.query(con, '{table}', data)\n")
+    fp.write(f"    result = db.query(con, '{table}', data, limit=_limit, offset=_offset)\n")
     fp.write("    for row in result:\n")
     fp.write(f"        yield {camel_case_table}(**row.as_dict())\n\n")
     fp.write("@beartype.beartype\n")
-    fp.write(f"def read_{snake_case_table}_fuzzy(con: db.Connection, {read_param_list}) -> Generator[{camel_case_table}, None, None]:\n")
+    fp.write(f"def read_{snake_case_table}_fuzzy(con: db.Connection, {read_param_list}, _limit: Optional[int] = None, _offset: Optional[int] = None) -> Generator[{camel_case_table}, None, None]:\n")
     fp.write('    """\n')
     fp.write(f"    Read from the {snake_case_table} table in the database, optionally filtered by fuzzy parameter matching\n")
     fp.write("    Returns a generator so that not all rows are fetched in memory at once\n")
     fp.write("    @param con: database connection\n")
     fp.write(parameter_comments)
+    fp.write("    @param _limit: limit the number of rows returned. Useful for pagination\n")
+    fp.write("    @param _offset: offset the rows returned. Useful for pagination\n")
     fp.write(f"    @return generator of {camel_case_table} objects\n")
     fp.write('    """\n')
     fp.write(pack_params_to_dict)
-    fp.write(f"    result = db.query_fuzzy(con, '{table}', data)\n")
+    fp.write(f"    result = db.query_fuzzy(con, '{table}', data, limit=_limit, offset=_offset)\n")
     fp.write("    for row in result:\n")
     fp.write(f"        yield {camel_case_table}(**row.as_dict())\n\n")
     fp.write("@beartype.beartype\n")
     read_param_lists_list = ',\n             '.join(read_param_lists_list)
-    fp.write(f"def read_{snake_case_table}_any(con: db.Connection, {read_param_lists_list}) -> Generator[{camel_case_table}, None, None]:\n")
+    fp.write(f"def read_{snake_case_table}_any(con: db.Connection, {read_param_lists_list}, _limit: Optional[int] = None, _offset: Optional[int] = None) -> Generator[{camel_case_table}, None, None]:\n")
     fp.write('    """\n')
     fp.write(f"    Read from the {snake_case_table} table in the database, optionally filtered by fuzzy parameter matching\n")
     fp.write("    Returns a generator so that not all rows are fetched in memory at once\n")
     fp.write("    @param con: database connection\n")
     fp.write(parameter_comments)
+    fp.write("    @param _limit: limit the number of rows returned. Useful for pagination\n")
+    fp.write("    @param _offset: offset the rows returned. Useful for pagination\n")
     fp.write(f"    @return generator of {camel_case_table} objects\n")
     fp.write('    """\n')
     fp.write(pack_params_to_dict)
-    fp.write(f"    result = db.query_any(con, '{table}', data)\n")
+    fp.write(f"    result = db.query_any(con, '{table}', data, limit=_limit, offset=_offset)\n")
     fp.write("    for row in result:\n")
     fp.write(f"        yield {camel_case_table}(**row.as_dict())\n\n")
     fp.write("@beartype.beartype\n")
@@ -1952,7 +1973,7 @@ def reset_db(connection: Connection, name, sql_template=None):
         # Remove empty statements
         sql = [s for s in sql if s.strip()]
         for s in sql:
-            db_con.execute(s)
+            db_con.execute(s) #pyright: ignore[reportGeneralTypeIssues]
         db_con.commit()
 
 if __name__ == "__main__":
