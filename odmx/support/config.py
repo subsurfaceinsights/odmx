@@ -414,6 +414,16 @@ class Config():
         self._check_validated()
         return {key: val.get_value() for key, val in self._params.items()}
 
+    def to_env_file(self, filename):
+        """
+        Writes the configuration parameters to an environment file. This is
+        useful for passing configuration to docker containers or subprocesses
+        """
+        self._check_validated()
+        with open(filename, 'w') as file:
+            for key, val in self._params.items():
+                file.write(f"{map_to_environ_name(key)}={val.get_value()}\n")
+
     def __iter__(self):
         return iter(self.to_dict().items())
 

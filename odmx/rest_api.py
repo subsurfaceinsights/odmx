@@ -12,6 +12,7 @@ from odmx.support.config import Config
 from  odmx.support import db
 import odmx.data_model as odmx
 import urllib.parse
+import tempfile
 import traceback
 
 Scope = Dict[str, Any]
@@ -335,7 +336,8 @@ async def handle_datastreams(path_elements,
             await bad_request(send, 'Expected datastream_data/<datastream_id>')
             return
         datastream_id = int(path_elements[1])
-        con = get_connection()
+        headers = get_headers(scope)
+        con = get_connection(headers)
         query_string = scope['query_string']
         query_vars = parse_qs(query_string)
         datastream = \
@@ -584,7 +586,6 @@ async def handle_datastreams(path_elements,
 
 
 
-_ENABLE_WRITES = False
 
 
 async def handle_odmx_request(scope: Scope,
@@ -602,10 +603,11 @@ async def handle_odmx_request(scope: Scope,
     if table_class is None:
         await not_found(send, f'No entity "{entity}"')
         return
-    con = get_connection()
+    headers = get_headers(scope)
+    con = get_connection(headers)
     method = scope['method']
     if method in ('POST', 'PUT', 'PATCH', 'DELETE'):
-        if not _ENABLE_WRITES:
+        if not config.enable_writes:
             await forbidden(send, 'Writes are disabled')
             return
     if method == 'GET':
@@ -809,12 +811,23 @@ async def handle_odmx_request(scope: Scope,
         return
 
 
-def get_connection():
+def get_connection(headers):
     """ Get Connection """
-    con = db.connect(config, db_name=f'odmx_{config.project_name}')
+    project_header = config.project_name_header.lower()
+    if project_header and project_header in headers:
+        project_name = headers[project_header]
+    else:
+        project_name = config.project_name
+    con = db.connect(config, db_name=f'odmx_{project_name}')
     db.set_current_schema(con, 'odmx')
     return con
 
+def get_headers(scope) -> Dict[str, str]:
+    """ Get headers"""
+    headers = {}
+    for k, v in scope['headers']:
+        headers[k.decode('utf-8').lower()] = v.decode('utf-8')
+    return headers
 
 async def app(scope: Scope, receive: Receive, send: Send) -> None:
     """ application"""
@@ -834,7 +847,12 @@ async def app(scope: Scope, receive: Receive, send: Send) -> None:
 def setup_config():
     config = Config()
     config.add_config_param('project_name',
-                            help='Project Name to serve requests for')
+                            help='Project Name to serve requests for by default')
+    config.add_config_param('project_name_header',
+                            help='Header to use for project name in the case that'
+                                 'you are serving multiple projects from the same '
+                                 'server',
+                            default='X-Odmx-Project-Name')
     config.add_config_param('enable_writes',
                             help='Enable write operations',
                             validator='boolean',
@@ -866,12 +884,18 @@ if __name__ == '__main__':
     if args.config is not None:
         config.add_yaml_file(args.config, True, False)
     config.validate_config(args)
-    _ENABLE_WRITES = config.enable_writes
-    print(f'Enable writes: {_ENABLE_WRITES}')
+    tmp_file_path = None
+    if not config.debug:
+        # Get a tmp file name
+        tmp_file_path = tempfile.NamedTemporaryFile(delete=False).name
+        # We need to pass the config to the subprocesses
+        config_env = config.to_env_file(tmp_file_path)
+
     uvicorn.run("odmx.rest_api:app" if not config.debug else app,
                 host=config.host,
                 port=int(config.port),
-                workers=int(config.workers))
+                workers=int(config.workers),
+                env_file=tmp_file_path)
 else:
     config = setup_config()
     config.validate_config()
