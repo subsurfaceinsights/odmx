@@ -85,7 +85,7 @@ def general_timeseries_processing(ds: DataSource,
     equipment_models_df = pd.DataFrame(equipment_models_list)
 
     # Now actually process the data source.
-    print("Beginning processing of the data sources.")
+    print(f"Beginning processing of {feeder_table}.")
     # Print some initial info about the data source in question.
     # Before we do anything else, we ingest the equipment for this data source.
     # Open and validate the appropriate equipment .json file.
@@ -498,10 +498,10 @@ def create_view(odmx_con, feeder_table, view_name, unit,
         table_exists = db.does_table_exist(odmx_con, view_name)
         # If the view exits, move on.
         if table_exists:
-            vprint("The view exists. Moving on.")
+            vprint(f"The view {view_name} exists. Moving on.")
         # If the view doesn't exist, create it.
         else:
-            vprint("The view does not exist. Creating it.")
+            vprint("The view  {view_name} does not exist. Creating it.")
             # Check if the view should include the offset/multiplier unit
             # conversion or not. If so, find the conversion.
             if d2e_unit_conversion:
@@ -584,7 +584,7 @@ def materialize(odmx_con, mat_view_name, view_name,
         # Need to check to make sure that view_df has any entries. If not, it
         # means no new data exists and we can move on.
         if view_df.empty:
-            vprint("No new data exists to materialize.")
+            vprint(f"No new data exists in {view_name} to materialize.")
         else:
             # Add a qa_flag column
             if view_df.shape[1] != 3:
@@ -1103,8 +1103,7 @@ def plm_calc_datastream(odmx_con, ds_timezone,
                           view_name, sf_id,
                           d2e_acquiring_instrument_uuid):
     """
-    Create a calculated datastream for the m1_10 data source. This is meant to
-    be temporary, and replaced with a different methodology eventually.
+    Create a calculated datastream for the plm m1_10 or m3_30 data source.
     """
     # Define constants used for these calculations
     FT_TO_M = 0.3048
@@ -1171,55 +1170,63 @@ def plm_calc_datastream(odmx_con, ds_timezone,
         '''
         result = odmx_con.execute(query)
         view_df = pd.DataFrame(result.fetchall(), dtype='object')
-        view_df.columns = ['utc_time', 'data_value', 'qa_flag']
-        view_df.sort_values(by='utc_time')
-        # Do the timezone conversion.
-        view_df['utc_time'] = (pd.to_datetime(view_df['utc_time'], unit='s')
-                               .dt.tz_localize(ds_timezone, ambiguous='infer')
-                               .dt.tz_convert('UTC'))
-        # Turn it into Unix time, as that's what the db table takes.
-        view_df['utc_time'] = view_df['utc_time'].astype(np.int64) // 10**9
-        # Try to pare down to only data we care about, if possible.
-        try:
-            view_df = view_df[view_df['utc_time'] > last_mat_view_time]
-        except NameError:
-            pass
+        if view_df.empty:
+            vprint(f"No new data exists in {view_name} to materialize.")
+        else:
+            view_df.columns = ['utc_time', 'data_value', 'qa_flag']
+            view_df.sort_values(by='utc_time')
+            # Do the timezone conversion.
+            view_df['utc_time'] = (pd.to_datetime(view_df['utc_time'],
+                                                  unit='s')
+                                   .dt.tz_localize(ds_timezone,
+                                                   ambiguous='infer')
+                                   .dt.tz_convert('UTC'))
+            # Turn it into Unix time, as that's what the db table takes.
+            view_df['utc_time'] = \
+                view_df['utc_time'].astype(np.int64) // 10**9
+            # Try to pare down to only data we care about, if possible.
+            try:
+                view_df = view_df[view_df['utc_time'] > last_mat_view_time]
+            except NameError:
+                pass
 
-        # Hardcode lots of constants.
-        plm_info = plm_dict[view_name.split('_at200')[0]]
-        plm_toc = plm_info['toc']
-        plm_list = []
-        for position in plm_info['positions']:
-            plm_list.append([position['start'],
-                             position['end'],
-                             position['elevation_ft']*FT_TO_M])
+            # Hardcode lots of constants.
+            plm_info = plm_dict[view_name.split('_at200')[0]]
+            plm_toc = plm_info['toc']
+            plm_list = []
+            for position in plm_info['positions']:
+                plm_list.append([position['start'],
+                                 position['end'],
+                                 position['elevation_ft']*FT_TO_M])
 
-        # Do the actual calculation.
-        vprint("Performing calculations.")
-        vprint(f"plm_list contains: {plm_list}")
-        for i in plm_list:
-            mask = \
-                (view_df['utc_time'] >= i[0]) & (view_df['utc_time'] <= i[1])
-            view_df['data_value'] = np.where(
-                mask,
-                plm_toc - (plm_toc - i[2]) + view_df['data_value'],
-                view_df['data_value']
-            )
-        # Now apply any and all QA/QC checks.
-        view_df['data_value'] = view_df['data_value'].astype(float)
-        with db.schema_scope(odmx_con, 'odmx'):
-            # (waterLevel)
-            variable_id = odmx.read_variables_one(
-                    odmx_con, variable_term='waterLevel').variable_id
-            # (meter)
-            units_id = odmx.read_cv_units_one(odmx_con, term='meter').units_id
-        view_df = qa_checks(view_df, odmx_con, variable_id,
-                            units_id)
-        # Write the materialized view to the database.
-        vprint("Writing the materialized view to the database.")
-        db.insert_many_df(odmx_con, calc_view_name, view_df, upsert=False)
-
-        create_datastream_entry(odmx_con, calc_view_name, view_df,
-                                sf_id,
-                                d2e_acquiring_instrument_uuid, variable_id,
+            # Do the actual calculation.
+            vprint("Performing calculations.")
+            vprint(f"plm_list contains: {plm_list}")
+            for i in plm_list:
+                mask = \
+                    (view_df['utc_time'] >= i[0]) & \
+                        (view_df['utc_time'] <= i[1])
+                view_df['data_value'] = np.where(
+                    mask,
+                    plm_toc - (plm_toc - i[2]) + view_df['data_value'],
+                    view_df['data_value']
+                )
+            # Now apply any and all QA/QC checks.
+            view_df['data_value'] = view_df['data_value'].astype(float)
+            with db.schema_scope(odmx_con, 'odmx'):
+                # (waterLevel)
+                variable_id = odmx.read_variables_one(
+                        odmx_con, variable_term='waterLevel').variable_id
+                # (meter)
+                units_id = odmx.read_cv_units_one(odmx_con,
+                                                  term='meter').units_id
+            view_df = qa_checks(view_df, odmx_con, variable_id,
                                 units_id)
+            # Write the materialized view to the database.
+            vprint("Writing the materialized view to the database.")
+            db.insert_many_df(odmx_con, calc_view_name, view_df, upsert=False)
+
+            create_datastream_entry(odmx_con, calc_view_name, view_df,
+                                    sf_id,
+                                    d2e_acquiring_instrument_uuid, variable_id,
+                                    units_id)
