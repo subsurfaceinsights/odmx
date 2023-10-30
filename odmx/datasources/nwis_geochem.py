@@ -464,6 +464,7 @@ class NwisGeochemDataSource(DataSource):
                         # so we use float to test the value
                         try:
                             float(rowvalue)
+                            print(' ')
                             print(f'Parsing {odmx_cv_term} {usgs_unit} '
                                   f'{rowvalue}')
                             # we have all the data we need to parse
@@ -511,6 +512,59 @@ class NwisGeochemDataSource(DataSource):
                                           timestamp, timezone, depth_m,
                                           data_type, passed_result_id,
                                           feature_action_id,stddev)
+                            print(' ')
                         except:  # pylint: disable=bare-except
-                            print('this needs tlc', rowvalue)
+                            # these values needs to be tr
+                            # first we find the initial cases whoch quantify it
+                            # we have two cases we can have
+                            # - a measurement qualifier
+                            # - a vqc qualifier
+                            measurement_qualifier=0
+                            vqc_qualifier_case=0
+                            if('lessThan' in rowvalue):
+                                measurement_qualifier=1
+                            elif('estimated' in rowvalue):
+                                measurement_qualifier=2
+                            elif('presentButNotQuantified' in rowvalue):
+                                measurement_qualifier=3
+                            else:
+                               measurement_qualifier=4
+                               print(' ')
+                               print('this does not parse yet')
+                               print('this needs a lot of tlc', rowvalue)
+                               print(' ')
+                            # find special markings
+                            if('vqc_qualifier' in rowvalue):
+                                vqc_qualifier=True
+                                # now we find out which one it is
+                                if('vqc_qualifier_see result laboratory comment' in rowvalue):
+                                    vqc_qualifier_case=1
+                                elif('vqc_qualifier_below the reporting level but at or above the detection level' in rowvalue):
+                                    vqc_qualifier_case=2
+                                elif('vqc_qualifier_holding time exceeded_qualifier_see result laboratory comment' in rowvalue):
+                                    vqc_qualifier_case=3
+                                elif('vqc_qualifier_value extrapolated at low end' in rowvalue):
+                                    vqc_qualifier_case=4
+                                elif('vqc_qualifier_counts outside acceptable range' in rowvalue):
+                                    vqc_qualifier_case=5
+                                elif('vqc_qualifier_value extrapolated at low end_qualifier_sample was diluted' in rowvalue):
+                                    vqc_qualifier_case=6
+                                elif('vqc_qualifier_negative result may indicate potential negative bias_qualifier_see result laboratory comment' in rowvalue):
+                                    vqc_qualifier_case=7
+                                elif('vqc_qualifier_value verified by rerun, same method' in rowvalue):
+                                    vqc_qualifier_case=8
+                                elif('vqc_qualifier_sample was diluted' in rowvalue):
+                                    vqc_qualifier_case=9
+                                elif('vqc_qualifier_holding time exceeded' in rowvalue):
+                                    vqc_qualifier_case=10
+                                else:
+                                    vqc_qualifier_case=20
+                            # we now have two options
+                            # we have a
+                            if(vqc_qualifier_case==20):
+                                print('needs work vqc_qualifier_case',measurement_qualifier,vqc_qualifier_case,rowvalue)
+                            elif(measurement_qualifier==4):
+                                print('needs work measurement_qualifier',measurement_qualifier,vqc_qualifier_case,rowvalue)
+                            else:
+                                print('all good measurement_qualifier,vqc_qualifier_case',measurement_qualifier,vqc_qualifier_case,rowvalue)
         print(f'New Variables to add: {need_to_add}')
