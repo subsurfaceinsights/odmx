@@ -446,6 +446,18 @@ class NwisGeochemDataSource(DataSource):
                 # the first value is the index and the second is the timestamp
                 # (which we already read), which is why we start at 2
                 need_to_add = []
+
+                # we get the extension id for usgs properties
+                property_name = 'value_qualifier_code'
+                with odmx_db_con.transaction():
+                    con = odmx_db_con
+                    usgs_property_id = odmx.read_extension_properties_one(
+                    con,
+                    property_name=property_name).property_id
+                    assert usgs_property_id is not None 
+                    print('usgs_property_id :', usgs_property_id)
+
+
                 for rowind in range(2, data_df_columns):
                     rowvalue = data_df.iloc[index][rowind]
                     if not rowvalue == 'nan':
@@ -501,11 +513,6 @@ class NwisGeochemDataSource(DataSource):
                             passed_result_id = None
                             data_type = 'na'
                             stddev = False
-                            print('writing result')
-                            print('units_id : ', units_id)
-                            print('variable_id : ', variable_id)
-                            print('rowvalue : ', rowvalue)
-                            print('feature_action_id : ', feature_action_id)
                             # What is result_id supposed to be used for?
                             result_id = write_sample_results(odmx_db_con,
                                           units_id,variable_id, rowvalue,
@@ -517,54 +524,85 @@ class NwisGeochemDataSource(DataSource):
                             # these values needs to be tr
                             # first we find the initial cases whoch quantify it
                             # we have two cases we can have
-                            # - a measurement qualifier
-                            # - a vqc qualifier
+                            # - zero or one  measurement qualifier
+                            # - zero, one or more vqc qualifie
+                            measurement_qualifiers=['lessThan',
+                                                    'estimated',
+                                                    'presentButNotQuantified']
+                            vqc_qualifiers=['see result laboratory comment',
+                                            'below the reporting level but at or above the detection level',
+                                            'holding time exceeded_qualifier_see result laboratory comment',
+                                            'value extrapolated at low end',
+                                            'counts outside acceptable range',
+                                            'value extrapolated at low end_qualifier_sample was diluted',
+                                            'negative result may indicate potential negative bias',
+                                            'value verified by rerun, same method',
+                                            'sample was diluted',
+                                            'improper preservation',
+                                            'holding time exceeded',
+                                            'lab control sample (LCS) recovery outside of range or criteria',
+                                            'see result field comment',
+                                            'high variability, questionable precision and accuracy']
+                            vqc_qualifier=False
                             measurement_qualifier=0
                             vqc_qualifier_case=0
-                            if('lessThan' in rowvalue):
-                                measurement_qualifier=1
-                            elif('estimated' in rowvalue):
-                                measurement_qualifier=2
-                            elif('presentButNotQuantified' in rowvalue):
-                                measurement_qualifier=3
-                            else:
-                               measurement_qualifier=4
-                               print(' ')
-                               print('this does not parse yet')
-                               print('this needs a lot of tlc', rowvalue)
-                               print(' ')
-                            # find special markings
+                            mquals=[]
+                            vquals=[]
+                            mcount=0 
+                            vcount=0
+                            for item in measurement_qualifiers:
+                                    if item in rowvalue:
+                                        mcount=mcount+1
+                                        mquals.append(item)
                             if('vqc_qualifier' in rowvalue):
                                 vqc_qualifier=True
-                                # now we find out which one it is
-                                if('vqc_qualifier_see result laboratory comment' in rowvalue):
-                                    vqc_qualifier_case=1
-                                elif('vqc_qualifier_below the reporting level but at or above the detection level' in rowvalue):
-                                    vqc_qualifier_case=2
-                                elif('vqc_qualifier_holding time exceeded_qualifier_see result laboratory comment' in rowvalue):
-                                    vqc_qualifier_case=3
-                                elif('vqc_qualifier_value extrapolated at low end' in rowvalue):
-                                    vqc_qualifier_case=4
-                                elif('vqc_qualifier_counts outside acceptable range' in rowvalue):
-                                    vqc_qualifier_case=5
-                                elif('vqc_qualifier_value extrapolated at low end_qualifier_sample was diluted' in rowvalue):
-                                    vqc_qualifier_case=6
-                                elif('vqc_qualifier_negative result may indicate potential negative bias_qualifier_see result laboratory comment' in rowvalue):
-                                    vqc_qualifier_case=7
-                                elif('vqc_qualifier_value verified by rerun, same method' in rowvalue):
-                                    vqc_qualifier_case=8
-                                elif('vqc_qualifier_sample was diluted' in rowvalue):
-                                    vqc_qualifier_case=9
-                                elif('vqc_qualifier_holding time exceeded' in rowvalue):
-                                    vqc_qualifier_case=10
-                                else:
-                                    vqc_qualifier_case=20
-                            # we now have two options
-                            # we have a
-                            if(vqc_qualifier_case==20):
-                                print('needs work vqc_qualifier_case',measurement_qualifier,vqc_qualifier_case,rowvalue)
-                            elif(measurement_qualifier==4):
-                                print('needs work measurement_qualifier',measurement_qualifier,vqc_qualifier_case,rowvalue)
-                            else:
-                                print('all good measurement_qualifier,vqc_qualifier_case',measurement_qualifier,vqc_qualifier_case,rowvalue)
+                                # we try to match rowvalue with the entries
+                                for item in vqc_qualifiers:
+                                    if item in rowvalue:
+                                        vcount=vcount+1
+                                        vquals.append(item)
+                            # we have an issue that we do not have a match
+                            if(vqc_qualifier==True and vcount==0):
+                                    print(' error  - we have an undefined vqc_code')
+                                    exit('undefined vqc_code')
+                            if(mcount==0 and vcount==0):
+                                    print(' error  - mcount and vcount both 0')
+                                    print(' rowvalue: ',rowvalue)
+                                    exit('no matches')
+                            # we now iterate over the arrays and write the entries
+                            # we also still need to extract the value
+                            # we also write the value (optionally)
+                            news=rowvalue.replace('vqc_qualifier_','').replace('qualifier_','')
+                            for item in measurement_qualifiers:
+                                news=news.replace(item,'')
+                            for item in vqc_qualifiers:
+                                news=news.replace(item,'')
+                            news=news.replace('_','').replace('_','')
+                            print('news',news,'rowvalue',rowvalue)
+                            # now we will do the following
+                            # we will write a value
+                            if(news!=''):
+                             if(float(news)):
+                                result_written_id = write_sample_results(odmx_db_con,
+                                          units_id,variable_id, news,
+                                          timestamp, timezone, depth_m,
+                                          data_type, passed_result_id,
+                                          feature_action_id,stddev)
+                                # now we write the extesion values
+                                for item in mquals:
+                                    odmx.write_result_extension_property_values(
+                                         con,
+                                         result_id=result_written_id,
+                                         property_id=usgs_property_id,
+                                         property_value=item
+                                   )
+                                for item in vquals:
+                                    odmx.write_result_extension_property_values(
+                                         con,
+                                         result_id=result_written_id,
+                                         property_id=usgs_property_id,
+                                         property_value=item
+                                   )
+                             else:
+                               print('we will not write this as it is not a numberx xxxx')
         print(f'New Variables to add: {need_to_add}')
