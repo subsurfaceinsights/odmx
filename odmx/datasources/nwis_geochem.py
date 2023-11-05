@@ -448,7 +448,7 @@ class NwisGeochemDataSource(DataSource):
                 need_to_add = []
 
                 # we get the extension id for usgs properties
-                property_name = 'value_qualifier_code'
+                property_name = 'usgs_value_qualifier_code'
                 with odmx_db_con.transaction():
                     con = odmx_db_con
                     usgs_property_id = odmx.read_extension_properties_one(
@@ -513,12 +513,15 @@ class NwisGeochemDataSource(DataSource):
                             passed_result_id = None
                             data_type = 'na'
                             stddev = False
-                            # What is result_id supposed to be used for?
+                            # result_id  tells us the id in the results table so we can add other values
+                            censor_code=''
+                            quality_code=''
                             result_id = write_sample_results(odmx_db_con,
                                           units_id,variable_id, rowvalue,
                                           timestamp, timezone, depth_m,
                                           data_type, passed_result_id,
-                                          feature_action_id,stddev)
+                                          feature_action_id,stddev,
+                                          censor_code,quality_code)
                             print(' ')
                         except:  # pylint: disable=bare-except
                             # these values needs to be tr
@@ -526,6 +529,9 @@ class NwisGeochemDataSource(DataSource):
                             # we have two cases we can have
                             # - zero or one  measurement qualifier
                             # - zero, one or more vqc qualifie
+                            print('we have a non matching value: ')
+                            print('rowvalue :', rowvalue)
+
                             measurement_qualifiers=['lessThan',
                                                     'estimated',
                                                     'presentButNotQuantified']
@@ -581,13 +587,18 @@ class NwisGeochemDataSource(DataSource):
                             print('news',news,'rowvalue',rowvalue)
                             # now we will do the following
                             # we will write a value
+                            censor_code=''
+                            # as this data has issues we give it a flag of marginal so that
+                            # we can decide whether to keep it
+                            quality_code='marginal'
                             if(news!=''):
                              if(float(news)):
                                 result_written_id = write_sample_results(odmx_db_con,
                                           units_id,variable_id, news,
                                           timestamp, timezone, depth_m,
                                           data_type, passed_result_id,
-                                          feature_action_id,stddev)
+                                          feature_action_id,stddev,
+                                          censor_code,quality_code)
                                 # now we write the extesion values
                                 for item in mquals:
                                     odmx.write_result_extension_property_values(
