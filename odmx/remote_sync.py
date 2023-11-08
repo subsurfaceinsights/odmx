@@ -17,7 +17,9 @@ from multiprocessing.pool import ThreadPool
 
 def main(config):
     api = rest_client.ApiClient(config.remote_url)
-    api.add_request_header(config.project_name_header, config.project_name)
+    if config.project_name_header is not None:
+        print("Setting project name header to ", config.project_name)
+        api.add_request_header(config.project_name_header, config.project_name)
     correlation_mode = config.correlation_mode
     if correlation_mode == 'uuid':
         correlation_field = 'datastream_uuid'
@@ -99,7 +101,7 @@ if __name__ == '__main__':
                             help='The name of the header to use for the project name'
                                  ' when making requests to the remote server, if '
                                  'the REST API is configured for it',
-                            default='X-Odmx-Project-Name')
+                            optional=True)
     config.add_config_param('correlation_mode',
                             help='The correlation mode to use, "uuid" or "tablename"',
                             default='tablename')
