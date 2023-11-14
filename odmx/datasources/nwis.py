@@ -157,6 +157,8 @@ class NwisDataSource(DataSource):
         for column in data.columns:
             if '_cd' in column:
                 droplist.append(column)
+            if 'discontinued' in column:
+                droplist.append(column)
         data.drop(columns=droplist, inplace=True, errors='ignore')
         mapper = {'datetime': 'datetime'}
         for column in data.columns:
