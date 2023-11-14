@@ -154,22 +154,22 @@ class NwisDataSource(DataSource):
         # Otherwise, we examine the data.
         # If data exists, first drop qa/qc columns and 'site_no' column
         droplist = ['site_no']
+        skipped_parameters = []
         for column in data.columns:
+            if column not in list(self.param_df.index):
+                droplist.append(column)
+                skipped_parameters.append(column)
             if '_cd' in column:
                 droplist.append(column)
             if 'discontinued' in column:
                 droplist.append(column)
+                skipped_parameters.append(column)
+        vprint(f"skipped parameters: {skipped_parameters}. To keep these, "
+               "add them to the NWIS mapper")
         data.drop(columns=droplist, inplace=True, errors='ignore')
         mapper = {'datetime': 'datetime'}
         for column in data.columns:
-            try:
-                var_name = self.param_df["clean_name"][column]
-            except KeyError as e:
-                raise KeyError(
-                    f"The returned data {column} is not present in the"
-                    " NWIS module. Need to add it first."
-                ) from e
-            mapper.update({column: var_name})
+            mapper.update({column: self.param_df["clean_name"][column]})
 
         data.rename(columns=mapper, inplace=True)
 
