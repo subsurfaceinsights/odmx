@@ -329,13 +329,17 @@ class NwisGeochemDataSource(DataSource):
         site_code = self.site_code
 
         # Now we're using the column headers applied during harvest so use
-        # those for the param_dff index instead (celan_name)
+        # those for the param_dff index instead (clean_name)
         self.param_df.set_index("clean_name", inplace=True,
                                 verify_integrity=True)
 
         # we see what feeder tables we have
+        # NOTE: this returns nwis streamflow feeder tables also
         feeder_tables=db.get_tables(feeder_db_con)
-        print(feeder_tables)
+        # Only process the nwis_geochem feeder tables this way
+        feeder_tables = [x for x in feeder_tables \
+                         if x.startswith('nwis_geochem_')]
+        vprint(f"Using feeder tables {feeder_tables}")
         # we convert the name of the feeder table into the associated sampling
         # feature table
         print('iterating through feeder tables')
@@ -405,9 +409,10 @@ class NwisGeochemDataSource(DataSource):
             # we iterate over tables from 1 (first one with data) to the last
             # one we use the timestamp to create a sample name, which will be
             # parentsamplingfeaturename_geochem_date
-            for index in range(1,data_df_rows):
+            for index in range(1, data_df_rows):
                 timestamp = datetime.datetime.strptime(data_df.iloc[index][1],
                                                        '%Y-%m-%d %H:%M:%S')
+                print(f"Timestamp of type {type(timestamp)} is {timestamp}")
                 sample_date = data_df.iloc[index][1].replace(' ',
                                                            '-').replace(':',
                                                                         '-')
@@ -454,7 +459,7 @@ class NwisGeochemDataSource(DataSource):
                     usgs_property_id = odmx.read_extension_properties_one(
                     con,
                     property_name=property_name).property_id
-                    assert usgs_property_id is not None 
+                    assert usgs_property_id is not None
                     print('usgs_property_id :', usgs_property_id)
 
 
@@ -554,7 +559,7 @@ class NwisGeochemDataSource(DataSource):
                             vqc_qualifier_case=0
                             mquals=[]
                             vquals=[]
-                            mcount=0 
+                            mcount=0
                             vcount=0
                             for item in measurement_qualifiers:
                                     if item in rowvalue:
