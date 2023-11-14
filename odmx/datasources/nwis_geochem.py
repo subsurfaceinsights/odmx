@@ -412,7 +412,6 @@ class NwisGeochemDataSource(DataSource):
             for index in range(1, data_df_rows):
                 timestamp = datetime.datetime.strptime(data_df.iloc[index][1],
                                                        '%Y-%m-%d %H:%M:%S')
-                print(f"Timestamp of type {type(timestamp)} is {timestamp}")
                 sample_date = data_df.iloc[index][1].replace(' ',
                                                            '-').replace(':',
                                                                         '-')
@@ -537,23 +536,9 @@ class NwisGeochemDataSource(DataSource):
                             print('we have a non matching value: ')
                             print('rowvalue :', rowvalue)
 
-                            measurement_qualifiers=['lessThan',
-                                                    'estimated',
-                                                    'presentButNotQuantified']
-                            vqc_qualifiers=['see result laboratory comment',
-                                            'below the reporting level but at or above the detection level',
-                                            'holding time exceeded_qualifier_see result laboratory comment',
-                                            'value extrapolated at low end',
-                                            'counts outside acceptable range',
-                                            'value extrapolated at low end_qualifier_sample was diluted',
-                                            'negative result may indicate potential negative bias',
-                                            'value verified by rerun, same method',
-                                            'sample was diluted',
-                                            'improper preservation',
-                                            'holding time exceeded',
-                                            'lab control sample (LCS) recovery outside of range or criteria',
-                                            'see result field comment',
-                                            'high variability, questionable precision and accuracy']
+                            measurement_qualifiers = \
+                                list(self.remarks_df["censor_cv"])
+                            vqc_qualifiers = list(self.vqc_df["val_qual_nm"])
                             vqc_qualifier=False
                             measurement_qualifier=0
                             vqc_qualifier_case=0
@@ -589,7 +574,7 @@ class NwisGeochemDataSource(DataSource):
                             for item in vqc_qualifiers:
                                 news=news.replace(item,'')
                             news=news.replace('_','').replace('_','')
-                            print('news',news,'rowvalue',rowvalue)
+                            # print('news',news,'rowvalue',rowvalue)
                             # now we will do the following
                             # we will write a value
                             censor_code=''
