@@ -35,36 +35,9 @@ class NwisDataSource(DataSource):
         self.site_code = site_code
         self.feeder_table = f'nwis_{site_code}'
         self.equipment_directory = f'nwis/nwis_{site_code}'
-        self.param_df = pd.DataFrame([{"id": "00010",
-                                       "clean_name": "temperature",
-                                       "cv_term": "waterTemperature",
-                                       "cv_unit": "degreeCelsius"},
-                                      {"id": "00060",
-                                       "clean_name": "discharge",
-                                       "cv_term": "waterStreamDischarge",
-                                       "cv_unit": "cubicFootPerSecond"},
-                                      {"id": "00065",
-                                       "clean_name": "gage_height",
-                                       "cv_term": "waterHeightAboveSensor",
-                                       "cv_unit": "foot"},
-                                      {"id": "70969",
-                                       "clean_name": "dcp_battery_voltage",
-                                       "cv_term": "batteryVoltage",
-                                       "cv_unit": "volt"},
-                                      {"id": "00045",
-                                       "clean_name": "precipitation",
-                                       "cv_term": "rainPrecipitation",
-                                       "cv_unit": "inch"},
-                                      {"id": "00020",
-                                       "clean_name": "temperature_air",
-                                       "cv_term": "airTemperature",
-                                       "cv_unit": "degreeCelsius"},
-                                      {"id": "00095",
-                                       "clean_name": ("water_specific_"
-                                                      "conductance"),
-                                       "cv_term": "waterSpecificConductance",
-                                       "cv_unit": "microsiemenPerCentimeter"}
-                                      ])
+        self.param_df = pd.DataFrame(ssigen.open_json((project_path +
+                                            '/mappers/nwis.json')))
+        self.param_df.set_index("id", inplace=True, verify_integrity=True)
 
     def generate_equipment_jsons(self, var_names, overwrite=False):
         """
@@ -136,16 +109,6 @@ class NwisDataSource(DataSource):
         local_base_path = os.path.join(self.data_path, self.data_source_path)
         site_code = self.site_code
         tz = self.data_source_timezone
-        # Define a mapping dictionary for potential NWIS column headers.
-        headers_mapping_dict = {
-            '00010': 'temperature',
-            '00060': 'discharge',
-            '00065': 'gage_height',
-            '70969': 'dcp_battery_voltage',
-            '00045': 'precipitation',
-            '00020': 'temperature_air',
-            '00095': 'water_specific_conductance'
-        }
 
         # First check to make sure the proper directory exists.
         os.makedirs(local_base_path, exist_ok=True)
@@ -198,7 +161,7 @@ class NwisDataSource(DataSource):
         mapper = {'datetime': 'datetime'}
         for column in data.columns:
             try:
-                var_name = headers_mapping_dict[column]
+                var_name = self.param_df["clean_name"][column]
             except KeyError as e:
                 raise KeyError(
                     f"The returned data {column} is not present in the"
