@@ -8,6 +8,19 @@ targets:
     args:
       PYLINT_VER: $PYLINT_VER
       PYTEST_VER: $PYTEST_VER
+    compose:
+      odmx-pipeline:
+        image: odmx-pipeline
+    tests:
+      lint-in-docker:
+        type: docker
+        entrypoint: '/bin/bash'
+        cmd: ['-c', 'pylint odmx/*.py']
+        allow_failure: true
+      lint:
+        type: shell
+        cmd: pylint odmx/*.py
+        allow_failure: true
 
   odmx-api-v3:
     build: .
@@ -17,5 +30,27 @@ targets:
     args:
       PYLINT_VER: $PYLINT_VER
       PYTEST_VER: $PYTEST_VER
-
+    compose:
+      # ODMX v2, No longer in the stack since the move over to the open source.
+      # The last commit that can build this is 35f644ef8608e42297217a25a520f7aeb3faa133
+      odmx-api-v2:
+        image: ${PREFIX}/odmx-api:main
+        volumes:
+          - ./projects:/opt/ssi/projects
+        environment:
+          MEMCACHED_HOST: memcached
+          USER_PROJECT_API_HOST:  $PAF_API_V2
+          API_NUM_WORKERS: 4
+          DB_HOST: $ODMX_DB_HOST
+          DB_USER: $ODMX_DB_USER
+          DB_PASS: $ODMX_DB_PASS
+          ODMX_ENABLE_LBNL_LAYER: 1 # Enables lbnl_ prefix calls and override aliases
+      odmx-api-v3:
+        image: odmx-api-v3
+        volumes:
+          - ./projects:/opt/ssi/projects
+        environment:
+          DB_HOST: $ODMX_DB_HOST
+          DB_USER: $ODMX_DB_USER
+          DB_PASS: $ODMX_DB_PASS
 
