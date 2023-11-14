@@ -501,7 +501,7 @@ def create_view(odmx_con, feeder_table, view_name, unit,
             vprint(f"The view {view_name} exists. Moving on.")
         # If the view doesn't exist, create it.
         else:
-            vprint("The view  {view_name} does not exist. Creating it.")
+            vprint(f"The view {view_name} does not exist. Creating it.")
             # Check if the view should include the offset/multiplier unit
             # conversion or not. If so, find the conversion.
             if d2e_unit_conversion:
