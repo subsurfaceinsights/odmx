@@ -1859,7 +1859,7 @@ class NewColumnsException(Exception):
 
 def query_df(connection: Connection, table: str, where: Optional[dict] = None) -> DataFrame:
     """
-    Returns a table as a DataFrame, optionnally filtered by where paraemters
+    Returns a table as a DataFrame, optionally filtered by where paraemters
 
     @param con The connection to the database
     @param table THe table to query
@@ -1874,7 +1874,15 @@ def query_df(connection: Connection, table: str, where: Optional[dict] = None) -
         where_clause = "WHERE " + " AND ".join(
             [f"{quote_id(connection, k)} = {quote_val(connection, v)}" for k, v in where])
     _query = f"SELECT * FROM {table} {where_clause}"
-    return pd.read_sql(_query, connection)
+    # The following is not reliable since pandas doesn't test with dbapi
+    # connections. Instead we manually load everything into a dataframe
+    #return pd.read_sql(_query, connection)
+    with connection.cursor() as cur:
+        cur.execute(_query) #pyright: ignore[reportGeneralTypeIssues]
+        assert cur.description is not None
+        columns = [d[0] for d in cur.description]
+        data = cur.fetchall()
+    return DataFrame(data, columns=columns)
 
 def generate_json_schema_from_db_table(connection: Connection, table: str) -> dict:
     """
