@@ -1,0 +1,30 @@
+[
+    {
+        "code": "TEROS 12",
+        "name": "TEROS 12 Advanced Soil Moisture Sensor + Temperature and EC"
+    },
+    {
+        "code": "MPS-6",
+        "name": "MPS-6 Calibrated Water Potential Sensor"
+    },
+    {
+        "code": "5TE",
+        "name": "5TE Soil Moisture, Temperature and Electrical Conductivity Sensor"
+    },
+    {
+        "code": "ECT/RT-1",
+        "name": "RT1 temperature sensor"
+    },
+    {
+        "code": "TEROS 21",
+        "name": "TEROS 21 Soil Water Potential Sensor"
+    },
+    {
+        "code": "ATMOS 41",
+        "name": "ATMOS 41 All-in-One Weather Station"
+    },
+    {
+        "code": "Battery",
+        "name": "Battery"
+    }
+]

@@ -1,0 +1,98 @@
+[
+    {
+        "var_name": "Wind Direction",
+        "cv_term": "windDirection"
+    },
+    {
+        "var_name": "Wind Speed",
+        "cv_term": "windSpeed"
+    },
+    {
+        "var_name": "Matric Potential",
+        "cv_term": "soilWaterPotential"
+    },
+    {
+        "var_name": "Soil Temperature",
+        "cv_term": "soilTemperature"
+    },
+    {
+        "var_name": "Water Content",
+        "cv_term": "soilVolumetricWaterContent"
+    },
+    {
+        "var_name": "Saturation Extract EC",
+        "cv_term": "soilElectricalConductivity"
+    },
+    {
+        "var_name": "Solar Radiation",
+        "cv_term": "solarRadiationIncomingBroadband"
+    },
+    {
+        "var_name": "Precipitation",
+        "cv_term": "rainPrecipitation"
+    },
+    {
+        "var_name": "Air Temperature",
+        "cv_term": "airTemperature"
+    },
+    {
+        "var_name": "Battery Voltage",
+        "cv_term": "batteryVoltage"
+    },
+    {
+        "var_name": "Battery Percent",
+        "cv_term": "batteryCharge"
+    },
+    {
+        "var_name": "Temperature",
+        "cv_term": "soilTemperature"
+    },
+    {
+        "var_name": "atmospheric_pressure",
+        "cv_term": "airAtmosphericPressureAbsolute"
+    },
+    {
+        "var_name": "Gust Speed",
+        "cv_term": "gustSpeed"
+    },
+    {
+        "var_name": "Lightning Activity",
+        "cv_term": "lightningActivity"
+    },
+    {
+        "var_name": "Lightning Distance",
+        "cv_term": "lightningDistance"
+    },
+    {
+        "var_name": "Max Precip Rate",
+        "cv_term": "rainPrecipitationRate"
+    },
+    {
+        "var_name": "Wind Direction",
+        "cv_term": "windDirection"
+    },
+    {
+        "var_name": "Wind Speed",
+        "cv_term": "windSpeed"
+    },
+    {
+        "var_name": "RH Sensor Temp",
+        "cv_term": "systemTemperature"
+    },
+    {
+        "var_name": "Vapor Pressure",
+        "cv_term": "airVaporPressure"
+    },
+    {
+        "var_name": "VPD",
+        "cv_term": "airVaporPressureDeficit"
+    },
+    {
+        "var_name": "X-axis Level",
+        "cv_term": "instrumentOrientationX"
+    },
+    {
+        "var_name": "Y-axis Level",
+        "cv_term": "instrumentOrientationY"
+    }
+]

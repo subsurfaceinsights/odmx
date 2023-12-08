@@ -1,0 +1,54 @@
+[
+    {
+        "unit_name": "°C",
+        "cv_term": "degreeCelsius"
+    },
+    {
+        "unit_name": "mS/cm",
+        "cv_term": "millisiemenPerCentimeter"
+    },
+    {
+        "unit_name": "m³/m³",
+        "cv_term": "cubicMeterPerCubicMeter"
+    },
+    {
+        "unit_name": "kPa",
+        "cv_term": "kilopascal"
+    },
+    {
+        "unit_name": "km",
+        "cv_term": "kilometer"
+    },
+    {
+        "unit_name": "mm/h",
+        "cv_term": "millimeterPerHour"
+    },
+    {
+        "unit_name": "mm",
+        "cv_term": "millimeter"
+    },
+    {
+        "unit_name": "W/m²",
+        "cv_term": "wattPerSquareMeter"
+    },
+    {
+        "unit_name": "°",
+        "cv_term": "degree"
+    },
+    {
+        "unit_name": "m/s",
+        "cv_term": "meterPerSecond"
+    },
+    {
+        "unit_name": "%",
+        "cv_term": "percent"
+    },
+    {
+        "unit_name": "mV",
+        "cv_term": "millivolt"
+    },
+    {
+        "unit_name": "",
+        "cv_term": "unknown"
+    }
+]
