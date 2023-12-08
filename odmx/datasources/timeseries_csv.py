@@ -61,14 +61,16 @@ class TimeseriesCsvDataSource(DataSource):
         for the source. This module is written to combine all csvs from that
         folder.
 
-        Each file should have a column named 'datetime' and then distinct names
-        for each additional column.
+        Each file should have a column named 'datetime' with datetimes in the
+        timezone specified for the datasource, formatted as YYYY-MM-DD HH:MM:SS
+        and then distinct names for each additional column.
+
+        Equipment jsons must be prepared manually.
         """
 
     def ingest(self, feeder_db_con):
         """
-        Manipulate harvested gradient data in a file on the server into a
-        feeder database.
+        Manipulate harvested data in a file on the server into a feeder table.
         """
 
         # Define the file path.
@@ -121,7 +123,7 @@ class TimeseriesCsvDataSource(DataSource):
 
     def process(self, feeder_db_con, odmx_db_con, sampling_feature_code):
         """
-        Process ingested gradient data into timeseries datastreams.
+        Process ingested data into timeseries datastreams.
         """
 
         general_timeseries_processing(self, feeder_db_con, odmx_db_con,
