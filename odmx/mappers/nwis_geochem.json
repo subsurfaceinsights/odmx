@@ -1,0 +1,765 @@
+[
+    {
+        "id": "p00004",
+        "clean_name": "stream_width",
+        "cv_term": "waterStreamWidth",
+        "unit": "feet",
+        "cv_unit": "foot"
+    },
+    {
+        "id": "p00010",
+        "clean_name": "temperature_water",
+        "cv_term": "waterTemperature",
+        "unit": "degrees Celsius",
+        "cv_unit": "degreeCelsius"
+    },
+    {
+        "id": "p00025",
+        "clean_name": "barometric_pressure",
+        "cv_term": "airAtmosphericPressureAbsolute",
+        "unit": "millimeters of mercury",
+        "cv_unit": "millimeterOfMercury"
+    },
+    {
+        "id": "p00060",
+        "clean_name": "discharge_mean",
+        "cv_term": "waterStreamDischargeMean",
+        "unit": "cubic feet per second",
+        "cv_unit": "cubicFootPerSecond"
+    },
+    {
+        "id": "p00061",
+        "clean_name": "discharge_instantaneous_cfs",
+        "cv_term": "waterStreamDischarge",
+        "unit": "cubic feet per second",
+        "cv_unit": "cubicFootPerSecond"
+    },
+    {
+        "id": "p00063",
+        "clean_name": "sampling_points_count",
+        "cv_term": "samplingPointsCount",
+        "unit": "count",
+        "cv_unit": "count"
+    },
+    {
+        "id": "p00065",
+        "clean_name": "gage_height",
+        "cv_term": "waterLevel",
+        "unit": "feet",
+        "cv_unit": "foot"
+    },
+    {
+        "id": "p00095",
+        "clean_name": "specific_conductance_water_unfiltered",
+        "cv_term": "waterSpecificConductance",
+        "unit": "microsiemens per centimeter at 25 degrees Celsius",
+        "cv_unit": "microsiemenPerCentimeter"
+    },
+    {
+        "id": "p00191",
+        "clean_name": "hydrogen_ion_water_unfiltered_calculated",
+        "cv_term": "waterHydrogenIon",
+        "unit": "milligrams per liter",
+        "cv_unit": "milligramPerLiter"
+    },
+    {
+        "id": "p00300",
+        "clean_name": "dissolved_oxygen_water_unfiltered",
+        "cv_term": "OXYGEN",
+        "unit": "milligrams per liter",
+        "cv_unit": "milligramPerLiter"
+    },
+    {
+        "id": "p00301",
+        "clean_name": "percent_dissolved_oxygen_water_unfiltered",
+        "cv_term": "OXYGEN",
+        "unit": "percent of saturation",
+        "cv_unit": "percentSaturation"
+    },
+    {
+        "id": "p00400",
+        "clean_name": "ph_water_unfiltered_field",
+        "cv_term": "waterpH",
+        "unit": "standard units",
+        "cv_unit": "ph"
+    },
+    {
+        "id": "p00403",
+        "clean_name": "ph_water_unfiltered_laboratory",
+        "cv_term": "waterpH",
+        "unit": "standard units",
+        "cv_unit": "ph"
+    },
+    {
+        "id": "p00405",
+        "clean_name": "carbon_dioxide_water_unfiltered",
+        "cv_term": "waterCarbonDioxide",
+        "unit": "milligrams per liter",
+        "cv_unit": "milligramPerLiter"
+    },
+    {
+        "id": "p00452",
+        "clean_name": "carbonate_water_filtered_field",
+        "cv_term": "CARBONATE",
+        "unit": "milligrams per liter",
+        "cv_unit": "milligramPerLiter"
+    },
+    {
+        "id": "p00453",
+        "clean_name": "bicarbonate_water_field",
+        "cv_term": "waterBicarbonate",
+        "unit": "milligrams per liter",
+        "cv_unit": "milligramPerLiter"
+    },
+    {
+        "id": "p00572",
+        "clean_name": "biomass_periphyton_ash_weight",
+        "cv_term": "periphytonBiomassAshWeight",
+        "unit": "grams per square meter  ",
+        "cv_unit": "gramPerSquareMeter"
+    },
+    {
+        "id": "p00573",
+        "clean_name": "biomass_periphyton_dry_weight",
+        "cv_term": "periphytonBiomassDryWeight",
+        "unit": "grams per square meter  ",
+        "cv_unit": "gramPerSquareMeter"
+    },
+    {
+        "id": "p00600",
+        "clean_name": "total_nitrogen_water_unfiltered",
+        "cv_term": "TDN",
+        "unit": "milligrams per liter",
+        "cv_unit": "milligramPerLiter"
+    },
+    {
+        "id": "p00605",
+        "clean_name": "organic_nitrogen_water_unfiltered_as_n",
+        "cv_term": "totalOrganicNitrogen",
+        "unit": "milligrams per liter as nitrogen",
+        "cv_unit": "milligramPerLiterAsNitrogen"
+    },
+    {
+        "id": "p00608",
+        "clean_name": "ammonia_nh3_nh4_water_filtered_as_n",
+        "cv_term": "AMMONIA",
+        "unit": "milligrams per liter as nitrogen",
+        "cv_unit": "milligramPerLiterAsNitrogen"
+    },
+    {
+        "id": "p00613",
+        "clean_name": "nitrite_water_filtered_as_n",
+        "cv_term": "Nitrite",
+        "unit": "milligrams per liter as nitrogen",
+        "cv_unit": "milligramPerLiterAsNitrogen"
+    },
+    {
+        "id": "p00618",
+        "clean_name": "nitrate_water_filtered_as_n",
+        "cv_term": "Nitrate",
+        "unit": "milligrams per liter as nitrogen",
+        "cv_unit": "milligramPerLiterAsNitrogen"
+    },
+    {
+        "id": "p00625",
+        "clean_name": "ammonia_plus_organic_nitrogen_water_unfiltered",
+        "cv_term": "TKN",
+        "unit": "milligrams per liter as nitrogen",
+        "cv_unit": "milligramPerLiterAsNitrogen"
+    },
+    {
+        "id": "p00631",
+        "clean_name": "nitrate_plus_nitrite_water_filtered_as_n",
+        "cv_term": "NITRATE_NITRITE_AS_NITROGEN",
+        "unit": "milligrams per liter as nitrogen",
+        "cv_unit": "milligramPerLiterAsNitrogen"
+    },
+    {
+        "id": "p00660",
+        "clean_name": "orthophosphate_water_filtered",
+        "cv_term": "Phosphate",
+        "unit": "milligrams per liter as PO4",
+        "cv_unit": "milligramPerLiter"
+    },
+    {
+        "id": "p00665",
+        "clean_name": "phosphorus_water_unfiltered_as_p",
+        "cv_term": "Phosphorus",
+        "unit": "milligrams per liter as phosphorus",
+        "cv_unit": "milligramPerLiterAsPhosphorous"
+    },
+    {
+        "id": "p00671",
+        "clean_name": "orthophosphate_water_filtered_as_p",
+        "cv_term": "Phosphate",
+        "unit": "milligrams per liter as phosphorus",
+        "cv_unit": "milligramPerLiterAsPhosphorous"
+    },
+    {
+        "id": "p00681",
+        "clean_name": "organic_carbon_water_filtered",
+        "cv_term": "TOTAL_ORGANIC_CARBON",
+        "unit": "milligrams per liter",
+        "cv_unit": "milligramPerLiter"
+    },
+    {
+        "id": "p00900",
+        "clean_name": "hardness_water",
+        "cv_term": "HARDNESS_AS_CACO3",
+        "unit": "milligrams per liter",
+        "cv_unit": "milligramPerLiter"
+    },
+    {
+        "id": "p00915",
+        "clean_name": "calcium_water_filtered",
+        "cv_term": "Calcium",
+        "unit": "milligrams per liter",
+        "cv_unit": "milligramPerLiter"
+    },
+    {
+        "id": "p00925",
+        "clean_name": "magnesium_water_filtered",
+        "cv_term": "Magnesium",
+        "unit": "milligrams per liter",
+        "cv_unit": "milligramPerLiter"
+    },
+    {
+        "id": "p00930",
+        "clean_name": "sodium_water_filtered",
+        "cv_term": "Sodium",
+        "unit": "milligrams per liter",
+        "cv_unit": "milligramPerLiter"
+    },
+    {
+        "id": "p00931",
+        "clean_name": "sodium_water_adsorption_ratio",
+        "cv_term": "Sodium",
+        "unit": "adsorption_ratio_sar_number",
+        "cv_unit": "number"
+    },
+    {
+        "id": "p00932",
+        "clean_name": "sodium_water",
+        "cv_term": "Sodium",
+        "unit": "percent in equivalents of major cations",
+        "cv_unit": "percent"
+    },
+    {
+        "id": "p00935",
+        "clean_name": "potassium_water_filtered",
+        "cv_term": "Potassium",
+        "unit": "milligrams per liter",
+        "cv_unit": "milligramPerLiter"
+    },
+    {
+        "id": "p00940",
+        "clean_name": "chloride_water_filtered",
+        "cv_term": "Chloride",
+        "unit": "milligrams per liter",
+        "cv_unit": "milligramPerLiter"
+    },
+    {
+        "id": "p00945",
+        "clean_name": "sulfate_water_filtered",
+        "cv_term": "Sulfate",
+        "unit": "milligrams per liter",
+        "cv_unit": "milligramPerLiter"
+    },
+    {
+        "id": "p00950",
+        "clean_name": "fluoride_water_filtered",
+        "cv_term": "Fluoride",
+        "unit": "milligrams per liter",
+        "cv_unit": "milligramPerLiter"
+    },
+    {
+        "id": "p00955",
+        "clean_name": "silica_water_filtered",
+        "cv_term": "SILICA",
+        "unit": "milligrams per liter",
+        "cv_unit": "milligramPerLiter"
+    },
+    {
+        "id": "p01002",
+        "clean_name": "arsenic_water_unfiltered",
+        "cv_term": "Arsenic",
+        "unit": "micrograms per liter",
+        "cv_unit": "microgramPerLiter"
+    },
+    {
+        "id": "p01005",
+        "clean_name": "barium_water_filtered",
+        "cv_term": "Barium",
+        "unit": "micrograms per liter",
+        "cv_unit": "microgramPerLiter"
+    },
+    {
+        "id": "p01010",
+        "clean_name": "beryllium_water_filtered",
+        "cv_term": "BERYLLIUM",
+        "unit": "micrograms per liter",
+        "cv_unit": "microgramPerLiter"
+    },
+    {
+        "id": "p01015",
+        "clean_name": "bismuth_water_filtered",
+        "cv_term": "bismuth",
+        "unit": "micrograms per liter",
+        "cv_unit": "microgramPerLiter"
+    },
+    {
+        "id": "p01020",
+        "clean_name": "boron_water_filtered",
+        "cv_term": "Boron",
+        "unit": "micrograms per liter",
+        "cv_unit": "microgramPerLiter"
+    },
+    {
+        "id": "p01025",
+        "clean_name": "cadmium_water_filtered",
+        "cv_term": "Cadmium",
+        "unit": "micrograms per liter",
+        "cv_unit": "microgramPerLiter"
+    },
+    {
+        "id": "p01029",
+        "clean_name": "chromium_bed_sediment_recoverable_dry_weight",
+        "cv_term": "ChromiumSediment",
+        "unit": "micrograms per liter",
+        "cv_unit": "microgramPerLiter"
+    },
+    {
+        "id": "p01030",
+        "clean_name": "chromium_water_filtered",
+        "cv_term": "Chromium",
+        "unit": "micrograms per liter",
+        "cv_unit": "microgramPerLiter"
+    },
+    {
+        "id": "p01031",
+        "clean_name": "chromium_suspended_sediment_recoverable",
+        "cv_term": "ChromiumSediment",
+        "unit": "micrograms per liter",
+        "cv_unit": "microgramPerLiter"
+    },
+    {
+        "id": "p01032",
+        "clean_name": "chromium_vi_water_filtered",
+        "cv_term": "Chromium6",
+        "unit": "micrograms per liter as Cr",
+        "cv_unit": "microgramPerLiterAsChromium"
+    },
+    {
+        "id": "p01033",
+        "clean_name": "chromium_iii_water_unfiltered",
+        "cv_term": "Chromium3",
+        "unit": "micrograms per liter",
+        "cv_unit": "microgramPerLiter"
+    },
+    {
+        "id": "p01035",
+        "clean_name": "cobalt_water_filtered",
+        "cv_term": "Cobalt",
+        "unit": "micrograms per liter",
+        "cv_unit": "microgramPerLiter"
+    },
+    {
+        "id": "p01040",
+        "clean_name": "copper_water_filtered",
+        "cv_term": "Copper",
+        "unit": "micrograms per liter",
+        "cv_unit": "microgramPerLiter"
+    },
+    {
+        "id": "p01046",
+        "clean_name": "iron_water_filtered",
+        "cv_term": "Iron",
+        "unit": "micrograms per liter",
+        "cv_unit": "microgramPerLiter"
+    },
+    {
+        "id": "p01047",
+        "clean_name": "iron_ii_water_filtered",
+        "cv_term": "Fe(II)",
+        "unit": "micrograms per liter",
+        "cv_unit": "microgramPerLiter"
+    },
+    {
+        "id": "p01048",
+        "clean_name": "iron_ii_plus_iron_iii_water_filtered",
+        "cv_term": "Iron",
+        "unit": "micrograms per liter",
+        "cv_unit": "microgramPerLiter"
+    },
+    {
+        "id": "p01049",
+        "clean_name": "lead_water_filtered",
+        "cv_term": "Lead",
+        "unit": "micrograms per liter",
+        "cv_unit": "microgramPerLiter"
+    },
+    {
+        "id": "p01056",
+        "clean_name": "manganese_water_filtered",
+        "cv_term": "Manganese",
+        "unit": "micrograms per liter",
+        "cv_unit": "microgramPerLiter"
+    },
+    {
+        "id": "p01072",
+        "clean_name": "phosphorus_water_filtered",
+        "cv_term": "Phosphorus",
+        "unit": "micrograms per liter as phosphorus",
+        "cv_unit": "microgramPerLiterAsPhosphorous"
+    },
+    {
+        "id": "p01075",
+        "clean_name": "silver_water_filtered",
+        "cv_term": "Silver",
+        "unit": "micrograms per liter",
+        "cv_unit": "microgramPerLiter"
+    },
+    {
+        "id": "p01090",
+        "clean_name": "zinc_water_filtered",
+        "cv_term": "Zinc",
+        "unit": "micrograms per liter",
+        "cv_unit": "microgramPerLiter"
+    },
+    {
+        "id": "p01105",
+        "clean_name": "aluminum_water_unfiltered_recoverable",
+        "cv_term": "Aluminum",
+        "unit": "micrograms per liter",
+        "cv_unit": "microgramPerLiter"
+    },
+    {
+        "id": "p01106",
+        "clean_name": "aluminum_water_filtered",
+        "cv_term": "Aluminum",
+        "unit": "micrograms per liter",
+        "cv_unit": "microgramPerLiter"
+    },
+    {
+        "id": "p01300",
+        "clean_name": "oil_and_grease",
+        "cv_term": "oilAndGreaseSeverity",
+        "unit": "severity_code",
+        "cv_unit": "code"
+    },
+    {
+        "id": "p01305",
+        "clean_name": "suds_or_foam",
+        "cv_term": "sudsOrFoamSeverity",
+        "unit": "severity_code",
+        "cv_unit": "code"
+    },
+    {
+        "id": "p01320",
+        "clean_name": "floating_garbage",
+        "cv_term": "floatingGarbageSeverity",
+        "unit": "severity_code",
+        "cv_unit": "code"
+    },
+    {
+        "id": "p01325",
+        "clean_name": "floating_algae_mats",
+        "cv_term": "floatingAlgaeSeverity",
+        "unit": "severity_code",
+        "cv_unit": "code"
+    },
+    {
+        "id": "p01330",
+        "clean_name": "odor_atmospheric",
+        "cv_term": "odorAtmosphericSeverity",
+        "unit": "severity_code",
+        "cv_unit": "code"
+    },
+    {
+        "id": "p01340",
+        "clean_name": "dead_fish",
+        "cv_term": "deadFishSeverity",
+        "unit": "severity_code",
+        "cv_unit": "code"
+    },
+    {
+        "id": "p01345",
+        "clean_name": "floating_debris",
+        "cv_term": "floatingDebrisSeverity",
+        "unit": "severity_code",
+        "cv_unit": "code"
+    },
+    {
+        "id": "p01350",
+        "clean_name": "turbidity",
+        "cv_term": "waterTurbidity",
+        "unit": "severity_code",
+        "cv_unit": "code"
+    },
+    {
+        "id": "p30207",
+        "clean_name": "gage_height_above_datum",
+        "cv_term": "waterLevel",
+        "unit": "meters",
+        "cv_unit": "meter"
+    },
+    {
+        "id": "p30209",
+        "clean_name": "discharge_instantaneous",
+        "cv_term": "waterStreamDischarge",
+        "unit": "cubic meters per second",
+        "cv_unit": "cubicMeterPerSecond"
+    },
+    {
+        "id": "p31633",
+        "clean_name": "escherichia_coli_m_tec_mf_method_water",
+        "cv_term": "escherichia_coli",
+        "unit": "colony forming units per 100 milliliters",
+        "cv_unit": "colonyFormingUnitsPer100Milliliter"
+    },
+    {
+        "id": "p39086",
+        "clean_name": "alkalinity_water_filtered_field",
+        "cv_term": "TOTAL_ALKALINITY_AS_CACO3",
+        "unit": "milligrams per liter",
+        "cv_unit": "milligramPerLiter"
+    },
+    {
+        "id": "p49932",
+        "clean_name": "delta_sulfur_34_sulfur_32_of_sulfate_water_filtered",
+        "cv_term": "deltaS",
+        "unit": "per mil",
+        "cv_unit": "perMille"
+    },
+    {
+        "id": "p49954",
+        "clean_name": "biomass_periphyton_ash_free_dry_mass",
+        "cv_term": "periphytonBiomassDryWeight",
+        "unit": "grams per square meter",
+        "cv_unit": "gramPerSquareMeter"
+    },
+    {
+        "id": "p62359",
+        "clean_name": "pheophytin_a_periphyton",
+        "cv_term": "pheophytinA_periphyton",
+        "unit": "milligrams per square meter",
+        "cv_unit": "milligramPerSquareMeter"
+    },
+    {
+        "id": "p62680",
+        "clean_name": "demeclocycline_water_filtered",
+        "cv_term": "demeclocycline",
+        "unit": "micrograms per liter",
+        "cv_unit": "microgramPerLiter"
+    },
+    {
+        "id": "p63675",
+        "clean_name": "water_turbidity_unfiltered_ntu",
+        "cv_term": "waterTurbidityNTU",
+        "unit": "nephelometric turbidity units",
+        "cv_unit": "nephelometricTurbidityUnit"
+    },
+    {
+        "id": "p63676",
+        "clean_name": "2_hydroxy_4_isopropylamino_6_amino_s_triazine_water_filtered",
+        "cv_term": "2_hydroxy_4_isopropylamino_6_amino_s_triazine",
+        "unit": "micrograms per liter",
+        "cv_unit": "microgramPerLiter"
+    },
+    {
+        "id": "p63680",
+        "clean_name": "water_turbidity_unfiltered_fnu",
+        "cv_term": "waterTurbidity",
+        "unit": "formazin nephelometric units",
+        "cv_unit": "formazinNephelometricUnit"
+    },
+    {
+        "id": "p70300",
+        "clean_name": "dissolved_solids_dried_water_filtered",
+        "cv_term": "TOTAL_DISSOLVED_SOLIDS",
+        "unit": "milligrams per liter",
+        "cv_unit": "milligramPerLiter"
+    },
+    {
+        "id": "p70303",
+        "clean_name": "dissolved_solids_water_filtered",
+        "cv_term": "TOTAL_DISSOLVED_SOLIDS",
+        "unit": "short tons per acre-foot",
+        "cv_unit": "shortTonPerAcreFoot"
+    },
+    {
+        "id": "p70331",
+        "clean_name": "suspended_sediment_percent_under_0_0625",
+        "cv_term": "waterPercentSuspendedSedimentUnder0_0625mm",
+        "unit": "percent",
+        "cv_unit": "percent"
+    },
+    {
+        "id": "p70332",
+        "clean_name": "suspended_sediment_percent_under_0_125mm",
+        "cv_term": "waterPercentSuspendedSedimentUnder0_125mm",
+        "unit": "percent",
+        "cv_unit": "percent"
+    },
+    {
+        "id": "p70333",
+        "clean_name": "suspended_sediment_percent_under_0_25mm",
+        "cv_term": "waterPercentSuspendedSedimentUnder0_25mm",
+        "unit": "percent",
+        "cv_unit": "percent"
+    },
+    {
+        "id": "p70334",
+        "clean_name": "suspended_sediment_percent_under_0_5mm",
+        "cv_term": "waterPercentSuspendedSedimentUnder0_5mm",
+        "unit": "percent",
+        "cv_unit": "percent"
+    },
+    {
+        "id": "p70335",
+        "clean_name": "suspended_sediment_percent_under_1mm",
+        "cv_term": "waterPercentSuspendedSedimentUnder1mm",
+        "unit": "percent",
+        "cv_unit": "percent"
+    },
+    {
+        "id": "p70336",
+        "clean_name": "suspended_sediment_percent_under_2mm",
+        "cv_term": "waterPercentSuspendedSedimentUnder2mm",
+        "unit": "percent",
+        "cv_unit": "percent"
+    },
+    {
+        "id": "p70950",
+        "clean_name": "biomass_to_chlorophyll_ratio_periphyton",
+        "cv_term": "biomassToChlorophyllRatioPeriphyton",
+        "unit": "number",
+        "cv_unit": "number"
+    },
+    {
+        "id": "p70957",
+        "clean_name": "chlorophyll_a_periphyton",
+        "cv_term": "chorophyllA",
+        "unit": "milligrams per square meter",
+        "cv_unit": "milligramPerSquareMeter"
+    },
+    {
+        "id": "p70958",
+        "clean_name": "chlorophyll_b_periphyton",
+        "cv_term": "chorophyllB",
+        "unit": "milligrams per square meter",
+        "cv_unit": "milligramPerSquareMeter"
+    },
+    {
+        "id": "p71834",
+        "clean_name": "hydroxide_water_filtered_field",
+        "cv_term": "hydroxide",
+        "unit": "milligrams per liter",
+        "cv_unit": "milligramPerLiter"
+    },
+    {
+        "id": "p71846",
+        "clean_name": "ammonia_nh3_nh4_water_filtered",
+        "cv_term": "AMMONIA",
+        "unit": "milligrams per liter as NH4",
+        "cv_unit": "milligramPerLiter"
+    },
+    {
+        "id": "p71851",
+        "clean_name": "nitrate_water_filtered",
+        "cv_term": "Nitrate",
+        "unit": "milligrams per liter as nitrate",
+        "cv_unit": "milligramPerLiter"
+    },
+    {
+        "id": "p71856",
+        "clean_name": "nitrite_water_filtered",
+        "cv_term": "Nitrite",
+        "unit": "milligrams per liter as nitrite",
+        "cv_unit": "milligramPerLiter"
+    },
+    {
+        "id": "p71870",
+        "clean_name": "bromide_water_filtered",
+        "cv_term": "BROMIDE",
+        "unit": "milligrams per liter",
+        "cv_unit": "milligramPerLiter"
+    },
+    {
+        "id": "p80154",
+        "clean_name": "suspended_sediment_concentration",
+        "cv_term": "waterTotalSuspendedSolids",
+        "unit": "milligrams per liter",
+        "cv_unit": "milligramPerLiter"
+    },
+    {
+        "id": "p80155",
+        "clean_name": "suspended_sediment_discharge",
+        "cv_term": "waterTotalSuspendedSolids",
+        "unit": "short tons per day",
+        "cv_unit": "shortTonPerDay"
+    },
+    {
+        "id": "p81904",
+        "clean_name": "velocity_at_point_in_stream",
+        "cv_term": "waterStreamVelocity",
+        "unit": "feet per second",
+        "cv_unit": "footPerSecond"
+    },
+    {
+        "id": "p82082",
+        "clean_name": "delta_hydrogen_2_hydrogen_1_water_unfiltered",
+        "cv_term": "deltaH",
+        "unit": "per mil",
+        "cv_unit": "perMille"
+    },
+    {
+        "id": "p82085",
+        "clean_name": "delta_oxygen_18_oxygen_16_water_unfiltered",
+        "cv_term": "deltaO18",
+        "unit": "per mil",
+        "cv_unit": "perMille"
+    },
+    {
+        "id": "p82727",
+        "clean_name": "delta_oxygen_18_oxygen_16_of_sulfate_water_filtered",
+        "cv_term": "deltaO18",
+        "unit": "per mil",
+        "cv_unit": "perMille"
+    },
+    {
+        "id": "p90095",
+        "clean_name": "specific_conductance_water_unfiltered_laboratory",
+        "cv_term": "waterSpecificConductance",
+        "unit": "microsiemens per centimeter at 25 degrees Celsius",
+        "cv_unit": "microsiemenPerCentimeter"
+    },
+    {
+        "id": "p90902",
+        "clean_name": "escherichia_coli_modified_m_tec_mf_method_water",
+        "cv_term": "escherichia_coli",
+        "unit": "colony forming units per 100 milliliters",
+        "cv_unit": "colonyFormingUnitsPer100Milliliter"
+    },
+    {
+        "id": "p91157",
+        "clean_name": "suspended_sediment_total_dry_mass",
+        "cv_term": "waterDryTotalSuspendedSediment",
+        "unit": "grams",
+        "cv_unit": "gram"
+    },
+    {
+        "id": "p91158",
+        "clean_name": "suspended_sediment_under_0_063_mm_dry_mass",
+        "cv_term": "waterDrySuspendedSedimentUnder0_063mm",
+        "unit": "grams",
+        "cv_unit": "gram"
+    },
+    {
+        "id": "p91159",
+        "clean_name": "suspended_sediment_sediment_mass_over_0_063_mm_dry_mass",
+        "cv_term": "waterDrySuspendedSedimentOver0_063mm",
+        "unit": "grams",
+        "cv_unit": "gram"
+    }
+]

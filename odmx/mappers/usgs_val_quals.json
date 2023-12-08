@@ -1,0 +1,154 @@
+[
+    {
+        "val_qual_cd": "$",
+        "val_qual_nm": "incorrect sample container"
+    },
+    {
+        "val_qual_cd": "&",
+        "val_qual_nm": "biological organism estimated as dominant"
+    },
+    {
+        "val_qual_cd": "(",
+        "val_qual_nm": "blank greater than the sample-specific Critical Level"
+    },
+    {
+        "val_qual_cd": ")",
+        "val_qual_nm": "sample-specific MDC (ssMDC) above contractual MDC"
+    },
+    {
+        "val_qual_cd": "*",
+        "val_qual_nm": "sample was warm when received"
+    },
+    {
+        "val_qual_cd": "+",
+        "val_qual_nm": "improper preservation"
+    },
+    {
+        "val_qual_cd": "/",
+        "val_qual_nm": "matrix spike (MS) recovery outside of acceptable range"
+    },
+    {
+        "val_qual_cd": "=",
+        "val_qual_nm": "negative result may indicate potential negative bias"
+    },
+    {
+        "val_qual_cd": "@",
+        "val_qual_nm": "holding time exceeded"
+    },
+    {
+        "val_qual_cd": "a",
+        "val_qual_nm": "value extrapolated at high end"
+    },
+    {
+        "val_qual_cd": "b",
+        "val_qual_nm": "value extrapolated at low end"
+    },
+    {
+        "val_qual_cd": "c",
+        "val_qual_nm": "see result laboratory comment"
+    },
+    {
+        "val_qual_cd": "d",
+        "val_qual_nm": "sample was diluted"
+    },
+    {
+        "val_qual_cd": "e",
+        "val_qual_nm": "see result field comment"
+    },
+    {
+        "val_qual_cd": "f",
+        "val_qual_nm": "sample field preparation problem"
+    },
+    {
+        "val_qual_cd": "g",
+        "val_qual_nm": "count less than 0.5 percent"
+    },
+    {
+        "val_qual_cd": "h",
+        "val_qual_nm": "compound identification verified by alternate method"
+    },
+    {
+        "val_qual_cd": "i",
+        "val_qual_nm": "result may be affected by interference"
+    },
+    {
+        "val_qual_cd": "j",
+        "val_qual_nm": "count greater than or equal to 15 percent (dominant)"
+    },
+    {
+        "val_qual_cd": "k",
+        "val_qual_nm": "counts outside acceptable range"
+    },
+    {
+        "val_qual_cd": "l",
+        "val_qual_nm": "sample preparation problem"
+    },
+    {
+        "val_qual_cd": "m",
+        "val_qual_nm": "value is highly variable by this method"
+    },
+    {
+        "val_qual_cd": "n",
+        "val_qual_nm": "below the reporting level but at or above the detection level"
+    },
+    {
+        "val_qual_cd": "o",
+        "val_qual_nm": "result determined by alternate method"
+    },
+    {
+        "val_qual_cd": "p",
+        "val_qual_nm": "value reported is preferred"
+    },
+    {
+        "val_qual_cd": "q",
+        "val_qual_nm": "insufficient sample received"
+    },
+    {
+        "val_qual_cd": "r",
+        "val_qual_nm": "value verified by rerun, same method"
+    },
+    {
+        "val_qual_cd": "s",
+        "val_qual_nm": "instrument sensitivity problem"
+    },
+    {
+        "val_qual_cd": "t",
+        "val_qual_nm": "below the detection level"
+    },
+    {
+        "val_qual_cd": "u",
+        "val_qual_nm": "value reported not confirmable, interference"
+    },
+    {
+        "val_qual_cd": "v",
+        "val_qual_nm": "analyte detected in laboratory blank"
+    },
+    {
+        "val_qual_cd": "w",
+        "val_qual_nm": "high variability, questionable precision and accuracy"
+    },
+    {
+        "val_qual_cd": "x",
+        "val_qual_nm": "interference from sample matrix"
+    },
+    {
+        "val_qual_cd": "y",
+        "val_qual_nm": "sample variability described in comment"
+    },
+    {
+        "val_qual_cd": "z",
+        "val_qual_nm": "value verified by rerun, alternate method"
+    },
+    {
+        "val_qual_cd": "\\",
+        "val_qual_nm": "lab control sample (LCS) recovery outside of range or criteria"
+    },
+    {
+        "val_qual_cd": "^",
+        "val_qual_nm": "yield outside of contractually acceptable range"
+    },
+    {
+        "val_qual_cd": "~",
+        "val_qual_nm": "duplicates do not check (not within the acceptance limits)"
+    }
+]

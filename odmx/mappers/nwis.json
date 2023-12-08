@@ -1,0 +1,71 @@
+[
+    {
+        "id": "00010",
+        "clean_name": "temperature",
+        "cv_term": "waterTemperature",
+        "unit": "degrees Celsius",
+        "cv_unit": "degreeCelsius"
+    },
+    {
+        "id": "00020",
+        "clean_name": "temperature_air",
+        "cv_term": "airTemperature",
+        "unit": "degrees Celsius",
+        "cv_unit": "degreeCelsius"
+    },
+    {
+        "id": "00400",
+        "clean_name": "ph_water_unfiltered_field",
+        "cv_term": "waterpH",
+        "unit": "standard units",
+        "cv_unit": "ph"
+    },
+    {
+        "id": "00045",
+        "clean_name": "precipitation",
+        "cv_term": "rainPrecipitation",
+        "unit": "inches",
+        "cv_unit": "inch"
+    },
+    {
+        "id": "00060",
+        "clean_name": "discharge",
+        "cv_term": "waterStreamDischarge",
+        "unit": "cubic feet per second",
+        "cv_unit": "cubicFootPerSecond"},
+    {
+        "id": "00065",
+        "clean_name": "gage_height",
+        "cv_term": "waterHeightAboveSensor",
+        "unit": "feet",
+        "cv_unit": "foot"
+    },
+    {
+        "id": "00095",
+        "clean_name": "water_specific_conductance",
+        "cv_term": "waterSpecificConductance",
+        "unit": "microsiemens per centimeter at 25 degrees Celsius",
+        "cv_unit": "microsiemenPerCentimeter"
+    },
+    {
+        "id": "63675",
+        "clean_name": "water_turbidity_unfiltered_ntu",
+        "cv_term": "waterTurbidityNTU",
+        "unit": "nephelometric turbidity units",
+        "cv_unit": "nephelometricTurbidityUnit"
+    },
+    {
+        "id": "63680",
+        "clean_name": "water_turbidity_unfiltered_fnu",
+        "cv_term": "waterTurbidity",
+        "unit": "formazin nephelometric units",
+        "cv_unit": "formazinNephelometricUnit"
+    },
+    {
+        "id": "70969",
+        "clean_name": "dcp_battery_voltage",
+        "cv_term": "batteryVoltage",
+        "unit": "volts",
+        "cv_unit": "volt"
+    }
+]

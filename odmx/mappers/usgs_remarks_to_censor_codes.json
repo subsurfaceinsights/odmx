@@ -1,0 +1,38 @@
+[
+    {
+        "remark_cd": "<",
+        "censor_cv": "lessThan"
+    },
+    {
+        "remark_cd": ">",
+        "censor_cv": "greaterThan"
+    },
+    {
+        "remark_cd": "A",
+        "censor_cv": "average"
+    },
+    {
+        "remark_cd": "E",
+        "censor_cv": "estimated"
+    },
+    {
+        "remark_cd": "M",
+        "censor_cv": "presentButNotQuantified"
+    },
+    {
+        "remark_cd": "N",
+        "censor_cv": "presumptiveEvidenceOfPresence"
+    },
+    {
+        "remark_cd": "S",
+        "censor_cv": "mostProbableValue"
+    },
+    {
+        "remark_cd": "U",
+        "censor_cv": "analyzedForNonDetect"
+    },
+    {
+        "remark_cd": "V",
+        "censor_cv": "contamination"
+    }
+]
