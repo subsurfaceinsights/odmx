@@ -1349,7 +1349,7 @@ def postgres_type_to_python_type(data_type: str) -> str:
         python_type = "str"
     return python_type
 
-def delete(connection: Connection, table: str, params: Optional[dict] = None):
+def delete(con: Connection, table: str, params: Optional[dict] = None):
     """
     Delete rows from a table
     @param con A database connection
