@@ -6,7 +6,7 @@ Module for NWIS data harvesting, ingestion, and processing.
 
 import os
 import datetime
-from pkg_resources import resource_filename
+from importlib.util import find_spec
 import pandas as pd
 from dataretrieval import nwis
 from odmx.support.file_utils import open_json, open_csv
@@ -19,7 +19,7 @@ from odmx.harvesting import commit_csv
 from odmx.log import vprint
 import odmx.data_model as odmx
 
-mapper_path = resource_filename('odmx', 'mappers')
+mapper_path = find_spec("odmx.mappers").submodule_search_locations[0]
 
 class NwisGeochemDataSource(DataSource):
     """

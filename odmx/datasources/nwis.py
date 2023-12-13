@@ -6,7 +6,7 @@ Module for NWIS data harvesting, ingestion, and processing.
 
 import os
 import uuid
-from pkg_resources import resource_filename
+from importlib.util import find_spec
 import json
 import datetime
 import pandas as pd
@@ -20,7 +20,7 @@ from odmx.write_equipment_jsons import get_mapping,\
     gen_equipment_entry, gen_data_to_equipment_entry
 from odmx.log import vprint
 
-mapper_path = resource_filename('odmx', 'mappers')
+mapper_path = find_spec("odmx.mappers").submodule_search_locations[0]
 
 class NwisDataSource(DataSource):
     """

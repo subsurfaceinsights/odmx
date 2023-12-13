@@ -2,12 +2,12 @@
 ODMX json validation
 """
 import os
-from pkg_resources import resource_filename
+from importlib.util import find_spec
 import json
 import jsonschema
 from odmx.log import vprint
 
-json_schema_files = resource_filename('odmx', 'json_schema')
+json_schema_files = find_spec("odmx.json_schema").submodule_search_locations[0]
 
 def open_json(json_file, validate=True, json_schema=None):
     """

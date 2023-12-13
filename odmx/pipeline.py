@@ -8,7 +8,6 @@ ingesting, and processing data sources.
 import os
 import sys
 import argparse
-from pkg_resources import resource_filename
 import importlib
 import json
 import dataclasses
@@ -267,8 +266,11 @@ def run_pipeline(conf: Config, pipeline_work_dir: str):
         config_obj=conf,
     )
     project_db = f'odmx_{conf.project_name}'
+    # sql_dir = os.path.realpath(
+    #         f'{resource_filename("odmx", "db")}/odmsqlscript')
     sql_dir = os.path.realpath(
-            f'{resource_filename("odmx", "db")}/odmsqlscript')
+            importlib.util.find_spec(
+                "odmx.db.odmsqlscript").submodule_search_locations[0])
     odmx_sql_template = f'{sql_dir}/ODMX_Schema_Latest.sql'
     if conf.wipe_global:
         print("Wiping global feeder database.")
