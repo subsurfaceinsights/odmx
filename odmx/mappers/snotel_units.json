@@ -1,0 +1,32 @@
+[
+    {
+        "clean_name": "degf",
+        "abbreviation": "degF",
+        "cv_term": "degreeFahrenheit"
+    },
+    {
+        "clean_name": "in",
+        "abbreviation": "in",
+        "cv_term": "inch"
+    },
+    {
+        "clean_name": "v",
+        "abbreviation": "V",
+        "cv_term": "volt"
+    },
+    {
+        "clean_name": "mph",
+        "abbreviation": "mph",
+        "cv_term": "milePerHour"
+    },
+    {
+        "clean_name": "deg",
+        "abbreviation": "deg",
+        "cv_term": "degree"
+    },
+    {
+        "clean_name": "w_m2",
+        "abbreviation": "W/m^2",
+        "cv_term": "wattPerSquareMeter"
+    }
+]

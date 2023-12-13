@@ -9,13 +9,14 @@ import os
 import uuid
 import json
 import datetime
+from pkg_resources import resource_filename
 from functools import reduce
 import io
 import pandas as pd
 import numpy as np
 import isodate
 import suds.client
-from odmx.support.file_utils import open_csv
+from odmx.support.file_utils import open_csv, open_json
 from odmx.abstract_data_source import DataSource
 from odmx.timeseries_ingestion import general_timeseries_ingestion
 from odmx.timeseries_processing import general_timeseries_processing
@@ -25,6 +26,7 @@ from odmx.write_equipment_jsons import get_mapping,\
     gen_equipment_entry, gen_data_to_equipment_entry
 from odmx.log import vprint
 
+mapper_path = resource_filename('odmx', 'mappers')
 
 def get_waterml_version(suds_client):
     """Get waterML version"""
@@ -111,53 +113,12 @@ class SnotelDataSource(DataSource):
         self.data_source_path = f'{data_path}/snotel'
         self.feeder_table = station_id.replace(':', '_').lower()
         self.equipment_directory = f'snotel/{self.feeder_table}'
-        self.param_df = pd.DataFrame([{"id": "PREC_m",
-                                       "clean_name": "precipitation",
-                                       "cv_term": "rainPrecipitation"},
-                                      {"id": "SNWD_H",
-                                       "clean_name": "snow_depth",
-                                       "cv_term": "snowThickness"},
-                                      {"id": "SRADV_H",
-                                       "clean_name": "global_radiation",
-                                       "cv_term": ("solarRadiationIncoming"
-                                                   "Broadband")},
-                                      {"id": "TOBS_H",
-                                       "clean_name": "temperature",
-                                       "cv_term": "airTemperature"},
-                                      {"id": "WDIRV_H",
-                                       "clean_name": "wind_direction",
-                                       "cv_term": "windDirection"},
-                                      {"id": "WSPDV_H",
-                                       "clean_name": "wind_speed",
-                                       "cv_term": "windSpeed"},
-                                      {"id": "WTEQ_H",
-                                       "clean_name": "snow_water_equivalent",
-                                       "cv_term": "snowWaterEquivalent"},
-                                      {"id": "PRCPSA_D",
-                                       "clean_name": ("precipitation_snow"
-                                                      "_adjusted"),
-                                       "cv_term": ("rainPrecipitation"
-                                                   "SnowAdjusted")}])
+        self.param_df = pd.DataFrame(
+            open_json(f'{mapper_path}/snotel_variables.json'))
         # Using abbrevations rather than names for units because otherwise
         # we get units like "international inch"
-        self.unit_df = pd.DataFrame([{"clean_name": "degf",
-                                      "abbreviation": "degF",
-                                      "cv_term": "degreeFahrenheit"},
-                                     {"clean_name": "in",
-                                      "abbreviation": "in",
-                                      "cv_term": "inch"},
-                                     {"clean_name": "v",
-                                      "abbreviation": "V",
-                                      "cv_term": "volt"},
-                                     {"clean_name": "mph",
-                                      "abbreviation": "mph",
-                                      "cv_term": "milePerHour"},
-                                     {"clean_name": "deg",
-                                      "abbreviation": "deg",
-                                      "cv_term": "degree"},
-                                     {"clean_name": "w_m2",
-                                      "abbreviation": "W/m^2",
-                                      "cv_term": "wattPerSquareMeter"}])
+        self.unit_df = pd.DataFrame(
+            open_json(f'{mapper_path}/snotel_units.json'))
 
     def generate_equipment_jsons(self, var_names, overwrite=False):
         """

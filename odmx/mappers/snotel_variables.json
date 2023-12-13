@@ -1,0 +1,42 @@
+[
+    {
+        "id": "PREC_m",
+        "clean_name": "precipitation",
+        "cv_term": "rainPrecipitation"
+    },
+    {
+        "id": "SNWD_H",
+        "clean_name": "snow_depth",
+        "cv_term": "snowThickness"
+    },
+    {
+        "id": "SRADV_H",
+        "clean_name": "global_radiation",
+        "cv_term": "solarRadiationIncomingBroadband"
+    },
+    {
+        "id": "TOBS_H",
+        "clean_name": "temperature",
+        "cv_term": "airTemperature"
+    },
+    {
+        "id": "WDIRV_H",
+        "clean_name": "wind_direction",
+        "cv_term": "windDirection"
+    },
+    {
+        "id": "WSPDV_H",
+        "clean_name": "wind_speed",
+        "cv_term": "windSpeed"
+    },
+    {
+        "id": "WTEQ_H",
+        "clean_name": "snow_water_equivalent",
+        "cv_term": "snowWaterEquivalent"
+    },
+    {
+        "id": "PRCPSA_D",
+        "clean_name": "precipitation_snow_adjusted",
+        "cv_term": "rainPrecipitationSnowAdjusted"
+    }
+]
