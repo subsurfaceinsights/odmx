@@ -15,7 +15,7 @@ from deepdiff import DeepDiff
 import requests
 import yaml
 import pandas as pd
-import odmx.support.general as ssigen
+from odmx.support.file_utils import open_csv
 from odmx.abstract_data_source import DataSource
 from odmx.timeseries_ingestion import general_timeseries_ingestion
 from odmx.timeseries_processing import general_timeseries_processing
@@ -396,8 +396,8 @@ class HydrovuDataSource(DataSource):
         vprint(f"Reading {csv_path}")
         # Get the actual data.
         args = {'float_precision': 'high'}
-        df: pd.DataFrame = pd.DataFrame(ssigen.open_csv(csv_path, args=args,
-                                                        lock=True))
+        df: pd.DataFrame = pd.DataFrame(open_csv(csv_path, args=args,
+                                                 lock=True))
 
         # Rename all of the column headers.
         new_cols = []

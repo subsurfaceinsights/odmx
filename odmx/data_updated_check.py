@@ -13,7 +13,7 @@ import yaml
 import pandas as pd
 from odmx.support import db
 from odmx.support.api_client import ApiClient
-import odmx.support.general as ssigen
+from odmx.support.file_utils import open_json
 from odmx import odmx
 
 def main(project_name):
@@ -29,8 +29,8 @@ def main(project_name):
                                      f'{project_name}.json')
     project_meta_schema_path = os.path.join(
         os.path.dirname(odmx.__file__), 'json_schema')
-    project_meta = ssigen.open_json(project_meta_path,
-                                    validation_path=project_meta_schema_path)
+    project_meta = open_json(project_meta_path,
+                             validation_path=project_meta_schema_path)
     db_info = project_meta['databases']
 
     # Define initial constants.

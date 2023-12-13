@@ -15,7 +15,7 @@ import pandas as pd
 import numpy as np
 import isodate
 import suds.client
-import odmx.support.general as ssigen
+from odmx.support.file_utils import open_csv
 from odmx.abstract_data_source import DataSource
 from odmx.timeseries_ingestion import general_timeseries_ingestion
 from odmx.timeseries_processing import general_timeseries_processing
@@ -365,7 +365,7 @@ class SnotelDataSource(DataSource):
         file_path = os.path.join(local_base_path, file_name)
         # Create a DataFrame of the file.
         args = {'float_precision': 'high', }
-        df = ssigen.open_csv(file_path, args=args, lock=True)
+        df = open_csv(file_path, args=args, lock=True)
 
         # Turn the datetime column into an actual datetime, and sort by it.
         df['timestamp'] = pd.to_datetime(df['timestamp'], format='ISO8601')

@@ -10,7 +10,7 @@ import deepdiff
 import odmx.support.config as ssiconf
 from odmx.support import db
 import odmx.data_model as odmx
-import odmx.support.general as ssigen
+from odmx.support.file_utils import get_files
 from odmx.log import vprint
 from odmx.json_validation import open_json
 
@@ -37,14 +37,12 @@ def populate_base_tables(odmx_db_con: db.Connection,
         # need to be ingested in a certain order (also need to decide how
         #  they're meant to link together).
         # "global" ingestion tables order.
-        global_it_files, global_it_paths = ssigen.get_files(global_it_path,
-                                                            'json')
+        global_it_files, global_it_paths = get_files(global_it_path, 'json')
         global_it_order = ['organizations.json', 'persons.json',
                            'affiliations.json', 'equipment_models.json']
         # Same deal for the project specific files. Some need to be ingested
         # before others.
-        project_it_files, project_it_paths = ssigen.get_files(project_it_path,
-                                                              'json')
+        project_it_files, project_it_paths = get_files(project_it_path, 'json')
         # Begin with a dedicated starting order, regardless of whether that
         # file exists.
         starting_order = ['features_of_interest.json',

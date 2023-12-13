@@ -6,7 +6,7 @@ Module for WeatherFlow data harvesting, ingestion, and processing.
 
 import os
 import pandas as pd
-import odmx.support.general as ssigen
+from odmx.support.file_utils import get_files, open_csv
 from odmx.abstract_data_source import DataSource
 from odmx.harvesting import simple_rsync
 from odmx.timeseries_ingestion import general_timeseries_ingestion
@@ -49,12 +49,12 @@ class WeatherflowDataSource(DataSource):
         # Define the file path.
         file_path = os.path.join(self.shared_info['data_source_path'])
         # Log the .csv files.
-        csv_paths = ssigen.get_files(file_path, '.csv')[1]
+        csv_paths = get_files(file_path, '.csv')[1]
         # Create a DataFrame for all of the files.
         dfs = []
         for csv_path in csv_paths:
             args = {'float_precision': 'high',}
-            df = ssigen.open_csv(csv_path, args=args, lock=True)
+            df = open_csv(csv_path, args=args, lock=True)
             # One of the WeatherFlow data headers has commas in it, and as such
             # is read in improperly above. We fix that here.
             for i, col in enumerate(df.columns.tolist()):

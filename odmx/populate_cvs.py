@@ -5,7 +5,7 @@ Read controlled vocabulary (CV) data from .json files into an ODMX database.
 """
 
 import os
-import odmx.support.general as ssigen
+from odmx.support.file_utils import get_files
 from odmx.support import db
 import odmx.data_model as odmx
 from odmx.log import vprint
@@ -30,7 +30,7 @@ def populate_cvs(odmx_db_con: db.Connection, project_path: str):
         vprint('There are no custom CVs for this project')
         return
     # Find all of the CV .json files.
-    cv_files, cv_paths = ssigen.get_files(cvs_path, 'json')
+    cv_files, cv_paths = get_files(cvs_path, 'json')
 
     # Run through each CV .json file.
     for i, cv in enumerate(cv_files):

@@ -10,7 +10,7 @@ import json
 import datetime
 import pandas as pd
 from dataretrieval import nwis
-import odmx.support.general as ssigen
+from odmx.support.file_utils import open_csv, open_json
 from odmx.abstract_data_source import DataSource
 from odmx.timeseries_ingestion import general_timeseries_ingestion
 from odmx.timeseries_processing import general_timeseries_processing
@@ -35,7 +35,7 @@ class NwisDataSource(DataSource):
         self.site_code = site_code
         self.feeder_table = f'nwis_{site_code}'
         self.equipment_directory = f'nwis/nwis_{site_code}'
-        self.param_df = pd.DataFrame(ssigen.open_json((project_path +
+        self.param_df = pd.DataFrame(open_json((project_path +
                                             '/mappers/nwis.json')))
         self.param_df.set_index("id", inplace=True, verify_integrity=True)
 
@@ -121,7 +121,7 @@ class NwisDataSource(DataSource):
         if os.path.isfile(file_path):
             # Grab the data from the server.
             args = {'parse_dates': [0], }
-            server_df = ssigen.open_csv(file_path, args=args, lock=True)
+            server_df = open_csv(file_path, args=args, lock=True)
             # Find the latest timestamp.
             last_server_time = server_df['datetime'].max()
             if isinstance(last_server_time, str):
@@ -209,7 +209,7 @@ class NwisDataSource(DataSource):
         file_path = os.path.join(local_base_path, file_name)
         # Create a DataFrame of the file.
         args = {'float_precision': 'high', }
-        df = ssigen.open_csv(file_path, args=args, lock=True)
+        df = open_csv(file_path, args=args, lock=True)
 
         # Make sure the column headers are lower case.
         df.columns = df.columns.str.lower()

@@ -6,9 +6,10 @@ Module for NWIS data harvesting, ingestion, and processing.
 
 import os
 import datetime
+from pkg_resources import resource_filename
 import pandas as pd
 from dataretrieval import nwis
-import odmx.support.general as ssigen
+from odmx.support.file_utils import open_json, open_csv
 import odmx.support.db as db
 from odmx.abstract_data_source import DataSource
 from odmx.timeseries_ingestion import add_columns
@@ -18,6 +19,7 @@ from odmx.harvesting import commit_csv
 from odmx.log import vprint
 import odmx.data_model as odmx
 
+mapper_path = resource_filename('odmx', 'mappers')
 
 class NwisGeochemDataSource(DataSource):
     """
@@ -33,15 +35,15 @@ class NwisGeochemDataSource(DataSource):
         self.data_source_path = 'nwis_geochem'
         self.site_code = site_code
         self.feeder_table = f'nwis_geochem_{site_code}'
-        self.param_df = pd.DataFrame(ssigen.open_json((project_path +
+        self.param_df = pd.DataFrame(open_json((project_path +
                                             '/mappers/nwis_geochem.json')))
         self.remarks_df = pd.DataFrame(
-            ssigen.open_json((f"{project_path}/mappers/"
+            open_json((f"{project_path}/mappers/"
                              "usgs_remarks_to_censor_codes.json")))
         self.remarks_df.set_index("remark_cd", inplace=True,
                                   verify_integrity=True)
         self.vqc_df = pd.DataFrame(
-            ssigen.open_json((f"{project_path}/mappers/usgs_val_quals.json")))
+            open_json((f"{project_path}/mappers/usgs_val_quals.json")))
         self.vqc_df.set_index("val_qual_cd", inplace=True,
                                   verify_integrity=True)
 
@@ -128,7 +130,7 @@ class NwisGeochemDataSource(DataSource):
         if os.path.isfile(file_path):
             # Grab the data from the server.
             args = {'parse_dates': [0], 'header': [0,1]}
-            server_df = ssigen.open_csv(file_path, args=args, lock=True)
+            server_df = open_csv(file_path, args=args, lock=True)
             # Find the latest timestamp.
             last_server_time = server_df['datetime'].max()['timestamp']
             if isinstance(last_server_time, str):
@@ -215,7 +217,7 @@ class NwisGeochemDataSource(DataSource):
         file_path = os.path.join(local_base_path, file_name)
         # Create a DataFrame of the file.
         args = {'float_precision': 'high', 'header': [0,1]}
-        df = ssigen.open_csv(file_path, args=args, lock=True)
+        df = open_csv(file_path, args=args, lock=True)
 
         # clean up remarks and qualifier codes in results
         df = df.applymap(self.apply_annotations)

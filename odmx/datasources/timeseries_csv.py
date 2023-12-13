@@ -8,7 +8,7 @@ TODO - add equipment json generation
 
 import os
 import pandas as pd
-import odmx.support.general as ssigen
+from odmx.support.file_utils import get_files, open_csv
 from odmx.abstract_data_source import DataSource
 from odmx.timeseries_ingestion import general_timeseries_ingestion
 from odmx.timeseries_processing import general_timeseries_processing
@@ -77,7 +77,7 @@ class TimeseriesCsvDataSource(DataSource):
                                 self.data_source_name)
 
         # Find all csvs in the path for this data source
-        csv_paths_list = ssigen.get_files(file_path, '.csv')[1]
+        csv_paths_list = get_files(file_path, '.csv')[1]
 
         dfs = []
         for site_path in csv_paths_list:
@@ -86,7 +86,7 @@ class TimeseriesCsvDataSource(DataSource):
                 'infer_datetime_format': True,
                 'float_precision': 'high',
             }
-            df = ssigen.open_csv(site_path, args=args, lock=True)
+            df = open_csv(site_path, args=args, lock=True)
 
             # Make sure we have a datetime column, report error if not
             if 'datetime' not in df.columns.tolist():
