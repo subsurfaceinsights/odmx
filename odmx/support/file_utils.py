@@ -10,7 +10,7 @@ import json
 import filelock
 import jsonschema
 import pandas as pd
-import DeepDiff
+from deepdiff import DeepDiff
 from odmx.log import vprint
 
 def clean_name(col):

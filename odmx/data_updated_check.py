@@ -6,6 +6,7 @@ datasource_description table.
 """
 
 import os
+from pkg_resources import resource_filename
 import argparse
 import urllib.parse
 import datetime
@@ -27,8 +28,7 @@ def main(project_name):
     # Open and validate the project metadata .json file.
     project_meta_path = os.path.join(ssi_path, 'projects', project_name,
                                      f'{project_name}.json')
-    project_meta_schema_path = os.path.join(
-        os.path.dirname(odmx.__file__), 'json_schema')
+    project_meta_schema_path = resource_filename('odmx', 'json_schema')
     project_meta = open_json(project_meta_path,
                              validation_path=project_meta_schema_path)
     db_info = project_meta['databases']

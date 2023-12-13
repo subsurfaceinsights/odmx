@@ -35,15 +35,14 @@ class NwisGeochemDataSource(DataSource):
         self.data_source_path = 'nwis_geochem'
         self.site_code = site_code
         self.feeder_table = f'nwis_geochem_{site_code}'
-        self.param_df = pd.DataFrame(open_json((project_path +
-                                            '/mappers/nwis_geochem.json')))
+        self.param_df = pd.DataFrame(
+            open_json(f'{mapper_path}/nwis_geochem.json'))
         self.remarks_df = pd.DataFrame(
-            open_json((f"{project_path}/mappers/"
-                             "usgs_remarks_to_censor_codes.json")))
+            open_json(f'{mapper_path}/usgs_remarks_to_censor_codes.json'))
         self.remarks_df.set_index("remark_cd", inplace=True,
                                   verify_integrity=True)
         self.vqc_df = pd.DataFrame(
-            open_json((f"{project_path}/mappers/usgs_val_quals.json")))
+            open_json(f'{mapper_path}/usgs_val_quals.json'))
         self.vqc_df.set_index("val_qual_cd", inplace=True,
                                   verify_integrity=True)
 

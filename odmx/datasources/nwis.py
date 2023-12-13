@@ -6,6 +6,7 @@ Module for NWIS data harvesting, ingestion, and processing.
 
 import os
 import uuid
+from pkg_resources import resource_filename
 import json
 import datetime
 import pandas as pd
@@ -19,6 +20,7 @@ from odmx.write_equipment_jsons import get_mapping,\
     gen_equipment_entry, gen_data_to_equipment_entry
 from odmx.log import vprint
 
+mapper_path = resource_filename('odmx', 'mappers')
 
 class NwisDataSource(DataSource):
     """
@@ -35,8 +37,7 @@ class NwisDataSource(DataSource):
         self.site_code = site_code
         self.feeder_table = f'nwis_{site_code}'
         self.equipment_directory = f'nwis/nwis_{site_code}'
-        self.param_df = pd.DataFrame(open_json((project_path +
-                                            '/mappers/nwis.json')))
+        self.param_df = pd.DataFrame(open_json(f'{mapper_path}/nwis.json'))
         self.param_df.set_index("id", inplace=True, verify_integrity=True)
 
     def generate_equipment_jsons(self, var_names, overwrite=False):
