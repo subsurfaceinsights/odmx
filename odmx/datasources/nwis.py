@@ -16,8 +16,8 @@ from odmx.abstract_data_source import DataSource
 from odmx.timeseries_ingestion import general_timeseries_ingestion
 from odmx.timeseries_processing import general_timeseries_processing
 from odmx.harvesting import commit_csv
-from odmx.write_equipment_jsons import get_mapping,\
-    gen_equipment_entry, gen_data_to_equipment_entry
+from odmx.write_equipment_jsons import gen_equipment_entry,\
+    gen_data_to_equipment_entry, check_diff_and_write_new
 from odmx.log import vprint
 
 mapper_path = find_spec("odmx.mappers").submodule_search_locations[0]
@@ -40,7 +40,7 @@ class NwisDataSource(DataSource):
         self.param_df = pd.DataFrame(open_json(f'{mapper_path}/nwis.json'))
         self.param_df.set_index("id", inplace=True, verify_integrity=True)
 
-    def generate_equipment_jsons(self, var_names, overwrite=False):
+    def generate_equipment_jsons(self, var_names, start, overwrite=False):
         """
         Generate equipment.json and data_to_equipment.json
         """
@@ -49,6 +49,7 @@ class NwisDataSource(DataSource):
         equip_dir = self.equipment_directory
         file_path = (f"{self.project_path}/odmx/"
                      f"equipment/{equip_dir}")
+        lookup_df = self.param_df.set_index("clean_name")
         if os.path.exists(file_path) and not overwrite:
             return
         os.makedirs(file_path, exist_ok=True)
@@ -61,14 +62,8 @@ class NwisDataSource(DataSource):
                 expose_as_ds = False
             else:
                 var_domain_cv = "instrumentMeasurement"
-                variable_term = get_mapping(mapper=self.param_df,
-                                            lookup_target='cv_term',
-                                            lookup_key='clean_name',
-                                            lookup_obj=name)
-                unit = get_mapping(mapper=self.param_df,
-                                   lookup_target='cv_unit',
-                                   lookup_key='clean_name',
-                                   lookup_obj=name)
+                variable_term = lookup_df['cv_term'][name]
+                unit = lookup_df['cv_unit'][name]
                 expose_as_ds = True
             if variable_term is None:
                 continue
@@ -87,8 +82,6 @@ class NwisDataSource(DataSource):
             json.dump(data_to_equipment_map, f,
                       ensure_ascii=False, indent=4)
 
-        # FIXME: Why is the start hardcoded?
-        start = 1420070400
         equipment_entry = gen_equipment_entry(
             acquiring_instrument_uuid=dev_uuid,
             name="unknown sensor",
@@ -222,7 +215,8 @@ class NwisDataSource(DataSource):
         df.reset_index(drop=True, inplace=True)
 
         new_cols = df.columns.tolist()
-        self.generate_equipment_jsons(new_cols, overwrite=True)
+        start = int(df.iloc[-1]['timestamp'].timestamp())
+        self.generate_equipment_jsons(new_cols, start, overwrite=True)
 
         # The rest of the ingestion is generic.
         general_timeseries_ingestion(feeder_db_con,

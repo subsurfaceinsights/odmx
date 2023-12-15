@@ -22,8 +22,8 @@ from odmx.timeseries_ingestion import general_timeseries_ingestion
 from odmx.timeseries_processing import general_timeseries_processing
 from odmx.harvesting import commit_csv
 from odmx.parse_waterml import parse_site_values, parse_sites
-from odmx.write_equipment_jsons import get_mapping,\
-    gen_equipment_entry, gen_data_to_equipment_entry
+from odmx.write_equipment_jsons import gen_equipment_entry,\
+    gen_data_to_equipment_entry
 from odmx.log import vprint
 
 mapper_path = find_spec("odmx.mappers").submodule_search_locations[0]
@@ -115,10 +115,14 @@ class SnotelDataSource(DataSource):
         self.equipment_directory = f'snotel/{self.feeder_table}'
         self.param_df = pd.DataFrame(
             open_json(f'{mapper_path}/snotel_variables.json'))
+        self.param_df.set_index('clean_name', inplace=True,
+                                verify_integrity=True)
         # Using abbrevations rather than names for units because otherwise
         # we get units like "international inch"
         self.unit_df = pd.DataFrame(
             open_json(f'{mapper_path}/snotel_units.json'))
+        self.unit_df.set_index('clean_name', inplace=True,
+                               verify_integrity=True)
 
     def generate_equipment_jsons(self, var_names, overwrite=False):
         """
@@ -142,14 +146,8 @@ class SnotelDataSource(DataSource):
             else:
                 name, unit_name = column_name.split("[")
                 var_domain_cv = "instrumentMeasurement"
-                variable_term = get_mapping(mapper=self.param_df,
-                                            lookup_target='cv_term',
-                                            lookup_key='clean_name',
-                                            lookup_obj=name)
-                unit = get_mapping(mapper=self.unit_df,
-                                   lookup_target='cv_term',
-                                   lookup_key='clean_name',
-                                   lookup_obj=unit_name[:-1])
+                variable_term = self.param_df['cv_term'][name]
+                unit = self.unit_df['cv_term'][unit_name[:-1]]
                 expose_as_ds = True
             if variable_term is None:
                 continue
@@ -247,7 +245,7 @@ class SnotelDataSource(DataSource):
             print(f"No data returned for SNOTEL site {station_id}.\n")
             return
         # Cull the list down to hourly variables that we're interested in.
-        vars_we_want = [val[0] for val in self.param_df.values]
+        vars_we_want = list(self.param_df['id'])
         vars_dict = {}
         for key, value in variables.items():
             if key.split(':')[-1] in vars_we_want:

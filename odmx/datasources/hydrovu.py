@@ -20,8 +20,8 @@ from odmx.abstract_data_source import DataSource
 from odmx.timeseries_ingestion import general_timeseries_ingestion
 from odmx.timeseries_processing import general_timeseries_processing
 from odmx.log import vprint
-from odmx.write_equipment_jsons import get_mapping,\
-    gen_equipment_entry, gen_data_to_equipment_entry
+from odmx.write_equipment_jsons import gen_equipment_entry,\
+    gen_data_to_equipment_entry
 # TODO make manual qa list configurable here
 
 
@@ -156,6 +156,7 @@ class HydrovuDataSource(DataSource):
                                        "nice_name": "Level: Elevation",
                                        "clean_name": "level_elevation",
                                        "cv_term": None}])
+        self.param_df.set_index('id', inplace=True, verify_integrity=True)
 
         self.unit_df = pd.DataFrame([{"id": "194",
                                       "nice_name": "NTU",
@@ -213,6 +214,7 @@ class HydrovuDataSource(DataSource):
                                       "nice_name": "Ω-cm",
                                       "clean_name": "ohm_cm",
                                       "cv_term": "ohmCentimeter"}])
+        self.unit_df.set_index('id', inplace=True, verify_integrity=True)
 
     # TODO this shuold be moved to a more general location
     def generate_equipment_jsons(self,
@@ -226,6 +228,10 @@ class HydrovuDataSource(DataSource):
         file_path = self.equipment_directory
         os.makedirs(file_path, exist_ok=True)
         data_to_equipment_map = []
+        # There are two ids with clean_name "density" but both map to the same
+        # cv term, so don't check for duplicates (doesn't matter)
+        param_lookup = self.param_df.set_index('clean_name')
+        unit_lookup = self.unit_df.set_index('clean_name')
         for column_name in var_names:
             if 'timestamp' in column_name:
                 variable_domain_cv = "instrumentTimestamp"
@@ -235,14 +241,8 @@ class HydrovuDataSource(DataSource):
             else:
                 name, unit_name = column_name.split("[")
                 variable_domain_cv = "instrumentMeasurement"
-                variable_term = get_mapping(mapper=self.param_df,
-                                            lookup_target='cv_term',
-                                            lookup_key='clean_name',
-                                            lookup_obj=name)
-                unit = get_mapping(mapper=self.unit_df,
-                                   lookup_target='cv_term',
-                                   lookup_key='clean_name',
-                                   lookup_obj=unit_name[:-1])
+                variable_term = param_lookup['cv_term'][name]
+                unit = unit_lookup['cv_term'][unit_name[:-1]]
                 expose_as_datastream = True
             if variable_term is None:
                 continue
@@ -356,14 +356,8 @@ class HydrovuDataSource(DataSource):
             # vprint('data[parameters] : ', data['parameters'])
             for param in data['parameters']:
                 # vprint('param : ', param)
-                nice_name = get_mapping(mapper=self.param_df,
-                                        lookup_target='nice_name',
-                                        lookup_key='id',
-                                        lookup_obj=param['parameterId'])
-                nice_unit = get_mapping(mapper=self.unit_df,
-                                        lookup_target='nice_name',
-                                        lookup_key='id',
-                                        lookup_obj=param['unitId'])
+                nice_name = self.param_df['nice_name'][param['parameterId']]
+                nice_unit = self.unit_df['nice_name'][param['unitId']]
                 col_name = f"{nice_name}[{nice_unit}]"
                 readings = param['readings']
                 param_data = pd.DataFrame(readings,
