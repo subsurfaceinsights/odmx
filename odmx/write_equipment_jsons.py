@@ -3,8 +3,18 @@
 """
 TODO Make these classes with a to_json method
 """
+import os
+import uuid
+import shutil
+import json
+import datetime
+from importlib.util import find_spec
+import pandas as pd
+from deepdiff import DeepDiff
 from odmx.log import vprint
+from odmx.support.file_utils import open_json
 
+json_schema_files = find_spec("odmx.json_schema").submodule_search_locations[0]
 
 def gen_data_to_equipment_entry(column_name, var_domain_cv,
                                 acquiring_instrument_uuid, variable_term,
@@ -117,36 +127,34 @@ def gen_equipment_entry(acquiring_instrument_uuid, code, name, serial_number,
     }
 
 
-def get_mapping(mapper,
-                lookup_target,
-                lookup_key,
-                lookup_obj,
-                verbose=False):
+def check_existing_equipment(equip_file):
+    if os.path.isfile(equip_file):
+        equip_schema = os.path.join(json_schema_files,
+                                    os.path.basename(equip_file).replace(
+                                        '.json', '_schema.json'))
+        equipment = open_json(equip_file,
+                              validation_path=equip_schema)[0]
+        base_uuid = equipment['equipment_uuid']
+        rel_start = equipment['position_start_date_utc']
+        child_equipment = equipment['equipment']
+        child_df = pd.DataFrame(equipment['equipment'])
+
+
+def check_diff_and_write_new(new_data, existing_file):
     """
-    Retrieve mapping to CV or friendly name for a unit or variable.
-
-    @param lookup_target Identifier to return
-            options: 'cv_term', 'nice_name', 'id'
-    @param lookup_key Type of object used for lookup
-                        ('nice_name', 'cv_term', or 'id')
-    @param lookup_obj Handle to use for lookup (name, ID, or CV)
+    Check if data to equipment map file has changed
     """
-    # print out come parameters
-    if verbose:
-        vprint(' lookup target : ', lookup_target)
-        vprint(' lookup key   : ', lookup_key)
-        vprint(' lookup obj    : ', lookup_obj)
-
-    mapper_keys = set(mapper.columns)
-    if lookup_target not in mapper_keys:
-        raise ValueError(f"Invalid lookup target: {lookup_target}")
-    if lookup_key not in mapper_keys:
-        raise ValueError(f"Invalid lookup key: {lookup_key}")
-
-    obj = mapper[mapper[lookup_key] == lookup_obj]
-
-    if obj.empty:
-        raise ValueError(f"Invalid lookup object: {lookup_key} "
-                         f"{lookup_obj} not found in mapper")
-    alt_name = obj[lookup_target].array[0]
-    return alt_name
+    if os.path.exists(existing_file):
+        with open(existing_file, 'r', encoding='utf-8') as f:
+            existing_map = json.load(f)
+            deepdiff = DeepDiff(existing_map, new_data)
+            if deepdiff:
+                # print(f"Existing map differs from new map: {deepdiff}")
+                print("Backing up existing json")
+                date_str = datetime.datetime.now().strftime("%Y%m%d")
+                shutil.copyfile(existing_file,
+                            f"{existing_file}.{date_str}.bak")
+                with open(existing_file, 'w', encoding='utf-8') as f:
+                    json.dump(new_data, f, ensure_ascii=False, indent=4)
+            else:
+                vprint(f"Skipping update of {existing_file}, no changes")

@@ -4,14 +4,10 @@
 File utilities for the ODMX package
 """
 import os
-import shutil
-import datetime
 import json
 import filelock
 import jsonschema
 import pandas as pd
-from deepdiff import DeepDiff
-from odmx.log import vprint
 
 def clean_name(col):
     """
@@ -238,26 +234,6 @@ def open_spreadsheet(file_path, args=None, lock=False, timeout=300):
         sheet_data = open_the_file(file_path, args)
 
     return sheet_data
-
-
-def check_diff_and_write_new(new_data, existing_file):
-    """
-    Check if data to equipment map file has changed
-    """
-    if os.path.exists(existing_file):
-        with open(existing_file, 'r', encoding='utf-8') as f:
-            existing_map = json.load(f)
-            deepdiff = DeepDiff(existing_map, new_data)
-            if deepdiff:
-                # print(f"Existing map differs from new map: {deepdiff}")
-                print("Backing up existing json")
-                date_str = datetime.datetime.now().strftime("%Y%m%d")
-                shutil.copyfile(existing_file,
-                            f"{existing_file}.{date_str}.bak")
-                with open(existing_file, 'w', encoding='utf-8') as f:
-                    json.dump(new_data, f, ensure_ascii=False, indent=4)
-            else:
-                vprint(f"Skipping update of {existing_file}, no changes")
 
 
 def get_last_timestamp_csv(file_path, timestamp_index=0, max_line_size=8192):
