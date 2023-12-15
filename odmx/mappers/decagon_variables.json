@@ -68,14 +68,6 @@
         "cv_term": "rainPrecipitationRate"
     },
     {
-        "var_name": "Wind Direction",
-        "cv_term": "windDirection"
-    },
-    {
-        "var_name": "Wind Speed",
-        "cv_term": "windSpeed"
-    },
-    {
         "var_name": "RH Sensor Temp",
         "cv_term": "systemTemperature"
     },
