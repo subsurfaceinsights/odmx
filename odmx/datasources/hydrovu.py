@@ -5,25 +5,22 @@ Module for Hydrovu data harvesting, ingestion, and processing.
 """
 
 import os
+from importlib.util import find_spec
 from string import Template
-import json
-import uuid
 import datetime
-import shutil
 from functools import cache
-from deepdiff import DeepDiff
 import requests
 import yaml
 import pandas as pd
-from odmx.support.file_utils import open_csv
+from odmx.support.file_utils import open_csv, open_json
 from odmx.abstract_data_source import DataSource
 from odmx.timeseries_ingestion import general_timeseries_ingestion
 from odmx.timeseries_processing import general_timeseries_processing
 from odmx.log import vprint
-from odmx.write_equipment_jsons import gen_equipment_entry,\
-    gen_data_to_equipment_entry
+from odmx.write_equipment_jsons import generate_equipment_jsons
 # TODO make manual qa list configurable here
 
+mapper_path = find_spec("odmx.mappers").submodule_search_locations[0]
 
 class HydrovuDataSource(DataSource):
     """
@@ -50,244 +47,18 @@ class HydrovuDataSource(DataSource):
             raise ValueError(f"Unknown Device type {device_type}")
         self.equipment_directory = (f'{project_path}/hydrovu/{device_name}_'
                                     f'{device_type}')
-        self.feeder_table = f'{device_name.lower()}_{device_type.lower()}'
+        self.feeder_table = f'{device_name.lower()}_{device_type}'
         self.data_source_timezone = data_source_timezone
-        self.param_df = pd.DataFrame([{"id": "10",
-                                       "nice_name": "Specific Conductivity",
-                                       "clean_name": "specific_conductivity",
-                                       "cv_term": "waterSpecificConductance"},
-                                      {"id": "11",
-                                       "nice_name": "Resistivity",
-                                       "clean_name": "resistivity",
-                                       "cv_term": "waterResistivity"},
-                                      {"id": "12",
-                                       "nice_name": "Salinity",
-                                       "clean_name": "salinity",
-                                       "cv_term": "waterSalinity"},
-                                      {"id": "13",
-                                       "nice_name": "Total Dissolved Solids",
-                                       "clean_name": "total_dissolved_solids",
-                                       "cv_term": "waterTotalDissolvedSolids"},
-                                      {"id": "14",
-                                       "nice_name": "Density",
-                                       "clean_name": "density",
-                                       "cv_term": "waterDensity"},
-                                      {"id": "16",
-                                       "nice_name": "Baro",
-                                       "clean_name": "baro",
-                                       "cv_term": ("airAtmosphericPressure"
-                                                   "Absolute")},
-                                      {"id": "17",
-                                       "nice_name": "pH",
-                                       "clean_name": "ph",
-                                       "cv_term": "waterpH"},
-                                      {"id": "18",
-                                       "nice_name": "pH MV",
-                                       "clean_name": "ph_mv",
-                                       "cv_term": "waterpHmv"},
-                                      {"id": "19",
-                                       "nice_name": "ORP",
-                                       "clean_name": "orp",
-                                       "cv_term": "waterORP"},
-                                      {"id": "1",
-                                       "nice_name": "Temperature",
-                                       "clean_name": "temperature",
-                                       "cv_term": "waterTemperature"},
-                                      {"id": "45",
-                                       "nice_name": "Pulse",
-                                       "clean_name": "pulse",
-                                       "cv_term": "pulse"},
-                                      {"id": "2",
-                                       # TODO: confirm pressure type
-                                       "nice_name": "Pressure",
-                                       "clean_name": "pressure",
-                                       "cv_term": "waterPressureAbsolute"},
-                                      {"id": "3",
-                                       "nice_name": "Depth",
-                                       "clean_name": "depth",
-                                       # We don't expose this parameter
-                                       "cv_term": None},
-                                      {"id": "4",
-                                       "nice_name": "Level: Depth to Water",
-                                       "clean_name": "level_depth_to_water",
-                                       # TODO: check NAD83 datum is appropriate
-                                       "cv_term": "waterDepthBelow"
-                                       "TopOfCasing"},
-                                      {"id": "9",
-                                       "nice_name": "Actual Conductivity",
-                                       "clean_name": "actual_conductivity",
-                                       "cv_term": ("waterElectrical"
-                                                   "Conductivity")},
-                                      {"id": "20",
-                                       "nice_name": "DO",
-                                       "clean_name": "do",
-                                       "cv_term": ("waterOpticalDissolved"
-                                                   "Oxygen")},
-                                      {"id": "21",
-                                       "nice_name": "% Saturation O₂",
-                                       "clean_name": "percent_saturation_o2",
-                                       "cv_term": ("waterOpticalDissolved"
-                                                   "OxygenPercentAir"
-                                                   "Saturation")},
-                                      {"id": "25",
-                                       "nice_name": "Turbidity",
-                                       "clean_name": "turbidity",
-                                       "cv_term": "waterTurbidityNTU"},
-                                      {"id": "30",
-                                       "nice_name": "Partial Pressure O₂",
-                                       "clean_name": "partial_pressure_o2",
-                                       "cv_term": "partialPressureOxygen"},
-                                      {"id": "32",
-                                       "nice_name": "External Voltage",
-                                       "clean_name": "external_voltage",
-                                       "cv_term": "externalVoltage"},
-                                      {"id": "33",
-                                       "nice_name": "Battery Level",
-                                       "clean_name": "battery_level",
-                                       "cv_term": "batteryCharge"},
-                                      {"id": "density",
-                                       "nice_name": "Density",
-                                       "clean_name": "density",
-                                       "cv_term": "waterDensity"},
-                                      # No longer exposing this,
-                                      # setting cv_term to None - Doug
-                                      # 2021-04-07
-                                      {"id": "5",
-                                       "nice_name": "Level: Elevation",
-                                       "clean_name": "level_elevation",
-                                       "cv_term": None}])
-        self.param_df.set_index('id', inplace=True, verify_integrity=True)
-
-        self.unit_df = pd.DataFrame([{"id": "194",
-                                      "nice_name": "NTU",
-                                      "clean_name": "ntu",
-                                      "cv_term": "nephelometricTurbidityUnit"},
-                                     {"id": "117",
-                                      "nice_name": "mg/L",
-                                      "clean_name": "mg_l",
-                                      "cv_term": "milligramPerLiter"},
-                                     {"id": "97",
-                                      "nice_name": "psu",
-                                      "clean_name": "psu",
-                                      "cv_term": "practicalSalinityUnit"},
-                                     {"id": "17",
-                                      "nice_name": "psi",
-                                      "clean_name": "psi",
-                                      "cv_term": "psi"},
-                                     {"id": "163",
-                                      "nice_name": "V",
-                                      "clean_name": "v",
-                                      "cv_term": "volt"},
-                                     {"id": "241",
-                                      "nice_name": "%",
-                                      "clean_name": "percent",
-                                      "cv_term": "percent"},
-                                     {"id": "1",
-                                      "nice_name": "C",
-                                      "clean_name": "c",
-                                      "cv_term": "degreeCelsius"},
-                                     {"id": "322",
-                                      "nice_name": "Hz",
-                                      "clean_name": "hz",
-                                      "cv_term": "hertz"},
-                                     {"id": "129",
-                                      "nice_name": "g/cm³",
-                                      "clean_name": "g_cm3",
-                                      "cv_term": "gramPerCubicCentimeter"},
-                                     {"id": "65",
-                                      "nice_name": "µS/cm",
-                                      "clean_name": "us_cm",
-                                      "cv_term": "microsiemenPerCentimeter"},
-                                     {"id": "177",
-                                      "nice_name": "% sat",
-                                      "clean_name": "percent_sat",
-                                      "cv_term": "percentSaturation"},
-                                     {"id": "35",
-                                      "nice_name": "m",
-                                      "clean_name": "m",
-                                      "cv_term": "meter"},
-                                     {"id": "145",
-                                      "nice_name": "pH",
-                                      "clean_name": "ph",
-                                      "cv_term": "ph"},
-                                     {"id": "81",
-                                      "nice_name": "Ω-cm",
-                                      "clean_name": "ohm_cm",
-                                      "cv_term": "ohmCentimeter"}])
-        self.unit_df.set_index('id', inplace=True, verify_integrity=True)
-
-    # TODO this shuold be moved to a more general location
-    def generate_equipment_jsons(self,
-                                 var_names,
-                                 overwrite=False):
-        """
-        Generate equipment.json and data_to_equipment.json
-        """
-
-        dev_uuid = str(uuid.uuid4())
-        file_path = self.equipment_directory
-        os.makedirs(file_path, exist_ok=True)
-        data_to_equipment_map = []
         # There are two ids with clean_name "density" but both map to the same
         # cv term, so don't check for duplicates (doesn't matter)
-        param_lookup = self.param_df.set_index('clean_name')
-        unit_lookup = self.unit_df.set_index('clean_name')
-        for column_name in var_names:
-            if 'timestamp' in column_name:
-                variable_domain_cv = "instrumentTimestamp"
-                variable_term = "nonedefined"
-                unit = "datalogger_time_stamp"
-                expose_as_datastream = False
-            else:
-                name, unit_name = column_name.split("[")
-                variable_domain_cv = "instrumentMeasurement"
-                variable_term = param_lookup['cv_term'][name]
-                unit = unit_lookup['cv_term'][unit_name[:-1]]
-                expose_as_datastream = True
-            if variable_term is None:
-                continue
-            data_to_equipment_map.append(
-                gen_data_to_equipment_entry(column_name=column_name,
-                                            var_domain_cv=variable_domain_cv,
-                                            acquiring_instrument_uuid=dev_uuid,
-                                            variable_term=variable_term,
-                                            expose_as_ds=expose_as_datastream,
-                                            units_term=unit))
-        data_to_equipment_map_file = f"{file_path}/data_to_equipment_map.json"
-        if os.path.exists(data_to_equipment_map_file):
-            if not overwrite:
-                vprint(f"Skipping, {data_to_equipment_map_file} exists")
-                return
-            with open(data_to_equipment_map_file, 'r', encoding='utf-8') as f:
-                existing_map = json.load(f)
-                deepdiff = DeepDiff(existing_map, data_to_equipment_map)
-                if deepdiff:
-                    print(f"Existing map differs from new map: {deepdiff}")
-                    print("Backing up existing map")
-                    date_str = datetime.datetime.now().strftime("%Y%m%d")
-                    shutil.copyfile(data_to_equipment_map_file,
-                                f"{data_to_equipment_map_file}.{date_str}.bak")
-                else:
-                    vprint("Skipping data_to_equipment_map, no changes")
-                    return
+        # We don't use level_elevation so that cv_term is intentionally null
+        self.param_df = pd.DataFrame(
+            open_json(f'{mapper_path}/hydrovu_parameters.json'))
+        self.param_df.set_index('id', inplace=True, verify_integrity=True)
 
-        vprint("Writing data_to_equipment_map to "
-               f"{data_to_equipment_map_file}")
-        with open(data_to_equipment_map_file, 'w', encoding='utf-8') as f:
-            json.dump(data_to_equipment_map, f, ensure_ascii=False, indent=4)
-
-        dev_id = self.device_id
-        # FIXME: Why is the start hardcoded?
-        start = 1420070400
-        equipment_entry = gen_equipment_entry(
-            acquiring_instrument_uuid=dev_uuid,
-            name=self.device_type,
-            code=self.device_code,
-            serial_number=dev_id, relationship_start_date_time_utc=start,
-            position_start_date_utc=start)
-        equip_file = f"{file_path}/equipment.json"
-        with open(equip_file, 'w+', encoding='utf-8') as f:
-            json.dump([equipment_entry], f, ensure_ascii=False, indent=4)
+        self.unit_df = pd.DataFrame(
+            open_json(f'{mapper_path}/hydrovu_units.json'))
+        self.unit_df.set_index('id', inplace=True, verify_integrity=True)
 
     @cache
     def get_bearer_token(self, auth_yml):
@@ -410,7 +181,7 @@ class HydrovuDataSource(DataSource):
                                    "data still has special characters. "
                                    "Check the find/replace list") from exc
             new_cols.append(new_col)
-        self.generate_equipment_jsons(new_cols, overwrite=False)
+        generate_equipment_jsons(new_cols, overwrite=False)
         df.columns = new_cols
         df.set_index('timestamp', inplace=True)
         # Convert unix timestamp to utc timestamp (without timzone)

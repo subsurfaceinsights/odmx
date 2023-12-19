@@ -1,0 +1,86 @@
+[
+    {
+        "id": "194",
+        "nice_name": "NTU",
+        "clean_name": "ntu",
+        "cv_term": "nephelometricTurbidityUnit"
+    },
+    {
+        "id": "117",
+        "nice_name": "mg/L",
+        "clean_name": "mg_l",
+        "cv_term": "milligramPerLiter"
+    },
+    {
+        "id": "97",
+        "nice_name": "psu",
+        "clean_name": "psu",
+        "cv_term": "practicalSalinityUnit"
+    },
+    {
+        "id": "17",
+        "nice_name": "psi",
+        "clean_name": "psi",
+        "cv_term": "psi"
+    },
+    {
+        "id": "163",
+        "nice_name": "V",
+        "clean_name": "v",
+        "cv_term": "volt"
+    },
+    {
+        "id": "241",
+        "nice_name": "%",
+        "clean_name": "percent",
+        "cv_term": "percent"
+    },
+    {
+        "id": "1",
+        "nice_name": "C",
+        "clean_name": "c",
+        "cv_term": "degreeCelsius"
+    },
+    {
+        "id": "322",
+        "nice_name": "Hz",
+        "clean_name": "hz",
+        "cv_term": "hertz"
+    },
+    {
+        "id": "129",
+        "nice_name": "g/cm³",
+        "clean_name": "g_cm3",
+        "cv_term": "gramPerCubicCentimeter"
+    },
+    {
+        "id": "65",
+        "nice_name": "µS/cm",
+        "clean_name": "us_cm",
+        "cv_term": "microsiemenPerCentimeter"
+    },
+    {
+        "id": "177",
+        "nice_name": "% sat",
+        "clean_name": "percent_sat",
+        "cv_term": "percentSaturation"
+    },
+    {
+        "id": "35",
+        "nice_name": "m",
+        "clean_name": "m",
+        "cv_term": "meter"
+    },
+    {
+        "id": "145",
+        "nice_name": "pH",
+        "clean_name": "ph",
+        "cv_term": "ph"
+    },
+    {
+        "id": "81",
+        "nice_name": "Ω-cm",
+        "clean_name": "ohm_cm",
+        "cv_term": "ohmCentimeter"
+    }
+]
