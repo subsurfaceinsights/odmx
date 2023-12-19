@@ -236,7 +236,8 @@ def open_spreadsheet(file_path, args=None, lock=False, timeout=300):
     return sheet_data
 
 
-def get_last_timestamp_csv(file_path, timestamp_index=0, max_line_size=8192):
+def get_last_timestamp_csv(file_path, timestamp_index=0, max_line_size=8192,
+                           unit='ns'):
     # Read the last line of the file to get the timestamp. We do this
     # by seeking to the file 4096 bytes, then reading the last line.
     # This is a hack, but it works for campbell data.
@@ -245,9 +246,9 @@ def get_last_timestamp_csv(file_path, timestamp_index=0, max_line_size=8192):
         # Get size
         f.seek(0, os.SEEK_END)
         size = f.tell()
-        print(size)
+        # print(size)
         if size == 0:
-            print(f"Notice: file '{file_path}' is empty.")
+            # print(f"Notice: file '{file_path}' is empty.")
             return None
         # Get the last line.
         f.seek(-max_line_size, os.SEEK_END)
@@ -259,6 +260,9 @@ def get_last_timestamp_csv(file_path, timestamp_index=0, max_line_size=8192):
         file_last_timestamp = last_line.split(',')[timestamp_index]
         # Remove quotes
         file_last_timestamp = file_last_timestamp.replace('"', '')
-        # Parse the timestamp.
-        file_last_timestamp = pd.to_datetime(file_last_timestamp)
+        # Parse the timestamp. Explicitly set as float to get expected behavior
+        # from unit arg (currently causes deprecation warning)
+        file_last_timestamp = pd.to_datetime(float(file_last_timestamp),
+                                             unit=unit)
+
         return file_last_timestamp
