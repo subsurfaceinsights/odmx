@@ -9,7 +9,6 @@ import shutil
 import json
 import datetime
 from importlib.util import find_spec
-import pandas as pd
 from deepdiff import DeepDiff
 from odmx.log import vprint
 from odmx.support.file_utils import open_json
@@ -64,7 +63,8 @@ def gen_data_to_equipment_entry(column_name, var_domain_cv,
     }
 
 
-def gen_equipment_entry(acquiring_instrument_uuid, code, name, serial_number,
+def gen_equipment_entry(code, name, serial_number,
+                        acquiring_instrument_uuid=None,
                         owner_first_name="Roelof",
                         owner_last_name="Versteeg", owner_role="owner",
                         vendor=None, purchase_date=None,
@@ -79,10 +79,10 @@ def gen_equipment_entry(acquiring_instrument_uuid, code, name, serial_number,
     """
     Generate equipment.json content
 
-    @param acquiring_instrument_uuid
     @param code
     @param name
     @param serial_number
+    @param acquiring_instrument_uuid optional, default generate new
     @param owner_first_name optional, default Roelof
     @param owner_last_name optional, default Versteeg
     @param owner_role optional, default owner
@@ -102,6 +102,8 @@ def gen_equipment_entry(acquiring_instrument_uuid, code, name, serial_number,
     @returns dict to write to equipment.json
 
     """
+    if not acquiring_instrument_uuid:
+        acquiring_instrument_uuid = str(uuid.uuid4())
     return {
         "equipment_uuid": acquiring_instrument_uuid,
         "equipment_code": code,
@@ -127,17 +129,28 @@ def gen_equipment_entry(acquiring_instrument_uuid, code, name, serial_number,
     }
 
 
-def check_existing_equipment(equip_file):
-    if os.path.isfile(equip_file):
-        equip_schema = os.path.join(json_schema_files,
-                                    os.path.basename(equip_file).replace(
-                                        '.json', '_schema.json'))
-        equipment = open_json(equip_file,
-                              validation_path=equip_schema)[0]
-        base_uuid = equipment['equipment_uuid']
-        rel_start = equipment['position_start_date_utc']
-        child_equipment = equipment['equipment']
-        child_df = pd.DataFrame(equipment['equipment'])
+def read_or_start_data_to_equipment_json(data_to_equipment_map_file, equipment):
+
+    base_uuid = equipment['equipment_uuid']
+
+    if os.path.isfile(data_to_equipment_map_file):
+        data_to_equip_schema = os.path.join(
+            json_schema_files,
+            'data_to_equipment_map_schema.json')
+        data_to_equip = open_json(data_to_equipment_map_file,
+                                  validation_path=data_to_equip_schema)
+    else:
+        data_to_equip = [
+            gen_data_to_equipment_entry(column_name='timestamp',
+                                    var_domain_cv='instrumentTimestamp',
+                                    acquiring_instrument_uuid=base_uuid,
+                                    variable_term='nonedefined',
+                                    units_term='datalogger_time_stamp',
+                                    expose_as_ds=False)]
+
+    col_list = [d2e['column_name'] for d2e in data_to_equip]
+
+    return data_to_equip, col_list
 
 
 def check_diff_and_write_new(new_data, existing_file):
@@ -158,3 +171,81 @@ def check_diff_and_write_new(new_data, existing_file):
                     json.dump(new_data, f, ensure_ascii=False, indent=4)
             else:
                 vprint(f"Skipping update of {existing_file}, no changes")
+
+
+def generate_equipment_jsons(var_names,
+                             start,
+                             mappers,
+                             equipment_directory,
+                             device_id,
+                             device_type,
+                             device_code,
+                             overwrite=False):
+    """
+    Generate equipment.json and data_to_equipment.json
+    """
+    if isinstance(mappers, tuple):
+        param_lookup = mappers[0].set_index('clean_name')
+        unit_lookup = mappers[1].set_index('clean_name')
+    else:
+        param_lookup = mappers.copy().set_index('clean_name')
+        unit_lookup = mappers.copy().set_index('unit')
+    dev_uuid = str(uuid.uuid4())
+    os.makedirs(equipment_directory, exist_ok=True)
+    data_to_equipment_map = []
+
+    for column_name in var_names:
+        if 'timestamp' in column_name:
+            variable_domain_cv = "instrumentTimestamp"
+            variable_term = "nonedefined"
+            unit = "datalogger_time_stamp"
+            expose_as_datastream = False
+        else:
+            name, unit_name = column_name.split("[")
+            variable_domain_cv = "instrumentMeasurement"
+            variable_term = param_lookup['cv_term'][name]
+            unit = unit_lookup['cv_term'][unit_name[:-1]]
+            expose_as_datastream = True
+        if variable_term is None:
+            continue
+        data_to_equipment_map.append(
+            gen_data_to_equipment_entry(column_name=column_name,
+                                        var_domain_cv=variable_domain_cv,
+                                        acquiring_instrument_uuid=dev_uuid,
+                                        variable_term=variable_term,
+                                        expose_as_ds=expose_as_datastream,
+                                        units_term=unit))
+    data_to_equipment_map_file = f"{equipment_directory}/data_to_equipment_map.json"
+    if os.path.exists(data_to_equipment_map_file):
+        if not overwrite:
+            vprint(f"Skipping, {data_to_equipment_map_file} exists")
+            return
+        with open(data_to_equipment_map_file, 'r', encoding='utf-8') as f:
+            existing_map = json.load(f)
+            deepdiff = DeepDiff(existing_map, data_to_equipment_map)
+            if deepdiff:
+                print(f"Existing map differs from new map: {deepdiff}")
+                print("Backing up existing map")
+                date_str = datetime.datetime.now().strftime("%Y%m%d")
+                shutil.copyfile(data_to_equipment_map_file,
+                            f"{data_to_equipment_map_file}.{date_str}.bak")
+            else:
+                vprint("Skipping data_to_equipment_map, no changes")
+                return
+
+    vprint("Writing data_to_equipment_map to "
+           f"{data_to_equipment_map_file}")
+    with open(data_to_equipment_map_file, 'w', encoding='utf-8') as f:
+        json.dump(data_to_equipment_map, f, ensure_ascii=False, indent=4)
+
+    dev_id = device_id
+
+    equipment_entry = gen_equipment_entry(
+        acquiring_instrument_uuid=dev_uuid,
+        name=device_type,
+        code=device_code,
+        serial_number=dev_id, relationship_start_date_time_utc=start,
+        position_start_date_utc=start)
+    equip_file = f"{equipment_directory}/equipment.json"
+    with open(equip_file, 'w+', encoding='utf-8') as f:
+        json.dump([equipment_entry], f, ensure_ascii=False, indent=4)
