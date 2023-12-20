@@ -13,7 +13,7 @@
     },
     {
         "unit_name": "kPa",
-        "cv_term": "kilopascal"
+        "cv_term": "kiloPascal"
     },
     {
         "unit_name": "km",
