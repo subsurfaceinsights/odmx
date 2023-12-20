@@ -129,8 +129,16 @@ def gen_equipment_entry(code, name, serial_number,
     }
 
 
-def read_or_start_data_to_equipment_json(data_to_equipment_map_file, equipment):
-
+def read_or_start_data_to_equipment_json(data_to_equipment_map_file,
+                                         equipment):
+    """
+    Load existing data_to_equipment map or initialize a new one with timestamp
+    as only column
+    @param data_to_equipment_map_file Path of data to equipment map
+    @param equipment dict of equipment
+    @returns data_to_equip list of dicts with data mappings
+    @returns col_list list of data columns
+    """
     base_uuid = equipment['equipment_uuid']
 
     if os.path.isfile(data_to_equipment_map_file):
@@ -155,22 +163,31 @@ def read_or_start_data_to_equipment_json(data_to_equipment_map_file, equipment):
 
 def check_diff_and_write_new(new_data, existing_file):
     """
-    Check if data to equipment map file has changed
+    Check if json file has changed, if it has back up the original before
+    writing the new data to specified path
+    @param new_data new data to be written
+    @param existing_file Path of (possible) existing file
     """
     if os.path.exists(existing_file):
         with open(existing_file, 'r', encoding='utf-8') as f:
             existing_map = json.load(f)
-            deepdiff = DeepDiff(existing_map, new_data)
-            if deepdiff:
-                # print(f"Existing map differs from new map: {deepdiff}")
-                print("Backing up existing json")
-                date_str = datetime.datetime.now().strftime("%Y%m%d")
-                shutil.copyfile(existing_file,
-                            f"{existing_file}.{date_str}.bak")
-                with open(existing_file, 'w', encoding='utf-8') as f:
-                    json.dump(new_data, f, ensure_ascii=False, indent=4)
-            else:
-                vprint(f"Skipping update of {existing_file}, no changes")
+        deepdiff = DeepDiff(existing_map, new_data)
+        if deepdiff:
+            vprint(f"Existing map differs from new map: {deepdiff}")
+            vprint("Backing up existing json")
+            date_str = datetime.datetime.now().strftime("%Y%m%d")
+            shutil.copyfile(existing_file,
+                        f"{existing_file}.{date_str}.bak")
+            with open(existing_file, 'w', encoding='utf-8') as f:
+                json.dump(new_data, f, ensure_ascii=False, indent=4)
+        else:
+            vprint(f"Skipping update of {existing_file}, no changes")
+    else:
+        vprint(f"{existing_file} does not exist, writing it.")
+        if not os.path.exists(os.path.dirname(existing_file)):
+            os.makedirs(os.path.dirname(existing_file))
+        with open(existing_file, 'w', encoding='utf-8') as f:
+            json.dump(new_data, f, ensure_ascii=False, indent=4)
 
 
 def generate_equipment_jsons(var_names,
@@ -215,23 +232,24 @@ def generate_equipment_jsons(var_names,
                                         variable_term=variable_term,
                                         expose_as_ds=expose_as_datastream,
                                         units_term=unit))
-    data_to_equipment_map_file = f"{equipment_directory}/data_to_equipment_map.json"
+    data_to_equipment_map_file =\
+        f"{equipment_directory}/data_to_equipment_map.json"
     if os.path.exists(data_to_equipment_map_file):
         if not overwrite:
             vprint(f"Skipping, {data_to_equipment_map_file} exists")
             return
         with open(data_to_equipment_map_file, 'r', encoding='utf-8') as f:
             existing_map = json.load(f)
-            deepdiff = DeepDiff(existing_map, data_to_equipment_map)
-            if deepdiff:
-                print(f"Existing map differs from new map: {deepdiff}")
-                print("Backing up existing map")
-                date_str = datetime.datetime.now().strftime("%Y%m%d")
-                shutil.copyfile(data_to_equipment_map_file,
-                            f"{data_to_equipment_map_file}.{date_str}.bak")
-            else:
-                vprint("Skipping data_to_equipment_map, no changes")
-                return
+        deepdiff = DeepDiff(existing_map, data_to_equipment_map)
+        if deepdiff:
+            print(f"Existing map differs from new map: {deepdiff}")
+            print("Backing up existing map")
+            date_str = datetime.datetime.now().strftime("%Y%m%d")
+            shutil.copyfile(data_to_equipment_map_file,
+                        f"{data_to_equipment_map_file}.{date_str}.bak")
+        else:
+            vprint("Skipping data_to_equipment_map, no changes")
+            return
 
     vprint("Writing data_to_equipment_map to "
            f"{data_to_equipment_map_file}")
