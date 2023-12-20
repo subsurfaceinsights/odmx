@@ -26,5 +26,9 @@
     {
         "code": "Battery",
         "name": "Battery"
+    },
+    {
+        "code": "Barometer",
+        "name": "Barometer"
     }
 ]
