@@ -11,7 +11,7 @@ import datetime
 from importlib.util import find_spec
 from deepdiff import DeepDiff
 from odmx.log import vprint
-from odmx.support.file_utils import open_json
+from odmx.support.file_utils import open_json, open_csv
 
 json_schema_files = find_spec("odmx.json_schema").submodule_search_locations[0]
 
@@ -267,3 +267,30 @@ def generate_equipment_jsons(var_names,
     equip_file = f"{equipment_directory}/equipment.json"
     with open(equip_file, 'w+', encoding='utf-8') as f:
         json.dump([equipment_entry], f, ensure_ascii=False, indent=4)
+
+def setup_csv_data_source_config_json(csv_path):
+    """
+    Initialize data_source_config.json with data column names from csv
+    """
+    directory = os.path.dirname(csv_path)
+    df = open_csv(csv_path)
+
+    cols = []
+    for col in df.columns.tolist():
+        cols.append({"name": col,
+                     "variable_cv": "",
+                     "unit_cv": "",
+                     "expose": True})
+
+
+
+    data_split = [{"sampling_feature": "",
+                   "equipment_metadata": None,
+                   "columns": cols}]
+
+    config = {"data_file_extension": "csv",
+              "data_file_tabs": None,
+              "data_split": data_split}
+
+    with open(f'{directory}/data_source_config.json', 'w') as f:
+        json.dump(config, f, ensure_ascii=False, indent=4)
