@@ -51,7 +51,7 @@ def general_timeseries_ingestion(feeder_db_con, feeder_table, df):
     # figure out where (aside from the timestamps) we don't have floats. Since
     # Python treats NaN as a float, anything that isn't a float should
     # eventually go to Null in PostgreSQL.
-    floats = df[df.columns[1:]].applymap(ssimath.is_not_number)
+    floats = df[df.columns[1:]].map(ssimath.is_not_number)
     # Before we do anything about that, we convert all NaN values to strings
     # that read 'NaN'. When we send the DataFrame to PostgreSQL, the database
     # will read that string as an actual NaN, and so preserve it.
