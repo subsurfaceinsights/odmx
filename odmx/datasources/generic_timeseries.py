@@ -1,36 +1,22 @@
 #!/usr/bin/env python3
 
 """
-Module for LBNLSFA gradient data harvesting, ingestion, and processing.
+Module for generic timeserties data in csv files or excel spreadsheets
 
-TODO - add equipment json generation
 """
 
 import os
+from importlib.util import find_spec
 import pandas as pd
-from odmx.support.file_utils import get_files, open_csv
+from odmx.support.file_utils import get_files, open_csv, clean_name,\
+    open_spreadsheet, open_json
 from odmx.abstract_data_source import DataSource
 from odmx.timeseries_ingestion import general_timeseries_ingestion
 from odmx.timeseries_processing import general_timeseries_processing
+from odmx.write_equipment_jsons import gen_equipment_entry,\
+    gen_data_to_equipment_entry, check_diff_and_write_new
 
-
-def clean_name(col):
-    """
-    Generate ingested name from csv column name
-    """
-    replace_chars = {' ': '_', '-': '_', '/': '_', '²': '2', '³': '3',
-                     '°': 'deg', '__': '_', '%': 'percent'}
-    new_col = col.lower()
-    for key, value in replace_chars.items():
-        new_col = new_col.replace(key, value)
-    # Make sure our replacement worked
-    try:
-        new_col.encode('ascii')
-    except UnicodeEncodeError as exc:
-        raise RuntimeError(f"Column '{new_col}' derived from decagon "
-                           "data still has special characters. "
-                           "Check the find/replace list") from exc
-    return new_col
+json_schema_files = find_spec("odmx.json_schema").submodule_search_locations[0]
 
 class GenericTimeseriesDataSource(DataSource):
     """
@@ -38,109 +24,266 @@ class GenericTimeseriesDataSource(DataSource):
     """
 
     def __init__(self, project_name, project_path, data_path,
-                 data_source_timezone, data_source_name, data_source_path,
-                 equipment_path):
+                 data_source_timezone, data_source_name, data_source_path):
         self.project_name = project_name
         self.project_path = project_path
         self.data_path = data_path
         self.data_source_timezone = data_source_timezone
         self.data_source_name = data_source_name
-        self.feeder_table = f'feeder_{data_source_name}'
         self.data_source_path = data_source_path
-        self.equipment_path = equipment_path
+        # Define the file path.
+        self.data_file_path = os.path.join(self.data_path,
+                                           self.data_source_path,
+                                           self.data_source_name)
+
+        # Read the data source config information
+        self.config_file = os.path.join(self.data_file_path,
+                                        'data_source_config.json')
+        # TODO can we query the default units defined in cv_quantity_kind?
+        # or, do we even need to define this, since default units are defined in
+        # the variables cv via quantity kind
+        self.keep_units = ['kiloPascal', "percent", "cubicMeterPerCubicMeter",
+                           "wattPerSquareMeter", "degreeCelsius",
+                           "meterPerSecond"]
+        self.split_list = []
 
     def harvest(self):
         """
-        There is no harvesting to be done for this data type. It was all
-        provided manually, and so this is a placeholder function.
+        There is no harvesting to be done for this data type.
 
         For this data source type, data_source_path defines the subdirectory
-        within the main data directory to search for csv files. Within that
+        within the main data directory to search for data files. Within that
         subdirectory, there should be a folder for each distinct data source,
-        named after the source (device, location, etc.) containing all csvs
-        for the source. This module is written to combine all csvs from that
+        named after the source (device, location, etc.) containing all files
+        for the source. This module is written to combine all files from that
         folder.
-
-        Each file should have a column named 'datetime' with datetimes in the
-        timezone specified for the datasource, formatted as YYYY-MM-DD HH:MM:SS
-        and then distinct names for each additional column.
-
-        Equipment jsons must be prepared manually.
         """
 
-    def ingest(self, feeder_db_con):
+    def ingest(self, feeder_db_con, update_equipment_jsons):
         """
-        Manipulate harvested data in a file on the server into a feeder table.
+        Manipulate data into a feeder table. If update_equipment_jsons is true,
+        new equipment.json and data_to_equipment_map.json files will be written
+        from metadata provided in data_source_config.json (which should be saved
+        alongside the data files). NOTE: equipment jsons will be written from
+        scratch and existing versions saved as backups, this datasource is not
+        designed to append to or modify existing equipment
         """
-        # Read the data source config information
-        config_file = os.path.dirname(self.data_source_path) + \
-            '/data_source_config.json'
-        data_source_config = ssigen.open_json(config_file)
+
+        data_source_config = open_json(self.config_file)
         ext = data_source_config["data_file_extension"]
-        tabs = data_source_config["data_file_tabs"]
-        columns = pd.DataFrame(data_source_config["data_columns"])
 
-        # Only take the columns for the current sampling feature
-        columns = columns[columns["sampling_feature"]==self.data_source_name]
+        for block in data_source_config['data_split']:
+            sampling_feature = block['sampling_feature']
+            equipment_path = block['equipment_path']
+            mapper = pd.DataFrame(block['columns'])
 
-        # Find all csvs in the path for this data source
-        csv_paths_list = get_files(file_path, '.csv')[1]
+            # Extract the list of columns for this block and the name of the
+            # time column
+            columns = mapper['name'].tolist()
+            time_col = block['base_equipment']['time_column']
 
-        dfs = []
-        for site_path in csv_paths_list:
-            # Set up args for reading files
-            args = {'parse_dates': True}
+            # Make a separate feeder table for each data block
+            feeder_table = \
+                f'feeder_{clean_name(self.data_source_name)}_{clean_name(sampling_feature)}'  #pylint:disable=line-too-long
 
-            if ext in ['.xlsx', '.xls']:
-                tab_dfs = []
-                for tab in tabs:
-                    args.update({'sheet_name': tab['name'],
-                                 'usecols': list(columns['name'])})
-                    tab_dfs.append(ssigen.open_spreadsheet(site_path,
-                                                           args=args,
-                                                           lock=True))
-                df = pd.concat(tab_dfs, ignore_index=True)
-            elif ext == '.csv':
-                args.update({'infer_datetime_format': True,
-                             'float_precision': 'high',
-                             'usecols': list(columns['name'])})
-                df = ssigen.open_csv(site_path, args=args, lock=True)
+            # Store tuple of sampling feature, equipment path, and feeder table
+            self.split_list.append((sampling_feature,
+                               equipment_path,
+                               feeder_table))
 
-            mapper = {}
+            # Find all data files in the path for this data source
+            file_list = get_files(self.data_file_path, ext)[1]
+
+            dfs = []
+            for file in file_list:
+                # Set up args for reading files
+                args = {'parse_dates': True}
+
+                if ext in ['xlsx', 'xls']:
+                    tabs = data_source_config["data_file_tabs"]
+                    tab_dfs = []
+                    for tab in tabs:
+                        args.update({'sheet_name': tab['name'],
+                                     'usecols': columns})
+                        tab_dfs.append(open_spreadsheet(file,
+                                                        args=args,
+                                                        lock=True))
+                    df = pd.concat(tab_dfs, ignore_index=True)
+                elif ext == 'csv':
+                    args.update({'float_precision': 'high',
+                                 'usecols': columns})
+                    df = open_csv(file, args=args, lock=True)
+
+
+                # Convert time column to timestamp in specific format
+                df['timestamp'] = pd.to_datetime(df[time_col],
+                                                format='%Y-%m-%d %H:%M:%S')
+
+                # Add to list of dataframes
+                dfs.append(df)
+            df = pd.concat(dfs, ignore_index=True).drop_duplicates()
+
+            # Sort the DataFrame by timestamp and drop unused datetime column
+            df.sort_values(by='timestamp', inplace=True)
+            df.drop(columns=time_col, inplace=True)
+
+            # Move time column back to the front for adding new names to mapper
+            col = df.pop("timestamp")
+            df.insert(0, col.name, col)
+
+            # Ensure column names are compatible with database
+            new_cols = []
             for col in df.columns.tolist():
-                mapper.update({col: columns[columns['name']==col]['clean_name']})
+                new_col = clean_name(col)
+                new_cols.append(new_col)
 
-            # Convert datetime to timestamp
-            df['timestamp'] = pd.to_datetime(df['datetime'],
-                                            format='%Y-%m-%d %H:%M:%S')
+            # Add new column names to mapper and use as index for easy lookup
+            df.columns = new_cols
+            mapper['clean_name'] = new_cols
+            mapper.set_index('clean_name', inplace=True)
 
-            # Add to list of dataframes
-            dfs.append(df)
-        df = pd.concat(dfs, ignore_index=True).drop_duplicates()
+            # Prepare the equipment jsons for these columns
+            if update_equipment_jsons is True:
+                equip_file = f"{equipment_path}/equipment.json"
+                data_to_equipment_map_file = (f"{equipment_path}/"
+                                              "data_to_equipment_map.json")
 
-        # Sort the DataFrame by timestamp and drop unused datetime column
-        df.sort_values(by='timestamp', inplace=True)
-        df.drop(columns='datetime', inplace=True)
+                # Read equipment.json if it exists, otherwise start new
+                # Make the directories
+                os.makedirs(equipment_path, exist_ok=True)
 
-        # Ensure column names are compatible with database
-        new_cols = []
-        for col in df.columns.tolist():
-            new_col = clean_name(col)
-            new_cols.append(new_col)
+                # Read base equipment from data_source_config
+                logger = block['base_equipment']
+                start = logger['start_timestamp']
+                end = logger['end_timestamp']
 
-        df.columns = new_cols
+                # Start equipment.json entries
+                equipment = gen_equipment_entry(
+                    acquiring_instrument_uuid=None,
+                    code=logger['equipment_name'],
+                    name=logger['equipment_name'],
+                    serial_number=logger['equipment_serial_number'],
+                    vendor=None,
+                    description=None,
+                    position_start_date_utc=start,
+                    position_end_date_utc=end,
+                    relationship_start_date_time_utc=start,
+                    relationship_end_date_time_utc=end,
+                    z_offset_m=logger['equipment_z_offset'])
 
-        # The rest of the ingestion is generic.
-        general_timeseries_ingestion(feeder_db_con,
-                                     feeder_table=self.feeder_table, df=df)
+                # Store uuid for use in data_to_equipment_map
+                logger_uuid = equipment['equipment_uuid']
 
-    def process(self, feeder_db_con, odmx_db_con, sampling_feature_code):
+                # Initialize data_to_equipment_map with timestamp
+                data_to_equip = \
+                    [gen_data_to_equipment_entry(
+                        column_name='timestamp',
+                        var_domain_cv='instrumentTimestamp',
+                        acquiring_instrument_uuid=logger_uuid,
+                        variable_term='nonedefined',
+                        units_term='datalogger_time_stamp',
+                        units_conversion=True,
+                        expose_as_ds=False)]
+
+                # Remove timestamp from logger column list
+                logger['columns'].remove(time_col)
+
+                # If anything is left, add it as instrumentMetadata,
+                # not exposed as a datastream
+                for column in logger['columns']:
+                    data_to_equip.append(
+                        gen_data_to_equipment_entry(
+                            column_name='timestamp',
+                            var_domain_cv='instrumentMetadata',
+                            acquiring_instrument_uuid=logger_uuid,
+                            variable_term=mapper['variable_cv'][column],
+                            units_term=mapper['unit_cv'][column],
+                            units_conversion=True,
+                            expose_as_ds=False))
+
+                # If there are attached sensors, iterate through
+                child_equipment = []
+                if block['attached_sensors'] is not None:
+                    for sensor in block['attached_sensors']:
+                        # These should inherit from logger if not defined
+                        start = sensor['start_timestamp']
+                        end = sensor['end_timestamp']
+
+                        # Generate equipment entry
+                        child = gen_equipment_entry(
+                            acquiring_instrument_uuid=None,
+                            code=sensor['sensor_name'],
+                            name=sensor['sensor_name'],
+                            serial_number=sensor['serial_number'],
+                            vendor=None,
+                            description=None,
+                            position_start_date_utc=start,
+                            position_end_date_utc=end,
+                            relationship_start_date_time_utc=start,
+                            relationship_end_date_time_utc=end,
+                            z_offset_m=sensor['sensor_z_offset'])
+
+                        # Append to child equipment list
+                        child_equipment.append(child)
+
+                        # Expand column names if they were specified with *
+                        for column in sensor['columns']:
+                            if column.endswith('*'):
+                                sensor['columns'].remove(column)
+                                column = column.strip('*')
+                                expanded_cols = \
+                                    [x for x in new_cols if x.startswith(column)]
+                                sensor['columns'] += expanded_cols
+
+                        # Now iterate over the column names
+                        for column in sensor['columns']:
+                            units_term=mapper['unit_cv'][column]
+
+                            # check if units term is one of our defined keepers
+                            if units_term in self.keep_units:
+                                units_conversion = False
+                            else:
+                                units_conversion = True
+
+                            # Create the data to equipment map entry
+                            # Need to explicitly typecast expose_as_ds, else
+                            # it is type numpy.bool_ which is incompatible
+                            # with json.dump
+                            data_to_equip.append(
+                                gen_data_to_equipment_entry(
+                                    column_name=column,
+                                    var_domain_cv='instrumentMeasurement',
+                                    acquiring_instrument_uuid=\
+                                        child['equipment_uuid'],
+                                    variable_term=\
+                                        mapper['variable_cv'][column],
+                                    units_term=units_term,
+                                    units_conversion=units_conversion,
+                                    expose_as_ds=\
+                                        bool(mapper['expose'][column])))
+
+                # Add child equipment to base
+                equipment.update({'equipment': child_equipment})
+
+                # Check diff, backup, and write new jsons
+                check_diff_and_write_new(data_to_equip,
+                                         data_to_equipment_map_file)
+                check_diff_and_write_new([equipment], equip_file)
+
+            # The rest of the ingestion is even more generic.
+            general_timeseries_ingestion(feeder_db_con,
+                                         feeder_table=feeder_table, df=df)
+
+    def process(self, feeder_db_con, odmx_db_con):
         """
         Process ingested data into timeseries datastreams.
         """
 
-        general_timeseries_processing(self, feeder_db_con, odmx_db_con,
-                                      sampling_feature_code=\
-                                          sampling_feature_code,
-                                          equipment_directory=\
-                                              self.equipment_path)
+        for split in self.split_list:
+            sampling_feature_code, equipment_path, feeder_table = split
+            general_timeseries_processing(self, feeder_db_con, odmx_db_con,
+                                          sampling_feature_code=\
+                                              sampling_feature_code,
+                                              equipment_directory=\
+                                                  equipment_path,
+                                              feeder_table=feeder_table)
