@@ -232,7 +232,7 @@ class GenericTimeseriesDataSource(DataSource):
                                 sensor['columns'].remove(column)
                                 column = column.strip('*')
                                 expanded_cols = \
-                                    [x for x in new_cols if x.startswith(column)]
+                                    [x for x in new_cols if x.startswith(column)]  #pylint:disable=line-too-long
                                 sensor['columns'] += expanded_cols
 
                         # Now iterate over the column names

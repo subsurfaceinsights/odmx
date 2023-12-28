@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-
+# pylint:disable=unused-variable
 """
 Module for NWIS data harvesting, ingestion, and processing.
 """
@@ -355,10 +355,8 @@ class NwisGeochemDataSource(DataSource):
             if not sampling_feature:
                 print('did not find an associated sampling feature with the '
                       'feeder table')
-            """
-            We create a specimen collection for this entry and will associate
-            all sampling features with it.
-            """
+            # We create a specimen collection for this entry and will associate
+            # all sampling features with it.
             print("Creating a new specimen collection.")
             specimen_collection_cv = 'analysisReport'
             specimen_collection_note = \
@@ -387,14 +385,13 @@ class NwisGeochemDataSource(DataSource):
                     analyst_name,affiliation_id, analysis_date,
                                         analysis_timezone, data_file_path)
 
-            """
-            ok, now we know the sampling feature that these samples are
-            associated with
-            we now read one row at a time. We do the following
-            a) we create a new sample, and associate that with the parent
-            sampling feature
-            b) we create results for each sample
-            """
+            # ok, now we know the sampling feature that these samples are
+            # associated with
+            # we now read one row at a time. We do the following
+            # a) we create a new sample, and associate that with the parent
+            # sampling feature
+            # b) we create results for each sample
+
             # we read the data
             feeder_table_columns = db.get_columns(feeder_db_con,feeder_table)
             data_df = db.query_df(feeder_db_con,feeder_table)
@@ -473,10 +470,9 @@ class NwisGeochemDataSource(DataSource):
                         # we already mapped the units to our own unit cvs
                         usgs_unit = parameter_units[rowind]
                         # we have two cases.
-                        # First, the value us numeric, in which
-                        # case the parsing is easy.
-                        # Second, the value has text in it, in which case we
-                        # need to do some more complex parsing
+                        # First, the value is numeric, in which case the
+                        # parsing is easy. Second, the value has text in it,
+                        # in which case we need to do some more complex parsing
                         # note that we also want to catch scientific notations
                         # so we use float to test the value
                         try:
@@ -518,7 +514,8 @@ class NwisGeochemDataSource(DataSource):
                             passed_result_id = None
                             data_type = 'na'
                             stddev = False
-                            # result_id  tells us the id in the results table so we can add other values
+                            # result_id  tells us the id in the results table
+                            # so we can add other values
                             censor_code=''
                             quality_code=''
                             result_id = write_sample_results(odmx_db_con,
@@ -548,10 +545,10 @@ class NwisGeochemDataSource(DataSource):
                             mcount=0
                             vcount=0
                             for item in measurement_qualifiers:
-                                    if item in rowvalue:
-                                        mcount=mcount+1
-                                        mquals.append(item)
-                            if('vqc_qualifier' in rowvalue):
+                                if item in rowvalue:
+                                    mcount=mcount+1
+                                    mquals.append(item)
+                            if 'vqc_qualifier' in rowvalue:
                                 vqc_qualifier=True
                                 # we try to match rowvalue with the entries
                                 for item in vqc_qualifiers:
@@ -559,13 +556,13 @@ class NwisGeochemDataSource(DataSource):
                                         vcount=vcount+1
                                         vquals.append(item)
                             # we have an issue that we do not have a match
-                            if(vqc_qualifier==True and vcount==0):
-                                    print(' error  - we have an undefined vqc_code')
-                                    exit('undefined vqc_code')
-                            if(mcount==0 and vcount==0):
-                                    print(' error  - mcount and vcount both 0')
-                                    print(' rowvalue: ',rowvalue)
-                                    exit('no matches')
+                            if vqc_qualifier is True and vcount==0:
+                                print(' error  - we have an undefined vqc_code')
+                                exit('undefined vqc_code')
+                            if mcount==0 and vcount==0:
+                                print(' error  - mcount and vcount both 0')
+                                print(' rowvalue: ',rowvalue)
+                                exit('no matches')
                             # we now iterate over the arrays and write the entries
                             # we also still need to extract the value
                             # we also write the value (optionally)
@@ -578,33 +575,33 @@ class NwisGeochemDataSource(DataSource):
                             # print('news',news,'rowvalue',rowvalue)
                             # now we will do the following
                             # we will write a value
-                            censor_code=''
+                            censor_code = ''
                             # as this data has issues we give it a flag of marginal so that
                             # we can decide whether to keep it
                             quality_code='marginal'
-                            if(news!=''):
-                             if(float(news)):
-                                result_written_id = write_sample_results(odmx_db_con,
-                                          units_id,variable_id, news,
-                                          timestamp, timezone, depth_m,
-                                          data_type, passed_result_id,
-                                          feature_action_id,stddev,
-                                          censor_code,quality_code)
-                                # now we write the extesion values
-                                for item in mquals:
-                                    odmx.write_result_extension_property_values(
-                                         con,
-                                         result_id=result_written_id,
-                                         property_id=usgs_property_id,
-                                         property_value=item
-                                   )
-                                for item in vquals:
-                                    odmx.write_result_extension_property_values(
-                                         con,
-                                         result_id=result_written_id,
-                                         property_id=usgs_property_id,
-                                         property_value=item
-                                   )
-                             else:
-                               print('we will not write this as it is not a numberx xxxx')
+                            if news != '':
+                                if(float(news)):
+                                    result_written_id = write_sample_results(odmx_db_con,
+                                              units_id,variable_id, news,
+                                              timestamp, timezone, depth_m,
+                                              data_type, passed_result_id,
+                                              feature_action_id,stddev,
+                                              censor_code,quality_code)
+                                    # now we write the extesion values
+                                    for item in mquals:
+                                        odmx.write_result_extension_property_values(
+                                             con,
+                                             result_id=result_written_id,
+                                             property_id=usgs_property_id,
+                                             property_value=item
+                                       )
+                                    for item in vquals:
+                                        odmx.write_result_extension_property_values(
+                                             con,
+                                             result_id=result_written_id,
+                                             property_id=usgs_property_id,
+                                             property_value=item
+                                       )
+                            else:
+                                print('we will not write this as it is not a numberx xxxx')
         print(f'New Variables to add: {need_to_add}')

@@ -208,14 +208,13 @@ class HydrovuDataSource(DataSource):
             unit_lookup = self.unit_df.set_index('clean_name')
 
             for column_name in new_cols:
-                if 'timestamp' in column_name:
-                   continue
-                else:
-                    name, unit_name = column_name.split("[")
-                    variable_domain_cv = "instrumentMeasurement"
-                    variable_term = param_lookup['cv_term'][name]
-                    unit = unit_lookup['cv_term'][unit_name[:-1]]
-                    expose_as_datastream = True
+                if column_name in col_list:
+                    continue
+                name, unit_name = column_name.split("[")
+                variable_domain_cv = "instrumentMeasurement"
+                variable_term = param_lookup['cv_term'][name]
+                unit = unit_lookup['cv_term'][unit_name[:-1]]
+                expose_as_datastream = True
                 if variable_term is None:
                     continue
                 data_to_equip.append(

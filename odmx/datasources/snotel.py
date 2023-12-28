@@ -311,13 +311,12 @@ class SnotelDataSource(DataSource):
 
             for column_name in new_cols:
                 if column_name in col_list:
-                   continue
-                else:
-                    name, unit_name = column_name.split("[")
-                    variable_domain_cv = "instrumentMeasurement"
-                    variable_term = self.param_df['cv_term'][name]
-                    unit = self.unit_df['cv_term'][unit_name[:-1]]
-                    expose_as_datastream = True
+                    continue
+                name, unit_name = column_name.split("[")
+                variable_domain_cv = "instrumentMeasurement"
+                variable_term = self.param_df['cv_term'][name]
+                unit = self.unit_df['cv_term'][unit_name[:-1]]
+                expose_as_datastream = True
                 if variable_term is None:
                     continue
                 data_to_equip.append(

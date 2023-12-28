@@ -199,12 +199,11 @@ class NwisDataSource(DataSource):
 
             for column_name in new_cols:
                 if column_name in col_list:
-                   continue
-                else:
-                    variable_domain_cv = "instrumentMeasurement"
-                    variable_term = lookup_df['cv_term'][column_name]
-                    unit = lookup_df['cv_unit'][column_name]
-                    expose_as_datastream = True
+                    continue
+                variable_domain_cv = "instrumentMeasurement"
+                variable_term = lookup_df['cv_term'][column_name]
+                unit = lookup_df['cv_unit'][column_name]
+                expose_as_datastream = True
                 if variable_term is None:
                     continue
                 data_to_equip.append(

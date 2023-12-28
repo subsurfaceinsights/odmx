@@ -292,5 +292,6 @@ def setup_csv_data_source_config_json(csv_path):
               "data_file_tabs": None,
               "data_split": data_split}
 
-    with open(f'{directory}/data_source_config.json', 'w') as f:
+    with open(f'{directory}/data_source_config.json', 'w',
+              encoding='utf-8') as f:
         json.dump(config, f, ensure_ascii=False, indent=4)
