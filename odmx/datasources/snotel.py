@@ -6,8 +6,6 @@ Module for SNOTEL data harvesting, ingestion, and processing.
 """
 
 import os
-import uuid
-import json
 import datetime
 from importlib.util import find_spec
 from functools import reduce
@@ -16,17 +14,18 @@ import pandas as pd
 import numpy as np
 import isodate
 import suds.client
-from odmx.support.file_utils import open_csv, open_json
+from odmx.support.file_utils import open_csv, open_json, clean_name
 from odmx.abstract_data_source import DataSource
 from odmx.timeseries_ingestion import general_timeseries_ingestion
 from odmx.timeseries_processing import general_timeseries_processing
 from odmx.harvesting import commit_csv
 from odmx.parse_waterml import parse_site_values, parse_sites
 from odmx.write_equipment_jsons import gen_equipment_entry,\
-    gen_data_to_equipment_entry
-from odmx.log import vprint
+    gen_data_to_equipment_entry, check_diff_and_write_new,\
+        read_or_start_data_to_equipment_json
 
 mapper_path = find_spec("odmx.mappers").submodule_search_locations[0]
+json_schema_files = find_spec("odmx.json_schema").submodule_search_locations[0]
 
 def get_waterml_version(suds_client):
     """Get waterML version"""
@@ -123,62 +122,6 @@ class SnotelDataSource(DataSource):
             open_json(f'{mapper_path}/snotel_units.json'))
         self.unit_df.set_index('clean_name', inplace=True,
                                verify_integrity=True)
-
-    def generate_equipment_jsons(self, var_names, overwrite=False):
-        """
-        Generate equipment.json and data_to_equipment.json
-        """
-
-        dev_uuid = str(uuid.uuid4())
-        equip_dir = self.equipment_directory
-        file_path = (f"{self.project_path}/odmx/"
-                     f"equipment/{equip_dir}")
-        if os.path.exists(file_path) and not overwrite:
-            return
-        os.makedirs(file_path, exist_ok=True)
-        data_to_equipment_map = []
-        for column_name in var_names:
-            if 'timestamp' in column_name:
-                var_domain_cv = "instrumentTimestamp"
-                variable_term = "nonedefined"
-                unit = "datalogger_time_stamp"
-                expose_as_ds = False
-            else:
-                name, unit_name = column_name.split("[")
-                var_domain_cv = "instrumentMeasurement"
-                variable_term = self.param_df['cv_term'][name]
-                unit = self.unit_df['cv_term'][unit_name[:-1]]
-                expose_as_ds = True
-            if variable_term is None:
-                continue
-            data_to_equipment_map.append(
-                gen_data_to_equipment_entry(column_name=column_name,
-                                            var_domain_cv=var_domain_cv,
-                                            acquiring_instrument_uuid=dev_uuid,
-                                            variable_term=variable_term,
-                                            expose_as_ds=expose_as_ds,
-                                            units_term=unit))
-        data_to_equipment_map_file = (f"{file_path}/"
-                                      "data_to_equipment_map.json")
-        vprint("Writing data_to_equipment_map to "
-               f"{data_to_equipment_map_file}")
-        with open(data_to_equipment_map_file, 'w', encoding='utf-8') as f:
-            json.dump(data_to_equipment_map, f,
-                      ensure_ascii=False, indent=4)
-
-        # FIXME: Why is the start hardcoded?
-        start = 1420070400
-        equipment_entry = gen_equipment_entry(
-            acquiring_instrument_uuid=dev_uuid,
-            name="unknown sensor",
-            code="unknown sensor",
-            serial_number=None,
-            relationship_start_date_time_utc=start,
-            position_start_date_utc=start,
-            vendor="NRCS")
-        equip_file = f"{file_path}/equipment.json"
-        with open(equip_file, 'w+', encoding='utf-8') as f:
-            json.dump([equipment_entry], f, ensure_ascii=False, indent=4)
 
     def harvest(self):
         """
@@ -311,7 +254,7 @@ class SnotelDataSource(DataSource):
         else:
             print(f"No new data available for {file_path}.\n")
 
-    def ingest(self, feeder_db_con):
+    def ingest(self, feeder_db_con, update_equipment_jsons):
         """
         Manipulate harvested SNOTEL data in a file on the server into a feeder
         database.
@@ -319,7 +262,6 @@ class SnotelDataSource(DataSource):
 
         # Define the file name and path.
         local_base_path = self.data_source_path
-        station_id = self.station_id
         file_name = f'{self.feeder_table}.csv'
         file_path = os.path.join(local_base_path, file_name)
         # Create a DataFrame of the file.
@@ -332,25 +274,69 @@ class SnotelDataSource(DataSource):
         df.reset_index(drop=True, inplace=True)
 
         new_cols = []
-        replace_chars = {' ': '_', '^': '', '/': '_'}
         for col in df.columns.tolist():
-            new_col = col.lower()
-            for key, value in replace_chars.items():
-                new_col = new_col.replace(key, value)
-            try:
-                new_col.encode('ascii')
-            except UnicodeEncodeError as exc:
-                raise RuntimeError(f"Column '{new_col}' derived from snotel "
-                                   "data still has special characters. "
-                                   "Check the find/replace list") from exc
+            new_col = clean_name(col)
             new_cols.append(new_col)
+
+        # Write equipment jsons if specified
+        if update_equipment_jsons:
+            equip_path = (f"{self.project_path}/odmx/equipment/"
+                          f"{self.equipment_directory}")
+
+            equip_file = f"{equip_path}/equipment.json"
+            data_to_equipment_map_file = (f"{equip_path}/"
+                                          "data_to_equipment_map.json")
+            # Read equipment.json if it exists, otherwise start new
+            if os.path.isfile(equip_file):
+                equip_schema = os.path.join(json_schema_files,
+                                            'equipment_schema.json')
+                equipment = open_json(equip_file,
+                                      validation_path=equip_schema)[0]
+            else:
+                os.makedirs(self.equipment_directory, exist_ok=True)
+                equipment = gen_equipment_entry(
+                    acquiring_instrument_uuid=None,
+                    name="unknown sensor",
+                    code="unknown sensor",
+                    serial_number=None,
+                    vendor="NRCS")
+
+            # Retrieve device uuid from equipment dict
+            dev_uuid = equipment['equipment_uuid']
+
+            # Same for data to equipment map
+            data_to_equip, col_list =\
+            read_or_start_data_to_equipment_json(data_to_equipment_map_file,
+                                                 equipment)
+
+            for column_name in new_cols:
+                if column_name in col_list:
+                   continue
+                else:
+                    name, unit_name = column_name.split("[")
+                    variable_domain_cv = "instrumentMeasurement"
+                    variable_term = self.param_df['cv_term'][name]
+                    unit = self.unit_df['cv_term'][unit_name[:-1]]
+                    expose_as_datastream = True
+                if variable_term is None:
+                    continue
+                data_to_equip.append(
+                    gen_data_to_equipment_entry(
+                        column_name=column_name,
+                        var_domain_cv=variable_domain_cv,
+                        acquiring_instrument_uuid=dev_uuid,
+                        variable_term=variable_term,
+                        expose_as_ds=expose_as_datastream,
+                        units_term=unit))
+            # Write the new files
+            print("Writing equipment jsons.")
+            check_diff_and_write_new(data_to_equip, data_to_equipment_map_file)
+            check_diff_and_write_new([equipment], equip_file)
 
         df.columns = new_cols
         df.set_index('timestamp', inplace=True)
         # Convert unix timestamp to utc timestamp (without timzone)
         df['timestamp'] = pd.to_datetime(df.index, unit='s')
-
-        self.generate_equipment_jsons(new_cols, overwrite=True)
 
         # The rest of the ingestion is generic.
         general_timeseries_ingestion(feeder_db_con, self.feeder_table, df)

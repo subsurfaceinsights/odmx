@@ -14,7 +14,7 @@ def clean_name(col):
     Generate ingested name from csv column name
     """
     replace_chars = {' ': '_', '-': '_', '/': '_', '²': '2', '³': '3',
-                     '°': 'deg', '__': '_', '%': 'percent'}
+                     '°': 'deg', '__': '_', '%': 'percent', '^': ''}
     new_col = col.lower()
     for key, value in replace_chars.items():
         new_col = new_col.replace(key, value)

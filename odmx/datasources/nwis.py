@@ -5,9 +5,7 @@ Module for NWIS data harvesting, ingestion, and processing.
 """
 
 import os
-import uuid
 from importlib.util import find_spec
-import json
 import datetime
 import pandas as pd
 from dataretrieval import nwis
@@ -17,10 +15,12 @@ from odmx.timeseries_ingestion import general_timeseries_ingestion
 from odmx.timeseries_processing import general_timeseries_processing
 from odmx.harvesting import commit_csv
 from odmx.write_equipment_jsons import gen_equipment_entry,\
-    gen_data_to_equipment_entry, check_diff_and_write_new
+    gen_data_to_equipment_entry, check_diff_and_write_new,\
+        read_or_start_data_to_equipment_json
 from odmx.log import vprint
 
 mapper_path = find_spec("odmx.mappers").submodule_search_locations[0]
+json_schema_files = find_spec("odmx.json_schema").submodule_search_locations[0]
 
 class NwisDataSource(DataSource):
     """
@@ -39,60 +39,6 @@ class NwisDataSource(DataSource):
         self.equipment_directory = f'nwis/nwis_{site_code}'
         self.param_df = pd.DataFrame(open_json(f'{mapper_path}/nwis.json'))
         self.param_df.set_index("id", inplace=True, verify_integrity=True)
-
-    def generate_equipment_jsons(self, var_names, start, overwrite=False):
-        """
-        Generate equipment.json and data_to_equipment.json
-        """
-
-        dev_uuid = str(uuid.uuid4())
-        equip_dir = self.equipment_directory
-        file_path = (f"{self.project_path}/odmx/"
-                     f"equipment/{equip_dir}")
-        lookup_df = self.param_df.set_index("clean_name")
-        if os.path.exists(file_path) and not overwrite:
-            return
-        os.makedirs(file_path, exist_ok=True)
-        data_to_equipment_map = []
-        for name in var_names:
-            if 'timestamp' in name:
-                var_domain_cv = "instrumentTimestamp"
-                variable_term = "nonedefined"
-                unit = "datalogger_time_stamp"
-                expose_as_ds = False
-            else:
-                var_domain_cv = "instrumentMeasurement"
-                variable_term = lookup_df['cv_term'][name]
-                unit = lookup_df['cv_unit'][name]
-                expose_as_ds = True
-            if variable_term is None:
-                continue
-            data_to_equipment_map.append(
-                gen_data_to_equipment_entry(column_name=name,
-                                            var_domain_cv=var_domain_cv,
-                                            acquiring_instrument_uuid=dev_uuid,
-                                            variable_term=variable_term,
-                                            expose_as_ds=expose_as_ds,
-                                            units_term=unit))
-        data_to_equipment_map_file = (f"{file_path}/"
-                                      "data_to_equipment_map.json")
-        vprint("Writing data_to_equipment_map to "
-               f"{data_to_equipment_map_file}")
-        with open(data_to_equipment_map_file, 'w', encoding='utf-8') as f:
-            json.dump(data_to_equipment_map, f,
-                      ensure_ascii=False, indent=4)
-
-        equipment_entry = gen_equipment_entry(
-            acquiring_instrument_uuid=dev_uuid,
-            name="unknown sensor",
-            code="unknown sensor",
-            serial_number=None,
-            relationship_start_date_time_utc=start,
-            position_start_date_utc=start,
-            vendor="USGS")
-        equip_file = f"{file_path}/equipment.json"
-        with open(equip_file, 'w+', encoding='utf-8') as f:
-            json.dump([equipment_entry], f, ensure_ascii=False, indent=4)
 
     def harvest(self):
         """
@@ -191,7 +137,7 @@ class NwisDataSource(DataSource):
         else:
             print(f"No new data available for {file_path}.\n")
 
-    def ingest(self, feeder_db_con):
+    def ingest(self, feeder_db_con, update_equipment_jsons):
         """
         Manipulate harvested NWIS data in a file on the server into a feeder
         database.
@@ -205,8 +151,6 @@ class NwisDataSource(DataSource):
         args = {'float_precision': 'high', }
         df = open_csv(file_path, args=args, lock=True)
 
-        # Make sure the column headers are lower case.
-        df.columns = df.columns.str.lower()
         # Rename datetime column to timestamp for compatibiltiy with general
         # ingestion
         df['timestamp'] = pd.to_datetime(df['datetime'])
@@ -216,7 +160,65 @@ class NwisDataSource(DataSource):
 
         new_cols = df.columns.tolist()
         start = int(df.iloc[-1]['timestamp'].timestamp())
-        self.generate_equipment_jsons(new_cols, start, overwrite=True)
+
+        # Write equipment jsons if update_equipment_jsons is true
+        if update_equipment_jsons:
+            equip_path = (f"{self.project_path}/odmx/equipment/"
+                          f"{self.equipment_directory}")
+
+            equip_file = f"{equip_path}/equipment.json"
+            data_to_equipment_map_file = (f"{equip_path}/"
+                                          "data_to_equipment_map.json")
+            # Read equipment.json if it exists, otherwise start new
+            if os.path.isfile(equip_file):
+                equip_schema = os.path.join(json_schema_files,
+                                            'equipment_schema.json')
+                equipment = open_json(equip_file,
+                                      validation_path=equip_schema)[0]
+            else:
+                os.makedirs(self.equipment_directory, exist_ok=True)
+                equipment = gen_equipment_entry(
+                    acquiring_instrument_uuid=None,
+                    name="unknown sensor",
+                    code="unknown sensor",
+                    serial_number=None,
+                    relationship_start_date_time_utc=start,
+                    position_start_date_utc=start,
+                    vendor="USGS")
+
+            # Retrieve device uuid from equipment dict
+            dev_uuid = equipment['equipment_uuid']
+
+            # Same for data to equipment map
+            data_to_equip, col_list =\
+            read_or_start_data_to_equipment_json(data_to_equipment_map_file,
+                                                 equipment)
+
+            # Setup mappers with column names for lookup
+            lookup_df = self.param_df.set_index("clean_name")
+
+            for column_name in new_cols:
+                if column_name in col_list:
+                   continue
+                else:
+                    variable_domain_cv = "instrumentMeasurement"
+                    variable_term = lookup_df['cv_term'][column_name]
+                    unit = lookup_df['cv_unit'][column_name]
+                    expose_as_datastream = True
+                if variable_term is None:
+                    continue
+                data_to_equip.append(
+                    gen_data_to_equipment_entry(
+                        column_name=column_name,
+                        var_domain_cv=variable_domain_cv,
+                        acquiring_instrument_uuid=dev_uuid,
+                        variable_term=variable_term,
+                        expose_as_ds=expose_as_datastream,
+                        units_term=unit))
+            # Write the new files
+            print("Writing equipment jsons.")
+            check_diff_and_write_new(data_to_equip, data_to_equipment_map_file)
+            check_diff_and_write_new([equipment], equip_file)
 
         # The rest of the ingestion is generic.
         general_timeseries_ingestion(feeder_db_con,

@@ -12,15 +12,18 @@ from functools import cache
 import requests
 import yaml
 import pandas as pd
-from odmx.support.file_utils import open_csv, open_json
+from odmx.support.file_utils import open_csv, open_json, clean_name
 from odmx.abstract_data_source import DataSource
 from odmx.timeseries_ingestion import general_timeseries_ingestion
 from odmx.timeseries_processing import general_timeseries_processing
 from odmx.log import vprint
-from odmx.write_equipment_jsons import generate_equipment_jsons
+from odmx.write_equipment_jsons import gen_equipment_entry,\
+    gen_data_to_equipment_entry, check_diff_and_write_new,\
+        read_or_start_data_to_equipment_json
 # TODO make manual qa list configurable here
 
 mapper_path = find_spec("odmx.mappers").submodule_search_locations[0]
+json_schema_files = find_spec("odmx.json_schema").submodule_search_locations[0]
 
 class HydrovuDataSource(DataSource):
     """
@@ -152,7 +155,7 @@ class HydrovuDataSource(DataSource):
         else:
             vprint(f"hydrovu: No new data for {self.device_name}")
 
-    def ingest(self, feeder_db_con):
+    def ingest(self, feeder_db_con, update_equipment_jsons):
         """
         Manipulate harvested Hydrovu data in a file on the server into a feeder
         database.
@@ -166,22 +169,68 @@ class HydrovuDataSource(DataSource):
 
         # Rename all of the column headers.
         new_cols = []
-        replace_chars = {' ': '_', '-': '_', '/': '_', '²': '2', '³': '3',
-                         '°': 'deg', '__': '_', '%': 'percent', 'µ': 'u',
-                         'Ω': 'ohm', 'ω': 'ohm', '₂': '2', ':': ''}
         for col in df.columns.tolist():
-            new_col = col.lower()
-            for key, value in replace_chars.items():
-                new_col = new_col.replace(key, value)
-            # Make sure our replacement worked
-            try:
-                new_col.encode('ascii')
-            except UnicodeEncodeError as exc:
-                raise RuntimeError(f"Column '{new_col}' derived from hydrovu "
-                                   "data still has special characters. "
-                                   "Check the find/replace list") from exc
+            new_col = clean_name(col)
             new_cols.append(new_col)
-        generate_equipment_jsons(new_cols, overwrite=False)
+
+        # Write equipment jsons if update_equipment_jsons is true
+        if update_equipment_jsons:
+            equip_path = (f"{self.project_path}/odmx/equipment/"
+                          f"{self.equipment_directory}")
+
+            equip_file = f"{equip_path}/equipment.json"
+            data_to_equipment_map_file = (f"{equip_path}/"
+                                          "data_to_equipment_map.json")
+            # Read equipment.json if it exists, otherwise start new
+            if os.path.isfile(equip_file):
+                equip_schema = os.path.join(json_schema_files,
+                                            'equipment_schema.json')
+                equipment = open_json(equip_file,
+                                      validation_path=equip_schema)[0]
+            else:
+                os.makedirs(self.equipment_directory, exist_ok=True)
+                equipment = gen_equipment_entry(
+                    acquiring_instrument_uuid=None,
+                    name=self.device_type,
+                    code=self.device_code,
+                    serial_number=self.device_id)
+
+            # Retrieve device uuid from equipment dict
+            dev_uuid = equipment['equipment_uuid']
+
+            # Same for data to equipment map
+            data_to_equip, col_list =\
+            read_or_start_data_to_equipment_json(data_to_equipment_map_file,
+                                                 equipment)
+
+            # Setup mappers with column names for lookup
+            param_lookup = self.param_df.set_index('clean_name')
+            unit_lookup = self.unit_df.set_index('clean_name')
+
+            for column_name in new_cols:
+                if 'timestamp' in column_name:
+                   continue
+                else:
+                    name, unit_name = column_name.split("[")
+                    variable_domain_cv = "instrumentMeasurement"
+                    variable_term = param_lookup['cv_term'][name]
+                    unit = unit_lookup['cv_term'][unit_name[:-1]]
+                    expose_as_datastream = True
+                if variable_term is None:
+                    continue
+                data_to_equip.append(
+                    gen_data_to_equipment_entry(
+                        column_name=column_name,
+                        var_domain_cv=variable_domain_cv,
+                        acquiring_instrument_uuid=dev_uuid,
+                        variable_term=variable_term,
+                        expose_as_ds=expose_as_datastream,
+                        units_term=unit))
+            # Write the new files
+            print("Writing equipment jsons.")
+            check_diff_and_write_new(data_to_equip, data_to_equipment_map_file)
+            check_diff_and_write_new([equipment], equip_file)
+
         df.columns = new_cols
         df.set_index('timestamp', inplace=True)
         # Convert unix timestamp to utc timestamp (without timzone)
