@@ -39,18 +39,16 @@ class HydrovuDataSource(DataSource):
         self.device_name = device_name
         self.device_type = device_type
         self.device_id = device_id
-        device_type = device_type.lower()
-        if device_type == 'vulink':
+        if device_type.lower() == 'vulink':
             self.device_code = "VuLink"
-        elif device_type == 'at500':
+        elif device_type.lower() == 'at500':
             self.device_code = "Aqua TROLL 500 Data Logger"
-        elif device_type == 'at200':
+        elif device_type.lower() == 'at200':
             self.device_code = "Aqua TROLL 200 Data Logger"
         else:
             raise ValueError(f"Unknown Device type {device_type}")
-        self.equipment_directory = (f'{project_path}/hydrovu/{device_name}_'
-                                    f'{device_type}')
-        self.feeder_table = f'{device_name.lower()}_{device_type}'
+        self.equipment_directory = (f'hydrovu/{device_name}_{device_type}')
+        self.feeder_table = f'{device_name.lower()}_{device_type.lower()}'
         self.data_source_timezone = data_source_timezone
         # There are two ids with clean_name "density" but both map to the same
         # cv term, so don't check for duplicates (doesn't matter)
