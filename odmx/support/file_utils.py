@@ -14,18 +14,21 @@ def clean_name(col):
     Generate ingested name from csv column name
     """
     replace_chars = {' ': '_', '-': '_', '/': '_', '²': '2', '³': '3',
-                     '°': 'deg', '__': '_', '%': 'percent', '^': ''}
-    new_col = col.lower()
+                     '°': 'deg', '__': '_', '%': 'percent', '^': '', 'µ': 'u',
+                     'Ω': 'ohm', '₂': '2', ':':''}
     for key, value in replace_chars.items():
-        new_col = new_col.replace(key, value)
+        col = col.replace(key, value)
+
+    # Make lowercase after replacement, it applies to Greek letters too
+    # and that may change the meaning (e.g. ω doesn't mean ohms)
+    col = col.lower()
     # Make sure our replacement worked
     try:
-        new_col.encode('ascii')
+        col.encode('ascii')
     except UnicodeEncodeError as exc:
-        raise RuntimeError(f"Column '{new_col}' derived from decagon "
-                           "data still has special characters. "
+        raise RuntimeError(f"Column '{col}' still has special characters. "
                            "Check the find/replace list") from exc
-    return new_col
+    return col
 
 
 def get_files(path_to_check, file_ext_list=None, prefix=None):
@@ -273,3 +276,20 @@ def get_last_timestamp_csv(file_path, timestamp_index=0, max_line_size=8192,
                                              unit=unit)
 
         return file_last_timestamp
+
+def expand_column_names(columns, full_col_list):
+    """
+    Expand column names specified with wildcard (*)
+
+    @param columns Columns to use (list of strings)
+    @param full_col_list List of all available columns (listof strings)
+    @return list of expanded column names
+    """
+    for column in columns:
+        if column.endswith('*'):
+            columns.remove(column)
+            column = column.strip('*')
+            expanded_cols = \
+                [x for x in full_col_list if x.startswith(column)]
+            columns += expanded_cols
+    return columns
