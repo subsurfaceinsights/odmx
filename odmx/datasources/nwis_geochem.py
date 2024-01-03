@@ -13,7 +13,7 @@ from odmx.support.file_utils import open_json, open_csv
 import odmx.support.db as db
 from odmx.abstract_data_source import DataSource
 from odmx.timeseries_ingestion import add_columns
-from odmx.ssi.geochem_ingestion import fieldspecimen_child_sf_creation,\
+from odmx.geochem_ingestion_core import fieldspecimen_child_sf_creation,\
     sampleaction_routine, write_sample_results, feature_action
 from odmx.harvesting import commit_csv
 from odmx.log import vprint
