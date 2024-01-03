@@ -368,7 +368,7 @@ class SnotelDataSource(DataSource):
         df = ssigen.open_csv(file_path, args=args, lock=True)
 
         # Turn the datetime column into an actual datetime, and sort by it.
-        df['timestamp'] = pd.to_datetime(df['timestamp'])
+        df['timestamp'] = pd.to_datetime(df['timestamp'], format='ISO8601')
         df.sort_values(by='timestamp', inplace=True)
         df.reset_index(drop=True, inplace=True)
 
