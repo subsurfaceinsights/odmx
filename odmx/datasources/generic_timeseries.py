@@ -9,7 +9,7 @@ import os
 from importlib.util import find_spec
 import pandas as pd
 from odmx.support.file_utils import get_files, open_csv, clean_name,\
-    open_spreadsheet, open_json
+    open_spreadsheet, open_json, expand_column_names
 from odmx.abstract_data_source import DataSource
 from odmx.timeseries_ingestion import general_timeseries_ingestion
 from odmx.timeseries_processing import general_timeseries_processing
@@ -33,8 +33,7 @@ class GenericTimeseriesDataSource(DataSource):
         self.data_source_path = data_source_path
         # Define the file path.
         self.data_file_path = os.path.join(self.data_path,
-                                           self.data_source_path,
-                                           self.data_source_name)
+                                            self.data_source_path)
 
         # Read the data source config information
         self.config_file = os.path.join(self.data_file_path,
@@ -52,11 +51,8 @@ class GenericTimeseriesDataSource(DataSource):
         There is no harvesting to be done for this data type.
 
         For this data source type, data_source_path defines the subdirectory
-        within the main data directory to search for data files. Within that
-        subdirectory, there should be a folder for each distinct data source,
-        named after the source (device, location, etc.) containing all files
-        for the source. This module is written to combine all files from that
-        folder.
+        within the main data directory to search for data files. All files with
+        the specified extension within this directory will be read and ingested.
         """
 
     def ingest(self, feeder_db_con, update_equipment_jsons):
@@ -74,13 +70,22 @@ class GenericTimeseriesDataSource(DataSource):
 
         for block in data_source_config['data_split']:
             sampling_feature = block['sampling_feature']
-            equipment_path = block['equipment_path']
+            equipment_dir = block['equipment_path']
+            equipment_path = os.path.join(self.project_path, 'odmx',
+                                          'equipment', equipment_dir)
+
+            # Get time column from data_source_config and add to column mapper
+            time_col = block['base_equipment']['time_column']
+            time_map = {"name": time_col,
+                        "variable_cv": "nonedefined",
+                        "unit_cv": "datalogger_time_stamp",
+                        "expose": False}
+            block['columns'].append(time_map)
             mapper = pd.DataFrame(block['columns'])
 
-            # Extract the list of columns for this block and the name of the
-            # time column
+            # Add the time column to whatever columns belong with this
+            # sampling feature
             columns = mapper['name'].tolist()
-            time_col = block['base_equipment']['time_column']
 
             # Make a separate feeder table for each data block
             feeder_table = \
@@ -88,7 +93,7 @@ class GenericTimeseriesDataSource(DataSource):
 
             # Store tuple of sampling feature, equipment path, and feeder table
             self.split_list.append((sampling_feature,
-                               equipment_path,
+                               equipment_dir,
                                feeder_table))
 
             # Find all data files in the path for this data source
@@ -103,24 +108,26 @@ class GenericTimeseriesDataSource(DataSource):
                     tabs = data_source_config["data_file_tabs"]
                     tab_dfs = []
                     for tab in tabs:
-                        args.update({'sheet_name': tab['name'],
+                        args.update({'sheet_name': tab,
                                      'usecols': columns})
                         tab_dfs.append(open_spreadsheet(file,
                                                         args=args,
                                                         lock=True))
-                    df = pd.concat(tab_dfs, ignore_index=True)
+                    part_df = pd.concat(tab_dfs, ignore_index=True)
                 elif ext == 'csv':
                     args.update({'float_precision': 'high',
                                  'usecols': columns})
-                    df = open_csv(file, args=args, lock=True)
+                    part_df = open_csv(file, args=args, lock=True)
 
 
                 # Convert time column to timestamp in specific format
-                df['timestamp'] = pd.to_datetime(df[time_col],
+                part_df['timestamp'] = pd.to_datetime(part_df[time_col],
                                                 format='%Y-%m-%d %H:%M:%S')
 
                 # Add to list of dataframes
-                dfs.append(df)
+                dfs.append(part_df)
+
+            # Combine all dfs and drop duplicates
             df = pd.concat(dfs, ignore_index=True).drop_duplicates()
 
             # Sort the DataFrame by timestamp and drop unused datetime column
@@ -193,7 +200,7 @@ class GenericTimeseriesDataSource(DataSource):
                 for column in logger['columns']:
                     data_to_equip.append(
                         gen_data_to_equipment_entry(
-                            column_name='timestamp',
+                            column_name=column,
                             var_domain_cv='instrumentMetadata',
                             acquiring_instrument_uuid=logger_uuid,
                             variable_term=mapper['variable_cv'][column],
@@ -227,17 +234,13 @@ class GenericTimeseriesDataSource(DataSource):
                         child_equipment.append(child)
 
                         # Expand column names if they were specified with *
-                        for column in sensor['columns']:
-                            if column.endswith('*'):
-                                sensor['columns'].remove(column)
-                                column = column.strip('*')
-                                expanded_cols = \
-                                    [x for x in new_cols if x.startswith(column)]  #pylint:disable=line-too-long
-                                sensor['columns'] += expanded_cols
+                        sensor['columns'] = expand_column_names(
+                            sensor['columns'], new_cols)
 
                         # Now iterate over the column names
                         for column in sensor['columns']:
-                            units_term=mapper['unit_cv'][column]
+                            col_name = clean_name(column)
+                            units_term=mapper['unit_cv'][col_name]
 
                             # check if units term is one of our defined keepers
                             if units_term in self.keep_units:
@@ -251,16 +254,16 @@ class GenericTimeseriesDataSource(DataSource):
                             # with json.dump
                             data_to_equip.append(
                                 gen_data_to_equipment_entry(
-                                    column_name=column,
+                                    column_name=col_name,
                                     var_domain_cv='instrumentMeasurement',
                                     acquiring_instrument_uuid=\
                                         child['equipment_uuid'],
                                     variable_term=\
-                                        mapper['variable_cv'][column],
+                                        mapper['variable_cv'][col_name],
                                     units_term=units_term,
                                     units_conversion=units_conversion,
                                     expose_as_ds=\
-                                        bool(mapper['expose'][column])))
+                                        bool(mapper['expose'][col_name])))
 
                 # Add child equipment to base
                 equipment.update({'equipment': child_equipment})
