@@ -159,7 +159,6 @@ class NwisDataSource(DataSource):
         df.reset_index(drop=True, inplace=True)
 
         new_cols = df.columns.tolist()
-        start = int(df.iloc[-1]['timestamp'].timestamp())
 
         # Write equipment jsons if update_equipment_jsons is true
         if update_equipment_jsons:
@@ -169,6 +168,10 @@ class NwisDataSource(DataSource):
             equip_file = f"{equip_path}/equipment.json"
             data_to_equipment_map_file = (f"{equip_path}/"
                                           "data_to_equipment_map.json")
+
+            # Get start timestamp from dataframe
+            start = int(df.iloc[0]['timestamp'].timestamp())
+
             # Read equipment.json if it exists, otherwise start new
             if os.path.isfile(equip_file):
                 equip_schema = os.path.join(json_schema_files,
