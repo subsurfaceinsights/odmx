@@ -116,8 +116,8 @@ class HydrovuDataSource(DataSource):
         while True:
             vprint("last_timstamp : ",
                    datetime.datetime.fromtimestamp(last_timestamp))
-            vprint('location_id : ', location_id)
-            vprint("name : ", self.device_name)
+            vprint('device_id : ', location_id)
+            vprint(f"name : {self.device_name}_{self.device_type}")
             feature_url = data_request.substitute(alias=location_id,
                                                   start_time=last_timestamp)
             data = requests.get(feature_url, headers=headers).json()
@@ -173,16 +173,21 @@ class HydrovuDataSource(DataSource):
 
         # Write equipment jsons if update_equipment_jsons is true
         if update_equipment_jsons:
+            # Set up paths
             equip_path = (f"{self.project_path}/odmx/equipment/"
                           f"{self.equipment_directory}")
 
             equip_file = f"{equip_path}/equipment.json"
             data_to_equipment_map_file = (f"{equip_path}/"
                                           "data_to_equipment_map.json")
+            # Get earliest timestamp for equipment start date
+            start = int(df.iloc[0]['timestamp'])
+
             # Read equipment.json if it exists, otherwise start new
             if os.path.isfile(equip_file):
                 equip_schema = os.path.join(json_schema_files,
                                             'equipment_schema.json')
+                vprint(f"Reading existing equipment from {equip_file}")
                 equipment = open_json(equip_file,
                                       validation_path=equip_schema)[0]
             else:
@@ -191,7 +196,11 @@ class HydrovuDataSource(DataSource):
                     acquiring_instrument_uuid=None,
                     name=self.device_type,
                     code=self.device_code,
-                    serial_number=self.device_id)
+                    serial_number=self.device_id,
+                    relationship_start_date_time_utc=start,
+                    position_start_date_utc=start,
+                    vendor="In Situ")
+                vprint(f"Equipment entry: {equipment}")
 
             # Retrieve device uuid from equipment dict
             dev_uuid = equipment['equipment_uuid']
@@ -204,6 +213,10 @@ class HydrovuDataSource(DataSource):
             # Setup mappers with column names for lookup
             param_lookup = self.param_df.set_index('clean_name')
             unit_lookup = self.unit_df.set_index('clean_name')
+
+            # Drop duplicate keys (density), here we don't need them
+            param_lookup = \
+                param_lookup[~param_lookup.index.duplicated(keep='first')]
 
             for column_name in new_cols:
                 if column_name in col_list:
@@ -223,6 +236,7 @@ class HydrovuDataSource(DataSource):
                         variable_term=variable_term,
                         expose_as_ds=expose_as_datastream,
                         units_term=unit))
+            vprint(f"Data to equipment map : {data_to_equip}")
             # Write the new files
             print("Writing equipment jsons.")
             check_diff_and_write_new(data_to_equip, data_to_equipment_map_file)
