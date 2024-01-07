@@ -282,7 +282,7 @@ def expand_column_names(columns, full_col_list):
     Expand column names specified with wildcard (*)
 
     @param columns Columns to use (list of strings)
-    @param full_col_list List of all available columns (listof strings)
+    @param full_col_list List of all available columns (list of strings)
     @return list of expanded column names
     """
     for column in columns:
