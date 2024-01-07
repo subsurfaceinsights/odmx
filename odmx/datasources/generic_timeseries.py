@@ -80,12 +80,14 @@ class GenericTimeseriesDataSource(DataSource):
                         "variable_cv": "nonedefined",
                         "unit_cv": "datalogger_time_stamp",
                         "expose": False}
+            # Add the time column to columns listed for this sampling feature
             block['columns'].append(time_map)
             mapper = pd.DataFrame(block['columns'])
 
-            # Add the time column to whatever columns belong with this
-            # sampling feature
+            # Extract column list and then use original names as index
             columns = mapper['name'].tolist()
+            mapper.set_index('name', inplace=True)
+
 
             # Make a separate feeder table for each data block
             feeder_table = \
@@ -127,26 +129,31 @@ class GenericTimeseriesDataSource(DataSource):
                 # Add to list of dataframes
                 dfs.append(part_df)
 
-            # Combine all dfs and drop duplicates
+            # Combine all dfs, drop duplicates, and sort by timestamp
             df = pd.concat(dfs, ignore_index=True).drop_duplicates()
-
-            # Sort the DataFrame by timestamp and drop unused datetime column
             df.sort_values(by='timestamp', inplace=True)
-            df.drop(columns=time_col, inplace=True)
 
-            # Move time column back to the front for adding new names to mapper
-            col = df.pop("timestamp")
-            df.insert(0, col.name, col)
+            # Sanitize names
+            # Create column to store sanitized names
+            mapper["clean_name"] = pd.Series()
+            # rename timestamp explicitly
+            mapper.loc[time_col, "clean_name"] = "timestamp"
 
-            # Ensure column names are compatible with database
+            # Iterate through the rest
             new_cols = []
             for col in df.columns.tolist():
                 new_col = clean_name(col)
+                mapper.loc[col, "clean_name"] = new_col
                 new_cols.append(new_col)
 
-            # Add new column names to mapper and use as index for easy lookup
-            df.columns = new_cols
-            mapper['clean_name'] = new_cols
+            # Now we can drop the old time column
+            df.drop(columns=time_col, inplace=True)
+
+            # as well as the excess "timestamp" column from mapper
+            mapper.drop(labels="timestamp", inplace=True)
+
+            # Rename data columns, then use clean_name as index on mapper
+            df.rename(columns=mapper['clean_name'].to_dict(), inplace=True)
             mapper.set_index('clean_name', inplace=True)
 
             # Prepare the equipment jsons for these columns
@@ -213,8 +220,10 @@ class GenericTimeseriesDataSource(DataSource):
                 if block['attached_sensors'] is not None:
                     for sensor in block['attached_sensors']:
                         # These should inherit from logger if not defined
-                        start = sensor['start_timestamp']
-                        end = sensor['end_timestamp']
+                        if sensor['start_timestamp'] is not None:
+                            start = sensor['start_timestamp']
+                        if sensor['end_timestamp'] is not None:
+                            end = sensor['end_timestamp']
 
                         # Generate equipment entry
                         child = gen_equipment_entry(
@@ -233,14 +242,16 @@ class GenericTimeseriesDataSource(DataSource):
                         # Append to child equipment list
                         child_equipment.append(child)
 
+                        # Sanitize specified column names
+                        sensor_columns = \
+                            [clean_name(x) for x in sensor['columns']]
                         # Expand column names if they were specified with *
                         sensor['columns'] = expand_column_names(
-                            sensor['columns'], new_cols)
+                            sensor_columns, new_cols)
 
                         # Now iterate over the column names
                         for column in sensor['columns']:
-                            col_name = clean_name(column)
-                            units_term=mapper['unit_cv'][col_name]
+                            units_term=mapper['unit_cv'][column]
 
                             # check if units term is one of our defined keepers
                             if units_term in self.keep_units:
@@ -254,16 +265,16 @@ class GenericTimeseriesDataSource(DataSource):
                             # with json.dump
                             data_to_equip.append(
                                 gen_data_to_equipment_entry(
-                                    column_name=col_name,
+                                    column_name=column,
                                     var_domain_cv='instrumentMeasurement',
                                     acquiring_instrument_uuid=\
                                         child['equipment_uuid'],
                                     variable_term=\
-                                        mapper['variable_cv'][col_name],
+                                        mapper['variable_cv'][column],
                                     units_term=units_term,
                                     units_conversion=units_conversion,
                                     expose_as_ds=\
-                                        bool(mapper['expose'][col_name])))
+                                        bool(mapper['expose'][column])))
 
                 # Add child equipment to base
                 equipment.update({'equipment': child_equipment})
