@@ -9,12 +9,11 @@ import os
 from importlib.util import find_spec
 import pandas as pd
 from odmx.support.file_utils import get_files, open_csv, clean_name,\
-    open_spreadsheet, open_json, expand_column_names
+    open_spreadsheet, open_json
 from odmx.abstract_data_source import DataSource
 from odmx.timeseries_ingestion import general_timeseries_ingestion
 from odmx.timeseries_processing import general_timeseries_processing
-from odmx.write_equipment_jsons import gen_equipment_entry,\
-    gen_data_to_equipment_entry, check_diff_and_write_new
+from odmx.write_equipment_jsons import generate_equipment_jsons
 
 json_schema_files = find_spec("odmx.json_schema").submodule_search_locations[0]
 
@@ -158,131 +157,12 @@ class GenericTimeseriesDataSource(DataSource):
 
             # Prepare the equipment jsons for these columns
             if update_equipment_jsons is True:
-                equip_file = f"{equipment_path}/equipment.json"
-                data_to_equipment_map_file = (f"{equipment_path}/"
-                                              "data_to_equipment_map.json")
-
-                # Read equipment.json if it exists, otherwise start new
-                # Make the directories
-                os.makedirs(equipment_path, exist_ok=True)
-
-                # Read base equipment from data_source_config
-                logger = block['base_equipment']
-                start = logger['start_timestamp']
-                end = logger['end_timestamp']
-
-                # Start equipment.json entries
-                equipment = gen_equipment_entry(
-                    acquiring_instrument_uuid=None,
-                    code=logger['equipment_name'],
-                    name=logger['equipment_name'],
-                    serial_number=logger['equipment_serial_number'],
-                    vendor=None,
-                    description=None,
-                    position_start_date_utc=start,
-                    position_end_date_utc=end,
-                    relationship_start_date_time_utc=start,
-                    relationship_end_date_time_utc=end,
-                    z_offset_m=logger['equipment_z_offset'])
-
-                # Store uuid for use in data_to_equipment_map
-                logger_uuid = equipment['equipment_uuid']
-
-                # Initialize data_to_equipment_map with timestamp
-                data_to_equip = \
-                    [gen_data_to_equipment_entry(
-                        column_name='timestamp',
-                        var_domain_cv='instrumentTimestamp',
-                        acquiring_instrument_uuid=logger_uuid,
-                        variable_term='nonedefined',
-                        units_term='datalogger_time_stamp',
-                        units_conversion=True,
-                        expose_as_ds=False)]
-
-                # Remove timestamp from logger column list
-                logger['columns'].remove(time_col)
-
-                # If anything is left, add it as instrumentMetadata,
-                # not exposed as a datastream
-                for column in logger['columns']:
-                    data_to_equip.append(
-                        gen_data_to_equipment_entry(
-                            column_name=column,
-                            var_domain_cv='instrumentMetadata',
-                            acquiring_instrument_uuid=logger_uuid,
-                            variable_term=mapper['variable_cv'][column],
-                            units_term=mapper['unit_cv'][column],
-                            units_conversion=True,
-                            expose_as_ds=False))
-
-                # If there are attached sensors, iterate through
-                child_equipment = []
-                if block['attached_sensors'] is not None:
-                    for sensor in block['attached_sensors']:
-                        # These should inherit from logger if not defined
-                        if sensor['start_timestamp'] is not None:
-                            start = sensor['start_timestamp']
-                        if sensor['end_timestamp'] is not None:
-                            end = sensor['end_timestamp']
-
-                        # Generate equipment entry
-                        child = gen_equipment_entry(
-                            acquiring_instrument_uuid=None,
-                            code=sensor['sensor_name'],
-                            name=sensor['sensor_name'],
-                            serial_number=sensor['serial_number'],
-                            vendor=None,
-                            description=None,
-                            position_start_date_utc=start,
-                            position_end_date_utc=end,
-                            relationship_start_date_time_utc=start,
-                            relationship_end_date_time_utc=end,
-                            z_offset_m=sensor['sensor_z_offset'])
-
-                        # Append to child equipment list
-                        child_equipment.append(child)
-
-                        # Sanitize specified column names
-                        sensor_columns = \
-                            [clean_name(x) for x in sensor['columns']]
-                        # Expand column names if they were specified with *
-                        sensor['columns'] = expand_column_names(
-                            sensor_columns, new_cols)
-
-                        # Now iterate over the column names
-                        for column in sensor['columns']:
-                            units_term=mapper['unit_cv'][column]
-
-                            # check if units term is one of our defined keepers
-                            if units_term in self.keep_units:
-                                units_conversion = False
-                            else:
-                                units_conversion = True
-
-                            # Create the data to equipment map entry
-                            # Need to explicitly typecast expose_as_ds, else
-                            # it is type numpy.bool_ which is incompatible
-                            # with json.dump
-                            data_to_equip.append(
-                                gen_data_to_equipment_entry(
-                                    column_name=column,
-                                    var_domain_cv='instrumentMeasurement',
-                                    acquiring_instrument_uuid=\
-                                        child['equipment_uuid'],
-                                    variable_term=\
-                                        mapper['variable_cv'][column],
-                                    units_term=units_term,
-                                    units_conversion=units_conversion,
-                                    expose_as_ds=\
-                                        bool(mapper['expose'][column])))
-
-                # Add child equipment to base
-                equipment.update({'equipment': child_equipment})
-
-                # Check diff, backup, and write new jsons
-                check_diff_and_write_new(data_to_equip,
-                                         data_to_equipment_map_file)
-                check_diff_and_write_new([equipment], equip_file)
+                generate_equipment_jsons(equipment_path,
+                                         block,
+                                         time_col,
+                                         new_cols,
+                                         mapper,
+                                         self.keep_units)
 
             # The rest of the ingestion is even more generic.
             general_timeseries_ingestion(feeder_db_con,
