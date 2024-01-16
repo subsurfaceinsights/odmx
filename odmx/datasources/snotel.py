@@ -138,54 +138,55 @@ class SnotelDataSource(DataSource):
         waterml_namespace = ("{http://www.cuahsi.org/waterML/"
                              f"{waterml_version}/}}")
 
-        local_base_path = self.data_source_path
-        station_id = self.station_id
-
         # First check to make sure the proper directory exists.
-        os.makedirs(local_base_path, exist_ok=True)
+        os.makedirs(self.data_source_path, exist_ok=True)
 
         # Then check to see if the data already exists on our server.
         file_name = f'{self.feeder_table}.csv'
-        file_path = os.path.join(local_base_path, file_name)
+        file_path = os.path.join(self.data_source_path, file_name)
         # If it does, we want to find only new data.
         server_df = None
         site_info = get_snotel_site_info(suds_client,
                                          waterml_namespace,
-                                         station_id)
+                                         self.station_id)
         if os.path.isfile(file_path):
             # Grab the data from the server.
-            server_df = pd.read_csv(file_path, parse_dates=[0])
+            args = {'parse_dates': [0], }
+            server_df = open_csv(file_path, args=args, lock=True)
             # Find the latest timestamp.
             last_server_time = server_df['timestamp'].max()
-            params = {
-                'start': last_server_time + datetime.timedelta(minutes=1),
-                'end': current_time,
-            }
+            if isinstance(last_server_time, str):
+                last_server_time = datetime.datetime.strptime(
+                    last_server_time, '%Y-%m-%d %H:%M:%S'
+                )
+            first_snow = last_server_time + datetime.timedelta(minutes=1)
+
         # If it doesn't, we want all available data from the date that
         # snowfall data first appears. We don't really care about data
         # prior to that. (It is often just NaNs anyway. Years of NaNs.)
         else:
             print("Finding the earliest date that snowfall was recorded at"
-                  f" {station_id}.")
+                  f" {self.station_id}.")
             # 01/01/1753 is, for some reason, the first date that's allowed.
             snow_datastream = site_info['series']['SNOTEL:SNWD_H']
             time_info_key = ("{http://www.cuahsi.org/water_ml/"
                              f"{waterml_version}/}}variable_time_interval")
-            first_snow = snow_datastream[time_info_key]['begin_date_time_utc']
-            first_snow = datetime.datetime.strptime(first_snow,
-                                                    '%Y-%m-%dT%H:%M:%S')
-            params = {
-                'start': first_snow,
-                'end': current_time,
-            }
+            first_snow = datetime.datetime.strptime(
+                snow_datastream[time_info_key]['begin_date_time_utc'],
+                '%Y-%m-%d %H:%M:%S')
+
+        params = {
+            'start': first_snow,
+            'end': current_time,
+        }
 
         # Download the data using ulmo.
-        print(f"Harvesting SNOTEL site {station_id}.")
+        print(f"Harvesting SNOTEL site {self.station_id}.")
         # Get a list of all variables present at the given site.
         variables = site_info['series']
         # If nothing was returned, we're done.
         if not variables:
-            print(f"No data returned for SNOTEL site {station_id}.\n")
+            print(f"No data returned for SNOTEL site {self.station_id}.\n")
             return
         # Cull the list down to hourly variables that we're interested in.
         vars_we_want = list(self.param_df['id'])
@@ -205,7 +206,7 @@ class SnotelDataSource(DataSource):
             variable_name = variable_name.lower().replace(' ', '_')
             new_name = f"{variable_name}[{variable_info['unit']}]"
             try:
-                values = get_snotel_data(station_id,
+                values = get_snotel_data(self.station_id,
                                          variable_code,
                                          **params,
                                          suds_client=suds_client,
@@ -261,9 +262,8 @@ class SnotelDataSource(DataSource):
         """
 
         # Define the file name and path.
-        local_base_path = self.data_source_path
         file_name = f'{self.feeder_table}.csv'
-        file_path = os.path.join(local_base_path, file_name)
+        file_path = os.path.join(self.data_source_path, file_name)
         # Create a DataFrame of the file.
         args = {'float_precision': 'high', }
         df = open_csv(file_path, args=args, lock=True)
