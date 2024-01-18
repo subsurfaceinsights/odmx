@@ -240,7 +240,7 @@ def open_spreadsheet(file_path, args=None, lock=False, timeout=300):
 
 
 def get_last_timestamp_csv(file_path, timestamp_index=0, max_line_size=8192,
-                           unit='ns'):
+                           unit=None):
     """
     Read the last line of a data file to get the timestamp by seeking to 4096
     bytes, then reading the last line.
@@ -248,8 +248,12 @@ def get_last_timestamp_csv(file_path, timestamp_index=0, max_line_size=8192,
     @param file_path path to data file
     @param timestamp_index inedx of timestamp column (default 0)
     @param max_line_size maximum line size (default 8192)
-    @param unit unit for datetime conversion (default ns)
+    @param unit unit for numeric datetime conversion (default ns).
+                If the datetime is a string, this is ignored and pandas will
+                attempt to parse the string.
     """
+    if unit is None:
+        unit = 'ns'
     # This is a hack, but it works for campbell data.
     # We need to open the file in binary mode to use seek.
     with open(file_path, 'rb') as f:
@@ -272,9 +276,11 @@ def get_last_timestamp_csv(file_path, timestamp_index=0, max_line_size=8192,
         file_last_timestamp = file_last_timestamp.replace('"', '')
         # Parse the timestamp. Explicitly set as float to get expected behavior
         # from unit arg (currently causes deprecation warning)
-        file_last_timestamp = pd.to_datetime(float(file_last_timestamp),
-                                             unit=unit)
-
+        try:
+            file_last_timestamp = pd.to_datetime(float(file_last_timestamp),
+                                                 unit=unit)
+        except ValueError:
+            file_last_timestamp = pd.to_datetime(file_last_timestamp)
         return file_last_timestamp
 
 def expand_column_names(columns, full_col_list):
