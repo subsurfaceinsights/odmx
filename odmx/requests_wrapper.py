@@ -46,7 +46,7 @@ requests.delete_orig = requests.delete
 requests.get_orig = requests.get
 requests.post_orig = requests.post
 
-ODMX_PATCH_REQUESTS = os.getenv("PATCH_REQUESTS", "1") == "1"
+ODMX_PATCH_REQUESTS = os.getenv("ODMX_PATCH_REQUESTS", "1") == "1"
 if ODMX_PATCH_REQUESTS:
     requests.head = lambda *args, **kwargs: _json_request_with_retry(
         requests.head_orig, *args, **kwargs)
@@ -62,3 +62,6 @@ if ODMX_PATCH_REQUESTS:
         requests.post_orig, *args, **kwargs)
     print("Notice: Requests patched to retry on failure. "
           "To disable, set env var ODMX_PATCH_REQUESTS=0")
+else:
+    print("Notice: Requests not patched to retry on failure. "
+          "To enable, set env var ODMX_PATCH_REQUESTS=1")

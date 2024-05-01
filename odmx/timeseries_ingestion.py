@@ -108,6 +108,12 @@ def general_timeseries_ingestion(feeder_db_con, feeder_table, df):
             return
 
     print(f"Populating {feeder_table}.")
+    # Remove any null timestamps, warn if there are any
+    new_df = df.dropna(subset=['timestamp'])
+    if new_df.shape[0] < df.shape[0]:
+        print("Warning: some records have null timestamps.")
+        print(f"Removed {df.shape[0] - new_df.shape[0]} records.")
+        df = new_df
     # TODO the records generation is the slowest step here. We should
     # probably try to optimize it.
     db.insert_many_df(feeder_db_con, feeder_table, df, upsert=False)
