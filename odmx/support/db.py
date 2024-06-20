@@ -994,7 +994,7 @@ def upsert(connection: Connection, table: str, data: dict,
     return r[0]
 
 @beartype
-def query(connection: Connection, table: str, params: Optional[dict] = None, filter_none=True, limit: Optional[int] = None, offset: Optional[int] = None):
+def query(connection: Connection, table: str, params: Optional[dict] = None, filter_none=True, limit: Optional[int] = None, offset: Optional[int] = None, count_only: bool = False):
     """
     Query a database and return the results as a DB cursor
     @param con A database connection
@@ -1009,9 +1009,14 @@ def query(connection: Connection, table: str, params: Optional[dict] = None, fil
             ['{} = %s' for _ in params.keys()])
     else:
         params = {}
-    _query = SQL('''
-        SELECT *
-        FROM {table}
+
+    if count_only:
+        select = 'COUNT(*)'
+    else:
+        select = '*'
+    _query = SQL(f'''
+        SELECT {select}
+        FROM {{table}}
     ''' + where).format(
         *[Identifier(k) for k in params.keys()],
         table=Identifier(table))
@@ -1022,7 +1027,7 @@ def query(connection: Connection, table: str, params: Optional[dict] = None, fil
     return connection.execute(_query, list(params.values()))
 
 @beartype
-def query_fuzzy(connection: Connection, table: str, params: Optional[dict] = None, limit: Optional[int] = None, offset: Optional[int] = None):
+def query_fuzzy(connection: Connection, table: str, params: Optional[dict] = None, limit: Optional[int] = None, offset: Optional[int] = None, count_only: bool = False):
     """
     Query a database and return the results as a DB cursor
     @param con A database connection
@@ -1034,8 +1039,12 @@ def query_fuzzy(connection: Connection, table: str, params: Optional[dict] = Non
         where = ' WHERE '+ ' AND '.join(['{} LIKE %s' for _ in params.keys()])
     else:
         params = {}
+    if count_only:
+        select = 'COUNT(*)'
+    else:
+        select = '*'
     _query = SQL(f'''
-        SELECT *
+        SELECT {select}
         FROM {{table}}
         {where}
     ''').format(
@@ -1048,7 +1057,7 @@ def query_fuzzy(connection: Connection, table: str, params: Optional[dict] = Non
     return connection.execute(_query, list(params.values()))
 
 @beartype
-def query_any(connection: Connection, table: str, params: Optional[dict] = None, limit: Optional[int] = None, offset: Optional[int] = None):
+def query_any(connection: Connection, table: str, params: Optional[dict] = None, limit: Optional[int] = None, offset: Optional[int] = None, count_only: bool = False):
     """
     Query a database and return the results matching a list of parameters
     """
@@ -1064,8 +1073,12 @@ def query_any(connection: Connection, table: str, params: Optional[dict] = None,
         where = ' WHERE '+ ' OR '.join(l)
     else:
         params = {}
+    if count_only:
+        select = 'COUNT(*)'
+    else:
+        select = '*'
     _query = SQL(f'''
-        SELECT *
+        SELECT {select}
         FROM {{table}}
         {where}
     ''').format(
@@ -1634,7 +1647,8 @@ def generate_python_class_for_db_table(
     fp.write(f"            {read_param_list},\n")
     fp.write("               _limit: Optional[int] = None,\n")
     fp.write("               _offset: Optional[int] = None,\n")
-    fp.write(f"         ) -> Generator[{camel_case_table}, None, None]:\n")
+    fp.write("               _count_only: bool = False\n")
+    fp.write(f"         ) -> Generator[Union[{camel_case_table}, int], None, None]:\n")
     fp.write('    """\n')
     fp.write(f"    Read from the {snake_case_table} table in the database, optionally filtered by a parameter\n")
     fp.write("    Returns a generator so that not all rows are fetched in memory at once\n")
@@ -1642,14 +1656,18 @@ def generate_python_class_for_db_table(
     fp.write(parameter_comments)
     fp.write("    @param _limit: limit the number of rows returned. Useful for pagination\n")
     fp.write("    @param _offset: offset the rows returned. Useful for pagination\n")
+    fp.write("    @param _count_only: if True, return the count of rows instead of a generator\n")
     fp.write(f"    @return generator of {camel_case_table} objects\n")
     fp.write('    """\n')
     fp.write(pack_params_to_dict)
+    fp.write(f"    if _count_only:\n")
+    fp.write(f"        yield int(db.query(con, '{table}', data, limit=_limit, offset=_offset, count_only=_count_only).fetchone()[0])\n")
+    fp.write("        return\n")
     fp.write(f"    result = db.query(con, '{table}', data, limit=_limit, offset=_offset)\n")
     fp.write("    for row in result:\n")
     fp.write(f"        yield {camel_case_table}(**row.as_dict())\n\n")
     fp.write("@beartype.beartype\n")
-    fp.write(f"def read_{snake_case_table}_fuzzy(con: db.Connection, {read_param_list}, _limit: Optional[int] = None, _offset: Optional[int] = None) -> Generator[{camel_case_table}, None, None]:\n")
+    fp.write(f"def read_{snake_case_table}_fuzzy(con: db.Connection, {read_param_list}, _limit: Optional[int] = None, _offset: Optional[int] = None, _count_only: bool = False) -> Generator[Union[{camel_case_table}, int], None, None]:\n")
     fp.write('    """\n')
     fp.write(f"    Read from the {snake_case_table} table in the database, optionally filtered by fuzzy parameter matching\n")
     fp.write("    Returns a generator so that not all rows are fetched in memory at once\n")
@@ -1657,15 +1675,19 @@ def generate_python_class_for_db_table(
     fp.write(parameter_comments)
     fp.write("    @param _limit: limit the number of rows returned. Useful for pagination\n")
     fp.write("    @param _offset: offset the rows returned. Useful for pagination\n")
+    fp.write("    @param _count_only: if True, return the count of rows instead of a generator\n")
     fp.write(f"    @return generator of {camel_case_table} objects\n")
     fp.write('    """\n')
     fp.write(pack_params_to_dict)
+    fp.write(f"    if _count_only:\n")
+    fp.write(f"        yield int(db.query_fuzzy(con, '{table}', data, limit=_limit, offset=_offset, count_only=_count_only).fetchone()[0])\n")
+    fp.write("        return\n")
     fp.write(f"    result = db.query_fuzzy(con, '{table}', data, limit=_limit, offset=_offset)\n")
     fp.write("    for row in result:\n")
     fp.write(f"        yield {camel_case_table}(**row.as_dict())\n\n")
     fp.write("@beartype.beartype\n")
     read_param_lists_list = ',\n             '.join(read_param_lists_list)
-    fp.write(f"def read_{snake_case_table}_any(con: db.Connection, {read_param_lists_list}, _limit: Optional[int] = None, _offset: Optional[int] = None) -> Generator[{camel_case_table}, None, None]:\n")
+    fp.write(f"def read_{snake_case_table}_any(con: db.Connection, {read_param_lists_list}, _limit: Optional[int] = None, _offset: Optional[int] = None, _count_only: bool = False) -> Generator[Union[{camel_case_table}, int], None, None]:\n")
     fp.write('    """\n')
     fp.write(f"    Read from the {snake_case_table} table in the database, optionally filtered by fuzzy parameter matching\n")
     fp.write("    Returns a generator so that not all rows are fetched in memory at once\n")
@@ -1673,9 +1695,13 @@ def generate_python_class_for_db_table(
     fp.write(parameter_comments)
     fp.write("    @param _limit: limit the number of rows returned. Useful for pagination\n")
     fp.write("    @param _offset: offset the rows returned. Useful for pagination\n")
+    fp.write("    @param _count_only: if True, return the count of rows instead of a generator\n")
     fp.write(f"    @return generator of {camel_case_table} objects\n")
     fp.write('    """\n')
     fp.write(pack_params_to_dict)
+    fp.write(f"    if _count_only:\n")
+    fp.write(f"        yield int(db.query_any(con, '{table}', data, limit=_limit, offset=_offset, count_only=_count_only).fetchone()[0])\n")
+    fp.write("        return\n")
     fp.write(f"    result = db.query_any(con, '{table}', data, limit=_limit, offset=_offset)\n")
     fp.write("    for row in result:\n")
     fp.write(f"        yield {camel_case_table}(**row.as_dict())\n\n")
@@ -1770,7 +1796,7 @@ def generate_python_class_file_for_db_table(connection: Connection, output_file:
         fp.write('"""\n')
         fp.write("import dataclasses\n")
         fp.write("import datetime\n")
-        fp.write("from beartype.typing import Optional, Generator, List, ClassVar, Type, Dict, Any, Callable\n")
+        fp.write("from beartype.typing import Union, Optional, Generator, List, ClassVar, Type, Dict, Any, Callable\n")
         fp.write("import beartype\n")
         if ver == 'ssi':
             fp.write("import ssi.db as db\n\n")
