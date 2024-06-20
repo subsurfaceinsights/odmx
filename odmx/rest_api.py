@@ -19,6 +19,21 @@ Scope = Dict[str, Any]
 Receive = Callable[[], Awaitable[Dict[str, Any]]]
 Send = Callable[[Dict[str, Any]], Awaitable[None]]
 
+class ForbiddenError(Exception):
+    """ Forbidden Error"""
+    pass
+
+class NotFoundError(Exception):
+    """ Not Found Error"""
+    pass
+
+class BadRequestError(Exception):
+    """ Bad Request Error"""
+    pass
+
+class InternalServerError(Exception):
+    """ Internal Server Error"""
+    pass
 
 async def start_body(send: Send, status: int,
                      content_type: Optional[str]=None, headers=None) -> None:
@@ -84,7 +99,8 @@ async def start_db_send_json_obj_list(send: Send) -> None:
 
 async def start_db_send_json_table_list(send: Send, cols: list,
                                         limit: Optional[int],
-                                        offset: Optional[int]) -> None:
+                                        offset: Optional[int],
+                                        row_count: Optional[int]) -> None:
     """ Send headers and start body for json table list"""
     await start_body(send, 200, 'application/json')
     limit_section = ''
@@ -93,10 +109,13 @@ async def start_db_send_json_table_list(send: Send, cols: list,
     offset_section = ''
     if offset is not None:
         offset_section = f'"offset":{offset},'
-    limit_offset_section = limit_section + offset_section
+    row_count_section = ''
+    if row_count is not None:
+        row_count_section = f'"row_count":{row_count},'
+    limit_offset_rowcount_section = limit_section + offset_section + row_count_section
     await send_body_part(send,
                          '{"headers":' + json.dumps(cols) + \
-                        f',{limit_offset_section}"rows":[')
+                        f',{limit_offset_rowcount_section}"rows":[')
 
 
 async def start_db_send_csv(send: Send, cols: list) -> None:
@@ -233,14 +252,16 @@ async def send_db_models_single_col_list_distinct(model_objs, send: Send, col):
 async def send_db_models_json_table_list(model_objs, send: Send,
                                          cols: Optional[list],
                                          limit: Optional[int],
-                                         offset: Optional[int]):
+                                         offset: Optional[int],
+                                         row_count: Optional[int]):
     """ Send json table model list"""
     first = True
     for model_obj in model_objs:
         if first:
             if cols is None:
                 cols = list(model_obj.to_json_dict().keys())
-            await start_db_send_json_table_list(send, cols, limit, offset)
+            await start_db_send_json_table_list(send, cols, limit, offset,
+                                                row_count)
             first = False
         else:
             await send_body_part(send, ',')
@@ -248,7 +269,8 @@ async def send_db_models_json_table_list(model_objs, send: Send,
     if first:
         if cols is None:
             cols = []
-        await start_db_send_json_table_list(send, cols, limit, offset)
+        await start_db_send_json_table_list(send, cols, limit, offset,
+                                            row_count)
     await end_db_send_json_table_list(send)
 
 
@@ -282,6 +304,10 @@ async def forbidden(send: Send, msg: str):
 async def not_found(send: Send, msg: str):
     """not found"""
     await send_body(send, 404, msg, 'text/plain')
+
+async def internal_server_error(send: Send, msg: str):
+    """ internal server error"""
+    await send_body(send, 500, msg, 'text/plain')
 
 async def send_json(send: Send, obj):
     """ send json"""
@@ -337,6 +363,11 @@ async def handle_datastreams(path_elements,
             return
         datastream_id = int(path_elements[1])
         headers = get_headers(scope)
+        user_id_header = config.user_id_header.lower()
+        if user_id_header and user_id_header in headers:
+            user_id = headers[user_id_header]
+        else:
+            user_id = None
         con = get_connection(headers)
         query_string = scope['query_string']
         query_vars = parse_qs(query_string)
@@ -585,6 +616,16 @@ async def handle_datastreams(path_elements,
         await bad_request(send, f'Unsupported method {method}')
 
 
+async def check_user_id(headers: Dict[str, str], client_ip: str) -> None:
+    """ Check user id"""
+    user_id_header = config.user_id_header.lower()
+    if config.require_user_id and user_id_header not in headers:
+        raise ForbiddenError('User id required')
+    if config.upstream_proxy:
+        trusted_proxy = config.upstream_proxy
+        if client_ip != trusted_proxy:
+            raise ForbiddenError('Client IP not trusted')
+    return headers.get(user_id_header, None)
 
 
 
@@ -605,6 +646,7 @@ async def handle_odmx_request(scope: Scope,
         return
     headers = get_headers(scope)
     con = get_connection(headers)
+    user_id = await check_user_id(headers, scope['client'])
     method = scope['method']
     if method in ('POST', 'PUT', 'PATCH', 'DELETE'):
         if not config.enable_writes:
@@ -705,10 +747,14 @@ async def handle_odmx_request(scope: Scope,
                 if not fuzzy:
                     model_objs = table_class.read(con, **query_vars,
                                                   _limit=limit, _offset=offset)
+                    model_objs_count = next(table_class.read(con, **query_vars,
+                                                  _count_only=True))
                 else:
                     model_objs = table_class.read_fuzzy(con, **query_vars,
                                                         _limit=limit,
                                                         _offset=offset)
+                    model_objs_count = next(table_class.read_fuzzy(con, **query_vars,
+                                                  _count_only=True))
             except IOError as e:
                 await bad_request(send, str(e))
                 return
@@ -734,7 +780,7 @@ async def handle_odmx_request(scope: Scope,
                 await send_db_models_json_obj_list(model_objs, send, cols)
             elif query_format == 'json_table':
                 await send_db_models_json_table_list(model_objs, send, cols,
-                                                     limit, offset)
+                                                     limit, offset, model_objs_count)
             elif query_format == 'csv':
                 await send_db_models_csv(model_objs, send, cols)
             else:
@@ -818,6 +864,8 @@ def get_connection(headers):
         project_name = headers[project_header]
     else:
         project_name = config.project_name
+    if not project_name:
+        raise InternalServerError('No project name')
     con = db.connect(config, db_name=f'odmx_{project_name}')
     db.set_current_schema(con, 'odmx')
     return con
@@ -840,6 +888,14 @@ async def app(scope: Scope, receive: Receive, send: Send) -> None:
             await handle_odmx_request(scope, receive, send)
         except InvalidParameterValue as e:
             await bad_request(send, str(e))
+        except ForbiddenError as e:
+            await forbidden(send, str(e))
+        except NotFoundError as e:
+            await not_found(send, str(e))
+        except BadRequestError as e:
+            await bad_request(send, str(e))
+        except InternalServerError as e:
+            await internal_server_error(send, str(e))
     else:
         await not_found(send, f'No handler for {scope["path"]}')
 
@@ -847,12 +903,26 @@ async def app(scope: Scope, receive: Receive, send: Send) -> None:
 def setup_config():
     config = Config()
     config.add_config_param('project_name',
-                            help='Project Name to serve requests for by default')
+                            help='Project Name to serve requests for by default',
+                            optional=True)
     config.add_config_param('project_name_header',
                             help='Header to use for project name in the case that'
                                  'you are serving multiple projects from the same '
                                  'server',
                             default='X-Odmx-Project-Name')
+    config.add_config_param('user_id_header',
+                            help='Header to use for user id (maps to person_id)',
+                            default='X-Odmx-User-Id')
+    config.add_config_param('require_user_id',
+                            help='Require a user id header',
+                            validator='boolean',
+                            default=False)
+    config.add_config_param('upstream_proxy',
+                            help='Upstream proxy address which is trusted to set '
+                                 'the user id and project name headers. If not set, '
+                                 'the headers are allowed to be set by any client',
+                            optional=True,
+                            default=None)
     config.add_config_param('enable_writes',
                             help='Enable write operations',
                             validator='boolean',
