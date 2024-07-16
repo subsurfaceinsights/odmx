@@ -123,6 +123,13 @@ class SnotelDataSource(DataSource):
         self.unit_df.set_index('clean_name', inplace=True,
                                verify_integrity=True)
 
+    def grab_datetime(self, time_str):
+        try:
+            return datetime.datetime.strptime(time_str, '%Y-%m-%d %H:%M:%S')
+        except ValueError:
+            return datetime.datetime.strptime(time_str, '%Y-%m-%dT%H:%M:%S')
+
+
     def harvest(self):
         """
         Harvest SNOTEL data from the API and save it to a .csv on our servers.
@@ -156,9 +163,7 @@ class SnotelDataSource(DataSource):
             # Find the latest timestamp.
             last_server_time = server_df['timestamp'].max()
             if isinstance(last_server_time, str):
-                last_server_time = datetime.datetime.strptime(
-                    last_server_time, '%Y-%m-%d %H:%M:%S'
-                )
+                last_server_time = self.grab_datetime(last_server_time)
             first_snow = last_server_time + datetime.timedelta(minutes=1)
 
         # If it doesn't, we want all available data from the date that
@@ -171,9 +176,7 @@ class SnotelDataSource(DataSource):
             snow_datastream = site_info['series']['SNOTEL:SNWD_H']
             time_info_key = ("{http://www.cuahsi.org/water_ml/"
                              f"{waterml_version}/}}variable_time_interval")
-            first_snow = datetime.datetime.strptime(
-                snow_datastream[time_info_key]['begin_date_time_utc'],
-                '%Y-%m-%d %H:%M:%S')
+            first_snow = self.grab_datetime(snow_datastream[time_info_key]['begin_date_time_utc'])
 
         params = {
             'start': first_snow,
