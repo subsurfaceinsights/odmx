@@ -170,7 +170,7 @@ curl  localhost:8000/api/odmx/v3/sampling_features\?sampling_feature_code=ER&_fu
 
 The JSON table format is a more space efficient method of returning data.
 
-It consists of an object with two keys, `headers` and `rows`.
+It consists of an object with three keys: `headers`, `rows`, and `row_count`
 
 Headers contains a list of N columns for the return, and rows contains a list of
 lists each of size N
@@ -181,6 +181,21 @@ what the data is.
 ```sh
 curl  localhost:8000/api/odmx/v3/sampling_features\?sampling_feature_code=ER&_fuzzy&_cols=sampling_feature_code,sampling_feature_name&_format=json_table
 ```
+
+
+##### Using limit and offset for pagination
+
+Some requests may return a large number of results. You can use the `_limit` and `_offset` parameters to paginate the results.
+
+The resulting response will be a window of the results, starting at `_offset` and ending at `_offset + _limit`. The `row_count` key in the response will tell you how many total rows there are which can be used to calculate the number of pages.
+
+```sh
+curl  localhost:8000/api/odmx/v3/sampling_features\?_limit=10&_offset=0
+```
+
+You may also use `_limit = 0` to determine the number of rows that would be returned without actually returning any data.
+
+```sh
 
 #### Querying Timeseries Datastreams
 
