@@ -67,7 +67,7 @@ One useful option is to skip the harvest stage which pulls data from remote:
 
 This will only run the ingest and process stages
 
-Once everything runs, you can start querying the database. 
+Once everything runs, you can start querying the database.
 
 Subsequent reruns without the `--from-scratch True` parameter will attempt to pull and update the database with new data
 
@@ -79,7 +79,26 @@ The REST API is a part of the odmx python package. An API instance runs against 
 
 The rest API will be running on localhost port 8000. This can be deployed to a
 production server using gunicorn or similar, and can be run behind a reverse proxy
-with authentication.
+with authentication by specifying the --project-name-header and --user-id-header fields
+to the rest_api module.
+
+In addition to CLI arguments, the rest API can be configured with environment variables:
+- `PROJECT`
+- `PROJECT_NAME_HEADER`
+- `USER_ID_HEADER`
+- `ENABLE_WRITES`
+
+You cannot specify both PROJECT and PROJECT_NAME_HEADER, as they are mutually exclusive.
+
+### Conventions
+
+The API follows REST conventions. There are endpoints for each object in the data model.
+Parameters for each endpoint correspond to the fields in the data model, therefore understanding the data model is key to using the API.
+
+GET requests accept query parameters for filtering, sorting, and pagination. The API returns JSON by default, but can return CSV or JSON table format.
+Special parameters for controlling the API output start with an underscore `_` to distinguish them from data model fields.
+
+When the API has writes enabled, POST, PUT, and DELETE requests can be used to create, update, and delete objects in the database.
 
 ### Run some queries using CURL
 
@@ -87,9 +106,6 @@ These are some examples using CURL. They are easily translated to python request
 or any other HTTP client such as javascript's fetch. We can use `python -m json.tool`
 to format the output for readability.
 
-The API follows general REST conventions. For GET, query parameters that
-start with `_` are special parameters specific to the API. All other query
-parameters are part of the data model.
 
 There are a few special endpoints that are not part of the data model, such as
 `/api/odmx/v3/datastream_data`, which returns data for a datastream. Additional
@@ -132,12 +148,12 @@ curl  localhost:8000/api/odmx/v3/sampling_features\?sampling_feature_code=ER
 
 ##### Do a fuzzy search on sampling feature code:
 ```sh
-curl  localhost:8000/api/odmx/v3/sampling_features\?sampling_feature_code=ER&_fuzzy
+curl  localhost:8000/api/odmx/v3/sampling_features\?sampling_feature_code=ER\&_fuzzy
 ```
 
 ##### Only return certain fields:
 ```sh
-curl  localhost:8000/api/odmx/v3/sampling_features\?sampling_feature_code=ER&_fuzzy&_cols=sampling_feature_code,sampling_feature_name
+curl  localhost:8000/api/odmx/v3/sampling_features\?sampling_feature_code=ER\&_fuzzy\&_cols=sampling_feature_code,sampling_feature_name
 ```
 
 ##### Specifying single fields returns flat list by default:
@@ -146,7 +162,7 @@ Rather than having many entries with a single key, if you specify a single
 column there will be a flat list returned.
 
 ```sh
-curl  localhost:8000/api/odmx/v3/sampling_features\?sampling_feature_code=ER&_fuzzy&_cols=sampling_feature_code
+curl  localhost:8000/api/odmx/v3/sampling_features\?sampling_feature_code=ER\&_fuzzy\&_cols=sampling_feature_code
 ```
 
 ##### Force JSON object list format, which is the default for multiple columns, for single column
@@ -154,7 +170,7 @@ curl  localhost:8000/api/odmx/v3/sampling_features\?sampling_feature_code=ER&_fu
 If you always want to have the same return format regardless, simply explicitly specify it
 
 ```sh
-curl  localhost:8000/api/odmx/v3/sampling_features\?sampling_feature_code=ER&_fuzzy&_cols=sampling_feature_codes&_format=json_obj_list
+curl  localhost:8000/api/odmx/v3/sampling_features\?sampling_feature_code=ER\&_fuzzy\&_cols=sampling_feature_codes\&_format=json_obj_list
 ```
 
 ##### Return as CSV
@@ -163,7 +179,7 @@ CSVs are more easily readable with spreadsheet software, but are also better for
 streaming data while processing it.
 
 ```sh
-curl  localhost:8000/api/odmx/v3/sampling_features\?sampling_feature_code=ER&_fuzzy&_cols=sampling_feature_code,sampling_feature_name&_format=csv
+curl  localhost:8000/api/odmx/v3/sampling_features\?sampling_feature_code=ER\&_fuzzy\&_cols=sampling_feature_code,sampling_feature_name\&_format=csv
 ```
 
 ##### Return as JSON table (with headers and rows keys)
@@ -179,7 +195,7 @@ It's a matter of associating the column with the index of the header to know
 what the data is.
 
 ```sh
-curl  localhost:8000/api/odmx/v3/sampling_features\?sampling_feature_code=ER&_fuzzy&_cols=sampling_feature_code,sampling_feature_name&_format=json_table
+curl  localhost:8000/api/odmx/v3/sampling_features\?sampling_feature_code=ER\&_fuzzy\&_cols=sampling_feature_code,sampling_feature_name\&_format=json_table
 ```
 
 
@@ -190,12 +206,14 @@ Some requests may return a large number of results. You can use the `_limit` and
 The resulting response will be a window of the results, starting at `_offset` and ending at `_offset + _limit`. The `row_count` key in the response will tell you how many total rows there are which can be used to calculate the number of pages.
 
 ```sh
-curl  localhost:8000/api/odmx/v3/sampling_features\?_limit=10&_offset=0
+curl  localhost:8000/api/odmx/v3/sampling_features\?_limit=10\&_offset=0\&_format=json_table
 ```
 
-You may also use `_limit = 0` to determine the number of rows that would be returned without actually returning any data.
+You may also use `_limit = 0` with the `json_table` format to determine the number of rows that would be returned without actually returning any data.
 
 ```sh
+curl  localhost:8000/api/odmx/v3/sampling_features\?_limit=0\&_format=json_table
+```
 
 #### Querying Timeseries Datastreams
 
@@ -233,7 +251,7 @@ Here we can use the datastreams table to find variables that are associated
 with a specific sampling feature
 
 ```sh
-curl http://localhost:8000/api/odmx/v3/sampling_feature_timeseries_datastreams\?sampling_feature_id=213&_cols=variable_id\&_distinct
+curl http://localhost:8000/api/odmx/v3/sampling_feature_timeseries_datastreams\?sampling_feature_id=213\&_cols=variable_id\&_distinct
 ```
 ```json
 [1, 563, 54, 55, 125]
@@ -260,7 +278,7 @@ We know the variable_id we need is 1
 Let's figure out what datastreams are available:
 
 ```sh
-curl http://localhost:8000/api/odmx/v3/sampling_feature_timeseries_datastreams\?variable_id=1&_cols=sampling_feature_id
+curl http://localhost:8000/api/odmx/v3/sampling_feature_timeseries_datastreams\?variable_id=1\&_cols=sampling_feature_id
 ```
 ```json
 [12,18,25,30,35]
@@ -416,7 +434,7 @@ that control this behavior:
 Thus, if you want to query specifically for data that isn't good:
 
 ```sh
-curl http://localhost:8000/api/odmx/v3/datastream_data/35\?qa_flag=x&qa_flag_mode=less_or_eq | python -m json.tool
+curl http://localhost:8000/api/odmx/v3/datastream_data/35\?qa_flag=x\&qa_flag_mode=less_or_eq | python -m json.tool
 ```
 
 ```json
@@ -463,7 +481,7 @@ curl http://localhost:8000/api/odmx/v3/datastream_data/35\?start_date=2010-01-01
 ##### If you need finer time ranges, you can use the `start_datetime` and `end_datetime` parameters
 
 ```sh
-curl http://localhost:8000/api/odmx/v3/datastream_data/35\?&start_datetime=2010-01-01T00:00:00\&end_datetime=2010-01-01T12:00:00
+curl http://localhost:8000/api/odmx/v3/datastream_data/35\?start_datetime=2010-01-01T00:00:00\&end_datetime=2010-01-01T12:00:00
 ```
 
 ##### Query datastream downsampled data
@@ -476,7 +494,7 @@ and similar tools. For this, there are two controlling parameters:
 `downsample_method` can be 'mean', 'sum', 'count', 'stddev', 'variance', 'min', 'max', 'min_max'
 
 ```sh
-curl http://localhost:8000/api/odmx/v3/datastream_data/35\?start_date=2010-01-01\&end_date=2010-01-02\&downsample_interval=day&downsample_method=mean
+curl http://localhost:8000/api/odmx/v3/datastream_data/35\?start_date=2010-01-01\&end_date=2010-01-02\&downsample_interval=day\&downsample_method=mean
 ```
 
 The min, max, `min_max` methods have extra columns for the specific datetime, for example, the
@@ -633,7 +651,7 @@ curl http://localhost:8000/api/odmx/v3/datastream_data/35\?start_date=2022-10-01
 These unwieldy decimal values are closer to the raw binary representation stored
 in the database, but remember that the raw values ingested may not have
 been this precise to begin with, and some downsampling operations
-peform calculations that produce values
+perform calculations that produce meaningless precision.
 
 ##### Getting CSV returns
 
@@ -642,7 +660,7 @@ the `format` parameter. The `format` parameter can be set to `csv` or `json`
 for datastreams:
 
 ```sh
-curl http://localhost:8000/api/odmx/v3/datastream_data/35\?downsample_interval=year\&downsample_method=min_max&format=csv
+curl http://localhost:8000/api/odmx/v3/datastream_data/35\?downsample_interval=year\&downsample_method=min_max\&format=csv
 ```
 
 ```csv
@@ -780,7 +798,7 @@ with con.transaction():
 
 ## Snapshot the database into new project directory
 
-It is often desirable to snapshot an ODMX project that is live, this allows retaining entities through `--from-scratch True` and 
+It is often desirable to snapshot an ODMX project that is live, this allows retaining entities through `--from-scratch True` and
 provides a degree of reproducability and provinance. The project's base tables and CV entries could, for example, be tracked in a git repository.
 
 If you wish to overwrite an existing project directory and have backups or version control, you can pass the `--overwrite True` parameter
@@ -791,7 +809,7 @@ python -m odmx.snapshot --config /path/to/odmx_projects/config.yaml --output-dir
 ```
 
 If you pass `--include-feeder True` then a snapshot of the feeder tables (which are data ingested into the database from various data sources) are also
-dumped under the `feeder` directory as CSV files. 
+dumped under the `feeder` directory as CSV files.
 
 
 # Acknowledgements
