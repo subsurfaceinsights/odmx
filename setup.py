@@ -12,7 +12,7 @@ with open('requirements.txt') as f:
 
 setup(
     name='odmx',
-    version='1.0.0',
+    version='1.1.0',
     author='Erek Alper, Doug Johnson, Roelof Versteeg, Rebecca Rubinstein',
     author_email='erek.alper@subsurfaceinsights.com, dougvj@gmail.com, roelof.versteeg@subsurfaceinsights.com, rebecca.rubinstein@subsurfaceinsights.com',
     description='Python library for working with the ODMX data model',
@@ -25,6 +25,6 @@ setup(
     classifiers=[
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.10',
     ],
 )
