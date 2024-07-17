@@ -46,7 +46,7 @@
             "site_code": "09111250"
         },
         "harvesting_info": {},
-        "ingestion_info": {"update_equipment_jsons": false},
+        "ingestion_info": {},
         "processing_info": {
             "sampling_feature_code": "NWIS-09111250"
         }
