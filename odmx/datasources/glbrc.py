@@ -5,6 +5,7 @@ Module for generic timeserties data in csv files or excel spreadsheets
 """
 
 import os
+import re
 import datetime
 from importlib.util import find_spec
 import numpy as np
@@ -123,7 +124,14 @@ class GlbrcDataSource(DataSource):
                 elif ext == 'csv':
                     args.update({'float_precision': 'high',
                                  'usecols': columns})
+
                     part_df = open_csv(file, args=args, lock=True)
+
+                # Drop empty columns
+                part_df = part_df.dropna(axis=1, how='all')
+
+                # Limit the dataframe to the first twenty lines when testing the ingestion
+                # part_df = part_df.iloc[:20]
 
                 # Correct the formatting of time column - we need %H:%M:%S'
                 try:
@@ -287,6 +295,7 @@ class GlbrcDataSource(DataSource):
 
         # Load data source config, we need this to define data_file_name later
         data_source_config = open_json(self.config_file)
+        file_type = data_source_config["data_file_type"]
 
         # Create list of extension property names
         extension_properties_df = db.query_df(
@@ -382,6 +391,10 @@ class GlbrcDataSource(DataSource):
             data_df['timestamp'] = data_df['timestamp'].dt.strftime(
                 '%Y-%m-%d %H:%M:%S')
 
+            # In some instances the feeder_table has an extra 0 that needs to be removed
+            data_df['treatment'] = data_df['treatment'].apply(
+                lambda x: re.sub(r'(G)0(\d)', r'\1\2', x))
+
             # we iterate over tables from 1 (first one with data) to the last
             # one we use the timestamp to create a sample name, which will be
             # parentsamplingfeaturename_geochem_date
@@ -406,42 +419,53 @@ class GlbrcDataSource(DataSource):
                 else:
                     ValueError(f'{site} is not sampling features')
 
-                sampling_feature_code = f'{site}-{treatment}-{replicate}'
+                sampling_feature_code = (
+                    f'{site}-{treatment}-{replicate}').replace(' ', '')
 
-                # Capture any other info that can be used to distinguish specimens
-                try:
-                    plot_section = data_df.iloc[index]['main_or_microplot']
-                except:
+                # TODO: fix this hack of a section - maybe need to generate
+                # a collected_sf_code at the data_source_config.json level
+                # TODO also need a fix for soil total carbon and nitrogen feeder
+                if feeder_table == 'feeder_soil_inorganic_nitrogen_(resin_strip_method)_(2009)_':
+                    collected_sf_code = f'{sampling_feature_code}_resin-strip'
+                elif feeder_table == 'feeder_soil_total_carbon_and_nitrogen_(2008_to_present)_':
+                    collected_sf_code = f'{sampling_feature_code}_soil-carbon-nitrogen'
+                elif feeder_table == 'feeder_soil_water_chemistry_(2009_to_2021)_':
+                    collected_sf_code = f'{sampling_feature_code}_soil-water'
+                else:
+                    # Capture any other info that can be used to distinguish specimens
                     try:
-                        # Sometime we don't have main or microplot but we have windrows
-                        plot_section = data_df.iloc[index]['windrow']
-                    except:
-                        # Here field section denotes main or microplot
-                        plot_section = data_df.iloc[index]['field_section']
-                        field_section_as_main_micro = True
-
-                try:
-                    subplot = data_df.iloc[index]['subplot']
-                except:
-                    try:
-                        if field_section_as_main_micro:
-                            pass
-                        subplot = data_df.iloc[index]['field_section']
+                        plot_section = data_df.iloc[index]['main_or_microplot']
                     except:
                         try:
-                            subplot = data_df.iloc[index]['location_no']
+                            # Sometime we don't have main or microplot but we have windrows
+                            plot_section = data_df.iloc[index]['windrow']
                         except:
-                            subplot = None
+                            # Here field section denotes main or microplot
+                            plot_section = data_df.iloc[index]['field_section']
+                            field_section_as_main_micro = True
 
-                # Create collected sampling feature code for child specimens
-                if subplot is None:
-                    collected_sf_code = (f'{sampling_feature_code}_'
-                                         f'harvest_{sample_date}_'
-                                         f'{plot_section}')
-                else:
-                    collected_sf_code = (f'{sampling_feature_code}_'
-                                         f'harvest_{sample_date}_'
-                                         f'{plot_section}-{subplot}')
+                    try:
+                        subplot = data_df.iloc[index]['subplot']
+                    except:
+                        try:
+                            if field_section_as_main_micro:
+                                pass
+                            subplot = data_df.iloc[index]['field_section']
+                        except:
+                            try:
+                                subplot = data_df.iloc[index]['location_no']
+                            except:
+                                subplot = None
+
+                    # Create collected sampling feature code for child specimens
+                    if subplot is None:
+                        collected_sf_code = (f'{sampling_feature_code}_'
+                                             f'{file_type}_{sample_date}_'
+                                             f'{plot_section}').replace(' ', '')
+                    else:
+                        collected_sf_code = (f'{sampling_feature_code}_'
+                                             f'{file_type}_{sample_date}_'
+                                             f'{plot_section}-{subplot}').replace(' ', '')
 
                 relation = 'wasCollectedAt'
                 # we now have the name of the sample and the relation
@@ -478,10 +502,12 @@ class GlbrcDataSource(DataSource):
                             # if rowind - 2 < len(feeder_table_columns):
                             #    clean_name = feeder_table_columns[rowind - 2]
                             clean_name = feeder_table_columns[rowind]
+                            print(f'clean_name: {clean_name}')
                             odmx_cv_term = self.param_df["cv_term"][clean_name]
+                            print(f'odmx_cv_term: {odmx_cv_term}')
                             cv_unit = self.param_df.loc[self.param_df['cv_term']
                                                         == odmx_cv_term, 'cv_unit'].values[0]
-
+                            print(f'cv_unit: {cv_unit}')
                             # we have two cases.
                             # If the clean name is not in our extension properties list
                             # then we write the row to results

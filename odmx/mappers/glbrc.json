@@ -1,0 +1,590 @@
+[
+  {
+    "id": "",
+    "clean_name": "year",
+    "cv_term": "growingSeason",
+    "unit": "year",
+    "cv_unit": "year"
+  },
+  {
+    "id": "",
+    "clean_name": "site",
+    "cv_term": "experimentLocation",
+    "unit": "unknown",
+    "cv_unit": "unknown"
+  },
+  {
+    "id": "",
+    "clean_name": "treatment",
+    "cv_term": "experimentTreatment",
+    "unit": "unknown",
+    "cv_unit": "unknown"
+  },
+  {
+    "id": "",
+    "clean_name": "treatment_name",
+    "cv_term": "treatmentDescription",
+    "unit": "unknown",
+    "cv_unit": "unknown"
+  },
+  {
+    "id": "",
+    "clean_name": "replicate",
+    "cv_term": "treatmentReplicate",
+    "unit": "unknown",
+    "cv_unit": "unknown"
+  },
+  {
+    "id": "",
+    "clean_name": "crop",
+    "cv_term": "cropHarvested",
+    "unit": "unknown",
+    "cv_unit": "unknown"
+  },
+  {
+    "id": "",
+    "clean_name": "wi_plot_id",
+    "cv_term": "arlingtonPlotCode",
+    "unit": "unknown",
+    "cv_unit": "unknown"
+  },
+  {
+    "id": "",
+    "clean_name": "main_or_microplot",
+    "cv_term": "experimentalUnit",
+    "unit": "unknown",
+    "cv_unit": "unknown"
+  },
+  {
+    "id": "",
+    "clean_name": "subplot",
+    "cv_term": "locationWithinExperimentalPlot",
+    "unit": "unknown",
+    "cv_unit": "unknown"
+  },
+  {
+    "id": "",
+    "clean_name": "area_harvested_ft2",
+    "cv_term": "areaHarvested",
+    "unit": "feet squared",
+    "cv_unit": "squareFeet"
+  },
+  {
+    "id": "",
+    "clean_name": "fraction",
+    "cv_term": "partOfCropHarvested",
+    "unit": "unknown",
+    "cv_unit": "unknown"
+  },
+  {
+    "id": "",
+    "clean_name": "yield_mg_ha",
+    "cv_term": "yieldMgHa",
+    "unit": "megagrams per hectare",
+    "cv_unit": "megagramPerHectare"
+  },
+  {
+    "id": "",
+    "clean_name": "moisture_at_harvest",
+    "cv_term": "moistureAtHarvest",
+    "unit": "grams per hectogram",
+    "cv_unit": "gramPerHectogram"
+  },
+  {
+    "id": "",
+    "clean_name": "standard_moisture",
+    "cv_term": "moistureStandard",
+    "unit": "grams per hectogram",
+    "cv_unit": "gramPerHectogram"
+  },
+  {
+    "id": "",
+    "clean_name": "yield_std_moisture_bu_ac",
+    "cv_term": "yieldAtStandardMoistureOfCSCBuAc",
+    "unit": "bushels per acre",
+    "cv_unit": "bushelsPerAcre"
+  },
+  {
+    "id": "",
+    "clean_name": "yield_std_moisture_mg_ha",
+    "cv_term": "yieldAtStandardMoistureOfCSCMgHa",
+    "unit": "megagrams per hectare",
+    "cv_unit": "megagramPerHectare"
+  },
+  {
+    "id": "",
+    "clean_name": "yield_dry_matter_mg_ha",
+    "cv_term": "yieldDryMatterMgHa",
+    "unit": "megagrams per hectare",
+    "cv_unit": "megagramPerHectare"
+  },
+  {
+    "id": "",
+    "clean_name": "yield_dry_matter_tons_ac",
+    "cv_term": "yieldDryMatterTnAc",
+    "unit": "tons per acre",
+    "cv_unit": "tonsPerAcre"
+  },
+  {
+    "id": "",
+    "clean_name": "comments",
+    "cv_term": "comments",
+    "unit": "unknown",
+    "cv_unit": "unknown"
+  },
+  {
+    "id": "",
+    "clean_name": "field_section",
+    "cv_term": "locationWithinExperimentalPlot",
+    "unit": "unknown",
+    "cv_unit": "unknown"
+  },
+  {
+    "id": "",
+    "clean_name": "cover_crop_herbicided",
+    "cv_term": "coverCropWasHerbicided",
+    "unit": "unknown",
+    "cv_unit": "unknown"
+  },
+  {
+    "id": "",
+    "clean_name": "stover_remains",
+    "cv_term": "stoverWasRemovedAfterHarvest",
+    "unit": "unknown",
+    "cv_unit": "unknown"
+  },
+  {
+    "id": "",
+    "clean_name": "dry_matter_yield_Mg_ha",
+    "cv_term": "yieldDryMatterMgHa",
+    "unit": "megagrams per hectare",
+    "cv_unit": "megagramPerHectare"
+  },
+  {
+    "id": "",
+    "clean_name": "dry_matter_yield_mg_ha",
+    "cv_term": "yieldDryMatterMgHa",
+    "unit": "megagrams per hectare",
+    "cv_unit": "megagramPerHectare"
+  },
+  {
+    "id": "",
+    "clean_name": "dry_matter_yield_ton_acre",
+    "cv_term": "yieldDryMatterTnAc",
+    "unit": "tons per acre",
+    "cv_unit": "tonsPerAcre"
+  },
+  {
+    "id": "",
+    "clean_name": "campaign",
+    "cv_term": "samplingCampaign",
+    "unit": "unknown",
+    "cv_unit": "unknown"
+  },
+  {
+    "id": "",
+    "clean_name": "windrow",
+    "cv_term": "locatedInWindrow",
+    "unit": "unknown",
+    "cv_unit": "unknown"
+  },
+  {
+    "id": "",
+    "clean_name": "windrow_width",
+    "cv_term": "rowWidth",
+    "unit": "meters",
+    "cv_unit": "meter"
+  },
+  {
+    "id": "",
+    "clean_name": "location_no",
+    "cv_term": "sampleLocationNumberInRow",
+    "unit": "meters",
+    "cv_unit": "meter"
+  },
+  {
+    "id": "",
+    "clean_name": "species",
+    "cv_term": "sampleSpecies",
+    "unit": "unknown",
+    "cv_unit": "unknown"
+  },
+  {
+    "id": "",
+    "clean_name": "biomass_g",
+    "cv_term": "biomassDry",
+    "unit": "grams",
+    "cv_unit": "gram"
+  },
+  {
+    "id": "",
+    "clean_name": "area_sampled",
+    "cv_term": "areaSampled",
+    "unit": "square meters",
+    "cv_unit": "squareMeter"
+  },
+  {
+    "id": "",
+    "clean_name": "crop_year",
+    "cv_term": "growingSeason",
+    "unit": "year",
+    "cv_unit": "year"
+  },
+  {
+    "id": "",
+    "clean_name": "dry_matter_yield_Kg_ha",
+    "cv_term": "yieldDryMatterKgHa",
+    "unit": "kilograms per hectare",
+    "cv_unit": "kilogramsPerHectare"
+  },
+  {
+    "id": "",
+    "clean_name": "dry_matter_yield_kg_ha",
+    "cv_term": "yieldDryMatterKgHa",
+    "unit": "kilograms per hectare",
+    "cv_unit": "kilogramsPerHectare"
+  },
+  {
+    "id": "",
+    "clean_name": "n_treatment",
+    "cv_term": "nitrogenTreatment",
+    "unit": "unknown",
+    "cv_unit": "unknown"
+  },
+  {
+    "id": "",
+    "clean_name": "top_depth",
+    "cv_term": "depthAtTopOfSoilSample",
+    "unit": "centimeter",
+    "cv_unit": "centimeter"
+  },
+  {
+    "id": "",
+    "clean_name": "bottom_depth",
+    "cv_term": "depthAtBottomOfSoilSample",
+    "unit": "centimeter",
+    "cv_unit": "centimeter"
+  },
+  {
+    "id": "",
+    "clean_name": "ph",
+    "cv_term": "waterpH",
+    "unit": "pH",
+    "cv_unit": "ph"
+  },
+  {
+    "id": "",
+    "clean_name": "lime_index",
+    "cv_term": "limeIndex",
+    "unit": "unkown",
+    "cv_unit": "unknown"
+  },
+  {
+    "id": "",
+    "clean_name": "p_ppm",
+    "cv_term": "Phosphorus",
+    "unit": "ppm",
+    "cv_unit": "partPerMillion"
+  },
+  {
+    "id": "",
+    "clean_name": "k_ppm",
+    "cv_term": "Potassium",
+    "unit": "ppm",
+    "cv_unit": "partPerMillion"
+  },
+  {
+    "id": "",
+    "clean_name": "ca_ppm",
+    "cv_term": "Calcium",
+    "unit": "ppm",
+    "cv_unit": "partPerMillion"
+  },
+  {
+    "id": "",
+    "clean_name": "mg_ppm",
+    "cv_term": "Magnesium",
+    "unit": "ppm",
+    "cv_unit": "partPerMillion"
+  },
+  {
+    "id": "",
+    "clean_name": "est_cec",
+    "cv_term": "Magnesium",
+    "unit": "meq/100g soil",
+    "cv_unit": "milliequivalentPer100Gram"
+  },
+  {
+    "id": "",
+    "clean_name": "om_percent",
+    "cv_term": "organicMatter",
+    "unit": "meq/100g soil",
+    "cv_unit": "milliequivalentPer100Gram"
+  },
+  {
+    "id": "",
+    "clean_name": "zn_ppm",
+    "cv_term": "Zinc",
+    "unit": "ppm",
+    "cv_unit": "partPerMillion"
+  },
+  {
+    "id": "",
+    "clean_name": "s_ppm",
+    "cv_term": "Sulfur",
+    "unit": "ppm",
+    "cv_unit": "partPerMillion"
+  },
+  {
+    "id": "",
+    "clean_name": "b_ppm",
+    "cv_term": "Boron",
+    "unit": "ppm",
+    "cv_unit": "partPerMillion"
+  },
+  {
+    "id": "",
+    "clean_name": "lab",
+    "cv_term": "lab",
+    "unit": "unknown",
+    "cv_unit": "unknown"
+  },
+  {
+    "id": "",
+    "clean_name": "station",
+    "cv_term": "station",
+    "unit": "unknown",
+    "cv_unit": "unknown"
+  },
+  {
+    "id": "",
+    "clean_name": "soil_sampleid",
+    "cv_term": "soilSampleId",
+    "unit": "unknown",
+    "cv_unit": "unknown"
+  },
+  {
+    "id": "",
+    "clean_name": "depth_cm",
+    "cv_term": "soilSampleDepth",
+    "unit": "centimeter",
+    "cv_unit": "centimeter"
+  },
+  {
+    "id": "",
+    "clean_name": "na_ppm",
+    "cv_term": "Sodium",
+    "unit": "ppm",
+    "cv_unit": "partPerMillion"
+  },
+  {
+    "id": "",
+    "clean_name": "density",
+    "cv_term": "waterDensity",
+    "unit": "gramPerMilliliter",
+    "cv_unit": "gramPerMilliliter"
+  },
+  {
+    "id": "",
+    "clean_name": "bd_g_cc",
+    "cv_term": "soilBulkDensity",
+    "unit": "gramsPerCubicCentimeter",
+    "cv_unit": "gramPerCubicCentimeter"
+  },
+  {
+    "id": "",
+    "clean_name": "buffer_pH",
+    "cv_term": "bufferpH",
+    "unit": "pH",
+    "cv_unit": "ph"
+  },
+  {
+    "id": "",
+    "clean_name": "n_pct",
+    "cv_term": "Nitrogen",
+    "unit": "gramsPerHectogram",
+    "cv_unit": "gramPerHectogram"
+  },
+  {
+    "id": "",
+    "clean_name": "c_pct",
+    "cv_term": "Carbon",
+    "unit": "gramsPerHectogram",
+    "cv_unit": "gramPerHectogram"
+  },
+  {
+    "id": "",
+    "clean_name": "om_percent_n",
+    "cv_term": "organicMatterPercentNitrogen",
+    "unit": "percent",
+    "cv_unit": "percent"
+  },
+  {
+    "id": "",
+    "clean_name": "om_percent_c",
+    "cv_term": "organicMatterPercentCarbon",
+    "unit": "percent",
+    "cv_unit": "percent"
+  },
+  {
+    "id": "",
+    "clean_name": "no3",
+    "cv_term": "Nitrate",
+    "unit": "microgramsPerGram",
+    "cv_unit": "microgramPerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "nh4",
+    "cv_term": "Ammonium_N",
+    "unit": "microgramsPerGram",
+    "cv_unit": "microgramPerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "nitrogen",
+    "cv_term": "Nitrogen",
+    "unit": "gramsPerHectogram",
+    "cv_unit": "gramPerHectogram"
+  },
+  {
+    "id": "",
+    "clean_name": "carbon",
+    "cv_term": "Carbon",
+    "unit": "gramsPerHectogram",
+    "cv_unit": "gramPerHectogram"
+  },
+  {
+    "id": "",
+    "clean_name": "bulk_density_gravel_free",
+    "cv_term": "soilBulkDensityGravelFree",
+    "unit": "gramsPerCubicCentimeter",
+    "cv_unit": "gramPerCubicCentimeter"
+  },
+  {
+    "id": "",
+    "clean_name": "total_bulk_density",
+    "cv_term": "soilBulkDensity",
+    "unit": "gramsPerCubicCentimeter",
+    "cv_unit": "gramPerCubicCentimeter"
+  },
+  {
+    "id": "",
+    "clean_name": "actual_top_depth_cm",
+    "cv_term": "depthAtTopOfBulkDensitySample",
+    "unit": "centimeter",
+    "cv_unit": "centimeter"
+  },
+  {
+    "id": "",
+    "clean_name": "actual_bottom_depth_cm",
+    "cv_term": "depthAtBottomOfBulkDensitySample",
+    "unit": "centimeter",
+    "cv_unit": "centimeter"
+  },
+  {
+    "id": "",
+    "clean_name": "no3_n",
+    "cv_term": "Nitrate",
+    "unit": "milligramsPerLiter",
+    "cv_unit": "milligramPerLiter"
+  },
+  {
+    "id": "",
+    "clean_name": "cl",
+    "cv_term": "Chloride",
+    "unit": "milligramsPerLiter",
+    "cv_unit": "milligramPerLiter"
+  },
+  {
+    "id": "",
+    "clean_name": "so4",
+    "cv_term": "Sulfate",
+    "unit": "milligramsPerLiter",
+    "cv_unit": "milligramPerLiter"
+  },
+  {
+    "id": "",
+    "clean_name": "cnd_l",
+    "cv_term": "waterSpecificConductance",
+    "unit": "microsiemensPerCentimeter",
+    "cv_unit": "microsiemenPerCentimeter"
+  },
+  {
+    "id": "",
+    "clean_name": "tdp",
+    "cv_term": "TDP",
+    "unit": "microgramsPerGram",
+    "cv_unit": "microgramPerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "ph_l",
+    "cv_term": "waterpH",
+    "unit": "pH",
+    "cv_unit": "pH"
+  },
+  {
+    "id": "",
+    "clean_name": "ca_ic",
+    "cv_term": "Calcium",
+    "unit": "milligramsPerLiter",
+    "cv_unit": "milligramPerLiter"
+  },
+  {
+    "id": "",
+    "clean_name": "mg_ic",
+    "cv_term": "Magnesium",
+    "unit": "milligramsPerLiter",
+    "cv_unit": "milligramPerLiter"
+  },
+  {
+    "id": "",
+    "clean_name": "na_ic",
+    "cv_term": "Sodium",
+    "unit": "milligramsPerLiter",
+    "cv_unit": "milligramPerLiter"
+  },
+  {
+    "id": "",
+    "clean_name": "k_ic",
+    "cv_term": "Potassium",
+    "unit": "milligramsPerLiter",
+    "cv_unit": "milligramPerLiter"
+  },
+  {
+    "id": "",
+    "clean_name": "tdn",
+    "cv_term": "TDN",
+    "unit": "microgramsPerLiter",
+    "cv_unit": "microgramPerLiter"
+  },
+  {
+    "id": "",
+    "clean_name": "cnd_f",
+    "cv_term": "waterSpecificConductanceField",
+    "unit": "microsiemensPerCentimeter",
+    "cv_unit": "microsiemenPerCentimeter"
+  },
+  {
+    "id": "",
+    "clean_name": "zmax",
+    "cv_term": "totalDepth",
+    "unit": "meter",
+    "cv_unit": "meter"
+  },
+  {
+    "id": "",
+    "clean_name": "zsamp",
+    "cv_term": "sampleDepth",
+    "unit": "meter",
+    "cv_unit": "meter"
+  },
+  {
+    "id": "",
+    "clean_name": "date_installed",
+    "cv_term": "dateOfResinStripInstallation",
+    "unit": "unknown",
+    "cv_unit": "unknown"
+  }
+]
