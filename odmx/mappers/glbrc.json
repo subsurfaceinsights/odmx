@@ -317,7 +317,7 @@
   {
     "id": "",
     "clean_name": "om_percent",
-    "cv_term": "organicMatter",
+    "cv_term": "soilOrganicMatter",
     "unit": "meq/100g soil",
     "cv_unit": "milliequivalentPer100Gram"
   },
@@ -584,6 +584,167 @@
     "id": "",
     "clean_name": "date_installed",
     "cv_term": "dateOfResinStripInstallation",
+    "unit": "unknown",
+    "cv_unit": "unknown"
+  },
+  {
+    "id": "",
+    "clean_name": "shelter_treatment",
+    "cv_term": "shelterInstalled",
+    "unit": "unknown",
+    "cv_unit": "unknown"
+  },
+  {
+    "id": "",
+    "clean_name": "moisture",
+    "cv_term": "soilGravimetricWaterContent",
+    "unit": "gramsPerHectogram",
+    "cv_unit": "gramPerHectogram"
+  },
+  {
+    "id": "",
+    "clean_name": "horizon_top_depth",
+    "cv_term": "soilHorizonTopDepth",
+    "unit": "centimeter",
+    "cv_unit": "centimeter"
+  },
+  {
+    "id": "",
+    "clean_name": "horizon_bottom_depth",
+    "cv_term": "soilHorizonBottomDepth",
+    "unit": "centimeter",
+    "cv_unit": "centimeter"
+  },
+  {
+    "id": "",
+    "clean_name": "core_diameter",
+    "cv_term": "soilCoreDiameter",
+    "unit": "centimeter",
+    "cv_unit": "centimeter"
+  },
+  {
+    "id": "",
+    "clean_name": "gravel_free_bulk_density",
+    "cv_term": "soilBulkDensityGravelFree",
+    "unit": "gramsPerCubicCentimeter",
+    "cv_unit": "gramPerCubicCentimeter"
+  },
+  {
+    "id": "",
+    "clean_name": "top_depth_bd",
+    "cv_term": "depthAtTopOfBulkDensitySample",
+    "unit": "centimeter",
+    "cv_unit": "centimeter"
+  },
+  {
+    "id": "",
+    "clean_name": "bottom_depth_bd",
+    "cv_term": "depthAtBottomOfBulkDensitySample",
+    "unit": "centimeter",
+    "cv_unit": "centimeter"
+  },
+  {
+    "id": "",
+    "clean_name": "depth",
+    "cv_term": "soilSampleDepth",
+    "unit": "centimeter",
+    "cv_unit": "centimeter"
+  },
+  {
+    "id": "",
+    "clean_name": "temperature",
+    "cv_term": "soilTemperature",
+    "unit": "celcius",
+    "cv_unit": "degreeCelsius"
+  },
+  {
+    "id": "",
+    "clean_name": "sand_percent",
+    "cv_term": "soilPercentSand",
+    "unit": "gramsPerHectogram",
+    "cv_unit": "gramPerHectogram"
+  },
+  {
+    "id": "",
+    "clean_name": "clay_percent",
+    "cv_term": "soilPercentClay",
+    "unit": "gramsPerHectogram",
+    "cv_unit": "gramPerHectogram"
+  },
+  {
+    "id": "",
+    "clean_name": "silt_percent",
+    "cv_term": "soilPercentSilt",
+    "unit": "gramsPerHectogram",
+    "cv_unit": "gramPerHectogram"
+  },
+  {
+    "id": "",
+    "clean_name": "soil_organic_matter_g_kg",
+    "cv_term": "soilOrganicMatter",
+    "unit": "gramPerKilogram",
+    "cv_unit": "gramPerKilogram"
+  },
+  {
+    "id": "",
+    "clean_name": "ert_plot",
+    "cv_term": "ertPlot",
+    "unit": "unknown",
+    "cv_unit": "unknown"
+  },
+  {
+    "id": "",
+    "clean_name": "sand",
+    "cv_term": "soilPercentSand",
+    "unit": "gramsPerHectogram",
+    "cv_unit": "gramPerHectogram"
+  },
+  {
+    "id": "",
+    "clean_name": "clay",
+    "cv_term": "soilPercentClay",
+    "unit": "gramsPerHectogram",
+    "cv_unit": "gramPerHectogram"
+  },
+  {
+    "id": "",
+    "clean_name": "silt",
+    "cv_term": "soilPercentSilt",
+    "unit": "gramsPerHectogram",
+    "cv_unit": "gramPerHectogram"
+  },
+  {
+    "id": "",
+    "clean_name": "texture",
+    "cv_term": "soilTexture",
+    "unit": "unknown",
+    "cv_unit": "unknown"
+  },
+  {
+    "id": "",
+    "clean_name": "volumetric_soil_moisture",
+    "cv_term": "soilVolumetricWaterContent",
+    "unit": "unknown",
+    "cv_unit": "unknown"
+  },
+  {
+    "id": "",
+    "clean_name": "soil_depth_cm",
+    "cv_term": "soilSampleDepth",
+    "unit": "centimeter",
+    "cv_unit": "centimeter"
+  },
+  {
+    "id": "",
+    "clean_name": "experiment",
+    "cv_term": "glbrcExperiment",
+    "unit": "unknown",
+    "cv_unit": "unknown"
+  },
+  {
+    "id": "",
+    "clean_name": "horizon",
+    "cv_term": "soilHorizon",
     "unit": "unknown",
     "cv_unit": "unknown"
   }

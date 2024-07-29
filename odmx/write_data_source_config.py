@@ -22,8 +22,11 @@ def setup_csv_data_source_config_json(csv_path):
         else:
             time_col = "harvest_date"
     elif "soil" in csv_path.lower():
-        data_file_type = "soil"
         time_col = "sample_date"
+        if "chem" in csv_path.lower():
+            data_file_type = "soil-chemical"
+        elif "phys" in csv_path.lower():
+            data_file_type = "soil-physical"
 
     cols = []
     for col in df.columns.tolist():

@@ -9,13 +9,14 @@ import filelock
 import jsonschema
 import pandas as pd
 
+
 def clean_name(col):
     """
     Generate ingested name from csv column name
     """
     replace_chars = {' ': '_', '-': '_', '/': '_', '²': '2', '³': '3',
                      '°': 'deg', '__': '_', '%': 'percent', '^': '', 'µ': 'u',
-                     'Ω': 'ohm', '₂': '2', ':':''}
+                     'Ω': 'ohm', '₂': '2', ':': ''}
     for key, value in replace_chars.items():
         col = col.replace(key, value)
 
@@ -123,7 +124,7 @@ def open_json(file_path, args=None, lock=False, timeout=300,
             raise FileNotFoundError(f"No file found at: {file_path}.") from e
         except json.decoder.JSONDecodeError as e:
             raise ValueError(f"The .json file {file_path} could not be"
-                            " decoded properly.") from e
+                             " decoded properly.") from e
 
     # Define the args parameter explicitly if nothing was passed.
     if args is None:
@@ -283,6 +284,7 @@ def get_last_timestamp_csv(file_path, timestamp_index=0, max_line_size=8192,
             file_last_timestamp = pd.to_datetime(file_last_timestamp)
         return file_last_timestamp
 
+
 def expand_column_names(columns, full_col_list):
     """
     Expand column names specified with wildcard (*)
@@ -299,3 +301,26 @@ def expand_column_names(columns, full_col_list):
                 [x for x in full_col_list if x.startswith(column)]
             columns += expanded_cols
     return columns
+
+
+def get_column_value(df, index, *columns):
+    """
+    Retrieves the value from the first available column for a given row in a DataFrame.
+
+    This function checks for the presence of columns in the specified order and 
+    returnsthe value from the first column that exists in the DataFrame. 
+    If none of the specified columns exist, it returns `None`.
+
+    @param df Dataframe from which to retrieve the column value
+    @param index The row index in the dataframe from which to retrieve the value
+    @param *columns Column names to check for, in the order of priority
+    @return value The value of the first extant column in the specified row 
+                  or None if no columns exist
+    @return source_column The name of the column from which the value was 
+                          retrieved, or `None` if no column was found.
+    """
+    for col in columns:
+        if col in df.columns:
+            value = df.iloc[index][col]
+            return value, col
+    return None, None

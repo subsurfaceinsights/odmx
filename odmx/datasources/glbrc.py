@@ -11,7 +11,7 @@ from importlib.util import find_spec
 import numpy as np
 import pandas as pd
 from odmx.support.file_utils import get_files, open_csv, clean_name, \
-    open_spreadsheet, open_json
+    open_spreadsheet, open_json, get_column_value
 import odmx.support.db as db
 from odmx.support.db import quote_id
 from odmx.abstract_data_source import DataSource
@@ -312,19 +312,26 @@ class GlbrcDataSource(DataSource):
         vprint(f"Using feeder tables {feeder_tables}")
         # we convert the name of the feeder table into the associated sampling
         # feature table
+
+        # Ensure that we only process each feeder_table once
+        processed_feeder_tables = set()
+
         print('iterating through feeder tables')
         for feeder_table in feeder_tables:
-            print(f'feeder_table: {feeder_table}')
-
+            if feeder_table in processed_feeder_tables:
+                print(
+                    f'Skipping already processed feeder_table: {feeder_table}')
+                continue
+            print(f'Processing feeder_table: {feeder_table}')
             # see if we have this sf in our sampling features
-            # sampling_feature = \
-            #    odmx.read_sampling_features_one_or_none(
-            #        odmx_db_con, sampling_feature_code=sampling_feature_code)
-            # print(
-            #    f'feeder_table: {feeder_table} | sampling_feature: {sampling_feature}')
-            # if not sampling_feature:
-            #    print(f'did not find an associated sampling feature with the '
-            #          f'feeder table: {feeder_table}')
+            sampling_feature = \
+                odmx.read_sampling_features_one_or_none(
+                    odmx_db_con, sampling_feature_code=sampling_feature_code)
+            print(
+                f'feeder_table: {feeder_table} | sampling_feature: {sampling_feature}')
+            if not sampling_feature:
+                print(f'did not find an associated sampling feature with the '
+                      f'feeder table: {feeder_table}')
 
             # We create a specimen collection for this feeder_table and will associate
             # all sampling features with it.
@@ -406,6 +413,14 @@ class GlbrcDataSource(DataSource):
                                                              '-').replace(':',
                                                                           '-')
 
+                # We need to create a mapping to generate child sampling features
+                # This is not straight forward because there is not a consistent column
+                # structure accross all feeder tables. Essentially, we need to ensure
+                # that each row, which is associated with a location and time,
+                # is assigned a child sampling feature. This is critical because some rows
+                # can be duplicated accross feeder tables, and we use child sf to
+                # prevent ingesting duplicate measurements into ODMX
+
                 # Define a sampling feature code w/ columns shared by all data sources
                 site = data_df.iloc[index]['site']
                 treatment = data_df.iloc[index]['treatment']
@@ -419,54 +434,59 @@ class GlbrcDataSource(DataSource):
                 else:
                     ValueError(f'{site} is not sampling features')
 
-                sampling_feature_code = (
+                site_code = (
                     f'{site}-{treatment}-{replicate}').replace(' ', '')
 
-                # TODO: fix this hack of a section - maybe need to generate
-                # a collected_sf_code at the data_source_config.json level
-                # TODO also need a fix for soil total carbon and nitrogen feeder
-                if feeder_table == 'feeder_soil_inorganic_nitrogen_(resin_strip_method)_(2009)_':
-                    collected_sf_code = f'{sampling_feature_code}_resin-strip'
-                elif feeder_table == 'feeder_soil_total_carbon_and_nitrogen_(2008_to_present)_':
-                    collected_sf_code = f'{sampling_feature_code}_soil-carbon-nitrogen'
-                elif feeder_table == 'feeder_soil_water_chemistry_(2009_to_2021)_':
-                    collected_sf_code = f'{sampling_feature_code}_soil-water'
+                # Add in additional details that may or may not be contained wihtin the feeder_table
+                plot_section, source_column = get_column_value(
+                    data_df, index, 'main_or_microplot', 'windrow', 'field_section', 'station')
+                # Determine subplot based on source_column
+                if source_column == 'field_section':
+                    subplot, _ = get_column_value(
+                        data_df, index, 'subplot', 'location_no')
+                elif source_column == 'station':
+                    subplot = None
                 else:
-                    # Capture any other info that can be used to distinguish specimens
-                    try:
-                        plot_section = data_df.iloc[index]['main_or_microplot']
-                    except:
-                        try:
-                            # Sometime we don't have main or microplot but we have windrows
-                            plot_section = data_df.iloc[index]['windrow']
-                        except:
-                            # Here field section denotes main or microplot
-                            plot_section = data_df.iloc[index]['field_section']
-                            field_section_as_main_micro = True
+                    subplot, _ = get_column_value(
+                        data_df, index, 'subplot', 'field_section', 'location_no', 'station')
 
-                    try:
-                        subplot = data_df.iloc[index]['subplot']
-                    except:
-                        try:
-                            if field_section_as_main_micro:
-                                pass
-                            subplot = data_df.iloc[index]['field_section']
-                        except:
-                            try:
-                                subplot = data_df.iloc[index]['location_no']
-                            except:
-                                subplot = None
+                campaign, _ = get_column_value(
+                    data_df, index, 'campaign')
+                depth_columns = [
+                    'depth', 'depth_cm', 'top_depth', 'horizon_top_depth', 'soil_depth_cm']
+                depth, depth_col = get_column_value(
+                    data_df, index, *depth_columns)
 
-                    # Create collected sampling feature code for child specimens
-                    if subplot is None:
-                        collected_sf_code = (f'{sampling_feature_code}_'
-                                             f'{file_type}_{sample_date}_'
-                                             f'{plot_section}').replace(' ', '')
-                    else:
-                        collected_sf_code = (f'{sampling_feature_code}_'
-                                             f'{file_type}_{sample_date}_'
-                                             f'{plot_section}-{subplot}').replace(' ', '')
+                # Build collected_sf_code based on the presence of values
+                parts = [sampling_feature_code,
+                         sample_date, site_code]  # feeder_table,
 
+                if plot_section is not None:
+                    # print(f'plot_col: {plot_col}: {plot_section}')
+                    parts.append(plot_section)
+                if subplot is not None:
+                    # print(f'sub_col: {sub_col}: {subplot}')
+                    parts.append(subplot)
+                if campaign is not None:
+                    parts.append(campaign)
+                if depth is not None:
+                    # print(f'depth_col: {depth_col}: {depth}')
+                    parts.append(depth)
+
+                collected_sf_code = '_'.join(parts).replace(' ', '')
+                # We have one unqiue case for the soil water chemistry data where multiple
+                # measurements exist per location without a way to differentiate them
+                # We need to assign these measurements an additional identifier so that we
+                # can ingest them into ODMX. Here we use their row index.
+                if feeder_table == 'feeder_soil_water_chemistry_(2009_to_2021)_':
+                    collected_sf_code = f'{collected_sf_code}_{index}'
+
+                print(f'collected_sf_code: {collected_sf_code}')
+
+                # TODO: this is breaking on non-unique sampling feature id's
+                # Need to update the collected_sf_code to handle variable soil depth
+
+                # fix the loop without causing the code to repeat itself
                 relation = 'wasCollectedAt'
                 # we now have the name of the sample and the relation
                 # we will now create the sample in our ODMX database
@@ -480,12 +500,7 @@ class GlbrcDataSource(DataSource):
                 )
 
                 # If new_specimen is False then we have already processed these results
-                if new_specimen is False:
-                    # print('Breaking loop at index:', index)
-                    break
-                else:
-                    # we create a feature_action_id which will make the bridge
-                    # between the specimen and the results
+                if new_specimen:
                     feature_action_id = feature_action(odmx_db_con, action_id,
                                                        specimen_sf_id)
                     print(
@@ -498,7 +513,7 @@ class GlbrcDataSource(DataSource):
 
                     for rowind in range(2, data_df_columns):
                         rowvalue = data_df.iloc[index][rowind]
-                        if not rowvalue == 'nan':
+                        if not rowvalue == 'NaN':
                             # if rowind - 2 < len(feeder_table_columns):
                             #    clean_name = feeder_table_columns[rowind - 2]
                             clean_name = feeder_table_columns[rowind]
@@ -578,4 +593,5 @@ class GlbrcDataSource(DataSource):
                                 print(f'Writing sampling feature extension property '
                                       f'for {glbrc_property_id}: {rowvalue}')
                     print(f'New Variables to add: {need_to_add}')
-            print(f'Processed {feeder_table}.')
+            print(f'Processed feeder_table: {feeder_table}.')
+            processed_feeder_tables.add(feeder_table)
