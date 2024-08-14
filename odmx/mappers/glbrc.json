@@ -79,7 +79,7 @@
   {
     "id": "",
     "clean_name": "yield_mg_ha",
-    "cv_term": "yieldMgHa",
+    "cv_term": "yield",
     "unit": "megagrams per hectare",
     "cv_unit": "megagramPerHectare"
   },
@@ -100,30 +100,30 @@
   {
     "id": "",
     "clean_name": "yield_std_moisture_bu_ac",
-    "cv_term": "yieldAtStandardMoistureOfCSCBuAc",
+    "cv_term": "yieldAtStandardMoistureOfCSC",
     "unit": "bushels per acre",
     "cv_unit": "bushelsPerAcre"
   },
   {
     "id": "",
     "clean_name": "yield_std_moisture_mg_ha",
-    "cv_term": "yieldAtStandardMoistureOfCSCMgHa",
+    "cv_term": "yieldAtStandardMoistureOfCSC",
     "unit": "megagrams per hectare",
     "cv_unit": "megagramPerHectare"
   },
   {
     "id": "",
     "clean_name": "yield_dry_matter_mg_ha",
-    "cv_term": "yieldDryMatterMgHa",
+    "cv_term": "yieldDryMatter",
     "unit": "megagrams per hectare",
     "cv_unit": "megagramPerHectare"
   },
   {
     "id": "",
     "clean_name": "yield_dry_matter_tons_ac",
-    "cv_term": "yieldDryMatterTnAc",
+    "cv_term": "yieldDryMatter",
     "unit": "tons per acre",
-    "cv_unit": "tonsPerAcre"
+    "cv_unit": "tonPerAcre"
   },
   {
     "id": "",
@@ -156,23 +156,23 @@
   {
     "id": "",
     "clean_name": "dry_matter_yield_Mg_ha",
-    "cv_term": "yieldDryMatterMgHa",
+    "cv_term": "yieldDryMatter",
     "unit": "megagrams per hectare",
     "cv_unit": "megagramPerHectare"
   },
   {
     "id": "",
     "clean_name": "dry_matter_yield_mg_ha",
-    "cv_term": "yieldDryMatterMgHa",
+    "cv_term": "yieldDryMatter",
     "unit": "megagrams per hectare",
     "cv_unit": "megagramPerHectare"
   },
   {
     "id": "",
     "clean_name": "dry_matter_yield_ton_acre",
-    "cv_term": "yieldDryMatterTnAc",
+    "cv_term": "yieldDryMatter",
     "unit": "tons per acre",
-    "cv_unit": "tonsPerAcre"
+    "cv_unit": "tonPerAcre"
   },
   {
     "id": "",
@@ -211,6 +211,13 @@
   },
   {
     "id": "",
+    "clean_name": "spcies",
+    "cv_term": "sampleSpecies",
+    "unit": "unknown",
+    "cv_unit": "unknown"
+  },
+  {
+    "id": "",
     "clean_name": "biomass_g",
     "cv_term": "biomassDry",
     "unit": "grams",
@@ -233,16 +240,16 @@
   {
     "id": "",
     "clean_name": "dry_matter_yield_Kg_ha",
-    "cv_term": "yieldDryMatterKgHa",
+    "cv_term": "yieldDryMatter",
     "unit": "kilograms per hectare",
-    "cv_unit": "kilogramsPerHectare"
+    "cv_unit": "kilogramPerHectare"
   },
   {
     "id": "",
     "clean_name": "dry_matter_yield_kg_ha",
-    "cv_term": "yieldDryMatterKgHa",
+    "cv_term": "yieldDryMatter",
     "unit": "kilograms per hectare",
-    "cv_unit": "kilogramsPerHectare"
+    "cv_unit": "kilogramPerHectare"
   },
   {
     "id": "",
@@ -276,7 +283,7 @@
     "id": "",
     "clean_name": "lime_index",
     "cv_term": "limeIndex",
-    "unit": "unkown",
+    "unit": "unknown",
     "cv_unit": "unknown"
   },
   {
@@ -393,7 +400,7 @@
   },
   {
     "id": "",
-    "clean_name": "buffer_pH",
+    "clean_name": "buffer_ph",
     "cv_term": "bufferpH",
     "unit": "pH",
     "cv_unit": "ph"
@@ -745,6 +752,1763 @@
     "id": "",
     "clean_name": "horizon",
     "cv_term": "soilHorizon",
+    "unit": "unknown",
+    "cv_unit": "unknown"
+  },
+  {
+    "id": "",
+    "clean_name": "biomass_g_m2",
+    "cv_term": "dryBiomassGramPerSquareMeter",
+    "unit": "gramsPerSquareMeter",
+    "cv_unit": "gramPerSquareMeter"
+  },
+  {
+    "id": "",
+    "clean_name": "area_sampled_m2",
+    "cv_term": "areaSampled",
+    "unit": "square meters",
+    "cv_unit": "squareMeter"
+  },
+  {
+    "id": "",
+    "clean_name": "plant_section",
+    "cv_term": "partOfCropHarvested",
+    "unit": "unknown",
+    "cv_unit": "unknown"
+  },
+  {
+    "id": "",
+    "clean_name": "biomass",
+    "cv_term": "biomassDry",
+    "unit": "grams",
+    "cv_unit": "gram"
+  },
+  {
+    "id": "",
+    "clean_name": "annual_crop",
+    "cv_term": "annualCrop",
+    "unit": "unknown",
+    "cv_unit": "unknown"
+  },
+  {
+    "id": "",
+    "clean_name": "current_year_crop",
+    "cv_term": "mainCrop",
+    "unit": "unknown",
+    "cv_unit": "unknown"
+  },
+  {
+    "id": "",
+    "clean_name": "sampled_area",
+    "cv_term": "areaSampled",
+    "unit": "squareMeter",
+    "cv_unit": "squareMeter"
+  },
+  {
+    "id": "",
+    "clean_name": "tree_id",
+    "cv_term": "treeId",
+    "unit": "unknown",
+    "cv_unit": "unknown"
+  },
+  {
+    "id": "",
+    "clean_name": "diameter_at_ground",
+    "cv_term": "trunkDiameterAtGround",
+    "unit": "millimeter",
+    "cv_unit": "millimeter"
+  },
+  {
+    "id": "",
+    "clean_name": "diameter_at_15cm",
+    "cv_term": "trunkDiameterAt15Cm",
+    "unit": "millimeter",
+    "cv_unit": "millimeter"
+  },
+  {
+    "id": "",
+    "clean_name": "height_cm",
+    "cv_term": "plantHeight",
+    "unit": "centimeter",
+    "cv_unit": "centimeter"
+  },
+  {
+    "id": "",
+    "clean_name": "branch_biomass_g",
+    "cv_term": "branchBiomass",
+    "unit": "gram",
+    "cv_unit": "gram"
+  },
+  {
+    "id": "",
+    "clean_name": "stem_biomass_g",
+    "cv_term": "stemBiomass",
+    "unit": "gram",
+    "cv_unit": "gram"
+  },
+  {
+    "id": "",
+    "clean_name": "wi_plant_id",
+    "cv_term": "arlingtonPlantId",
+    "unit": "unknown",
+    "cv_unit": "unknown"
+  },
+  {
+    "id": "",
+    "clean_name": "total_tree_biomass_g",
+    "cv_term": "treeBiomass",
+    "unit": "gram",
+    "cv_unit": "gram"
+  },
+  {
+    "id": "",
+    "clean_name": "plot",
+    "cv_term": "plot",
+    "unit": "unknown",
+    "cv_unit": "unknown"
+  },
+  {
+    "id": "",
+    "clean_name": "transect",
+    "cv_term": "transect",
+    "unit": "unknown",
+    "cv_unit": "unknown"
+  },
+  {
+    "id": "",
+    "clean_name": "number_of_trees_with_caterpillar_damage",
+    "cv_term": "numberTreesCaterpillarDamage",
+    "unit": "number",
+    "cv_unit": "number"
+  },
+  {
+    "id": "",
+    "clean_name": "number_of_missing_trees",
+    "cv_term": "numberTreesMissing",
+    "unit": "number",
+    "cv_unit": "number"
+  },
+  {
+    "id": "",
+    "clean_name": "number_of_trees_with_deer_damage",
+    "cv_term": "numberTreesDeerDamage",
+    "unit": "number",
+    "cv_unit": "number"
+  },
+  {
+    "id": "",
+    "clean_name": "number_of_trees_with_rust_spots_on_leaves",
+    "cv_term": "numberTreesRustSpotsOnLeaves",
+    "unit": "number",
+    "cv_unit": "number"
+  },
+  {
+    "id": "",
+    "clean_name": "row",
+    "cv_term": "row",
+    "unit": "unknown",
+    "cv_unit": "unknown"
+  },
+  {
+    "id": "",
+    "clean_name": "alive",
+    "cv_term": "numberTreesAlive",
+    "unit": "number",
+    "cv_unit": "number"
+  },
+  {
+    "id": "",
+    "clean_name": "dead",
+    "cv_term": "numberTreesDead",
+    "unit": "number",
+    "cv_unit": "number"
+  },
+  {
+    "id": "",
+    "clean_name": "missing",
+    "cv_term": "numberTreesMissing",
+    "unit": "number",
+    "cv_unit": "number"
+  },
+  {
+    "id": "",
+    "clean_name": "wi_plot",
+    "cv_term": "arlingtonPlotCode",
+    "unit": "unknown",
+    "cv_unit": "unknown"
+  },
+  {
+    "id": "",
+    "clean_name": "average_stand_count",
+    "cv_term": "standCount",
+    "unit": "numberPerMeterSquared",
+    "cv_unit": "numberPerSquareMeter"
+  },
+  {
+    "id": "",
+    "clean_name": "plant_population_m2",
+    "cv_term": "standCount",
+    "unit": "numberPerMeterSquared",
+    "cv_unit": "numberPerSquareMeter"
+  },
+  {
+    "id": "",
+    "clean_name": "sample_area_m2",
+    "cv_term": "areaSampled",
+    "unit": "square meters",
+    "cv_unit": "squareMeter"
+  },
+  {
+    "id": "",
+    "clean_name": "local_datetime",
+    "cv_term": "localDateTime",
+    "unit": "unknown",
+    "cv_unit": "unknown"
+  },
+  {
+    "id": "",
+    "clean_name": "direction",
+    "cv_term": "directionAndPlantNumber",
+    "unit": "unknown",
+    "cv_unit": "unknown"
+  },
+  {
+    "id": "",
+    "clean_name": "lai",
+    "cv_term": "leafAreaIndex",
+    "unit": "meterSquaredPerMeterSquared",
+    "cv_unit": "squareMeterPerSquareMeter"
+  },
+  {
+    "id": "",
+    "clean_name": "sel",
+    "cv_term": "leafAreaIndex",
+    "unit": "meterSquaredPerMeterSquared",
+    "cv_unit": "squareMeterPerSquareMeter"
+  },
+  {
+    "id": "",
+    "clean_name": "difn",
+    "cv_term": "fractionOfSkyVisible",
+    "unit": "number",
+    "cv_unit": "number"
+  },
+  {
+    "id": "",
+    "clean_name": "mta",
+    "cv_term": "meanTiltAngle",
+    "unit": "degree",
+    "cv_unit": "degree"
+  },
+  {
+    "id": "",
+    "clean_name": "sem",
+    "cv_term": "tiltAngle",
+    "unit": "degree",
+    "cv_unit": "degree"
+  },
+  {
+    "id": "",
+    "clean_name": "smp",
+    "cv_term": "numberOfSamplePairs",
+    "unit": "number",
+    "cv_unit": "number"
+  },
+  {
+    "id": "",
+    "clean_name": "instrument",
+    "cv_term": "instrument",
+    "unit": "unknown",
+    "cv_unit": "unknown"
+  },
+  {
+    "id": "",
+    "clean_name": "mean_above_par",
+    "cv_term": "meanParAboveCanopy",
+    "unit": "micromolePerMeterSquaredPerSecond",
+    "cv_unit": "micromolePerSquareMeterPerSecond"
+  },
+  {
+    "id": "",
+    "clean_name": "mean_below_par",
+    "cv_term": "meanParBelowCanopy",
+    "unit": "micromolePerMeterSquaredPerSecond",
+    "cv_unit": "micromolePerSquareMeterPerSecond"
+  },
+  {
+    "id": "",
+    "clean_name": "tau",
+    "cv_term": "ratioAboveCanopyToBelowCanopyPar",
+    "unit": "dimensionless",
+    "cv_unit": "dimensionless"
+  },
+  {
+    "id": "",
+    "clean_name": "chi",
+    "cv_term": "leafDistributionParameter",
+    "unit": "dimensionless",
+    "cv_unit": "dimensionless"
+  },
+  {
+    "id": "",
+    "clean_name": "fb",
+    "cv_term": "fractionalBeamRadiation",
+    "unit": "dimensionless",
+    "cv_unit": "dimensionless"
+  },
+  {
+    "id": "",
+    "clean_name": "zenith_angle",
+    "cv_term": "zenithAngle",
+    "unit": "degree",
+    "cv_unit": "degree"
+  },
+  {
+    "id": "",
+    "clean_name": "nitrogen_fertilization",
+    "cv_term": "nitrogenTreatment",
+    "unit": "unknown",
+    "cv_unit": "unknown"
+  },
+  {
+    "id": "",
+    "clean_name": "line",
+    "cv_term": "sampleTransectNumber",
+    "unit": "unknown",
+    "cv_unit": "unknown"
+  },
+  {
+    "id": "",
+    "clean_name": "height",
+    "cv_term": "plantHeight",
+    "unit": "centimeter",
+    "cv_unit": "centimeter"
+  },
+  {
+    "id": "",
+    "clean_name": "has_lodged",
+    "cv_term": "plantLodged",
+    "unit": "unknown",
+    "cv_unit": "unknown"
+  },
+  {
+    "id": "",
+    "clean_name": "plant_id",
+    "cv_term": "plantId",
+    "unit": "unknown",
+    "cv_unit": "unknown"
+  },
+  {
+    "id": "",
+    "clean_name": "emerging_growth",
+    "cv_term": "emergingGrowth",
+    "unit": "unknown",
+    "cv_unit": "unknown"
+  },
+  {
+    "id": "",
+    "clean_name": "leaves_full_size",
+    "cv_term": "leavesFullSize",
+    "unit": "unknown",
+    "cv_unit": "unknown"
+  },
+  {
+    "id": "",
+    "clean_name": "mean_plant_height_cm",
+    "cv_term": "plantHeight",
+    "unit": "centimeter",
+    "cv_unit": "centimeter"
+  },
+  {
+    "id": "",
+    "clean_name": "herbivore_damage",
+    "cv_term": "herbivoreDamage",
+    "unit": "unknown",
+    "cv_unit": "unknown"
+  },
+  {
+    "id": "",
+    "clean_name": "open_flowers_tasseling",
+    "cv_term": "openFlowersTasseling",
+    "unit": "unknown",
+    "cv_unit": "unknown"
+  },
+  {
+    "id": "",
+    "clean_name": "ripe_seeds",
+    "cv_term": "seedsRipe",
+    "unit": "unknown",
+    "cv_unit": "unknown"
+  },
+  {
+    "id": "",
+    "clean_name": "leaf_wilting",
+    "cv_term": "leafWilting",
+    "unit": "unknown",
+    "cv_unit": "unknown"
+  },
+  {
+    "id": "",
+    "clean_name": "autumn_leaf_senescence",
+    "cv_term": "autumnLeafSenescence",
+    "unit": "unknown",
+    "cv_unit": "unknown"
+  },
+  {
+    "id": "",
+    "clean_name": "full_leaf_loss",
+    "cv_term": "fullLeafLoss",
+    "unit": "unknown",
+    "cv_unit": "unknown"
+  },
+  {
+    "id": "",
+    "clean_name": "number_of_tillers",
+    "cv_term": "numberOfTillers",
+    "unit": "unknown",
+    "cv_unit": "number"
+  },
+  {
+    "id": "",
+    "clean_name": "first_unfolded_leaves",
+    "cv_term": "firstUnfoldedLeaves",
+    "unit": "unknown",
+    "cv_unit": "unknown"
+  },
+  {
+    "id": "",
+    "clean_name": "number_leaves_per_tiller",
+    "cv_term": "numberOfLeavesPerTiller",
+    "unit": "unknown",
+    "cv_unit": "number"
+  },
+  {
+    "id": "",
+    "clean_name": "internodal_length_cm",
+    "cv_term": "internodalLength",
+    "unit": "centimeter",
+    "cv_unit": "centimeter"
+  },
+  {
+    "id": "",
+    "clean_name": "canopy_closed",
+    "cv_term": "canopyClosed",
+    "unit": "unknown",
+    "cv_unit": "unknown"
+  },
+  {
+    "id": "",
+    "clean_name": "method",
+    "cv_term": "sampleMethod",
+    "unit": "unknown",
+    "cv_unit": "unknown"
+  },
+  {
+    "id": "",
+    "clean_name": "location",
+    "cv_term": "sampleLocation",
+    "unit": "unknown",
+    "cv_unit": "unknown"
+  },
+  {
+    "id": "",
+    "clean_name": "top_depth_cm",
+    "cv_term": "depthAtTopOfSoilSample",
+    "unit": "centimeter",
+    "cv_unit": "centimeter"
+  },
+  {
+    "id": "",
+    "clean_name": "bottom_depth_cm",
+    "cv_term": "depthAtBottomOfSoilSample",
+    "unit": "centimeter",
+    "cv_unit": "centimeter"
+  },
+  {
+    "id": "",
+    "clean_name": "raw_weight_g",
+    "cv_term": "rawWeightOfRoots",
+    "unit": "gram",
+    "cv_unit": "gram"
+  },
+  {
+    "id": "",
+    "clean_name": "bnpp_g_m2",
+    "cv_term": "belowGroundRootBiomass",
+    "unit": "gramsPerSquareMeter",
+    "cv_unit": "gramPerSquareMeter"
+  },
+  {
+    "id": "",
+    "clean_name": "percent_carbon",
+    "cv_term": "percentCarbonRoots",
+    "unit": "gramsPerHectogram",
+    "cv_unit": "gramPerHectogram"
+  },
+  {
+    "id": "",
+    "clean_name": "percent_nitrogen",
+    "cv_term": "percentNitrogenRoots",
+    "unit": "gramsPerHectogram",
+    "cv_unit": "gramPerHectogram"
+  },
+  {
+    "id": "",
+    "clean_name": "root_weight",
+    "cv_term": "dryWeightOfRoots",
+    "unit": "gram",
+    "cv_unit": "gram"
+  },
+  {
+    "id": "",
+    "clean_name": "root_weight_g",
+    "cv_term": "dryWeightOfRoots",
+    "unit": "gram",
+    "cv_unit": "gram"
+  },
+  {
+    "id": "",
+    "clean_name": "transect_position",
+    "cv_term": "transect",
+    "unit": "unknown",
+    "cv_unit": "unknown"
+  },
+  {
+    "id": "",
+    "clean_name": "depth_top",
+    "cv_term": "depthAtTopOfSoilSample",
+    "unit": "centimeter",
+    "cv_unit": "centimeter"
+  },
+  {
+    "id": "",
+    "clean_name": "depth_bottom",
+    "cv_term": "depthAtBottomOfSoilSample",
+    "unit": "centimeter",
+    "cv_unit": "centimeter"
+  },
+  {
+    "id": "",
+    "clean_name": "material",
+    "cv_term": "materialAnalyzed",
+    "unit": "unknown",
+    "cv_unit": "unknown"
+  },
+  {
+    "id": "",
+    "clean_name": "microplot_treatment",
+    "cv_term": "microplotTreatment",
+    "unit": "unknown",
+    "cv_unit": "unknown"
+  },
+  {
+    "id": "",
+    "clean_name": "microplot",
+    "cv_term": "microplotTreatment",
+    "unit": "unknown",
+    "cv_unit": "unknown"
+  },
+  {
+    "id": "",
+    "clean_name": "harvest_moisture",
+    "cv_term": "moistureAtHarvest",
+    "unit": "gramsPerHectogram",
+    "cv_unit": "gramPerHectogram"
+  },
+  {
+    "id": "",
+    "clean_name": "glu_eff",
+    "cv_term": "glucoseConversionEfficiency",
+    "unit": "gramsPerHectogram",
+    "cv_unit": "gramPerHectogram"
+  },
+  {
+    "id": "",
+    "clean_name": "glu_eff_sd",
+    "cv_term": "glucoseConversionEfficiency",
+    "unit": "gramsPerHectogram",
+    "cv_unit": "gramPerHectogram"
+  },
+  {
+    "id": "",
+    "clean_name": "pen_eff",
+    "cv_term": "pentoseConversionEfficiency",
+    "unit": "gramsPerHectogram",
+    "cv_unit": "gramPerHectogram"
+  },
+  {
+    "id": "",
+    "clean_name": "pen_eff_sd",
+    "cv_term": "pentoseConversionEfficiency",
+    "unit": "gramsPerHectogram",
+    "cv_unit": "gramPerHectogram"
+  },
+  {
+    "id": "",
+    "clean_name": "rhamnose",
+    "cv_term": "rhamnoseConcentration",
+    "unit": "milligramsPerGram",
+    "cv_unit": "milligramPerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "rhamnose_sd",
+    "cv_term": "rhamnoseConcentration",
+    "unit": "milligramsPerGram",
+    "cv_unit": "milligramPerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "arabionose",
+    "cv_term": "arabionoseConcentration",
+    "unit": "milligramsPerGram",
+    "cv_unit": "milligramPerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "arabionose_sd",
+    "cv_term": "arabionoseConcentration",
+    "unit": "milligramsPerGram",
+    "cv_unit": "milligramPerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "xylose",
+    "cv_term": "xyloseConcentration",
+    "unit": "milligramsPerGram",
+    "cv_unit": "milligramPerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "xylose_sd",
+    "cv_term": "xyloseConcentration",
+    "unit": "milligramsPerGram",
+    "cv_unit": "milligramPerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "mannose",
+    "cv_term": "mannoseConcentration",
+    "unit": "milligramsPerGram",
+    "cv_unit": "milligramPerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "mannose_sd",
+    "cv_term": "mannoseConcentration",
+    "unit": "milligramsPerGram",
+    "cv_unit": "milligramPerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "fucose_sd",
+    "cv_term": "fucoseConcentration",
+    "unit": "milligramsPerGram",
+    "cv_unit": "milligramPerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "fucose",
+    "cv_term": "fucoseConcentration",
+    "unit": "milligramsPerGram",
+    "cv_unit": "milligramPerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "galactose",
+    "cv_term": "galactoseConcentration",
+    "unit": "milligramsPerGram",
+    "cv_unit": "milligramPerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "galactose_sd",
+    "cv_term": "galactoseConcentration",
+    "unit": "milligramsPerGram",
+    "cv_unit": "milligramPerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "glucose_sd",
+    "cv_term": "glucoseConcentration",
+    "unit": "milligramsPerGram",
+    "cv_unit": "milligramPerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "glucose",
+    "cv_term": "glucoseConcentration",
+    "unit": "milligramsPerGram",
+    "cv_unit": "milligramPerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "cryst_glucose",
+    "cv_term": "crystalineGlucoseConcentration",
+    "unit": "milligramsPerGram",
+    "cv_unit": "milligramPerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "cryst_glucose_sd",
+    "cv_term": "crystalineGlucoseConcentration",
+    "unit": "milligramsPerGram",
+    "cv_unit": "milligramPerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "syringyl_lignin_sd",
+    "cv_term": "syringylLigninConcentration",
+    "unit": "milligramsPerGram",
+    "cv_unit": "milligramPerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "syringyl_lignin",
+    "cv_term": "syringylLigninConcentration",
+    "unit": "milligramsPerGram",
+    "cv_unit": "milligramPerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "guaiacyl_lignin",
+    "cv_term": "guaiacylLigninConcentration",
+    "unit": "milligramsPerGram",
+    "cv_unit": "milligramPerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "guaiacyl_lignin_sd",
+    "cv_term": "guaiacylLigninConcentration",
+    "unit": "milligramsPerGram",
+    "cv_unit": "milligramPerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "hydroxyphenyl_lignin_sd",
+    "cv_term": "hydroxyphenylLigninConcentration",
+    "unit": "milligramsPerGram",
+    "cv_unit": "milligramPerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "hydroxyphenyl_lignin",
+    "cv_term": "hydroxyphenylLigninConcentration",
+    "unit": "milligramsPerGram",
+    "cv_unit": "milligramPerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "absl",
+    "cv_term": "acetylBromideSolubleLigninConcentration",
+    "unit": "milligramsPerGram",
+    "cv_unit": "milligramPerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "absl_sd",
+    "cv_term": "acetylBromideSolubleLigninConcentration",
+    "unit": "milligramsPerGram",
+    "cv_unit": "milligramPerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "total_oil_sd",
+    "cv_term": "totalOil",
+    "unit": "gramsPerGram",
+    "cv_unit": "gramPerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "total_oil",
+    "cv_term": "totalOil",
+    "unit": "gramsPerGram",
+    "cv_unit": "gramPerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "palmitic",
+    "cv_term": "palmiticAcid",
+    "unit": "gramsPerHectogram",
+    "cv_unit": "gramPerHectogram"
+  },
+  {
+    "id": "",
+    "clean_name": "palmitic_sd",
+    "cv_term": "palmiticAcid",
+    "unit": "gramsPerHectogram",
+    "cv_unit": "gramPerHectogram"
+  },
+  {
+    "id": "",
+    "clean_name": "stearitic_sd",
+    "cv_term": "stearicAcid",
+    "unit": "gramsPerHectogram",
+    "cv_unit": "gramPerHectogram"
+  },
+  {
+    "id": "",
+    "clean_name": "stearitic",
+    "cv_term": "steariticAcid",
+    "unit": "gramsPerHectogram",
+    "cv_unit": "gramPerHectogram"
+  },
+  {
+    "id": "",
+    "clean_name": "oleic",
+    "cv_term": "oleicAcid",
+    "unit": "gramsPerHectogram",
+    "cv_unit": "gramPerHectogram"
+  },
+  {
+    "id": "",
+    "clean_name": "oleic_sd",
+    "cv_term": "oleicAcid",
+    "unit": "gramsPerHectogram",
+    "cv_unit": "gramPerHectogram"
+  },
+  {
+    "id": "",
+    "clean_name": "linoleic_sd",
+    "cv_term": "linoleicAcid",
+    "unit": "gramsPerHectogram",
+    "cv_unit": "gramPerHectogram"
+  },
+  {
+    "id": "",
+    "clean_name": "linoleic",
+    "cv_term": "linoleicAcid",
+    "unit": "gramsPerHectogram",
+    "cv_unit": "gramPerHectogram"
+  },
+  {
+    "id": "",
+    "clean_name": "linolenic",
+    "cv_term": "linolenicAcid",
+    "unit": "gramsPerHectogram",
+    "cv_unit": "gramPerHectogram"
+  },
+  {
+    "id": "",
+    "clean_name": "linolenic_sd",
+    "cv_term": "linolenicAcid",
+    "unit": "gramsPerHectogram",
+    "cv_unit": "gramPerHectogram"
+  },
+  {
+    "id": "",
+    "clean_name": "ethanol_sd",
+    "cv_term": "ethanol",
+    "unit": "gallonsPerBushel",
+    "cv_unit": "gallonUsPerBushel"
+  },
+  {
+    "id": "",
+    "clean_name": "ethanol",
+    "cv_term": "ethanol",
+    "unit": "gallonsPerBushel",
+    "cv_unit": "gallonUsPerBushel"
+  },
+  {
+    "id": "",
+    "clean_name": "nitrogen_percent",
+    "cv_term": "Nitrogen",
+    "unit": "gramsPerHectogram",
+    "cv_unit": "gramPerHectogram"
+  },
+  {
+    "id": "",
+    "clean_name": "carbon_percent",
+    "cv_term": "Carbon",
+    "unit": "gramsPerHectogram",
+    "cv_unit": "gramPerHectogram"
+  },
+  {
+    "id": "",
+    "clean_name": "sulfur_percent",
+    "cv_term": "Sulfur",
+    "unit": "gramsPerHectogram",
+    "cv_unit": "gramPerHectogram"
+  },
+  {
+    "id": "",
+    "clean_name": "phosphorus_percent",
+    "cv_term": "Phosphorus",
+    "unit": "gramsPerHectogram",
+    "cv_unit": "gramPerHectogram"
+  },
+  {
+    "id": "",
+    "clean_name": "potassium_percent",
+    "cv_term": "Potassium",
+    "unit": "gramsPerHectogram",
+    "cv_unit": "gramPerHectogram"
+  },
+  {
+    "id": "",
+    "clean_name": "magnesium_percent",
+    "cv_term": "Magnesium",
+    "unit": "gramsPerHectogram",
+    "cv_unit": "gramPerHectogram"
+  },
+  {
+    "id": "",
+    "clean_name": "calcium_percent",
+    "cv_term": "Calcium",
+    "unit": "gramsPerHectogram",
+    "cv_unit": "gramPerHectogram"
+  },
+  {
+    "id": "",
+    "clean_name": "sodium_percent",
+    "cv_term": "Sodium",
+    "unit": "gramsPerHectogram",
+    "cv_unit": "gramPerHectogram"
+  },
+  {
+    "id": "",
+    "clean_name": "boron_ppm",
+    "cv_term": "Boron",
+    "unit": "milligramsPerKilogram",
+    "cv_unit": "partPerMillion"
+  },
+  {
+    "id": "",
+    "clean_name": "zinc_ppm",
+    "cv_term": "Zinc",
+    "unit": "milligramsPerKilogram",
+    "cv_unit": "partPerMillion"
+  },
+  {
+    "id": "",
+    "clean_name": "manganese_ppm",
+    "cv_term": "Manganese",
+    "unit": "milligramsPerKilogram",
+    "cv_unit": "partPerMillion"
+  },
+  {
+    "id": "",
+    "clean_name": "iron_ppm",
+    "cv_term": "Iron",
+    "unit": "milligramsPerKilogram",
+    "cv_unit": "partPerMillion"
+  },
+  {
+    "id": "",
+    "clean_name": "copper_ppm",
+    "cv_term": "Copper",
+    "unit": "milligramsPerKilogram",
+    "cv_unit": "partPerMillion"
+  },
+  {
+    "id": "",
+    "clean_name": "aluminum_ppm",
+    "cv_term": "Aluminum",
+    "unit": "milligramsPerKilogram",
+    "cv_unit": "partPerMillion"
+  },
+  {
+    "id": "",
+    "clean_name": "phosphorus",
+    "cv_term": "Phosphorus",
+    "unit": "gramsPerHectogram",
+    "cv_unit": "gramPerHectogram"
+  },
+  {
+    "id": "",
+    "clean_name": "stover",
+    "cv_term": "cornStoverManagement",
+    "unit": "unknown",
+    "cv_unit": "unknown"
+  },
+  {
+    "id": "",
+    "clean_name": "decanoic_acid",
+    "cv_term": "decanoicAcid",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "x3_hydroxydecanoic_acid",
+    "cv_term": "x3HydroxydecanoicAcid",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "undecanoic_acid",
+    "cv_term": "undecanoicAcid",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "dodecanoic_acid",
+    "cv_term": "dodecanoicAcid",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "x1_dodecanol",
+    "cv_term": "x1Dodecanol",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "tridecanoic_acid",
+    "cv_term": "tridecanoicAcid",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "x2_hydroxytridecanoic_acid",
+    "cv_term": "x2HydroxytridecanoicAcid",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "x11_methyldodecanoic_acid",
+    "cv_term": "x11MethyldodecanoicAcid",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "tetradecanoic_acid",
+    "cv_term": "tetradecanoicAcid",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "x12_methyltridecanoic_acid",
+    "cv_term": "x12MethyltridecanoicAcid",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "x9z_9_tetradecenoic_acid",
+    "cv_term": "x9Z_9_TetradecanoicAcid",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "pentadecanoic_acid",
+    "cv_term": "pentadecanoicAcid",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "x12_methyltetradecanoic_acid",
+    "cv_term": "x12MethyltetradecanoicAcid",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "x13_methyltetradecanoic_acid",
+    "cv_term": "x13MethyltetradecanoicAcid",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "g_pentadecenoic_acid",
+    "cv_term": "gPentadecanoicAcid",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "x9z_9_pentadecenoic_acid",
+    "cv_term": "x9Z_9_PentadecanoicAcid",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "hexadecenoic_acid",
+    "cv_term": "hexadecanoicAcid",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "x10_methylhexadecanoic_acid",
+    "cv_term": "x10MethylhexadecanoicAcid",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "x2_hydroxyhexadecanoic_acid",
+    "cv_term": "x2HydroxyhexadecanoicAcid",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "x3_hydroxyhexadecanoic_acid",
+    "cv_term": "x3HydroxyhexadecanoicAcid",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "x14_methylpentadecanoic_acid",
+    "cv_term": "x14MethylpentadecanoicAcid",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "x1_hexadecanol",
+    "cv_term": "x1Hexadecanol",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "x2_hydroxy_x_hexadecenoic_acid",
+    "cv_term": "x2HydroxyXHexadecenoicAcid",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "x7_hexadecenoic_acid_dma",
+    "cv_term": "x7HexadecenoicAcid",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "g_hexadecenoic_acid",
+    "cv_term": "gHexadecanoicAcid",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "chamber_name",
+    "cv_term": "chamberName",
+    "unit": "unknown",
+    "cv_unit": "unknown"
+  },
+  {
+    "id": "",
+    "clean_name": "n2o_flux_g_ha_day",
+    "cv_term": "n2OFlux",
+    "unit": "gramsPerHectarePerDay",
+    "cv_unit": "gramPerHectarePerDay"
+  },
+  {
+    "id": "",
+    "clean_name": "co2_flux_kg_ha_day",
+    "cv_term": "co2Flux",
+    "unit": "kilogramsPerHectarePerDay",
+    "cv_unit": "gramPerHectarePerDay"
+  },
+  {
+    "id": "",
+    "clean_name": "ch4_flux_g_ha_day",
+    "cv_term": "cH4Flux",
+    "unit": "gramsPerHectarePerDay",
+    "cv_unit": "gramPerHectarePerDay"
+  },
+  {
+    "id": "",
+    "clean_name": "air_temperature_c",
+    "cv_term": "airTemperature",
+    "unit": "celsius",
+    "cv_unit": "degreeCelsius"
+  },
+  {
+    "id": "",
+    "clean_name": "chamber_height_cm",
+    "cv_term": "chamberHeight",
+    "unit": "centimeter",
+    "cv_unit": "centimeter"
+  },
+  {
+    "id": "",
+    "clean_name": "sample_id",
+    "cv_term": "sampleId",
+    "unit": "unknown",
+    "cv_unit": "unknown"
+  },
+  {
+    "id": "",
+    "clean_name": "n2o_n",
+    "cv_term": "n2OFlux",
+    "unit": "gramsPerHectarePerDay",
+    "cv_unit": "gramPerHectarePerDay"
+  },
+  {
+    "id": "",
+    "clean_name": "ch4_c",
+    "cv_term": "cH4Flux",
+    "unit": "gramsPerHectarePerDay",
+    "cv_unit": "gramPerHectarePerDay"
+  },
+  {
+    "id": "",
+    "clean_name": "co2_c",
+    "cv_term": "co2Flux",
+    "unit": "gramsPerHectarePerDay",
+    "cv_unit": "gramPerHectarePerDay"
+  },
+  {
+    "id": "",
+    "clean_name": "air_temperature",
+    "cv_term": "airTemperature",
+    "unit": "celcius",
+    "cv_unit": "degreeCelsius"
+  },
+  {
+    "id": "",
+    "clean_name": "chamber",
+    "cv_term": "chamber",
+    "unit": "unknown",
+    "cv_unit": "unknown"
+  },
+  {
+    "id": "",
+    "clean_name": "soil_temperature",
+    "cv_term": "soilTemperature",
+    "unit": "celcius",
+    "cv_unit": "degreeCelsius"
+  },
+  {
+    "id": "",
+    "clean_name": "h_hexadecenoic_acid",
+    "cv_term": "hHexadecanoicAcid",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "x11z_11_hexadecenoic_acid",
+    "cv_term": "x11Z_11_HexadecenoicAcid",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "x9z_9_hexadecenoic_acid",
+    "cv_term": "x9Z_9_HexadecenoicAcid",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "x9z_9_hexadecenol",
+    "cv_term": "x9Z_9_Hexadecenol",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "x7z_7_hexadecenoic_acid",
+    "cv_term": "x7Z_7_HexadecenoicAcid",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "heptadecanoic_acid",
+    "cv_term": "heptadecanoicAcid",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "x10_methylheptadecanoic_acid",
+    "cv_term": "x10MethylheptadecanoicAcid",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "comment",
+    "cv_term": "comments",
+    "unit": "unknown",
+    "cv_unit": "unknown"
+  },
+  {
+    "id": "",
+    "clean_name": "heptadecanol",
+    "cv_term": "heptadecanol",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "x14_methylhexadecanoic_acid",
+    "cv_term": "x14MethylhexadecanoicAcid",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "x9r_10s_methylene_hexadecanoic_acid",
+    "cv_term": "x9R_10S_MethyleneHexadecanoicAcid",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "x15_methylhexadecanoic_acid",
+    "cv_term": "x15MethylhexadecanoicAcid",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "x3_hydroxyheptadecanoic_acid",
+    "cv_term": "x3HydroxyheptadecanoicAcid",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "i_heptadecenoic_acid",
+    "cv_term": "iHeptadecenoicAcid",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "x10z_10_heptadecenoic_acid",
+    "cv_term": "x10Z_10_HeptadecenoicAcid",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "x9z_9_heptadecenoic_acid",
+    "cv_term": "x9Z_9_HeptadecenoicAcid",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "octadecanoic_acid",
+    "cv_term": "octadecanoicAcid",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "x10_methyloctadecanoic_acid",
+    "cv_term": "x10MethyloctadecanoicAcid",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "x2_hydroxyoctadecanoic_acid",
+    "cv_term": "x2HydroxyoctadecanoicAcid",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "xx_x_hydroxyoctacecenoic_acid",
+    "cv_term": "xX_X_HydroxyoctacecenoicAcid",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "x13z_13_octadecenoic_acid",
+    "cv_term": "x13Z_13_OctadecenoicAcid",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "x11z_11_octadecenoic_acid",
+    "cv_term": "x11Z_11_OctadecenoicAcid",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "x11_methyl_12e_octadecenoic_acid",
+    "cv_term": "x11Methyl_12E_OctadecenoicAcid",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "x9z_9_octadecenoic_acid",
+    "cv_term": "x9Z_9_OctadecenoicAcid",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "all_cis_9_12_octadecadienoic_acid",
+    "cv_term": "allCis_9_12_OctadecadienoicAcid",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "all_cis_9_12_15_octadecatrienoic_acid",
+    "cv_term": "allCis_9_12_15_OctadecatrienoicAcid",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "all_cis_6_9_12_octadecatrienoic_acid",
+    "cv_term": "allCis_6_9_12_OctadecatrienoicAcid",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "x1_nonadecanol",
+    "cv_term": "x1Nonadecanol",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "xr_xs_methylene_nonadecanoic_acid",
+    "cv_term": "xrXsMethyleneNonadecanoicAcid",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "x2_11_12_hydroxymethylene_nonadecanoic_acid",
+    "cv_term": "x2_11_12_HydroxymethyleneNonadecanoicAcid",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "x17_methylhexadecanoic_acid",
+    "cv_term": "x17MethylhexadecanoicAcid",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "x13z_13_nonadecenoic_acid",
+    "cv_term": "x13z_13_NonadecenoicAcid",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "x13z_13_nonadidecenoic_acid",
+    "cv_term": "x13z_13_NonadidecenoicAcid",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "icosanoic_acid",
+    "cv_term": "icosanoicAcid",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "x3_hydroxy_eicosanoic_acid",
+    "cv_term": "x3HydroxyEicosanoicAcid",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "x18_methylnonadecanoic_acid",
+    "cv_term": "x18MethylnonadecanoicAcid",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "x8z_11_icosenoic_acid",
+    "cv_term": "x8z_11_IcosenoicAcid",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "x11z_11_icosenoic_acid",
+    "cv_term": "x11z_11_IcosenoicAcid",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "x8z_11z_14z_8_11_14_icosatrienoic_acid",
+    "cv_term": "x8z_11z_14z_8_11_14_IcosatrienoicAcid",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "all_cis_11_14_icosadienoic_acid",
+    "cv_term": "allCis_11_14_IcosadienoicAcid",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "x5z_8z_11z_14z_5_8_11_14_icosatetraenoic_acid",
+    "cv_term": "x5z_8z_11z_14z_5_8_11_14_IcosatetraenoicAcid",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "x5z_8z_11z_14z_17z_5_8_11_14_17_icosapentaenoic_acid",
+    "cv_term": "x5z_8z_11z_14z_17z_5_8_11_14_17_IcosapentaenoicAcid",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "x2_hydroxyheneicosanoic_acid",
+    "cv_term": "x2HydroxyheneicosanoicAcid",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "x19_methylheneicosanoic_acid",
+    "cv_term": "x19MethylheneicosanoicAcid",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "docosanoic_acid",
+    "cv_term": "DocosanoicAcid",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "x15z_15_docosenoic_acid",
+    "cv_term": "x15z_15_DocosenoicAcid",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "x13z_13_docosenoic_acid",
+    "cv_term": "x13z_13_DocosenoicAcid",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "x7z_10z_13z_16z_19z_7_10_13_16_19_docosapentaneoic_acid",
+    "cv_term": "x7z_10z_13z_16z_19z_7_10_13_16_19_DocosapentaneoicAcid",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "c18_n_alcohol",
+    "cv_term": "c18NAlcohol",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "c20_n_alcohol",
+    "cv_term": "c20NAlcohol",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "c22_primary_alcohol",
+    "cv_term": "c22PrimaryAlcohol",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "c9_dicarboxylic_acid",
+    "cv_term": "c9DicarboxylicAcid",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "cis_910_epoxy_18_0",
+    "cv_term": "cis_910_Epoxy_18_0",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "phytol",
+    "cv_term": "phytol",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "subacic_c10_dicarox",
+    "cv_term": "subacic_C10_Dicarox",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "suberic_c8_dicarbox",
+    "cv_term": "suberic_C8_Dicarbox",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "unknown_11_097",
+    "cv_term": "unknown_11_097",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "unknown_16_286_d",
+    "cv_term": "unknown_16_286_D",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "unknown_22_267_c",
+    "cv_term": "unknown_22_267_C",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "unknown_22_374_d",
+    "cv_term": "unknown_22_374_D",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "unnamed_ecl_10_5_to_11_49",
+    "cv_term": "unnamedEcl_10_5_To_11_49",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "unnamed_ecl_11_5_to_12_49",
+    "cv_term": "unnamedEcl_11_5_To_12_49",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "unnamed_ecl_12_5_to_13_49",
+    "cv_term": "unnamedEcl_12_5_To_13_49",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "unnamed_ecl_13_5_to_14_49",
+    "cv_term": "unnamedEcl_13_5_To_14_49",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "unnamed_ecl_14_5_to_15_49",
+    "cv_term": "unnamedEcl_14_5_To_15_49",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "unnamed_ecl_15_5_to_16_49",
+    "cv_term": "unnamedEcl_15_5_To_16_49",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "unnamed_ecl_16_5_to_17_49",
+    "cv_term": "unnamedEcl_16_5_To_17_49",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "unnamed_ecl_17_5_to_18_49",
+    "cv_term": "unnamedEcl_17_5_To_18_49",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "unnamed_ecl_18_5_to_19_49",
+    "cv_term": "unnamedEcl_18_5_To_19_49",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "unnamed_ecl_19_5_to_20_49",
+    "cv_term": "unnamedEcl_19_5_To_20_49",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "unnamed_ecl_20_5_to_21_49",
+    "cv_term": "unnamedEcl_20_5_To_21_49",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "unnamed_ecl_21_5_to_22_49",
+    "cv_term": "unnamedEcl_21_5_To_22_49",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "unnamed_ecl_9_5_to_10_49",
+    "cv_term": "unnamedEcl_9_5_To_10_49",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "x11z_11_octadecenoic_acid_dma",
+    "cv_term": "x11z_11_OctadecenoicAcidDma",
+    "unit": "micromolePerGram",
+    "cv_unit": "micromolePerGram"
+  },
+  {
+    "id": "",
+    "clean_name": "n_fertilizer",
+    "cv_term": "nitrogenTreatment",
     "unit": "unknown",
     "cv_unit": "unknown"
   }

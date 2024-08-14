@@ -9,6 +9,8 @@ import odmx.data_model as odmx
 from odmx.log import vprint
 
 _child_sf_routine_cache = {}
+
+
 def child_sf_routine(con, timestamp, parent_sf_code, child_sf_code,
                      relation, specimen_collection_id):
     """
@@ -27,7 +29,7 @@ def child_sf_routine(con, timestamp, parent_sf_code, child_sf_code,
         return _child_sf_routine_cache[child_sf_code]
     # See if the child exists.
     child_sf = odmx.read_sampling_features_one_or_none(con,
-                                           sampling_feature_code=child_sf_code)
+                                                       sampling_feature_code=child_sf_code)
 
     # If we do not yet have a sampling feature with this code, we con it.
     if child_sf:
@@ -49,13 +51,16 @@ def child_sf_routine(con, timestamp, parent_sf_code, child_sf_code,
 
     # Write to the `specimen_collection_bridge` table.
     odmx.write_specimen_to_specimen_collection_bridge(con, child_sf_id,
-                                     specimen_collection_id)
+                                                      specimen_collection_id)
     return (child_sf_id, True)
 
+
 _fieldspecimen_child_sf_creation_cache = {}
+
+
 def fieldspecimen_child_sf_creation(con, timestamp, parent_sf_code,
                                     child_sf_code, relation, specimen_type_cv,
-                                    specimen_medium_cv,specimen_collection_id):
+                                    specimen_medium_cv, specimen_collection_id):
     """
     Check if a child sampling feature already exists, and if not, con it.
 
@@ -72,7 +77,7 @@ def fieldspecimen_child_sf_creation(con, timestamp, parent_sf_code,
         return _child_sf_routine_cache[child_sf_code]
     # See if the child exists.
     child_sf = odmx.read_sampling_features_one_or_none(con,
-                                           sampling_feature_code=child_sf_code)
+                                                       sampling_feature_code=child_sf_code)
 
     # If we do not yet have a sampling feature with this code, we con it.
     if child_sf:
@@ -88,13 +93,14 @@ def fieldspecimen_child_sf_creation(con, timestamp, parent_sf_code,
     # Write to the `specimens` table.
     is_field_specimen = True
     odmx.write_specimens(con, child_sf_id, specimen_type_cv, specimen_medium_cv,
-                    is_field_specimen, timestamp)
+                         is_field_specimen, timestamp)
     # Write to the `specimen_collection_bridge` table.
     odmx.write_specimen_to_specimen_collection_bridge(con, child_sf_id,
-                                     specimen_collection_id)
+                                                      specimen_collection_id)
     return (child_sf_id, True)
 
-def sampleaction_routine(con, analyst_name,affiliation_id, analysis_date,
+
+def sampleaction_routine(con, analyst_name, affiliation_id, analysis_date,
                          analysis_timezone, action_file_link):
     """
     @param con The connection object.
@@ -132,16 +138,16 @@ def sampleaction_routine(con, analyst_name,affiliation_id, analysis_date,
                                                        '%Y-%m-%dT%H:%M:%S')
 
     action_id = odmx.write_actions(
-            con,
-            action_type_cv=action_type_cv,
-            action_name=action_name,
-            action_description=action_description,
-            method_id=method_id,
-            begin_date_time=analysis_date,
-            begin_date_time_utc_offset=utc_offset,
-            end_date_time=analysis_date,
-            end_date_time_utc_offset=utc_offset,
-            action_file_link=action_file_link)
+        con,
+        action_type_cv=action_type_cv,
+        action_name=action_name,
+        action_description=action_description,
+        method_id=method_id,
+        begin_date_time=analysis_date,
+        begin_date_time_utc_offset=utc_offset,
+        end_date_time=analysis_date,
+        end_date_time_utc_offset=utc_offset,
+        action_file_link=action_file_link)
     # Write to the `action_by` table.
     is_action_lead = True
     role_description = None
@@ -157,10 +163,11 @@ def sampleaction_routine(con, analyst_name,affiliation_id, analysis_date,
 
     return action_id
 
-def write_sample_results(con, units_id,variable_id,
-                    data_entry_value, timestamp, timezone, depth, data_type,
-                    passed_result_id, feature_action_id,stddev,
-                    censor_code,quality_code):
+
+def write_sample_results(con, units_id, variable_id,
+                         data_entry_value, timestamp, timezone, depth, data_type,
+                         passed_result_id, feature_action_id, stddev,
+                         censor_code, quality_code, stderr=False):
     """
     Write the results of a sample to appropriate tables.
 
@@ -183,7 +190,7 @@ def write_sample_results(con, units_id,variable_id,
     # Define an internal function to help handle logical flow.
     def result_values(con, result_id, data_value, result_date_time,
                       result_date_time_utc_offset, aggregation_statistic_cv,
-                      censorcode,qualitycode):
+                      censorcode, qualitycode):
         """
         We do this bit at the end of this routine regardless of whether the
         data is an instrument reading or a standard deviation.
@@ -198,8 +205,8 @@ def write_sample_results(con, units_id,variable_id,
             mod_data_value = data_value
         # TODO Big to-do right here. Need to add in QA/QC.
         quality_code_cv = 'notAssessed'
-        if(quality_code!=''):
-            quality_code_cv=quality_code
+        if (quality_code != ''):
+            quality_code_cv = quality_code
         # Write to `measurement_result_values`.
         odmx.write_measurement_result_values(
             con, result_id, mod_data_value, result_date_time,
@@ -230,6 +237,8 @@ def write_sample_results(con, units_id,variable_id,
     # system around this concept.
     if stddev:
         aggregation_statistic_cv = 'standardDeviation'
+    elif stderr:
+        aggregation_statistic_cv = 'standardErrorOfMean'
     else:
         aggregation_statistic_cv = 'instrumentReading'
 
@@ -240,8 +249,13 @@ def write_sample_results(con, units_id,variable_id,
     if aggregation_statistic_cv == 'standardDeviation':
         result_values(con, passed_result_id, data_value, timestamp,
                       result_date_time_utc_offset, aggregation_statistic_cv,
-                      censor_code,quality_code)
+                      censor_code, quality_code)
 
+        return None
+    if aggregation_statistic_cv == 'standardErrorOfMean':
+        result_values(con, passed_result_id, data_value, timestamp,
+                      result_date_time_utc_offset, aggregation_statistic_cv,
+                      censor_code, quality_code)
         return None
     # If it's an instrument reading, we gather more details and write to
     # `results`, `measurement_results`, and `measurement_result_values`.
@@ -254,8 +268,8 @@ def write_sample_results(con, units_id,variable_id,
         # The units ID is similarly tricky.
         # processing_level_id.
         processing_level_id = odmx.read_processing_levels_one(
-                con,
-                definition='unknown').processing_level_id
+            con,
+            definition='unknown').processing_level_id
         # valid_date_time.
         valid_date_time = None
         # valid_date_time_utc_offset.
@@ -270,20 +284,20 @@ def write_sample_results(con, units_id,variable_id,
         assert variable_id is not None
         assert units_id is not None
         result_id = odmx.write_results(
-                con,
-                result_uuid=result_uuid,
-                feature_action_id=feature_action_id,
-                result_type_cv=result_type_cv,
-                variable_id=variable_id,
-                units_id=units_id,
-                processing_level_id=processing_level_id,
-                result_date_time=timestamp,
-                result_date_time_utc_offset=result_date_time_utc_offset,
-                valid_date_time=valid_date_time,
-                valid_date_time_utc_offset=valid_date_time_utc_offset,
-                status_cv=status_cv,
-                value_count=value_count,
-                no_data_value=no_data_value)
+            con,
+            result_uuid=result_uuid,
+            feature_action_id=feature_action_id,
+            result_type_cv=result_type_cv,
+            variable_id=variable_id,
+            units_id=units_id,
+            processing_level_id=processing_level_id,
+            result_date_time=timestamp,
+            result_date_time_utc_offset=result_date_time_utc_offset,
+            valid_date_time=valid_date_time,
+            valid_date_time_utc_offset=valid_date_time_utc_offset,
+            status_cv=status_cv,
+            value_count=value_count,
+            no_data_value=no_data_value)
 
         # Move on to the `measurement_results`.
         # x_location.
@@ -310,29 +324,29 @@ def write_sample_results(con, units_id,variable_id,
         time_aggregation_interval_units_id = None
         # Write to `measurement_results`.
         odmx.write_measurement_results(
-                con,
-                result_id = result_id,
-                x_location = x_location,
-                x_location_units_id = x_location_units_id,
-                y_location = y_location,
-                y_location_units_id = y_location_units_id,
-                z_location = z_location,
-                z_location_units_id = z_location_units_id,
-                spatial_reference_id = spatial_reference_id,
-                time_aggregation_interval = time_aggregation_interval,
-                time_aggregation_interval_units_id = \
-                    time_aggregation_interval_units_id)
+            con,
+            result_id=result_id,
+            x_location=x_location,
+            x_location_units_id=x_location_units_id,
+            y_location=y_location,
+            y_location_units_id=y_location_units_id,
+            z_location=z_location,
+            z_location_units_id=z_location_units_id,
+            spatial_reference_id=spatial_reference_id,
+            time_aggregation_interval=time_aggregation_interval,
+            time_aggregation_interval_units_id=time_aggregation_interval_units_id)
 
         # Write to `measurement_result_values`.
         result_values(con, result_id, data_value, timestamp,
                       result_date_time_utc_offset, aggregation_statistic_cv,
-                      censor_code,quality_code)
+                      censor_code, quality_code)
 
         return result_id
     # Should never get here, but including it as a failsafe.
     raise ValueError("The aggregation_statistic_cv is neither an instrument"
-                    " reading nor a standard deviation. This should be"
-                    " impossible.")
+                     " reading nor a standard deviation or a standard error. This should be"
+                     " impossible.")
+
 
 def feature_action(odmx_db_con, action_id, subspecimen_sf_id):
     # Now write to `feature_actions`, `results`, `measurement_results`,
@@ -344,6 +358,7 @@ def feature_action(odmx_db_con, action_id, subspecimen_sf_id):
         related_features_relation_id
     )
     return feature_action_id
+
 
 def write_child_sampling_feature(con, child_sampling_feature_code,
                                  parent_sampling_feature_code, relation):

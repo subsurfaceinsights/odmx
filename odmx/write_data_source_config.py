@@ -5,6 +5,8 @@ import json
 import argparse
 from odmx.support.file_utils import open_csv
 
+# TODO: don't create a subdirectory if there is only one file in the directory
+
 
 def setup_csv_data_source_config_json(csv_path):
     """
@@ -15,7 +17,10 @@ def setup_csv_data_source_config_json(csv_path):
     # TODO write args as the header
     args = {'comment': '#'}
     df = open_csv(csv_path, args)
-    if "yield" in csv_path.lower():
+    if "microbes" in csv_path.lower():
+        data_file_type = "microbes"
+        time_col = "sample_date"
+    elif "yield" in csv_path.lower():
         data_file_type = "yield"
         if "residual_stover_biomass_(2015_to_2021)" in csv_path.lower():
             time_col = "sample_date"
@@ -27,6 +32,27 @@ def setup_csv_data_source_config_json(csv_path):
             data_file_type = "soil-chemical"
         elif "phys" in csv_path.lower():
             data_file_type = "soil-physical"
+    elif "plant" in csv_path.lower():
+        if "tissue" in csv_path.lower():
+            data_file_type = 'tissue'
+        elif "root" in csv_path.lower():
+            data_file_type = 'root'
+        else:
+            data_file_type = 'plant'
+        time_col = 'sample_date'
+        if "poplar_stem_diameter_and_biomass_measurements" in csv_path.lower():
+            time_col = 'date'
+        elif "leaf_area_index" in csv_path.lower():
+            time_col = 'sample_datetime'
+        elif "feedstock_quality" in csv_path.lower():
+            time_col = 'date'
+
+    elif "fluxes" in csv_path.lower():
+        data_file_type = 'flux'
+        if "icos" in csv_path.lower():
+            time_col = 'datetime'
+        else:
+            time_col = 'sample_date'
 
     cols = []
     for col in df.columns.tolist():

@@ -135,28 +135,60 @@ class GlbrcDataSource(DataSource):
 
                 # Correct the formatting of time column - we need %H:%M:%S'
                 try:
+                    # Attempt to parse the timestamp with automatic format detection
                     part_df['timestamp'] = pd.to_datetime(
-                        part_df[time_col], format='%Y-%m-%d %H:%M:%S')
+                        part_df[time_col], errors='raise')
+                    part_df['timestamp'] = part_df['timestamp'].dt.tz_localize(
+                        None)
                 except ValueError:
                     try:
-                        # Attempt to parse the timestamp with the format '%Y-%m-%d'
+                        # Attempt to parse the timestamp with the format '%Y-%m-%d %H:%M:%S'
                         part_df['timestamp'] = pd.to_datetime(
-                            part_df[time_col], format='%Y-%m-%d')
-                        # Add default time '00:00:00' to the parsed date
-                        part_df['timestamp'] += pd.to_timedelta(0)
-                        print(part_df['timestamp'][0])
-                        # Reformat the timestamp column to '%Y-%m-%d %H:%M:%S'
-                        # part_df['timestamp'] = part_df['timestamp'].dt.strftime(
-                        #   '%Y-%m-%d %H:%M:%S')
-                        # Parse again with the new format
-                        # part_df['timestamp'] = pd.to_datetime(
-                        #    part_df['timestamp'], format='%Y-%m-%d %H:%M:%S')
-                    except ValueError as e:
-                        raise ValueError(
-                            f"Failed to parse datetime column '{time_col}' "
-                            f"in file '{file}'.") from e
+                            part_df[time_col], format='%Y-%m-%d %H:%M:%S', errors='raise')
+                    except ValueError:
+                        try:
+                            # Attempt to parse the timestamp with the format '%Y-%m-%d'
+                            part_df['timestamp'] = pd.to_datetime(
+                                part_df[time_col], format='%Y-%m-%d', errors='raise')
+                            # Add default time '00:00:00' to the parsed date
+                            part_df['timestamp'] = part_df['timestamp'] + \
+                                pd.to_timedelta('00:00:00')
+                        except ValueError as e:
+                            raise ValueError(
+                                f"Failed to parse datetime column '{time_col}' in file '{file}'.") from e
 
+                print(part_df['timestamp'][0])
+                print(part_df['timestamp'].dtype)
+
+                # Ensure the 'timestamp' column is in datetime format
                 assert part_df['timestamp'].dtype == 'datetime64[ns]'
+                '''try:
+                        # Attempt to parse the timestamp with automatic format detection
+                    part_df['timestamp'] = pd.to_datetime(part_df[time_col])
+                except ValueError:
+                    try:
+                        part_df['timestamp'] = pd.to_datetime(
+                            part_df[time_col], format='%Y-%m-%d %H:%M:%S')
+                    except ValueError:
+                        try:
+                            # Attempt to parse the timestamp with the format '%Y-%m-%d'
+                            part_df['timestamp'] = pd.to_datetime(
+                                part_df[time_col], format='%Y-%m-%d')
+                            # Add default time '00:00:00' to the parsed date
+                            part_df['timestamp'] += pd.to_timedelta(0)
+                            print(part_df['timestamp'][0])
+                            # Reformat the timestamp column to '%Y-%m-%d %H:%M:%S'
+                            # part_df['timestamp'] = part_df['timestamp'].dt.strftime(
+                            #   '%Y-%m-%d %H:%M:%S')
+                            # Parse again with the new format
+                            # part_df['timestamp'] = pd.to_datetime(
+                            #    part_df['timestamp'], format='%Y-%m-%d %H:%M:%S')
+                        except ValueError as e:
+                            raise ValueError(
+                                f"Failed to parse datetime column '{time_col}' "
+                                f"in file '{file}'.") from e
+
+                    assert part_df['timestamp'].dtype == 'datetime64[ns]' '''
 
                 part_df = part_df.dropna(subset=['timestamp'])
 
@@ -164,8 +196,9 @@ class GlbrcDataSource(DataSource):
                 dfs.append(part_df)
 
             # Combine all dfs, drop duplicates, and sort by timestamp
-            # TODO: Add logic here to prevent duplicated measurements
             # same plot on the same data from being ingested
+            # We do not acutally drop duplicates because we can have multiple
+            # measurements from the same place, at the same time
             df = pd.concat(dfs, ignore_index=True)  # .drop_duplicates()
             df.sort_values(by='timestamp', inplace=True)
 
@@ -366,7 +399,7 @@ class GlbrcDataSource(DataSource):
             data_df = db.query_df(feeder_db_con, feeder_table)
 
             # Drop all data from Arlington sites
-            data_df = data_df[~data_df['site'].str.contains('Arlington')]
+            # data_df = data_df[~data_df['site'].str.contains('Arlington')]
 
             # We can drop variables in order to facilitate testing
             # List of variables to keep
@@ -375,14 +408,15 @@ class GlbrcDataSource(DataSource):
             #             "yield_dry_matter_mg_ha", "yield_dry_matter_tons_ac",
             #             "dry_matter_yield_Mg_ha", "dry_matter_yield_ton_acre",
             #             "biomass_g", "dry_matter_yield_Kg_ha", "year"]
-            variables = []
+            # Drop calculated variables from the dataframe
+            variables = ["c_g_m2", "n_g_m2"]
 
-            if len(variables) > 0:
+            if variables:
+                # Filter out columns that are in the variables list
+                feeder_table_columns = [
+                    col for col in feeder_table_columns if col not in variables]
 
-                feeder_table_columns = feeder_table_columns[:2] + [
-                    col for col in feeder_table_columns[2:] if col in variables]
-
-                # Drop columns that are not in the columns_to_keep list
+                # Drop columns from data_df that are in the variables list
                 data_df = data_df[feeder_table_columns]
 
             assert feeder_table_columns == data_df.columns.tolist()
@@ -392,15 +426,22 @@ class GlbrcDataSource(DataSource):
 
             # parameter_units = data_df.iloc[0]
 
-            data_df['timestamp'] = pd.to_datetime(
-                data_df['timestamp'], format='%Y-%m-%d')
-            # data_df['timestamp'] += pd.to_timedelta(0)
-            data_df['timestamp'] = data_df['timestamp'].dt.strftime(
-                '%Y-%m-%d %H:%M:%S')
+            try:
+                data_df['timestamp'] = pd.to_datetime(
+                    data_df['timestamp'], format='%Y-%m-%d %H:%M:%S')
+                data_df['timestamp'] = data_df['timestamp'].dt.strftime(
+                    '%Y-%m-%d %H:%M:%S')
+            except ValueError:
+                data_df['timestamp'] = pd.to_datetime(
+                    data_df['timestamp'], format='%Y-%m-%d')
+                # data_df['timestamp'] += pd.to_timedelta(0)
+                data_df['timestamp'] = data_df['timestamp'].dt.strftime(
+                    '%Y-%m-%d %H:%M:%S')
 
-            # In some instances the feeder_table has an extra 0 that needs to be removed
-            data_df['treatment'] = data_df['treatment'].apply(
-                lambda x: re.sub(r'(G)0(\d)', r'\1\2', x))
+            if 'treatment' in data_df.columns:
+                # In some instances the feeder_table has an extra 0 that needs to be removed
+                data_df['treatment'] = data_df['treatment'].apply(
+                    lambda x: re.sub(r'(G)0(\d)', r'\1\2', x))
 
             # we iterate over tables from 1 (first one with data) to the last
             # one we use the timestamp to create a sample name, which will be
@@ -422,9 +463,36 @@ class GlbrcDataSource(DataSource):
                 # prevent ingesting duplicate measurements into ODMX
 
                 # Define a sampling feature code w/ columns shared by all data sources
-                site = data_df.iloc[index]['site']
-                treatment = data_df.iloc[index]['treatment']
-                replicate = data_df.iloc[index]['replicate']
+                if feeder_table in ['feeder_leaf_area_index_(lai)_(2009_to_2017)_',
+                                    'feeder_species_transect_plant_heights_(2018_to_present)_',
+                                    'feeder_phenology_2010_2012_(2010_to_2012)_',
+                                    'feeder_phenology_2013_2017_(2013_to_2017)_',
+                                    'feeder_total_carbon_and_nitrogen_content_at_peak_biomass_(2008_',
+                                    'feeder_poplar_damage_assessment_(2019)_',
+                                    'feeder_species_transect_plant_heights_(2018_to_present)_',
+                                    'feeder_n2o,_co2,_and_ch4_by_icos_and_tga_(2021_to_present))_',
+                                    'feeder_soil_temperature_at_gas_sampling_(2008_to_2016)_']:
+
+                    site = 'KBS'
+                else:
+                    try:
+                        site = data_df.iloc[index]['site']
+                    except ValueError:
+                        site = data_df.iloc[index]['Site']
+
+                if feeder_table == 'feeder_poplar_damage_assessment_(2019)_':
+                    treatment = str(data_df.iloc[index]['plot'])[:2]
+                    replicate = str(data_df.iloc[index]['plot'])[-2:]
+                elif feeder_table == 'feeder_poplar_stand_counts_(2012_to_2014)_':
+                    treatment = 'G8'
+                    replicate = data_df.iloc[index]['replicate']
+                elif feeder_table == 'feeder_n2o,_co2,_and_ch4_by_icos_and_tga_(2021_to_present))_':
+                    treatment = str(data_df.iloc[index]['chamber_name'])[
+                        :2].capitalize()
+                    replicate = replicate = f'R{str(data_df.iloc[index]["chamber_name"])[-1:]}'
+                else:
+                    treatment = data_df.iloc[index]['treatment']
+                    replicate = data_df.iloc[index]['replicate']
 
                 # Logic to map site strings to sampling feature code
                 if 'KBS' in str(site):
@@ -437,9 +505,11 @@ class GlbrcDataSource(DataSource):
                 site_code = (
                     f'{site}-{treatment}-{replicate}').replace(' ', '')
 
+                # Also note that in root biomass the biomass is averaged accross stations at KBS
+                # and measured per station at Arlington
                 # Add in additional details that may or may not be contained wihtin the feeder_table
                 plot_section, source_column = get_column_value(
-                    data_df, index, 'main_or_microplot', 'windrow', 'field_section', 'station')
+                    data_df, index, 'main_or_microplot', 'windrow', 'field_section', 'station', 'transect', 'row', 'direction', 'nitrogen_fertilization', 'transect_position', 'sample_id')
                 # Determine subplot based on source_column
                 if source_column == 'field_section':
                     subplot, _ = get_column_value(
@@ -448,28 +518,58 @@ class GlbrcDataSource(DataSource):
                     subplot = None
                 else:
                     subplot, _ = get_column_value(
-                        data_df, index, 'subplot', 'field_section', 'location_no', 'station')
+                        data_df, index, 'subplot', 'field_section', 'location_no', 'station', 'line')
 
                 campaign, _ = get_column_value(
                     data_df, index, 'campaign')
                 depth_columns = [
-                    'depth', 'depth_cm', 'top_depth', 'horizon_top_depth', 'soil_depth_cm']
+                    'depth', 'depth_cm', 'top_depth', 'horizon_top_depth', 'soil_depth_cm', 'top_depth_cm']
                 depth, depth_col = get_column_value(
                     data_df, index, *depth_columns)
+                fraction, _ = get_column_value(
+                    data_df, index, 'fraction')
+                species, _ = get_column_value(
+                    data_df, index, 'species', 'spcies')
+                tree_id, _ = get_column_value(
+                    data_df, index, 'tree_id')
+                plant_id, _ = get_column_value(
+                    data_df, index, 'plant_id')
+                location, _ = get_column_value(
+                    data_df, index, 'location')
+                material, _ = get_column_value(
+                    data_df, index, 'material')
+                method, _ = get_column_value(
+                    data_df, index, 'method')
+                microplot, _ = get_column_value(
+                    data_df, index, 'microplot')
 
                 # Build collected_sf_code based on the presence of values
                 parts = [sampling_feature_code,
                          sample_date, site_code]  # feeder_table,
 
-                if plot_section is not None:
-                    # print(f'plot_col: {plot_col}: {plot_section}')
+                if plot_section is not None and pd.notna(plot_section):
                     parts.append(plot_section)
-                if subplot is not None:
-                    # print(f'sub_col: {sub_col}: {subplot}')
+                if subplot is not None and pd.notna(subplot):
                     parts.append(subplot)
-                if campaign is not None:
+                if microplot is not None and pd.notna(microplot):
+                    parts.append(microplot)
+                if campaign is not None and pd.notna(campaign):
                     parts.append(campaign)
-                if depth is not None:
+                if species is not None and pd.notna(species):
+                    parts.append(species)
+                if fraction is not None and pd.notna(fraction):
+                    parts.append(fraction)
+                if tree_id is not None and pd.notna(tree_id):
+                    parts.append(tree_id)
+                if plant_id is not None and pd.notna(plant_id):
+                    parts.append(plant_id)
+                if location is not None and pd.notna(location):
+                    parts.append(location)
+                if material is not None and pd.notna(material):
+                    parts.append(material)
+                if method is not None and pd.notna(method):
+                    parts.append(method)
+                if depth is not None and pd.notna(depth):
                     # print(f'depth_col: {depth_col}: {depth}')
                     parts.append(depth)
 
@@ -478,21 +578,38 @@ class GlbrcDataSource(DataSource):
                 # measurements exist per location without a way to differentiate them
                 # We need to assign these measurements an additional identifier so that we
                 # can ingest them into ODMX. Here we use their row index.
-                if feeder_table == 'feeder_soil_water_chemistry_(2009_to_2021)_':
+                if feeder_table in ['feeder_soil_water_chemistry_(2009_to_2021)_',
+                                    'feeder_species_transect_plant_heights_(2018_to_present)_',
+                                    'feeder_poplar_stem_diameter_and_biomass_measurements_(2008_to_p']:
                     collected_sf_code = f'{collected_sf_code}_{index}'
 
-                print(f'collected_sf_code: {collected_sf_code}')
-
-                # TODO: this is breaking on non-unique sampling feature id's
-                # Need to update the collected_sf_code to handle variable soil depth
+                # print(f'collected_sf_code: {collected_sf_code}')
 
                 # fix the loop without causing the code to repeat itself
                 relation = 'wasCollectedAt'
                 # we now have the name of the sample and the relation
                 # we will now create the sample in our ODMX database
                 # within this call we also create the entry in specimens
-                specimen_type_cv = 'grab'
-                specimen_medium_cv = 'plant'
+                # Map speciment type and medium to the proper definition
+                if 'soil' in feeder_table:
+                    specimen_medium_cv = 'soil'
+                    specimen_type_cv = 'grab'  # biota
+                elif 'root' in feeder_table:
+                    specimen_medium_cv = 'root'
+                    specimen_type_cv = 'biota'
+                elif 'tissue' in feeder_table:
+                    specimen_medium_cv = 'tissue'
+                    specimen_type_cv = 'biota'
+                elif 'icos' in feeder_table:
+                    specimen_medium_cv = 'gas'
+                    specimen_type_cv = 'automated'
+                elif 'gas' in feeder_table:
+                    specimen_medium_cv = 'gas'
+                    specimen_type_cv = 'automated'
+                else:
+                    specimen_medium_cv = 'plant'
+                    specimen_type_cv = 'biota'
+
                 specimen_sf_id, new_specimen = fieldspecimen_child_sf_creation(
                     odmx_db_con, timestamp, sampling_feature_code,
                     collected_sf_code, relation, specimen_type_cv,
@@ -509,6 +626,8 @@ class GlbrcDataSource(DataSource):
                     # Now we run through the entries in the row.
                     # the first value is the index and the second is the timestamp
                     # (which we already read), which is why we start at 2
+                    # TODO: Make the last print statement a need to add with reference
+                    # to each feeder table
                     need_to_add = []
 
                     for rowind in range(2, data_df_columns):
@@ -537,7 +656,60 @@ class GlbrcDataSource(DataSource):
                                 odmx_unit = odmx.read_cv_units_one_or_none(
                                     odmx_db_con, term=cv_unit)
                                 assert odmx_unit is not None
+
                                 units_id = odmx_unit.units_id
+                                # Check if we are dealing with a yield variable
+                                if 'yield' in clean_name:
+                                    # Check if that variable has the correct units
+                                    if str(odmx_unit.term) != 'megagramPerHectare':
+                                        rowvalue = float(rowvalue)
+                                        if str(odmx_unit.term) == 'kilogramPerHectare':
+                                            # Convert kilograms per hectare to megagrams per hectare
+                                            rowvalue = (rowvalue * 0.001)
+                                            units_id = 1214
+
+                                        elif str(odmx_unit.term) == 'tonPerAcre':
+                                            # Convert tons per acre to megagrams per hectare
+                                            rowvalue = ((
+                                                rowvalue * 0.907185) / 2.471)
+                                            units_id = 1214
+
+                                        elif str(odmx_unit.term) == 'bushelsPerAcre':
+                                            # Determine the conversion factor based on the crop type
+                                            crop = str(
+                                                data_df.iloc[index]['crop'])
+                                            if crop == 'corn':
+                                                conv_factor = 25.4012
+                                            elif crop == 'canola':
+                                                conv_factor = 22.25
+                                            elif crop == 'soybean':
+                                                conv_factor = 27.2155
+                                            else:
+                                                raise ValueError(
+                                                    f"Unknown crop type: {crop}")
+
+                                            # Convert bushels per acre to megagrams per hectare
+                                            rowvalue = (
+                                                ((rowvalue * conv_factor) * 0.001) / 2.471)
+                                            units_id = 1214
+
+                                        else:
+                                            raise ValueError(
+                                                f"Unknown unit: {odmx_unit}")
+
+                                    assert units_id == 1214
+
+                                elif feeder_table == 'feeder_soil_moisture_at_gas_sampling_(2008_to_present)':
+                                    if clean_name == 'moisture':
+                                        rowvalue = float(rowvalue)
+                                        rowvalue = (rowvalue * 100)
+                                        units_id = 1213
+
+                                elif clean_name == 'co2_flux_kg_ha_day':
+                                    rowvalue = float(rowvalue)
+                                    rowvalue = (rowvalue * 1000)
+                                    units_id = 1224
+
                                 odmx_variable = \
                                     odmx.read_variables_one_or_none(
                                         odmx_db_con, variable_term=odmx_cv_term)
@@ -559,11 +731,22 @@ class GlbrcDataSource(DataSource):
                                     # now we write the results
                                     # Set placeholder variables for the write sample
                                     # results routine
-                                    timezone = 'est'
+                                    timezone = 'UTC'
                                     depth_m = None
                                     passed_result_id = None
                                     data_type = 'na'
-                                    stddev = False
+                                    # Add in standard error and standard deviation if need be
+                                    if '_sd' in clean_name:
+                                        stddev = True
+                                        passed_result_id = result_id
+                                    else:
+                                        stddev = False
+
+                                    if clean_name == 'sel' or clean_name == 'sem':
+                                        stderr = True
+                                        passed_result_id = result_id
+                                    else:
+                                        stderr = False
                                     # result_id  tells us the id in the results table
                                     # so we can add other values
                                     censor_code = ''
@@ -573,7 +756,7 @@ class GlbrcDataSource(DataSource):
                                                                      timestamp, timezone, depth_m,
                                                                      data_type, passed_result_id,
                                                                      feature_action_id, stddev,
-                                                                     censor_code, quality_code)
+                                                                     censor_code, quality_code, stderr)
                                     print(
                                         f'Writing {rowvalue} to sample results as result_id {result_id}')
                             else:
