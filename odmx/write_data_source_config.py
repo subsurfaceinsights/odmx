@@ -13,6 +13,7 @@ def setup_csv_data_source_config_json(csv_path):
     Initialize data_source_config.json with data column names from csv.
     @param csv_path Path to the csv file to write the config json for.
     """
+    data_file_type = None
     directory = os.path.dirname(csv_path)
     # TODO write args as the header
     args = {'comment': '#'}

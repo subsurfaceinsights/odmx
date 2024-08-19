@@ -1,0 +1,149 @@
+[
+  {
+    "id": "",
+    "clean_name": "TIMESTAMP",
+    "cv_term": "timestamp",
+    "unit": "unknown",
+    "cv_unit": "unknown"
+  },
+  {
+    "id": "",
+    "clean_name": "RECORD",
+    "cv_term": "record",
+    "unit": "unknown",
+    "cv_unit": "unknown"
+  },
+  {
+    "id": "",
+    "clean_name": "PTemp_C",
+    "cv_term": "referenceTemperature",
+    "unit": "Deg C",
+    "cv_unit": "degreeCelsius"
+  },
+  {
+    "id": "",
+    "clean_name": "BattV",
+    "cv_term": "batteryVoltage",
+    "unit": "Deg C",
+    "cv_unit": "degreeCelsius"
+  },
+  {
+    "id": "",
+    "clean_name": "LowTempWell_10cm",
+    "cv_term": "soilTemperature",
+    "unit": "Deg C",
+    "cv_unit": "degreeCelsius"
+  },
+  {
+    "id": "",
+    "clean_name": "LowTempWell_20cm",
+    "cv_term": "soilTemperature",
+    "unit": "Deg C",
+    "cv_unit": "degreeCelsius"
+  },
+  {
+    "id": "",
+    "clean_name": "LowTempWell_30cm",
+    "cv_term": "soilTemperature",
+    "unit": "Deg C",
+    "cv_unit": "degreeCelsius"
+  },
+  {
+    "id": "",
+    "clean_name": "LowTempWell_40cm",
+    "cv_term": "soilTemperature",
+    "unit": "Deg C",
+    "cv_unit": "degreeCelsius"
+  },
+  {
+    "id": "",
+    "clean_name": "LowTempWell_60cm",
+    "cv_term": "soilTemperature",
+    "unit": "Deg C",
+    "cv_unit": "degreeCelsius"
+  },
+  {
+    "id": "",
+    "clean_name": "LowTempWell_75cm",
+    "cv_term": "soilTemperature",
+    "unit": "Deg C",
+    "cv_unit": "degreeCelsius"
+  },
+  {
+    "id": "",
+    "clean_name": "HighTempWell_10cm",
+    "cv_term": "soilTemperature",
+    "unit": "Deg C",
+    "cv_unit": "degreeCelsius"
+  },
+  {
+    "id": "",
+    "clean_name": "HighTempWell_20cm",
+    "cv_term": "soilTemperature",
+    "unit": "Deg C",
+    "cv_unit": "degreeCelsius"
+  },
+  {
+    "id": "",
+    "clean_name": "HighTempWell_30cm",
+    "cv_term": "soilTemperature",
+    "unit": "Deg C",
+    "cv_unit": "degreeCelsius"
+  },
+  {
+    "id": "",
+    "clean_name": "HighTempWell_40cm",
+    "cv_term": "soilTemperature",
+    "unit": "Deg C",
+    "cv_unit": "degreeCelsius"
+  },
+  {
+    "id": "",
+    "clean_name": "HighTempWell_60cm",
+    "cv_term": "soilTemperature",
+    "unit": "Deg C",
+    "cv_unit": "degreeCelsius"
+  },
+  {
+    "id": "",
+    "clean_name": "HighTempWell_75cm",
+    "cv_term": "soilTemperature",
+    "unit": "Deg C",
+    "cv_unit": "degreeCelsius"
+  },
+  {
+    "id": "",
+    "clean_name": "SolFluxDen_2m_W",
+    "cv_term": "soilTemperature",
+    "unit": "W/m^2",
+    "cv_unit": "wattPerSquareMeter"
+  },
+  {
+    "id": "",
+    "clean_name": "Rain_2m_mm_Tot",
+    "cv_term": "rainPrecipitationHour",
+    "unit": "mm",
+    "cv_unit": "millimeter"
+  },
+  {
+    "id": "",
+    "clean_name": "Rain_2m_mm_Tot",
+    "cv_term": "rainPrecipitationHour",
+    "unit": "mm",
+    "cv_unit": "millimeter"
+  },
+  {
+    "id": "",
+    "clean_name": "Strikes_2m_Tot",
+    "cv_term": "lightningActivity",
+    "unit": "count",
+    "cv_unit": "number"
+  },
+  {
+    "id": "",
+    "clean_name": "AveStrikeDist_2m_km_Avg",
+    "cv_term": "lightningActivity",
+    "unit": "count",
+    "cv_unit": "number"
+  }
+]
