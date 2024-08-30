@@ -46,6 +46,9 @@ def setup_csv_data_source_config_json(csv_path):
             time_col = 'sample_datetime'
         elif "feedstock_quality" in csv_path.lower():
             time_col = 'date'
+    elif "weather" in csv_path.lower():
+        time_col = 'date'
+        data_file_type = 'weather'
 
     elif "fluxes" in csv_path.lower():
         data_file_type = 'flux'

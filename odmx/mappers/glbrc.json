@@ -2511,5 +2511,68 @@
     "cv_term": "nitrogenTreatment",
     "unit": "unknown",
     "cv_unit": "unknown"
+  },
+  {
+    "id": "",
+    "clean_name": "date",
+    "cv_term": "date",
+    "unit": "unknown",
+    "cv_unit": "unknown"
+  },
+  {
+    "id": "",
+    "clean_name": "precipitation",
+    "cv_term": "rainPrecipitationDay",
+    "unit": "millimeter",
+    "cv_unit": "millimeter"
+  },
+  {
+    "id": "",
+    "clean_name": "flag_precip",
+    "cv_term": "flagPrecipitation",
+    "unit": "unknown",
+    "cv_unit": "unknown"
+  },
+  {
+    "id": "",
+    "clean_name": "air_temp_mean",
+    "cv_term": "airTemperatureDailyAverage",
+    "unit": "celcius",
+    "cv_unit": "degreeCelsius"
+  },
+  {
+    "id": "",
+    "clean_name": "air_temp_min",
+    "cv_term": "airTemperatureDailyMinimum",
+    "unit": "celcius",
+    "cv_unit": "degreeCelsius"
+  },
+  {
+    "id": "",
+    "clean_name": "air_temp_max",
+    "cv_term": "airTemperatureDailyMaximum",
+    "unit": "celcius",
+    "cv_unit": "degreeCelsius"
+  },
+  {
+    "id": "",
+    "clean_name": "flag_air_temp_mean",
+    "cv_term": "flagAirTemperatureDailyAverage",
+    "unit": "unknown",
+    "cv_unit": "unknown"
+  },
+  {
+    "id": "",
+    "clean_name": "flag_air_temp_max",
+    "cv_term": "flagAirTemperatureDailyMaximum",
+    "unit": "unknown",
+    "cv_unit": "unknown"
+  },
+  {
+    "id": "",
+    "clean_name": "flag_air_temp_min",
+    "cv_term": "flagAirTemperatureDailyMinimum",
+    "unit": "unknown",
+    "cv_unit": "unknown"
   }
 ]

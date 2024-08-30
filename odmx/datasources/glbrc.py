@@ -226,7 +226,7 @@ class GlbrcDataSource(DataSource):
                 df['year'] = df['year'].astype(str)
 
             # Remove leading/trailing spaces
-            # df = df.applymap(lambda x: x.strip() if isinstance(x, str) else x)
+            df = df.applymap(lambda x: x.strip() if isinstance(x, str) else x)
 
             # TODO: Identify all other instances where we need to map to nan
             if 'wi_plot_id' in df.columns:
@@ -348,6 +348,9 @@ class GlbrcDataSource(DataSource):
 
         # Ensure that we only process each feeder_table once
         processed_feeder_tables = set()
+        # NOTE: Skipping the trace gas data until we get an update on it's location from Sven
+        processed_feeder_tables.add(
+            'feeder_n2o,_co2,_and_ch4_by_icos_and_tga_(2021_to_present))_')
 
         print('iterating through feeder tables')
         for feeder_table in feeder_tables:
@@ -421,6 +424,24 @@ class GlbrcDataSource(DataSource):
 
             assert feeder_table_columns == data_df.columns.tolist()
 
+            # There are some rows in the GLBRC data that are not pertaining to our experiment
+            # Let's be sure not to process those rows
+            treatments_to_drop = ['aux', 'SW', 'FT',
+                                  'GT', 'BT', 'CF', 'DF', 'micro']
+
+            # Check if 'treatment' column exists and filter rows if it does
+            if 'treatment' in data_df.columns:
+                # Create a regex pattern with the treatments to drop
+                pattern = '|'.join(treatments_to_drop)
+                data_df = data_df[~data_df['treatment'].str.contains(
+                    pattern, case=False, na=False)]
+
+            if 'replicate' in data_df.columns:
+                # Create a regex pattern with the treatments to drop
+                pattern = '|'.join(treatments_to_drop)
+                data_df = data_df[~data_df['replicate'].str.contains(
+                    pattern, case=False, na=False)]
+
             data_df_rows = data_df.shape[0]
             data_df_columns = data_df.shape[1]
 
@@ -462,6 +483,11 @@ class GlbrcDataSource(DataSource):
                 # can be duplicated accross feeder tables, and we use child sf to
                 # prevent ingesting duplicate measurements into ODMX
 
+                # TODO: Drop all rows with treatment keys that contain
+                # The questoin is whether we do this in the ingest step -- yes bc this data
+                # is unrelated to our experiment
+                # aux, SW, FT, GT, BT, CF, and DF
+
                 # Define a sampling feature code w/ columns shared by all data sources
                 if feeder_table in ['feeder_leaf_area_index_(lai)_(2009_to_2017)_',
                                     'feeder_species_transect_plant_heights_(2018_to_present)_',
@@ -471,8 +497,8 @@ class GlbrcDataSource(DataSource):
                                     'feeder_poplar_damage_assessment_(2019)_',
                                     'feeder_species_transect_plant_heights_(2018_to_present)_',
                                     'feeder_n2o,_co2,_and_ch4_by_icos_and_tga_(2021_to_present))_',
-                                    'feeder_soil_temperature_at_gas_sampling_(2008_to_2016)_']:
-
+                                    'feeder_soil_temperature_at_gas_sampling_(2008_to_2016)_',
+                                    'feeder_weather_']:
                     site = 'KBS'
                 else:
                     try:
@@ -491,8 +517,14 @@ class GlbrcDataSource(DataSource):
                         :2].capitalize()
                     replicate = replicate = f'R{str(data_df.iloc[index]["chamber_name"])[-1:]}'
                 else:
-                    treatment = data_df.iloc[index]['treatment']
-                    replicate = data_df.iloc[index]['replicate']
+                    try:
+                        treatment = data_df.iloc[index]['treatment']
+                        replicate = data_df.iloc[index]['replicate']
+                    except:
+                        KeyError(
+                            'The data does not have a treatment or replicate column')
+                        treatment = None
+                        replicate = None
 
                 # Logic to map site strings to sampling feature code
                 if 'KBS' in str(site):
@@ -502,8 +534,13 @@ class GlbrcDataSource(DataSource):
                 else:
                     ValueError(f'{site} is not sampling features')
 
-                site_code = (
-                    f'{site}-{treatment}-{replicate}').replace(' ', '')
+                site_params = [site]
+                if treatment is not None:
+                    site_params.append(treatment)
+                if replicate is not None:
+                    site_params.append(replicate)
+
+                site_code = '-'.join(site_params).replace(' ', '')
 
                 # Also note that in root biomass the biomass is averaged accross stations at KBS
                 # and measured per station at Arlington
@@ -604,6 +641,9 @@ class GlbrcDataSource(DataSource):
                     specimen_medium_cv = 'gas'
                     specimen_type_cv = 'automated'
                 elif 'gas' in feeder_table:
+                    specimen_medium_cv = 'gas'
+                    specimen_type_cv = 'automated'
+                elif 'weather' in feeder_table:
                     specimen_medium_cv = 'gas'
                     specimen_type_cv = 'automated'
                 else:
