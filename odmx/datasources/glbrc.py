@@ -10,6 +10,7 @@ import datetime
 from importlib.util import find_spec
 import numpy as np
 import pandas as pd
+from meteostat import Point, Daily, Hourly
 from odmx.support.file_utils import get_files, open_csv, clean_name, \
     open_spreadsheet, open_json, get_column_value
 import odmx.support.db as db
@@ -20,6 +21,7 @@ from odmx.timeseries_ingestion import add_columns, get_latest_timestamp
 from odmx.write_equipment_jsons import generate_equipment_jsons
 from odmx.geochem_ingestion_core import fieldspecimen_child_sf_creation, \
     sampleaction_routine, write_sample_results, feature_action
+from odmx.harvesting import commit_csv
 from odmx.log import vprint
 import odmx.data_model as odmx
 
@@ -51,12 +53,98 @@ class GlbrcDataSource(DataSource):
 
     def harvest(self):
         """
-        There is no harvesting to be done for this data type.
-
-        For this data source type, data_source_path defines the subdirectory
-        within the main data directory to search for data files. All files with
-        the specified extension within this directory will be read and ingested.
+        Harvest Meteostat data from the API and save it as a csv on your local drive.
         """
+
+        self.param_df.set_index(
+            "clean_name", inplace=True, verify_integrity=True)
+
+        local_base_path = "./data/glbrc/Biofuel Cropping System Experiment"
+        # tz = self.data_source_timezone
+
+        # First check to make sure the proper directory exists.
+        os.makedirs(local_base_path, exist_ok=True)
+
+        # Check to see if the data already exists on our server.
+        file_name = f'weather/meteostat/meteostat.csv'
+        file_path = os.path.join(local_base_path, file_name)
+        # If it does, we want to find only new data.
+        server_df = None
+        if os.path.isfile(file_path):
+            # Grab the data from the server.
+            args = {'parse_dates': [0]}
+            server_df = open_csv(file_path, args=args, lock=True)
+            # Find the latest timestamp
+            last_server_time = server_df['datetime'].max()
+            if isinstance(last_server_time, str):
+                last_server_time = datetime.datetime.strptime(
+                    last_server_time, '%Y-%m-%d %H:%M:%S'
+                )
+
+            # Add a minute to it so that we don't get it in the return (the
+            # data is never so granular anyway).
+            start = last_server_time + datetime.timedelta(minutes=1)
+            end = datetime.datetime.utcnow().replace(microsecond=0)
+
+        # The biofuels cropping system experiment began 1 January 2008
+        else:
+            start = datetime.datetime(2008, 1, 1)
+            end = datetime.datetime.utcnow().replace(microsecond=0)
+
+        # TODO: Set the locations for KBS & Arlington using the datasource json
+        kbs = Point(42.39518, -85.37339)
+        arl = Point(43.297152, -89.381846)
+
+        # Download the data using meteostat
+        def read_meteo(start, end, location):
+            data = Daily(location, start, end)
+            df = data.fetch()
+            return df
+
+        def clean_meteo(df):
+            df.dropna(how='all', axis=1, inplace=True)
+            df.index.rename(['datetime'], inplace=True)
+            df.reset_index(inplace=True)
+            df.rename(columns={'prcp': 'precipitation',
+                               'tavg': 'air_temp_mean',
+                               'tmin': 'air_temp_min',
+                               'tmax': 'air_temp_max'}, inplace=True)
+            return df
+
+        # Clean kbs data, we don't want precip or temp data because the GLBRC data is better
+        df_kbs = read_meteo(start, end, kbs)
+        df_kbs = clean_meteo(df_kbs)
+        df_kbs['site'] = 'KBS'
+        df_kbs.drop(columns=['precipitation', 'air_temp_min',
+                    'air_temp_max', 'air_temp_mean'], inplace=True)
+
+        # For Arlington we'll take everything bc we don't have any met data for that site
+        df_arl = read_meteo(start, end, arl)
+        df_arl = clean_meteo(df_arl)
+        df_arl['site'] = 'Arlington'
+
+        df = pd.concat([df_arl, df_kbs], ignore_index=True)
+
+        # df['datetime'] = df['datetime'].dt.tz_convert(tz)
+        # df['datetime'] = df['datetime'].dt.tz_convert(None)
+
+        if len(df) == 0:
+            print("No new data weather data available.")
+            return
+
+        # droplist = []
+        # skipped_parameters = []
+        # for column in df.columns:
+        #    if column not in list(self.param_df.index):
+        #        droplist.append(column)
+        #        skipped_parameters.append(column)
+        # vprint(f"skipped parameters: {skipped_parameters}. To keep these, "
+        #       "add them to the glbrc mapper")
+        # df.drop(columns=droplist, inplace=True, errors='ignore')
+
+        if len(df) >= 1:
+            commit_csv(file_path, df, server_df, to_csv_args={
+                       'date_format': '%Y-%m-%d %H:%M:%S'})
 
     def ingest(self, feeder_db_con, update_equipment_jsons):
         """
@@ -442,6 +530,9 @@ class GlbrcDataSource(DataSource):
                 data_df = data_df[~data_df['replicate'].str.contains(
                     pattern, case=False, na=False)]
 
+            # Skip processing for weather data that predates the experiment
+            data_df = data_df[data_df['timestamp'] >= '2008-01-01']
+
             data_df_rows = data_df.shape[0]
             data_df_columns = data_df.shape[1]
 
@@ -498,7 +589,7 @@ class GlbrcDataSource(DataSource):
                                     'feeder_species_transect_plant_heights_(2018_to_present)_',
                                     'feeder_n2o,_co2,_and_ch4_by_icos_and_tga_(2021_to_present))_',
                                     'feeder_soil_temperature_at_gas_sampling_(2008_to_2016)_',
-                                    'feeder_weather_']:
+                                    'feeder_7_lter+weather+station+daily+precip+and+air+temp+1724961']:
                     site = 'KBS'
                 else:
                     try:
@@ -739,6 +830,16 @@ class GlbrcDataSource(DataSource):
 
                                     assert units_id == 1214
 
+                                # For some reason our conversion is not applying to yields reported in kg/ha
+                                # So we are going to specify the conversion specifically for the appropriate vars
+                                dry_yields = [
+                                    'dry_matter_yield_Kg_ha', 'dry_matter_yield_kg_ha']
+                                if clean_name in dry_yields:
+                                    rowvalue = float(rowvalue)
+                                    # if rowvalue > 100:
+                                    rowvalue = (rowvalue * 0.001)
+                                    units_id = 1214
+
                                 elif feeder_table == 'feeder_soil_moisture_at_gas_sampling_(2008_to_present)':
                                     if clean_name == 'moisture':
                                         rowvalue = float(rowvalue)
@@ -748,7 +849,7 @@ class GlbrcDataSource(DataSource):
                                 elif clean_name == 'co2_flux_kg_ha_day':
                                     rowvalue = float(rowvalue)
                                     rowvalue = (rowvalue * 1000)
-                                    units_id = 1224
+                                    units_id = 1223
 
                                 odmx_variable = \
                                     odmx.read_variables_one_or_none(

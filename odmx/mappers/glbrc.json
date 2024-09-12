@@ -2574,5 +2574,75 @@
     "cv_term": "flagAirTemperatureDailyMinimum",
     "unit": "unknown",
     "cv_unit": "unknown"
+  },
+  {
+    "id": "",
+    "clean_name": "tavg",
+    "cv_term": "airTemperatureDailyAverage",
+    "unit": "celcius",
+    "cv_unit": "degreeCelsius"
+  },
+  {
+    "id": "",
+    "clean_name": "tmin",
+    "cv_term": "airTemperatureDailyMinimum",
+    "unit": "celcius",
+    "cv_unit": "degreeCelsius"
+  },
+  {
+    "id": "",
+    "clean_name": "tmax",
+    "cv_term": "airTemperatureDailyMaximum",
+    "unit": "celcius",
+    "cv_unit": "degreeCelsius"
+  },
+  {
+    "id": "",
+    "clean_name": "prcp",
+    "cv_term": "rainPrecipitationDay",
+    "unit": "millimeter",
+    "cv_unit": "millimeter"
+  },
+  {
+    "id": "",
+    "clean_name": "snow",
+    "cv_term": "snowDepth",
+    "unit": "millimeter",
+    "cv_unit": "millimeter"
+  },
+  {
+    "id": "",
+    "clean_name": "wdir",
+    "cv_term": "windDirection",
+    "unit": "degree",
+    "cv_unit": "degree"
+  },
+  {
+    "id": "",
+    "clean_name": "wspd",
+    "cv_term": "windSpeed",
+    "unit": "kilometerPerHour",
+    "cv_unit": "kilometerPerHour"
+  },
+  {
+    "id": "",
+    "clean_name": "wpgt",
+    "cv_term": "gustSpeed",
+    "unit": "kilometerPerHour",
+    "cv_unit": "kilometerPerHour"
+  },
+  {
+    "id": "",
+    "clean_name": "pres",
+    "cv_term": "airAtmosphericPressureSealevelcorrected",
+    "unit": "hectopascal",
+    "cv_unit": "hectopascal"
+  },
+  {
+    "id": "",
+    "clean_name": "tsun",
+    "cv_term": "dailySunshineTotal",
+    "unit": "minute",
+    "cv_unit": "minute"
   }
 ]
