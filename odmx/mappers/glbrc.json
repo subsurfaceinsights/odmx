@@ -79,7 +79,7 @@
   {
     "id": "",
     "clean_name": "yield_mg_ha",
-    "cv_term": "yield",
+    "cv_term": "yieldAtStandardMoistureOfCSC",
     "unit": "megagrams per hectare",
     "cv_unit": "megagramPerHectare"
   },

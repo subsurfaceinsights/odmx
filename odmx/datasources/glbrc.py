@@ -284,7 +284,6 @@ class GlbrcDataSource(DataSource):
                 dfs.append(part_df)
 
             # Combine all dfs, drop duplicates, and sort by timestamp
-            # same plot on the same data from being ingested
             # We do not acutally drop duplicates because we can have multiple
             # measurements from the same place, at the same time
             df = pd.concat(dfs, ignore_index=True)  # .drop_duplicates()
@@ -500,7 +499,8 @@ class GlbrcDataSource(DataSource):
             #             "dry_matter_yield_Mg_ha", "dry_matter_yield_ton_acre",
             #             "biomass_g", "dry_matter_yield_Kg_ha", "year"]
             # Drop calculated variables from the dataframe
-            variables = ["c_g_m2", "n_g_m2"]
+            variables = ["c_g_m2", "n_g_m2",
+                         "yield_dry_matter_tons_ac", "dry_matter_yield_ton_acre"]
 
             if variables:
                 # Filter out columns that are in the variables list
@@ -789,64 +789,65 @@ class GlbrcDataSource(DataSource):
                                 assert odmx_unit is not None
 
                                 units_id = odmx_unit.units_id
-                                # Check if we are dealing with a yield variable
-                                if 'yield' in clean_name:
+                                # Check if we are dealing with yieldDryMatter
+                                if odmx_cv_term == 'yieldDryMatter':
+                                    rowvalue = float(rowvalue)
                                     # Check if that variable has the correct units
-                                    if str(odmx_unit.term) != 'megagramPerHectare':
-                                        rowvalue = float(rowvalue)
-                                        if str(odmx_unit.term) == 'kilogramPerHectare':
-                                            # Convert kilograms per hectare to megagrams per hectare
-                                            rowvalue = (rowvalue * 0.001)
-                                            units_id = 1214
+                                    if str(odmx_unit.term) == 'megagramPerHectare':
+                                        pass
+                                    elif str(odmx_unit.term) == 'kilogramPerHectare':
+                                        # Convert kilograms per hectare to megagrams per hectare
+                                        rowvalue = (rowvalue * 0.001)
+                                        units_id = 1214
 
-                                        elif str(odmx_unit.term) == 'tonPerAcre':
-                                            # Convert tons per acre to megagrams per hectare
-                                            rowvalue = ((
-                                                rowvalue * 0.907185) / 2.471)
-                                            units_id = 1214
+                                    elif str(odmx_unit.term) == 'tonPerAcre':
+                                        # Convert tons per acre to megagrams per hectare
+                                        rowvalue = (
+                                            (rowvalue * 0.907185) * 2.471)
+                                        units_id = 1214
 
-                                        elif str(odmx_unit.term) == 'bushelsPerAcre':
-                                            # Determine the conversion factor based on the crop type
-                                            crop = str(
-                                                data_df.iloc[index]['crop'])
-                                            if crop == 'corn':
-                                                conv_factor = 25.4012
-                                            elif crop == 'canola':
-                                                conv_factor = 22.25
-                                            elif crop == 'soybean':
-                                                conv_factor = 27.2155
-                                            else:
-                                                raise ValueError(
-                                                    f"Unknown crop type: {crop}")
-
-                                            # Convert bushels per acre to megagrams per hectare
-                                            rowvalue = (
-                                                ((rowvalue * conv_factor) * 0.001) / 2.471)
-                                            units_id = 1214
-
+                                    elif str(odmx_unit.term) == 'bushelsPerAcre':
+                                        # Determine the conversion factor based on the crop type
+                                        crop = str(
+                                            data_df.iloc[index]['crop'])
+                                        if crop == 'corn':
+                                            conv_factor = 25.4012
+                                        elif crop == 'canola':
+                                            conv_factor = 22.25
+                                        elif crop == 'soybean':
+                                            conv_factor = 27.2155
                                         else:
                                             raise ValueError(
-                                                f"Unknown unit: {odmx_unit}")
+                                                f"Unknown crop type: {crop}")
+
+                                        # Convert bushels per acre to megagrams per hectare
+                                        rowvalue = (
+                                            ((rowvalue * conv_factor) * 0.001) * 2.471)
+                                        units_id = 1214
+
+                                    else:
+                                        raise ValueError(
+                                            f"Unknown unit: {odmx_unit}")
 
                                     assert units_id == 1214
 
                                 # For some reason our conversion is not applying to yields reported in kg/ha
                                 # So we are going to specify the conversion specifically for the appropriate vars
-                                dry_yields = [
-                                    'dry_matter_yield_Kg_ha', 'dry_matter_yield_kg_ha']
-                                if clean_name in dry_yields:
-                                    rowvalue = float(rowvalue)
+                                # dry_yields = [
+                                #    'dry_matter_yield_Kg_ha', 'dry_matter_yield_kg_ha']
+                                # if clean_name in dry_yields:
+                                #    rowvalue = float(rowvalue)
                                     # if rowvalue > 100:
-                                    rowvalue = (rowvalue * 0.001)
-                                    units_id = 1214
+                                #    rowvalue = (rowvalue * 0.001)
+                                #    units_id = 1214
 
-                                elif feeder_table == 'feeder_soil_moisture_at_gas_sampling_(2008_to_present)':
-                                    if clean_name == 'moisture':
+                                if feeder_table == 'feeder_soil_moisture_at_gas_sampling_(2008_to_present)':
+                                    if odmx_cv_term == 'soilGravimetricWaterContent':
                                         rowvalue = float(rowvalue)
                                         rowvalue = (rowvalue * 100)
                                         units_id = 1213
 
-                                elif clean_name == 'co2_flux_kg_ha_day':
+                                elif odmx_cv_term == 'co2Flux':
                                     rowvalue = float(rowvalue)
                                     rowvalue = (rowvalue * 1000)
                                     units_id = 1223
@@ -900,7 +901,7 @@ class GlbrcDataSource(DataSource):
                                                                      censor_code, quality_code, stderr)
                                     print(
                                         f'Writing {rowvalue} to sample results as result_id {result_id}')
-                            else:
+                            elif clean_name in extension_properties:
                                 with odmx_db_con.transaction():
                                     con = odmx_db_con
                                     glbrc_property_id = odmx.read_extension_properties_one(
@@ -916,6 +917,9 @@ class GlbrcDataSource(DataSource):
                                 )
                                 print(f'Writing sampling feature extension property '
                                       f'for {glbrc_property_id}: {rowvalue}')
+                            else:
+                                ValueError(
+                                    f'{clean_name} is neither a variable nor an extension property!')
                     print(f'New Variables to add: {need_to_add}')
             print(f'Processed feeder_table: {feeder_table}.')
             processed_feeder_tables.add(feeder_table)
