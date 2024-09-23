@@ -2644,5 +2644,12 @@
     "cv_term": "dailySunshineTotal",
     "unit": "minute",
     "cv_unit": "minute"
+  },
+  {
+    "id": "",
+    "clean_name": "mean_ndvi",
+    "cv_term": "NDVI",
+    "unit": "dimensionless",
+    "cv_unit": "dimensionless"
   }
 ]

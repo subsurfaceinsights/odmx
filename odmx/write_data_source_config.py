@@ -57,6 +57,10 @@ def setup_csv_data_source_config_json(csv_path):
         else:
             time_col = 'sample_date'
 
+    elif "remote" in csv_path.lower():
+        data_file_type = 'remote_sensing'
+        time_col = 'date'
+
     cols = []
     for col in df.columns.tolist():
         cols.append({"name": col,
