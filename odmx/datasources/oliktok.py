@@ -67,9 +67,12 @@ class OliktokDataSource(DataSource):
 
         # Rename datetime column to timestamp for compatibiltiy with general
         # ingestion
-        df['TIMESTAMP'] = pd.to_datetime(
+        df['timestamp'] = pd.to_datetime(
             df['TIMESTAMP'], format="%m/%d/%y %H:%M")
-        df.sort_values(by='TIMESTAMP', inplace=True)
+        # df['timestamp'] = df['timestamp'].dt.tz_convert('America/Anchorage')
+        # df['timestamp'] = df['timestamp'].dt.tz_localize(None)
+        df.drop(columns='TIMESTAMP', inplace=True)
+        df.sort_values(by='timestamp', inplace=True)
         df.reset_index(drop=True, inplace=True)
 
         new_cols = df.columns.tolist()
@@ -84,7 +87,7 @@ class OliktokDataSource(DataSource):
                                           "data_to_equipment_map.json")
 
             # Get start timestamp from dataframe
-            start = int(df.iloc[0]['TIMESTAMP'].timestamp())
+            start = int(df.iloc[0]['timestamp'].timestamp())
 
             # Read equipment.json if it exists, otherwise start new
             if os.path.isfile(equip_file):
