@@ -24,8 +24,8 @@
     "id": "",
     "clean_name": "BattV",
     "cv_term": "batteryVoltage",
-    "unit": "Deg C",
-    "cv_unit": "degreeCelsius"
+    "unit": "Volts",
+    "cv_unit": "volt"
   },
   {
     "id": "",

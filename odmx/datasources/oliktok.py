@@ -10,7 +10,9 @@ from string import Template
 import datetime
 from functools import cache
 import requests
+from tqdm import tqdm
 import yaml
+import pytz
 import pandas as pd
 from odmx.support.file_utils import open_csv, open_json, clean_name
 from odmx.abstract_data_source import DataSource
@@ -46,8 +48,83 @@ class OliktokDataSource(DataSource):
 
     def harvest(self):
         """
-        Nothing to harvest at the moment.
+        Pull data from the Campbell data logger over HTTP.
         """
+
+        # Define where the data should be harvested to.
+        local_base_path = os.path.join(self.data_path, self.data_source_path)
+        # First check to make sure the proper directory exists.
+        os.makedirs(local_base_path, exist_ok=True)
+        # Set the name of the file we will harvest
+        file_name = 'Oliktok_ERT_Data.csv'
+        file_path = os.path.join(local_base_path, file_name)
+
+        tz = pytz.timezone(self.data_source_timezone)
+
+        # Add a simple check to see if the last time-stamp in the file is the same as now
+        # If we already have this data ingested we want to check the latest timestamp
+        if os.path.exists(file_path) and os.path.getsize(file_path) > 0:
+            # Read the last row of the CSV to get the most recent timestamp
+            try:
+                # Create a DataFrame of the file.
+                args = {'float_precision': 'high', 'skiprows': [0, 2, 3]}
+                df = pd.read_csv(file_path, **args)
+                last_timestamp = df['TIMESTAMP'].max()
+
+                if isinstance(last_timestamp, str):
+                    last_timestamp = datetime.datetime.strptime(
+                        last_timestamp, '%Y-%m-%d %H:%M:%S')
+
+                # Get the current time in the specified timezone
+                current_time = datetime.datetime.now(tz)
+
+                # If last_timestamp is naive (no timezone), make it aware
+                if last_timestamp.tzinfo is None:
+                    last_timestamp = tz.localize(last_timestamp)
+
+                # Now we can directly compare the two timezone-aware datetimes
+                time_difference = current_time - last_timestamp
+                if time_difference.total_seconds() <= 3600:
+                    print(
+                        f"Data already up-to-date as of {last_timestamp}. Skipping download.")
+                    return
+            except Exception as e:
+                print(
+                    f"Error reading the file: {e}. Proceeding with download.")
+
+        # TODO: Build the query so that we can control the time range we pull over
+        # Set the base URL for the Oliktok data logger
+        base_url = "http://107.91.84.175/"
+        # Build the query that we will append to the base URL
+        query = "tables.html?command=DataQuery&mode=since-record&format=toa5&uri=dl:Oliktok_ERT_Data&p1=0"
+        url = base_url + query
+
+        try:
+            # Send a request to get the data in stream mode (chunked)
+            with requests.get(url, stream=True, timeout=30) as response:
+                # Check if the request was successful
+                if response.status_code == 200:
+                    # Get the total file size from the headers (if available)
+                    total_size = int(response.headers.get(
+                        'content-length', 0)) or None
+
+                    # Open a file to write the downloaded content
+                    with open(file_path, 'wb') as f:
+                        # Use tqdm to show progress, chunk size set to 1024 bytes
+                        for data in tqdm(response.iter_content(chunk_size=1024),
+                                         total=total_size // 1024 if total_size else None,
+                                         unit='KB', desc="Downloading data"):
+                            if not data:  # Break if no more data is received
+                                break
+                            f.write(data)
+                    print("Data downloaded successfully and saved as CSV.")
+                    return
+
+                else:
+                    print(
+                        f"Failed to download data. HTTP Status Code: {response.status_code}")
+        except requests.exceptions.RequestException as e:
+            print(f"An error occurred: {e}")
 
     def ingest(self, feeder_db_con, update_equipment_jsons):
         """
@@ -59,7 +136,6 @@ class OliktokDataSource(DataSource):
         local_base_path = os.path.join(self.data_path, self.data_source_path)
         file_name = 'Oliktok_ERT_Data.csv'
         file_path = os.path.join(local_base_path, file_name)
-        print(f'file_path: {file_path}')
         # Create a DataFrame of the file.
         args = {'float_precision': 'high',
                 'skiprows': [0, 2, 3]}
@@ -68,7 +144,7 @@ class OliktokDataSource(DataSource):
         # Rename datetime column to timestamp for compatibiltiy with general
         # ingestion
         df['timestamp'] = pd.to_datetime(
-            df['TIMESTAMP'], format="%m/%d/%y %H:%M")
+            df['TIMESTAMP'], format="%Y-%m-%d %H:%M:%S")
         # df['timestamp'] = df['timestamp'].dt.tz_convert('America/Anchorage')
         # df['timestamp'] = df['timestamp'].dt.tz_localize(None)
         df.drop(columns='TIMESTAMP', inplace=True)
