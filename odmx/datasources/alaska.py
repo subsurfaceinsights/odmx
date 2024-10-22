@@ -47,7 +47,7 @@ class AlaskaDataSource(DataSource):
         # self.param_df.set_index(
         #    "clean_name", inplace=True, verify_integrity=True)
 
-    def harvest(self):
+    def harvest(self, url, auth_yml):
         """
         Pull data from the Campbell data logger over HTTP.
         """
@@ -94,22 +94,26 @@ class AlaskaDataSource(DataSource):
                     f"Error reading the file: {e}. Proceeding with download.")
 
         # TODO: Build the query so that we can control the time range we pull over
-        if self.project_name == 'oliktok':
+        # if self.project_name == 'oliktok':
             # Set the base URL for the Oliktok data logger
-            base_url = "http://remote_ip/"
+        #    base_url = "http://remote_ip/"
             # Build the query that we will append to the base URL
-            query = "tables.html?command=DataQuery&mode=since-record&format=toa5&uri=dl:Oliktok_ERT_Data&p1=0"
-        elif self.project_name == 'utqiagvik':
-            base_url = "http://remote_ip/"
-            query = "tables.html?command=DataQuery&mode=since-record&format=toa5&uri=dl:Utqiavik_Data&p1=0"
-        else:
-            ValueError(
-                f'{self.project_name} does not match data source harvesting')
-        url = base_url + query
+        #    query = "tables.html?command=DataQuery&mode=since-record&format=toa5&uri=dl:Oliktok_ERT_Data&p1=0"
+        # elif self.project_name == 'utqiagvik':
+        #    base_url = "http://remote_ip/"
+        #    query = "tables.html?command=DataQuery&mode=since-record&format=toa5&uri=dl:Utqiavik_Data&p1=0"
+        # else:
+        #    ValueError(
+        #        f'{self.project_name} does not match data source harvesting')
+                # Read token from auth.yml
+        # with open(f"{os.environ.get('SSI_BASE', '/opt/ssi')}/{auth_yml}",
+        with open(f"/Users/seankacur/ssi/{auth_yml}", encoding="utf-8") as auth_file:
+            auth_params = yaml.load(auth_file, Loader=yaml.FullLoader)
+        user, password = auth_params['user'], auth_params['pass']
 
         try:
             # Send a request to get the data in stream mode (chunked)
-            with requests.get(url, auth=("user", "pass"), stream=True, timeout=30) as response:
+            with requests.get(url, auth=(user, password), stream=True, timeout=30) as response:
                 # Check if the request was successful
                 if response.status_code == 200:
                     # Get the total file size from the headers (if available)
@@ -134,7 +138,7 @@ class AlaskaDataSource(DataSource):
         except requests.exceptions.RequestException as e:
             print(f"An error occurred: {e}")
 
-    def ingest(self, feeder_db_con, update_equipment_jsons):
+    def ingest(self, feeder_db_con, update_equipment_jsons, lost_data, lost_data_file):
         """
         Manipulate harvested Hydrovu data in a file on the server into a feeder
         database.
@@ -148,8 +152,7 @@ class AlaskaDataSource(DataSource):
         df = open_csv(file_path, args=args, lock=True)
 
         # At Oliktok there is some lost data that is not on the logger
-        if self.project_name == 'oliktok':
-            lost_data_file = 'Oliktok_Point_Remote_Oliktok_ERT_Data.dat'
+        if lost_data:
             lost_file_path = os.path.join(local_base_path, lost_data_file)
             df_lost = open_csv(lost_file_path, args=args, lock=True)
 
