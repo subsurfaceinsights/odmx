@@ -2648,7 +2648,14 @@
   {
     "id": "",
     "clean_name": "mean_ndvi",
-    "cv_term": "NDVI",
+    "cv_term": "sentinel2NDVI",
+    "unit": "dimensionless",
+    "cv_unit": "dimensionless"
+  },
+  {
+    "id": "",
+    "clean_name": "ndvi",
+    "cv_term": "landsatNDVI",
     "unit": "dimensionless",
     "cv_unit": "dimensionless"
   }

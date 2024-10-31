@@ -223,6 +223,7 @@ class GlbrcDataSource(DataSource):
 
                 # Correct the formatting of time column - we need %H:%M:%S'
                 try:
+                    print(part_df[time_col])
                     # Attempt to parse the timestamp with automatic format detection
                     part_df['timestamp'] = pd.to_datetime(
                         part_df[time_col], errors='raise')
@@ -237,7 +238,7 @@ class GlbrcDataSource(DataSource):
                         try:
                             # Attempt to parse the timestamp with the format '%Y-%m-%d'
                             part_df['timestamp'] = pd.to_datetime(
-                                part_df[time_col], format='%Y-%m-%d', errors='raise')
+                                part_df[time_col], format='mixed', errors='raise')
                             # Add default time '00:00:00' to the parsed date
                             part_df['timestamp'] = part_df['timestamp'] + \
                                 pd.to_timedelta('00:00:00')
