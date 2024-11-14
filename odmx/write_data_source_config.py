@@ -62,6 +62,10 @@ def setup_csv_data_source_config_json(csv_path):
         data_file_type = 'remote_sensing'
         time_col = 'date'
 
+    else:
+        time_col = 'SampleDate'
+        data_file_type = 'water_sampling'
+
     cols = []
     for col in df.columns.tolist():
         cols.append({"name": col,
