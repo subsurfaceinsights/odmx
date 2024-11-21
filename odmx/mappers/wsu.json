@@ -1,9 +1,51 @@
 [
   {
     "id": "",
-    "clean_name": "year",
-    "cv_term": "growingSeason",
-    "unit": "year",
-    "cv_unit": "year"
+    "clean_name": "Dissolved oxygen (DO)",
+    "cv_term": "waterOpticalDissolvedOxygen",
+    "unit": "mg/l",
+    "cv_unit": "milligramPerLiter"
+  },
+  {
+    "id": "",
+    "clean_name": "Temperature, water",
+    "cv_term": "waterTemperature",
+    "unit": "c",
+    "cv_unit": "degreeCelsius"
+  },
+  {
+    "id": "",
+    "clean_name": "Conductivity",
+    "cv_term": "waterElectricalConductivity",
+    "unit": "us",
+    "cv_unit": "microsiemenPerCentimeter"
+  },
+  {
+    "id": "",
+    "clean_name": "Specific conductance",
+    "cv_term": "waterSpecificConductance",
+    "unit": "us",
+    "cv_unit": "microsiemenPerCentimeter"
+  },
+  {
+    "id": "",
+    "clean_name": "Turbidity",
+    "cv_term": "waterTurbidity",
+    "unit": "ntu",
+    "cv_unit": "nephelometricTurbidityUnit"
+  },
+  {
+    "id": "",
+    "clean_name": "Phosphorus, total",
+    "cv_term": "Phosphorus",
+    "unit": "mg/l",
+    "cv_unit": "milligramPerLiter"
+  },
+  {
+    "id": "",
+    "clean_name": "Nitrate-Nitrogen",
+    "cv_term": "Nitrate",
+    "unit": "mg/l",
+    "cv_unit": "milligramPerLiter"
   }
 ]

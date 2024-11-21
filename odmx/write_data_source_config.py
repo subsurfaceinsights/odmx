@@ -67,25 +67,33 @@ def setup_csv_data_source_config_json(csv_path):
         data_file_type = 'water_sampling'
 
     cols = []
+    expose = ['StationID, FlowCondition',
+              'SampleDepth', 'Analyte', 'Units', 'Result']
     for col in df.columns.tolist():
-        cols.append({"name": col,
-                     "variable_cv": "",
-                     "unit_cv": "",
-                     "expose": True})
+        is_expose = col in expose  # Check if the column is in the 'expose' list
+        cols.append({
+            "name": col,
+            "variable_cv": "",
+            "unit_cv": "",
+            "expose": is_expose
+        })
 
-    data_split = [{"sampling_feature": "",
-                   "equipment_metadata": None,
-                   "equipment_path": "",
-                   "base_equipment": {
-                       "time_column": time_col
-                   },
-                   "columns": cols}]
+    data_splits = []
+    for unique_id in df['StationID'].unique():
+        data_split = [{"sampling_feature": unique_id,  # "",
+                       "equipment_metadata": None,
+                       "equipment_path": "",
+                       "base_equipment": {
+                           "time_column": time_col
+                       },
+                       "columns": cols}]
+        data_splits.append(data_split)
 
     config = {"data_file_extension": "csv",
               "data_file_tabs": None,
               "data_file_name": os.path.basename(csv_path),
               "data_file_type": data_file_type,
-              "data_split": data_split, }
+              "data_split": data_splits, }
 
     with open(f'{directory}/data_source_config.json', 'w',
               encoding='utf-8') as f:
