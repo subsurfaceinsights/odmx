@@ -51,7 +51,7 @@ class AlaskaDataSource(DataSource):
         """
         Pull data from the Campbell data logger over HTTP.
         """
-
+        '''
         # Define where the data should be harvested to.
         local_base_path = os.path.join(self.data_path, self.data_source_path)
         # First check to make sure the proper directory exists.
@@ -136,7 +136,7 @@ class AlaskaDataSource(DataSource):
                     print(
                         f"Failed to download data. HTTP Status Code: {response.status_code}")
         except requests.exceptions.RequestException as e:
-            print(f"An error occurred: {e}")
+            print(f"An error occurred: {e}")'''
 
     def ingest(self, feeder_db_con, update_equipment_jsons, lost_data, lost_data_file):
         """

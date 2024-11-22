@@ -1,0 +1,8 @@
+[
+  {
+    "clean_name": "ndvi",
+    "cv_term": "NDVI",
+    "unit": "dimensionless",
+    "cv_unit": "dimensionless"
+  }
+]

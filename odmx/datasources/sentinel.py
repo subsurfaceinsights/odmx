@@ -1,14 +1,11 @@
-#!/usr/bin/env python3
-
 """
 Module for NWIS data harvesting, ingestion, and processing.
 """
-
 import os
 from importlib.util import find_spec
 import datetime
 import pandas as pd
-from dataretrieval import nwis
+from ssi.geospatial import oeondvi_from_samplingfeatures
 from odmx.support.file_utils import open_csv, open_json
 from odmx.abstract_data_source import DataSource
 from odmx.timeseries_ingestion import general_timeseries_ingestion
@@ -23,40 +20,41 @@ mapper_path = find_spec("odmx.mappers").submodule_search_locations[0]
 json_schema_files = find_spec("odmx.json_schema").submodule_search_locations[0]
 
 
-class NwisDataSource(DataSource):
+class SentinelDataSource(DataSource):
     """
     Class for NWIS data source objects.
     """
 
     def __init__(self, project_name, project_path, data_path,
-                 data_source_timezone, site_code):
+                 data_source_timezone, sampling_feature_code):
         self.project_name = project_name
         self.project_path = project_path
         self.data_path = data_path
         self.data_source_timezone = data_source_timezone
-        self.data_source_path = 'nwis'
-        self.site_code = site_code
-        self.feeder_table = f'nwis_{site_code}'
-        self.equipment_directory = f'nwis/nwis_{site_code}'
-        self.param_df = pd.DataFrame(open_json(f'{mapper_path}/nwis.json'))
-        self.param_df.set_index("id", inplace=True, verify_integrity=True)
+        self.data_source_path = 'sentinel'
+        self.sampling_feature_code = sampling_feature_code
+        self.feeder_table = f'sentinel_{sampling_feature_code}'
+        self.equipment_directory = f'sentinel/sentinel_{sampling_feature_code}'
+        self.param_df = pd.DataFrame(open_json(f'{mapper_path}/sentinel.json'))
+        # self.param_df.set_index("id", inplace=True, verify_integrity=True)
 
-    def harvest(self):
+    def harvest(self, auth_yml):
         """
         Harvest NWIS data from the API and save it to a .csv on our servers.
         """
 
         # Define variables from the harvesting info file.
         local_base_path = os.path.join(self.data_path, self.data_source_path)
-        site_code = self.site_code
+        sampling_feature_code = self.sampling_feature_code
         tz = self.data_source_timezone
 
         # First check to make sure the proper directory exists.
         os.makedirs(local_base_path, exist_ok=True)
 
         # Check to see if the data already exists on our server.
-        file_name = f'nwis_{site_code}.csv'
+        file_name = f'sentinel_{sampling_feature_code}.csv'
         file_path = os.path.join(local_base_path, file_name)
+
         # If it does, we want to find only new data.
         server_df = None
         if os.path.isfile(file_path):
@@ -73,31 +71,39 @@ class NwisDataSource(DataSource):
             # data is never so granular anyway).
             start = last_server_time + datetime.timedelta(minutes=1)
             end = datetime.datetime.utcnow().replace(microsecond=0)
+
         # If it doesn't, we want all available data.
         else:
             # The earliest start date NWIS allows one to use is 1900-01-01.
             # However, their system still claims that's too early, so we
             # add a day.
-            start = datetime.datetime(1900, 1, 2)
+            start = datetime.datetime(2024, 1, 1)
             end = datetime.datetime.utcnow().replace(microsecond=0)
 
-        # Download the data using ulmo.
-        print(f"Harvesting NWIS site {site_code}.")
-        data = nwis.get_record(sites=site_code,
-                               service='iv',
-                               start=start.strftime("%Y-%m-%d"),
-                               end=end.strftime("%Y-%m-%d"))
+        sampling_features_json = os.path.join(self.project_path, 'odmx', 'ingestion_tables',
+                                              'sampling_features.json')
+
+        # Download the data using openeo
+        print(f"Harvesting sentinel data for {sampling_feature_code}.")
+        data = oeondvi_from_samplingfeatures(auth_yml,
+                                             "SENTINEL2_L2A",
+                                             start.strftime("%Y-%m-%d"),
+                                             end.strftime("%Y-%m-%d"),
+                                             sampling_features_json)
 
         # If nothing was returned, we're done.
         if data.empty:
-            print(f"No new data available for NWIS site {site_code}.\n")
+            print(
+                f"No new data available for Sentinel site {sampling_feature_code}.\n")
             return
+
         # Otherwise, we examine the data.
         # If data exists, first drop qa/qc columns and 'site_no' column
-        droplist = ['site_no']
+
+        droplist = []
         skipped_parameters = []
         for column in data.columns:
-            if column not in list(self.param_df.index):
+            if column not in list(self.param_df.columns):
                 droplist.append(column)
                 skipped_parameters.append(column)
             if '_cd' in column:
@@ -143,10 +149,11 @@ class NwisDataSource(DataSource):
         Manipulate harvested NWIS data in a file on the server into a feeder
         database.
         """
+
         # Define the file name and path.
         local_base_path = os.path.join(self.data_path, self.data_source_path)
-        site_code = self.site_code
-        file_name = f'nwis_{site_code}.csv'
+        sampling_feature_code = self.sampling_feature_code
+        file_name = f'sentinel_{sampling_feature_code}.csv'
         file_path = os.path.join(local_base_path, file_name)
         # Create a DataFrame of the file.
         args = {'float_precision': 'high', }
@@ -188,7 +195,7 @@ class NwisDataSource(DataSource):
                     serial_number=None,
                     relationship_start_date_time_utc=start,
                     position_start_date_utc=start,
-                    vendor="USGS")
+                    vendor="ESA")
 
             # Retrieve device uuid from equipment dict
             dev_uuid = equipment['equipment_uuid']
@@ -227,10 +234,10 @@ class NwisDataSource(DataSource):
         general_timeseries_ingestion(feeder_db_con,
                                      feeder_table=self.feeder_table, df=df)
 
-    def process(self, feeder_db_con, odmx_db_con, sampling_feature_code):
+    def process(self, feeder_db_con, odmx_db_con):
         """
         Process ingested NWIS data into timeseries datastreams.
         """
 
         general_timeseries_processing(self, feeder_db_con, odmx_db_con,
-                                      sampling_feature_code=sampling_feature_code)
+                                      sampling_feature_code=self.sampling_feature_code)
