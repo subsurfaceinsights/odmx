@@ -97,32 +97,29 @@ class SentinelDataSource(DataSource):
                 f"No new data available for Sentinel site {sampling_feature_code}.\n")
             return
 
+        data.set_index('datetime', inplace=True)
+
         # Otherwise, we examine the data.
         # If data exists, first drop qa/qc columns and 'site_no' column
 
         droplist = []
         skipped_parameters = []
         for column in data.columns:
-            if column not in list(self.param_df.columns):
-                droplist.append(column)
-                skipped_parameters.append(column)
-            if '_cd' in column:
-                droplist.append(column)
-            if 'discontinued' in column:
+            if column not in list(self.param_df['clean_name']):
                 droplist.append(column)
                 skipped_parameters.append(column)
         vprint(f"skipped parameters: {skipped_parameters}. To keep these, "
                "add them to the NWIS mapper")
         data.drop(columns=droplist, inplace=True, errors='ignore')
-        mapper = {'datetime': 'datetime'}
-        for column in data.columns:
-            mapper.update({column: self.param_df["clean_name"][column]})
+        # mapper = {'datetime': 'datetime'}
+        # for column in data.columns:
+        #    mapper.update({column: self.param_df["clean_name"][column]})
 
-        data.rename(columns=mapper, inplace=True)
+        # data.rename(columns=mapper, inplace=True)
 
         # Drop any potential duplicates (just in case).
         # Only drop duplicate INDEX, not duplicate values
-        data = data[~data.index.duplicated(keep='first')]
+        # data = data[~data.index.duplicated(keep='first')]
         # Move datetime to its own column and then reset index
         data['datetime'] = data.index
         data.reset_index(drop=True, inplace=True)
@@ -133,12 +130,12 @@ class SentinelDataSource(DataSource):
         # start date, for some reason, sometimes the data return gives data
         # just before the start date. So, we need to filter that out if it
         # exists.
-        if os.path.isfile(file_path):
-            data = data[data['datetime'] > last_server_time]
-            data.reset_index(drop=True, inplace=True)
+        # if os.path.isfile(file_path):
+        #    data = data[data['datetime'] > last_server_time]
+        #    data.reset_index(drop=True, inplace=True)
 
         # We update the .csv files on the server if we actually got new data.
-        if not data.empty:
+        if len(data) >= 1:
             commit_csv(file_path, data, server_df,
                        to_csv_args={'date_format': '%Y-%m-%d %H:%M:%S'})
         else:
