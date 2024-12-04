@@ -1,56 +1,56 @@
 [
-    {
-        "term": "accuracy",
-        "name": "Accuracy",
-        "definition": "The degree of closeness of a measurement of a quantity to that quantity's true value.",
-        "category": null,
-        "provenance": "Definition adapted from Wikipedia. See http://en.wikipedia.org/wiki/Accuracy_and_precision",
-        "provenance_uri": null,
-        "note": null
-    },
-    {
-        "term": "methodDetectionLimit",
-        "name": "Method detection limit",
-        "definition": "The minimum concentration of a substance that can be distinguished from the absence of that substance within a stated confidence limit (generally 1%) given a particular analytical method.",
-        "category": null,
-        "provenance": "Definition adapted from Wikipedia. See http://en.wikipedia.org/wiki/Detection_limit.",
-        "provenance_uri": null,
-        "note": null
-    },
-    {
-        "term": "physicalLimitLowerBound",
-        "name": "Physical limit lower bound",
-        "definition": "This describes a numeric value below which measured values should be considered suspect. This numeric value should be empirically derived.",
-        "category": null,
-        "provenance": null,
-        "provenance_uri": null,
-        "note": null
-    },
-    {
-        "term": "physicalLimitUpperBound",
-        "name": "Physical limit upper bound",
-        "definition": "This describes a numeric value above which measured values should be considered suspect. This numeric value should be empirically derived.",
-        "category": null,
-        "provenance": null,
-        "provenance_uri": null,
-        "note": null
-    },
-    {
-        "term": "precision",
-        "name": "Precision",
-        "definition": "The degree to which repeated measurements under unchanged conditions show the same results.",
-        "category": null,
-        "provenance": "Definition adapted from Wikipedia. See http://en.wikipedia.org/wiki/Accuracy_and_precision",
-        "provenance_uri": null,
-        "note": null
-    },
-    {
-        "term": "reportingLevel",
-        "name": "Reporting level",
-        "definition": "The smallest concentration of analyte that can be reported by laboratory.",
-        "category": null,
-        "provenance": null,
-        "provenance_uri": null,
-        "note": null
-    }
+  {
+    "term": "accuracy",
+    "name": "Accuracy",
+    "definition": "The degree of closeness of a measurement of a quantity to that quantity's true value.",
+    "category": null,
+    "provenance": "Definition adapted from Wikipedia. See http://en.wikipedia.org/wiki/Accuracy_and_precision",
+    "provenance_uri": null,
+    "note": null
+  },
+  {
+    "term": "methodDetectionLimit",
+    "name": "Method detection limit",
+    "definition": "The minimum concentration of a substance that can be distinguished from the absence of that substance within a stated confidence limit (generally 1%) given a particular analytical method.",
+    "category": null,
+    "provenance": "Definition adapted from Wikipedia. See http://en.wikipedia.org/wiki/Detection_limit.",
+    "provenance_uri": null,
+    "note": null
+  },
+  {
+    "term": "physicalLimitLowerBound",
+    "name": "Physical limit lower bound",
+    "definition": "This describes a numeric value below which measured values should be considered suspect. This numeric value should be empirically derived.",
+    "category": null,
+    "provenance": null,
+    "provenance_uri": null,
+    "note": null
+  },
+  {
+    "term": "physicalLimitUpperBound",
+    "name": "Physical limit upper bound",
+    "definition": "This describes a numeric value above which measured values should be considered suspect. This numeric value should be empirically derived.",
+    "category": null,
+    "provenance": null,
+    "provenance_uri": null,
+    "note": null
+  },
+  {
+    "term": "precision",
+    "name": "Precision",
+    "definition": "The degree to which repeated measurements under unchanged conditions show the same results.",
+    "category": null,
+    "provenance": "Definition adapted from Wikipedia. See http://en.wikipedia.org/wiki/Accuracy_and_precision",
+    "provenance_uri": null,
+    "note": null
+  },
+  {
+    "term": "reportingLevel",
+    "name": "Reporting level",
+    "definition": "The smallest concentration of analyte that can be reported by laboratory.",
+    "category": null,
+    "provenance": null,
+    "provenance_uri": null,
+    "note": null
+  }
 ]

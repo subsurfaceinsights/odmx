@@ -6327,7 +6327,7 @@
   {
     "variable_term": "gustSpeed",
     "variable_name": "Gust Speed",
-    "variable_definition": "Speed of wind gust",
+    "variable_definition": "local speed of wind",
     "variable_domain_cv": null,
     "sampled_medium_cv": "air",
     "quantity_kind_cv": "linearVelocity",
@@ -8679,35 +8679,20 @@
     "max_valid_range": 1.0
   },
   {
-    "variable_term": "referenceTemperature",
-    "variable_name": "Instrument Reference Temperature",
-    "variable_definition": "Instrument Reference Temperature",
-    "variable_domain_cv": null,
-    "sampled_medium_cv": "air",
-    "quantity_kind_cv": "temperature",
-    "variable_source_uri": null,
-    "min_valid_range": -100.0,
-    "max_valid_range": 100.0
-  },
-  {
-    "variable_term": "solarFluxDensity",
-    "variable_name": "Solar Flux Density",
-    "variable_definition": "Solar Flux Density",
-    "variable_domain_cv": null,
-    "sampled_medium_cv": "air",
-    "quantity_kind_cv": "powerPerArea",
-    "variable_source_uri": null,
-    "min_valid_range": 0,
-    "max_valid_range": 180000.0
-  },
-  {
+<<<<<<< HEAD
     "variable_term": "airTemperatureDailyAverage",
     "variable_name": "Air Temperature Daily Average",
     "variable_definition": "Daily average of all hourly mean air temperatures",
+=======
+    "variable_term": "referenceTemperature",
+    "variable_name": "Instrument Reference Temperature",
+    "variable_definition": "Instrument Reference Temperature",
+>>>>>>> 2022d7e62 (odmx: oliktok: initial commit of oliktok datasource)
     "variable_domain_cv": null,
     "sampled_medium_cv": "air",
     "quantity_kind_cv": "temperature",
     "variable_source_uri": null,
+<<<<<<< HEAD
     "min_valid_range": -50,
     "max_valid_range": 80.0
   },
@@ -8754,16 +8739,20 @@
     "variable_source_uri": null,
     "min_valid_range": 0,
     "max_valid_range": 1440.0
+=======
+    "min_valid_range": -100.0,
+    "max_valid_range": 100.0
   },
   {
-    "variable_term": "solarFluxTotal",
-    "variable_name": "Total Solar Flux",
-    "variable_definition": "Total Solar Flux",
+    "variable_term": "solarFluxDensity",
+    "variable_name": "Solar Flux Density",
+    "variable_definition": "Solar Flux Density",
     "variable_domain_cv": null,
     "sampled_medium_cv": "air",
     "quantity_kind_cv": "powerPerArea",
     "variable_source_uri": null,
     "min_valid_range": 0,
     "max_valid_range": 180000.0
+>>>>>>> 2022d7e62 (odmx: oliktok: initial commit of oliktok datasource)
   }
 ]

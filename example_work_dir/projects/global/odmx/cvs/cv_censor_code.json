@@ -52,5 +52,59 @@
         "provenance": null,
         "provenance_uri": null,
         "note": null
+    },
+    {
+        "term": "estimated",
+        "name": "Estimated",
+        "definition": "Value is estimated.",
+        "category": null,
+        "provenance": "USGS Remark Code. See https://help.waterdata.usgs.gov/code/remark_cd_query?fmt=rdb&inline=true" ,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "average",
+        "name": "Average",
+        "definition": "Value is an average.",
+        "category": null,
+        "provenance": "USGS Remark Code. See https://help.waterdata.usgs.gov/code/remark_cd_query?fmt=rdb&inline=true" ,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "presumptiveEvidenceOfPresence",
+        "name": "Presumptive Evidence of Presence",
+        "definition": "Presumptive evidence of presence of material.",
+        "category": null,
+        "provenance": "USGS Remark Code. See https://help.waterdata.usgs.gov/code/remark_cd_query?fmt=rdb&inline=true" ,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "mostProbableValue",
+        "name": "Most Probable Value",
+        "definition": "Most probable value.",
+        "category": null,
+        "provenance": "USGS Remark Code. See https://help.waterdata.usgs.gov/code/remark_cd_query?fmt=rdb&inline=true" ,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "analyzedForNonDetect",
+        "name": "Analyzed for but not detected",
+        "definition": "Material specifically analyzed for but not detected.",
+        "category": null,
+        "provenance": "USGS Remark Code. See https://help.waterdata.usgs.gov/code/remark_cd_query?fmt=rdb&inline=true" ,
+        "provenance_uri": null,
+        "note": null
+    },
+    {
+        "term": "contamination",
+        "name": "Contamination",
+        "definition": "Analyte was detected in both the environmental sample and the associated blanks. See Office of Water Quality Memorandum 97.8.",
+        "category": null,
+        "provenance": "USGS Remark Code. See https://help.waterdata.usgs.gov/code/remark_cd_query?fmt=rdb&inline=true" ,
+        "provenance_uri": null,
+        "note": null
     }
 ]
