@@ -1,0 +1,835 @@
+[
+  {
+    "id": "",
+    "clean_name": "TIMESTAMP",
+    "cv_term": "timestamp",
+    "unit": "unknown",
+    "cv_unit": "unknown"
+  },
+  {
+    "id": "",
+    "clean_name": "RECORD",
+    "cv_term": "record",
+    "unit": "unknown",
+    "cv_unit": "unknown"
+  },
+  {
+    "id": "",
+    "clean_name": "PTemp_C",
+    "cv_term": "referenceTemperature",
+    "unit": "Deg C",
+    "cv_unit": "degreeCelsius"
+  },
+  {
+    "id": "",
+    "clean_name": "BattV",
+    "cv_term": "batteryVoltage",
+    "unit": "Volts",
+    "cv_unit": "volt"
+  },
+  {
+    "id": "",
+    "clean_name": "Well_A_T107_1_10cm",
+    "cv_term": "soilTemperature",
+    "unit": "Deg C",
+    "cv_unit": "degreeCelsius"
+  },
+  {
+    "id": "",
+    "clean_name": "Well_A_T107_2_20cm",
+    "cv_term": "soilTemperature",
+    "unit": "Deg C",
+    "cv_unit": "degreeCelsius"
+  },
+  {
+    "id": "",
+    "clean_name": "LowTempWell_30cm",
+    "cv_term": "soilTemperature",
+    "unit": "Deg C",
+    "cv_unit": "degreeCelsius"
+  },
+  {
+    "id": "",
+    "clean_name": "Well_A_T107_3_40cm",
+    "cv_term": "soilTemperature",
+    "unit": "Deg C",
+    "cv_unit": "degreeCelsius"
+  },
+  {
+    "id": "",
+    "clean_name": "Well_B_T107_1",
+    "cv_term": "soilTemperature",
+    "unit": "Deg C",
+    "cv_unit": "degreeCelsius"
+  },
+  {
+    "id": "",
+    "clean_name": "Well_B_T107_2",
+    "cv_term": "soilTemperature",
+    "unit": "Deg C",
+    "cv_unit": "degreeCelsius"
+  },
+  {
+    "id": "",
+    "clean_name": "Well_B_T107_3",
+    "cv_term": "soilTemperature",
+    "unit": "Deg C",
+    "cv_unit": "degreeCelsius"
+  },
+  {
+    "id": "",
+    "clean_name": "Well_B_T107_4",
+    "cv_term": "soilTemperature",
+    "unit": "Deg C",
+    "cv_unit": "degreeCelsius"
+  },
+  {
+    "id": "",
+    "clean_name": "Well_B_T107_5",
+    "cv_term": "soilTemperature",
+    "unit": "Deg C",
+    "cv_unit": "degreeCelsius"
+  },
+  {
+    "id": "",
+    "clean_name": "SlrFD_W_High",
+    "cv_term": "solarFluxDensity",
+    "unit": "W/m^2",
+    "cv_unit": "wattPerSquareMeter"
+  },
+  {
+    "id": "",
+    "clean_name": "Rain_mm_High_Tot",
+    "cv_term": "rainPrecipitationHour",
+    "unit": "mm",
+    "cv_unit": "millimeter"
+  },
+  {
+    "id": "",
+    "clean_name": "Strikes_High_Tot",
+    "cv_term": "lightningActivity",
+    "unit": "count",
+    "cv_unit": "number"
+  },
+  {
+    "id": "",
+    "clean_name": "Dist_km_High",
+    "cv_term": "lightningDistance",
+    "unit": "kilometers",
+    "cv_unit": "kilometer"
+  },
+  {
+    "id": "",
+    "clean_name": "WS_ms_High",
+    "cv_term": "windSpeed",
+    "unit": "meters/second",
+    "cv_unit": "meterPerSecond"
+  },
+  {
+    "id": "",
+    "clean_name": "WindDir_High",
+    "cv_term": "windDirection",
+    "unit": "degrees",
+    "cv_unit": "degree"
+  },
+  {
+    "id": "",
+    "clean_name": "MaxWS_ms_High",
+    "cv_term": "gustSpeed",
+    "unit": "meters/second",
+    "cv_unit": "meterPerSecond"
+  },
+  {
+    "id": "",
+    "clean_name": "AirT_C_High",
+    "cv_term": "airTemperature",
+    "unit": "Deg C",
+    "cv_unit": "degreeCelsius"
+  },
+  {
+    "id": "",
+    "clean_name": "VP_mbar_High",
+    "cv_term": "airVaporPressure",
+    "unit": "mbar",
+    "cv_unit": "millibar"
+  },
+  {
+    "id": "",
+    "clean_name": "BP_mbar_High",
+    "cv_term": "airAtmosphericPressureAbsolute",
+    "unit": "mbar",
+    "cv_unit": "millibar"
+  },
+  {
+    "id": "",
+    "clean_name": "RH_High",
+    "cv_term": "airRelativeHumidity",
+    "unit": "%",
+    "cv_unit": "percent"
+  },
+  {
+    "id": "",
+    "clean_name": "RHT_C_High",
+    "cv_term": "airDewpoint",
+    "unit": "Deg C",
+    "cv_unit": "degreeCelsius"
+  },
+  {
+    "id": "",
+    "clean_name": "TiltNS_deg_High",
+    "cv_term": "instrumentTilt",
+    "unit": "degrees",
+    "cv_unit": "degree"
+  },
+  {
+    "id": "",
+    "clean_name": "TiltWE_deg_High",
+    "cv_term": "instrumentTilt",
+    "unit": "degrees",
+    "cv_unit": "degree"
+  },
+  {
+    "id": "",
+    "clean_name": "SlrTF_MJ_High_Tot",
+    "cv_term": "solarFluxTotal",
+    "unit": "MJ/m^2",
+    "cv_unit": "megajoulePerSquareMeter"
+  },
+  {
+    "id": "",
+    "clean_name": "CVMeta_High",
+    "cv_term": "climaVueMetaData",
+    "unit": "unknown",
+    "cv_unit": "unknown"
+  },
+  {
+    "id": "",
+    "clean_name": "Invalid_Wind_High_Tot",
+    "cv_term": "invalidWindMeasurement",
+    "unit": "unknown",
+    "cv_unit": "unknown"
+  },
+  {
+    "id": "",
+    "clean_name": "SlrFD_W_Low",
+    "cv_term": "solarFluxDensity",
+    "unit": "W/m^2",
+    "cv_unit": "wattPerSquareMeter"
+  },
+  {
+    "id": "",
+    "clean_name": "Rain_mm_Low_Tot",
+    "cv_term": "rainPrecipitationHour",
+    "unit": "mm",
+    "cv_unit": "millimeter"
+  },
+  {
+    "id": "",
+    "clean_name": "Strikes_Low_Tot",
+    "cv_term": "lightningActivity",
+    "unit": "count",
+    "cv_unit": "number"
+  },
+  {
+    "id": "",
+    "clean_name": "Dist_km_Low",
+    "cv_term": "lightningDistance",
+    "unit": "kilometers",
+    "cv_unit": "kilometer"
+  },
+  {
+    "id": "",
+    "clean_name": "WS_ms_Low",
+    "cv_term": "windSpeed",
+    "unit": "meters/second",
+    "cv_unit": "meterPerSecond"
+  },
+  {
+    "id": "",
+    "clean_name": "WindDir_Low",
+    "cv_term": "windDirection",
+    "unit": "degrees",
+    "cv_unit": "degree"
+  },
+  {
+    "id": "",
+    "clean_name": "MaxWS_ms_Low",
+    "cv_term": "gustSpeed",
+    "unit": "meters/second",
+    "cv_unit": "meterPerSecond"
+  },
+  {
+    "id": "",
+    "clean_name": "AirT_C_Low",
+    "cv_term": "airTemperature",
+    "unit": "Deg C",
+    "cv_unit": "degreeCelsius"
+  },
+  {
+    "id": "",
+    "clean_name": "VP_mbar_Low",
+    "cv_term": "airVaporPressure",
+    "unit": "mbar",
+    "cv_unit": "millibar"
+  },
+  {
+    "id": "",
+    "clean_name": "BP_mbar_Low",
+    "cv_term": "airAtmosphericPressureAbsolute",
+    "unit": "mbar",
+    "cv_unit": "millibar"
+  },
+  {
+    "id": "",
+    "clean_name": "RH_Low",
+    "cv_term": "airRelativeHumidity",
+    "unit": "%",
+    "cv_unit": "percent"
+  },
+  {
+    "id": "",
+    "clean_name": "RHT_C_Low",
+    "cv_term": "airDewpoint",
+    "unit": "Deg C",
+    "cv_unit": "degreeCelsius"
+  },
+  {
+    "id": "",
+    "clean_name": "TiltNS_deg_Low",
+    "cv_term": "instrumentTilt",
+    "unit": "degrees",
+    "cv_unit": "degree"
+  },
+  {
+    "id": "",
+    "clean_name": "TiltWE_deg_Low",
+    "cv_term": "instrumentTilt",
+    "unit": "degrees",
+    "cv_unit": "degree"
+  },
+  {
+    "id": "",
+    "clean_name": "SlrTF_MJ_Low_Tot",
+    "cv_term": "solarFluxTotal",
+    "unit": "MJ/m^2",
+    "cv_unit": "megajoulePerSquareMeter"
+  },
+  {
+    "id": "",
+    "clean_name": "CVMeta_Low",
+    "cv_term": "climaVueMetaData",
+    "unit": "unknown",
+    "cv_unit": "unknown"
+  },
+  {
+    "id": "",
+    "clean_name": "Invalid_Wind_Low_Tot",
+    "cv_term": "invalidWindMeasurement",
+    "unit": "unknown",
+    "cv_unit": "unknown"
+  },
+  {
+    "id": "",
+    "clean_name": "VWC_5cm_SV_South",
+    "cv_term": "soilVolumetricWaterContent",
+    "unit": "m^3/m^3",
+    "cv_unit": "cubicMeterPerCubicMeter"
+  },
+  {
+    "id": "",
+    "clean_name": "Ka_5cm_SV_South",
+    "cv_term": "soilRelativeDielectricPermittivity",
+    "unit": "unitless",
+    "cv_unit": "unitless"
+  },
+  {
+    "id": "",
+    "clean_name": "T_5cm_SV_South",
+    "cv_term": "soilTemperature",
+    "unit": "Deg C",
+    "cv_unit": "degreeCelsius"
+  },
+  {
+    "id": "",
+    "clean_name": "BulkEC_5cm_SV_South",
+    "cv_term": "soilElectricalConductivity",
+    "unit": "dS/m",
+    "cv_unit": "decisiemenPerMeter"
+  },
+  {
+    "id": "",
+    "clean_name": "VWC_10cm_SV_South",
+    "cv_term": "soilVolumetricWaterContent",
+    "unit": "m^3/m^3",
+    "cv_unit": "cubicMeterPerCubicMeter"
+  },
+  {
+    "id": "",
+    "clean_name": "Ka_10cm_SV_South",
+    "cv_term": "soilRelativeDielectricPermittivity",
+    "unit": "unitless",
+    "cv_unit": "unitless"
+  },
+  {
+    "id": "",
+    "clean_name": "T_10cm_SV_South",
+    "cv_term": "soilTemperature",
+    "unit": "Deg C",
+    "cv_unit": "degreeCelsius"
+  },
+  {
+    "id": "",
+    "clean_name": "BulkEC_10cm_SV_South",
+    "cv_term": "soilElectricalConductivity",
+    "unit": "dS/m",
+    "cv_unit": "decisiemenPerMeter"
+  },
+  {
+    "id": "",
+    "clean_name": "VWC_20cm_SV_South",
+    "cv_term": "soilVolumetricWaterContent",
+    "unit": "m^3/m^3",
+    "cv_unit": "cubicMeterPerCubicMeter"
+  },
+  {
+    "id": "",
+    "clean_name": "Ka_20cm_SV_South",
+    "cv_term": "soilRelativeDielectricPermittivity",
+    "unit": "unitless",
+    "cv_unit": "unitless"
+  },
+  {
+    "id": "",
+    "clean_name": "T_20cm_SV_South",
+    "cv_term": "soilTemperature",
+    "unit": "Deg C",
+    "cv_unit": "degreeCelsius"
+  },
+  {
+    "id": "",
+    "clean_name": "BulkEC_20cm_SV_South",
+    "cv_term": "soilElectricalConductivity",
+    "unit": "dS/m",
+    "cv_unit": "decisiemenPerMeter"
+  },
+  {
+    "id": "",
+    "clean_name": "VWC_30cm_SV_South",
+    "cv_term": "soilVolumetricWaterContent",
+    "unit": "m^3/m^3",
+    "cv_unit": "cubicMeterPerCubicMeter"
+  },
+  {
+    "id": "",
+    "clean_name": "Ka_30cm_SV_South",
+    "cv_term": "soilRelativeDielectricPermittivity",
+    "unit": "unitless",
+    "cv_unit": "unitless"
+  },
+  {
+    "id": "",
+    "clean_name": "T_30cm_SV_South",
+    "cv_term": "soilTemperature",
+    "unit": "Deg C",
+    "cv_unit": "degreeCelsius"
+  },
+  {
+    "id": "",
+    "clean_name": "BulkEC_30cm_SV_South",
+    "cv_term": "soilElectricalConductivity",
+    "unit": "dS/m",
+    "cv_unit": "decisiemenPerMeter"
+  },
+  {
+    "id": "",
+    "clean_name": "VWC_40cm_SV_South",
+    "cv_term": "soilVolumetricWaterContent",
+    "unit": "m^3/m^3",
+    "cv_unit": "cubicMeterPerCubicMeter"
+  },
+  {
+    "id": "",
+    "clean_name": "Ka_40cm_SV_South",
+    "cv_term": "soilRelativeDielectricPermittivity",
+    "unit": "unitless",
+    "cv_unit": "unitless"
+  },
+  {
+    "id": "",
+    "clean_name": "T_40cm_SV_South",
+    "cv_term": "soilTemperature",
+    "unit": "Deg C",
+    "cv_unit": "degreeCelsius"
+  },
+  {
+    "id": "",
+    "clean_name": "BulkEC_40cm_SV_South",
+    "cv_term": "soilElectricalConductivity",
+    "unit": "dS/m",
+    "cv_unit": "decisiemenPerMeter"
+  },
+  {
+    "id": "",
+    "clean_name": "VWC_50cm_SV_South",
+    "cv_term": "soilVolumetricWaterContent",
+    "unit": "m^3/m^3",
+    "cv_unit": "cubicMeterPerCubicMeter"
+  },
+  {
+    "id": "",
+    "clean_name": "Ka_50cm_SV_South",
+    "cv_term": "soilRelativeDielectricPermittivity",
+    "unit": "unitless",
+    "cv_unit": "unitless"
+  },
+  {
+    "id": "",
+    "clean_name": "T_50cm_SV_South",
+    "cv_term": "soilTemperature",
+    "unit": "Deg C",
+    "cv_unit": "degreeCelsius"
+  },
+  {
+    "id": "",
+    "clean_name": "BulkEC_50cm_SV_South",
+    "cv_term": "soilElectricalConductivity",
+    "unit": "dS/m",
+    "cv_unit": "decisiemenPerMeter"
+  },
+  {
+    "id": "",
+    "clean_name": "VWC_60cm_SV_South",
+    "cv_term": "soilVolumetricWaterContent",
+    "unit": "m^3/m^3",
+    "cv_unit": "cubicMeterPerCubicMeter"
+  },
+  {
+    "id": "",
+    "clean_name": "Ka_60cm_SV_South",
+    "cv_term": "soilRelativeDielectricPermittivity",
+    "unit": "unitless",
+    "cv_unit": "unitless"
+  },
+  {
+    "id": "",
+    "clean_name": "T_60cm_SV_South",
+    "cv_term": "soilTemperature",
+    "unit": "Deg C",
+    "cv_unit": "degreeCelsius"
+  },
+  {
+    "id": "",
+    "clean_name": "BulkEC_60cm_SV_South",
+    "cv_term": "soilElectricalConductivity",
+    "unit": "dS/m",
+    "cv_unit": "decisiemenPerMeter"
+  },
+  {
+    "id": "",
+    "clean_name": "VWC_75cm_SV_South",
+    "cv_term": "soilVolumetricWaterContent",
+    "unit": "m^3/m^3",
+    "cv_unit": "cubicMeterPerCubicMeter"
+  },
+  {
+    "id": "",
+    "clean_name": "Ka_75cm_SV_South",
+    "cv_term": "soilRelativeDielectricPermittivity",
+    "unit": "unitless",
+    "cv_unit": "unitless"
+  },
+  {
+    "id": "",
+    "clean_name": "T_75cm_SV_South",
+    "cv_term": "soilTemperature",
+    "unit": "Deg C",
+    "cv_unit": "degreeCelsius"
+  },
+  {
+    "id": "",
+    "clean_name": "BulkEC_75cm_SV_South",
+    "cv_term": "soilElectricalConductivity",
+    "unit": "dS/m",
+    "cv_unit": "decisiemenPerMeter"
+  },
+  {
+    "id": "",
+    "clean_name": "VWC_100cm_SV_South",
+    "cv_term": "soilVolumetricWaterContent",
+    "unit": "m^3/m^3",
+    "cv_unit": "cubicMeterPerCubicMeter"
+  },
+  {
+    "id": "",
+    "clean_name": "Ka_100cm_SV_South",
+    "cv_term": "soilRelativeDielectricPermittivity",
+    "unit": "unitless",
+    "cv_unit": "unitless"
+  },
+  {
+    "id": "",
+    "clean_name": "T_100cm_SV_South",
+    "cv_term": "soilTemperature",
+    "unit": "Deg C",
+    "cv_unit": "degreeCelsius"
+  },
+  {
+    "id": "",
+    "clean_name": "BulkEC_100cm_SV_South",
+    "cv_term": "soilElectricalConductivity",
+    "unit": "dS/m",
+    "cv_unit": "decisiemenPerMeter"
+  },
+  {
+    "id": "",
+    "clean_name": "VWC_5cm_SV_North",
+    "cv_term": "soilVolumetricWaterContent",
+    "unit": "m^3/m^3",
+    "cv_unit": "cubicMeterPerCubicMeter"
+  },
+  {
+    "id": "",
+    "clean_name": "Ka_5cm_SV_North",
+    "cv_term": "soilRelativeDielectricPermittivity",
+    "unit": "unitless",
+    "cv_unit": "unitless"
+  },
+  {
+    "id": "",
+    "clean_name": "T_5cm_SV_North",
+    "cv_term": "soilTemperature",
+    "unit": "Deg C",
+    "cv_unit": "degreeCelsius"
+  },
+  {
+    "id": "",
+    "clean_name": "BulkEC_5cm_SV_North",
+    "cv_term": "soilElectricalConductivity",
+    "unit": "dS/m",
+    "cv_unit": "decisiemenPerMeter"
+  },
+  {
+    "id": "",
+    "clean_name": "VWC_10cm_SV_North",
+    "cv_term": "soilVolumetricWaterContent",
+    "unit": "m^3/m^3",
+    "cv_unit": "cubicMeterPerCubicMeter"
+  },
+  {
+    "id": "",
+    "clean_name": "Ka_10cm_SV_North",
+    "cv_term": "soilRelativeDielectricPermittivity",
+    "unit": "unitless",
+    "cv_unit": "unitless"
+  },
+  {
+    "id": "",
+    "clean_name": "T_10cm_SV_North",
+    "cv_term": "soilTemperature",
+    "unit": "Deg C",
+    "cv_unit": "degreeCelsius"
+  },
+  {
+    "id": "",
+    "clean_name": "BulkEC_10cm_SV_North",
+    "cv_term": "soilElectricalConductivity",
+    "unit": "dS/m",
+    "cv_unit": "decisiemenPerMeter"
+  },
+  {
+    "id": "",
+    "clean_name": "VWC_20cm_SV_North",
+    "cv_term": "soilVolumetricWaterContent",
+    "unit": "m^3/m^3",
+    "cv_unit": "cubicMeterPerCubicMeter"
+  },
+  {
+    "id": "",
+    "clean_name": "Ka_20cm_SV_North",
+    "cv_term": "soilRelativeDielectricPermittivity",
+    "unit": "unitless",
+    "cv_unit": "unitless"
+  },
+  {
+    "id": "",
+    "clean_name": "T_20cm_SV_North",
+    "cv_term": "soilTemperature",
+    "unit": "Deg C",
+    "cv_unit": "degreeCelsius"
+  },
+  {
+    "id": "",
+    "clean_name": "BulkEC_20cm_SV_North",
+    "cv_term": "soilElectricalConductivity",
+    "unit": "dS/m",
+    "cv_unit": "decisiemenPerMeter"
+  },
+  {
+    "id": "",
+    "clean_name": "VWC_30cm_SV_North",
+    "cv_term": "soilVolumetricWaterContent",
+    "unit": "m^3/m^3",
+    "cv_unit": "cubicMeterPerCubicMeter"
+  },
+  {
+    "id": "",
+    "clean_name": "Ka_30cm_SV_North",
+    "cv_term": "soilRelativeDielectricPermittivity",
+    "unit": "unitless",
+    "cv_unit": "unitless"
+  },
+  {
+    "id": "",
+    "clean_name": "T_30cm_SV_North",
+    "cv_term": "soilTemperature",
+    "unit": "Deg C",
+    "cv_unit": "degreeCelsius"
+  },
+  {
+    "id": "",
+    "clean_name": "BulkEC_30cm_SV_North",
+    "cv_term": "soilElectricalConductivity",
+    "unit": "dS/m",
+    "cv_unit": "decisiemenPerMeter"
+  },
+  {
+    "id": "",
+    "clean_name": "VWC_40cm_SV_North",
+    "cv_term": "soilVolumetricWaterContent",
+    "unit": "m^3/m^3",
+    "cv_unit": "cubicMeterPerCubicMeter"
+  },
+  {
+    "id": "",
+    "clean_name": "Ka_40cm_SV_North",
+    "cv_term": "soilRelativeDielectricPermittivity",
+    "unit": "unitless",
+    "cv_unit": "unitless"
+  },
+  {
+    "id": "",
+    "clean_name": "T_40cm_SV_North",
+    "cv_term": "soilTemperature",
+    "unit": "Deg C",
+    "cv_unit": "degreeCelsius"
+  },
+  {
+    "id": "",
+    "clean_name": "BulkEC_40cm_SV_North",
+    "cv_term": "soilElectricalConductivity",
+    "unit": "dS/m",
+    "cv_unit": "decisiemenPerMeter"
+  },
+  {
+    "id": "",
+    "clean_name": "VWC_50cm_SV_North",
+    "cv_term": "soilVolumetricWaterContent",
+    "unit": "m^3/m^3",
+    "cv_unit": "cubicMeterPerCubicMeter"
+  },
+  {
+    "id": "",
+    "clean_name": "Ka_50cm_SV_North",
+    "cv_term": "soilRelativeDielectricPermittivity",
+    "unit": "unitless",
+    "cv_unit": "unitless"
+  },
+  {
+    "id": "",
+    "clean_name": "T_50cm_SV_North",
+    "cv_term": "soilTemperature",
+    "unit": "Deg C",
+    "cv_unit": "degreeCelsius"
+  },
+  {
+    "id": "",
+    "clean_name": "BulkEC_50cm_SV_North",
+    "cv_term": "soilElectricalConductivity",
+    "unit": "dS/m",
+    "cv_unit": "decisiemenPerMeter"
+  },
+  {
+    "id": "",
+    "clean_name": "VWC_60cm_SV_North",
+    "cv_term": "soilVolumetricWaterContent",
+    "unit": "m^3/m^3",
+    "cv_unit": "cubicMeterPerCubicMeter"
+  },
+  {
+    "id": "",
+    "clean_name": "Ka_60cm_SV_North",
+    "cv_term": "soilRelativeDielectricPermittivity",
+    "unit": "unitless",
+    "cv_unit": "unitless"
+  },
+  {
+    "id": "",
+    "clean_name": "T_60cm_SV_North",
+    "cv_term": "soilTemperature",
+    "unit": "Deg C",
+    "cv_unit": "degreeCelsius"
+  },
+  {
+    "id": "",
+    "clean_name": "BulkEC_60cm_SV_North",
+    "cv_term": "soilElectricalConductivity",
+    "unit": "dS/m",
+    "cv_unit": "decisiemenPerMeter"
+  },
+  {
+    "id": "",
+    "clean_name": "VWC_75cm_SV_North",
+    "cv_term": "soilVolumetricWaterContent",
+    "unit": "m^3/m^3",
+    "cv_unit": "cubicMeterPerCubicMeter"
+  },
+  {
+    "id": "",
+    "clean_name": "Ka_75cm_SV_North",
+    "cv_term": "soilRelativeDielectricPermittivity",
+    "unit": "unitless",
+    "cv_unit": "unitless"
+  },
+  {
+    "id": "",
+    "clean_name": "T_75cm_SV_North",
+    "cv_term": "soilTemperature",
+    "unit": "Deg C",
+    "cv_unit": "degreeCelsius"
+  },
+  {
+    "id": "",
+    "clean_name": "BulkEC_75cm_SV_North",
+    "cv_term": "soilElectricalConductivity",
+    "unit": "dS/m",
+    "cv_unit": "decisiemenPerMeter"
+  },
+  {
+    "id": "",
+    "clean_name": "VWC_100cm_SV_North",
+    "cv_term": "soilVolumetricWaterContent",
+    "unit": "m^3/m^3",
+    "cv_unit": "cubicMeterPerCubicMeter"
+  },
+  {
+    "id": "",
+    "clean_name": "Ka_100cm_SV_North",
+    "cv_term": "soilRelativeDielectricPermittivity",
+    "unit": "unitless",
+    "cv_unit": "unitless"
+  },
+  {
+    "id": "",
+    "clean_name": "T_100cm_SV_North",
+    "cv_term": "soilTemperature",
+    "unit": "Deg C",
+    "cv_unit": "degreeCelsius"
+  },
+  {
+    "id": "",
+    "clean_name": "BulkEC_100cm_SV_North",
+    "cv_term": "soilElectricalConductivity",
+    "unit": "dS/m",
+    "cv_unit": "decisiemenPerMeter"
+  }
+]

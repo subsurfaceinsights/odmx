@@ -815,3 +815,5 @@ dumped under the `feeder` directory as CSV files.
 # Acknowledgements
 
 This material is based upon work supported by the U.S. Department of Energy, Office of Science, Office of Biological and Environmental Research SBIR program under Awards Number DE-SC-0009732 and DE-SC-0018447.
+
+Additional development was supported under DOE SBIR Award DE-SC0024850 to Subsurface Insights and support from DOE is gratefully acknowledged.
