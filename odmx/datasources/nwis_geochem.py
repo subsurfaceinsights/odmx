@@ -291,6 +291,9 @@ class NwisGeochemDataSource(DataSource):
             # ingestion error, and we try to ingest again).
             if result is not None:
                 last_time = result[0]
+                # TODO not sure why this is sometimes a string
+                if isinstance(df['timestamp'][0], str):
+                    df['timestamp'] = pd.to_datetime(df['timestamp'])
                 df = df[df['timestamp'] > last_time]
                 # If the DataFrame is empty, there's no new data to ingest.
                 if df.empty:
