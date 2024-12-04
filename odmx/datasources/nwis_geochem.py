@@ -480,6 +480,10 @@ class NwisGeochemDataSource(DataSource):
                         # so we use float to test the value
                         try:
                             float(rowvalue)
+                            is_float = True
+                        except ValueError:
+                            is_float = False
+                        if is_float:
                             print(' ')
                             print(f'Parsing {odmx_cv_term} {usgs_unit} '
                                   f'{rowvalue}')
@@ -496,6 +500,7 @@ class NwisGeochemDataSource(DataSource):
                                     odmx_db_con, variable_term=odmx_cv_term)
                             if odmx_variable is None:
                                 need_to_add.append((odmx_cv_term, clean_name))
+                                continue
                             print('odmx_variable :', odmx_variable)
                             variable_id = odmx_variable.variable_id
                             #now we know the variable and units and the
@@ -528,7 +533,7 @@ class NwisGeochemDataSource(DataSource):
                                           feature_action_id,stddev,
                                           censor_code,quality_code)
                             print(' ')
-                        except:  # pylint: disable=bare-except
+                        else:
                             # these values needs to be tr
                             # first we find the initial cases whoch quantify it
                             # we have two cases we can have
