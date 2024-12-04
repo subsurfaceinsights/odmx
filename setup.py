@@ -17,7 +17,7 @@ setup(
     author_email='erek.alper@subsurfaceinsights.com, dougvj@gmail.com, roelof.versteeg@subsurfaceinsights.com, rebecca.rubinstein@subsurfaceinsights.com',
     description='Python library for working with the ODMX data model',
     long_description=open('README.md').read(),
-    packages=['odmx', 'odmx.datasources'],
+    packages=['odmx', 'odmx.datasources', 'odmx.support'],
     package_data={'' : ['**/*.json', '**/*.sql']},
     include_package_data=True,
     zip_safe=False,
